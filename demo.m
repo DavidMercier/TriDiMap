@@ -24,10 +24,16 @@ gui.config.data.data_path = '.\data_indentation';
 
 %% Set variables
 gui.config.data.normalizationStep = 0; % 0 if no normalization and 1 if normalization step
+gui.config.data.smooth_NC = 2; % Number of points used to smooth rows
+gui.config.data.smooth_NR = 2; % Number of points used to smooth columns
 gui.config.data.N_XStep = 5; % Number of steps along X axis
 gui.config.data.N_YStep = 10; % Number of steps along Y axis
-gui.config.data.XStep = 15; % X step in microns
+gui.config.data.XStep = 25; % X step in microns
 gui.config.data.YStep = 15; % Y step in microns
+
+% REMARKS %
+% Don't set a too high number of points to smooth rows and columns...
+% or the absolute maximum/minimum values are decreasing !
 
 %% Load data from Excel files
 [config, gui.data] = ...
@@ -52,13 +58,17 @@ if gui.config.flag.flag_data
     %% Run the 3D maps
     if normStep
         TriDiMap_mapping_plotting(gui.config.data.XStep, gui.config.data.YStep, ...
+            gui.config.data.smooth_NR, gui.config.data.smooth_NC, ...
             gui.data.expValues_mat_norm.YM, 1, normStep);
         TriDiMap_mapping_plotting(gui.config.data.XStep, gui.config.data.YStep, ...
+            gui.config.data.smooth_NR, gui.config.data.smooth_NC, ...
             gui.data.expValues_mat_norm.H, 2, normStep);
     else
         TriDiMap_mapping_plotting(gui.config.data.XStep, gui.config.data.YStep, ...
+            gui.config.data.smooth_NR, gui.config.data.smooth_NC, ...
             gui.data.expValues_mat.YM, 1, normStep);
         TriDiMap_mapping_plotting(gui.config.data.XStep, gui.config.data.YStep, ...
+            gui.config.data.smooth_NR, gui.config.data.smooth_NC, ...
             gui.data.expValues_mat.H, 2, normStep);
     end
 end
