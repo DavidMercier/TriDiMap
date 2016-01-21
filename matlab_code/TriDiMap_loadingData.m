@@ -38,7 +38,7 @@ end
 
 data2import = [data.pathname_data, data.filename_data];
 
-%% .txt file
+%% Loading of data
 if config.flag.flag_data
     if strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
         [dataAll, txtAll] = xlsread(data2import, 'Results');
