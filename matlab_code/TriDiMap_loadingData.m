@@ -38,7 +38,7 @@ end
 
 data2import = [data.pathname_data, data.filename_data];
 
-%% Loading of data
+%% Loading data
 if config.flag.flag_data
     if strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
         [dataAll, txtAll] = xlsread(data2import, 'Results');
@@ -59,4 +59,5 @@ if config.flag.flag_data
             flipud(data.expValues_mat.H(:,evenIndex));
     end
 end
+
 end

@@ -1,6 +1,6 @@
 %% Copyright 2014 MERCIER David
 function TriDiMap_mapping_plotting(x_step, y_step, Nr, Nc, expValues, expProp, ...
-    normStep, interpolFac, varargin)
+    normStep, interpolFac, cmin, cmax, varargin)
 %% Function to plot a 3D map of elastic/plastic properties in function of X/Y coordinates
 % x_step and y_step : Steps between indents in X and Y axis in microns.
 % Nr and Nc : Number of points used to smooth respectively rows and columns
@@ -8,6 +8,15 @@ function TriDiMap_mapping_plotting(x_step, y_step, Nr, Nc, expValues, expProp, .
 % expProp : 1 = Elastic (Young's modulus) or 2 = Plastic (hardness) properties
 % normStep : Boolean to set step of normalization (0 = no normalization and 1 = normalization)
 % interpolFac : Interpolation factor to smooth data vizualization
+% cmin and cmax: Limits of colorbar
+
+if nargin < 10
+    cmin = 0;
+end
+
+if nargin < 9
+    cmax = 200;
+end
 
 if nargin < 8
     %interpolFac = 0; % for no interpolation
@@ -172,7 +181,7 @@ set([hXLabel_1, hYLabel_1, hZLabel_1, hTitle_1], ...
     'Color', [0,0,0], 'FontSize', 14, ...
     'Interpreter', 'Latex');
 
-colormap('jet');
+colormap('jet'); caxis([cmin, cmax]);
 hcb3 = colorbar;
 ylabel(hcb3, zString, 'Interpreter', 'Latex');
 
