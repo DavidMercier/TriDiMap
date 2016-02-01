@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function [config, data] = TriDiMap_loadingData(data_path, NX, NY)
+function [config, data] = TriDiMap_loadingData(data_path)
 %% Function to load Excel data from indentation tests
 
 %% Open window to select file
@@ -48,6 +48,7 @@ if config.flag.flag_data
         ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
         if ~isempty(ind_Xstep)
             config.data.Xcoord = dataAll(:,ind_Xstep-1);
+            config.data.N_XStep = sqrt(length(config.data.Xcoord)-3);
             config.data.XStep = ...
                 abs(config.data.Xcoord(2) - config.data.Xcoord(1));
         else
@@ -58,8 +59,9 @@ if config.flag.flag_data
         ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
         if ~isempty(ind_Ystep)
             config.data.Ycoord = dataAll(:,ind_Ystep-1);
+            config.data.N_YStep = sqrt(length(config.data.Ycoord)-3);
             config.data.YStep = ...
-                abs(config.data.Ycoord(sqrt(length(config.data.Ycoord)-3)+1) ...
+                abs(config.data.Ycoord(config.data.N_YStep+1) ...
                 - config.data.Ycoord(1));
         else
             config.data.YStep = config.data.YStep_default;
@@ -84,6 +86,8 @@ if config.flag.flag_data
     end
     
     if config.flag.flag_data
+        NX = config.data.N_XStep;
+        NY = config.data.N_YStep;
         % Vector to matrix (last three columns are average values in 'Results' sheet
         data.expValues_mat.YM = reshape(data.expValues.YM(1:end-3,1),[NX,NY]);
         data.expValues_mat.H = reshape(data.expValues.H(1:end-3,1),[NX,NY]);

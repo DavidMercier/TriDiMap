@@ -26,8 +26,8 @@ gui.config.data.data_path = '.\data_indentation';
 gui.config.data.normalizationStep = 0; % 0 if no normalization and 1 if normalization step
 gui.config.data.smooth_NC = 1; % Number of points used to smooth rows
 gui.config.data.smooth_NR = 1; % Number of points used to smooth columns
-gui.config.data.N_XStep = 10; % Number of steps along X axis
-gui.config.data.N_YStep = 10; % Number of steps along Y axis
+gui.config.data.N_XStep_default = 10; % Number of steps along X axis
+gui.config.data.N_YStep_default = 10; % Number of steps along Y axis
 gui.config.data.XStep_default = 10; % X step in microns
 gui.config.data.YStep_default = 10; % Y step in microns
 gui.config.H_cmin = 0;
@@ -42,11 +42,12 @@ gui.config.interp = 1; % Boolean to set interpolation step
 
 %% Load data from Excel files
 [config, gui.data] = ...
-    TriDiMap_loadingData(gui.config.data.data_path, ...
-    gui.config.data.N_XStep, gui.config.data.N_YStep);
+    TriDiMap_loadingData(gui.config.data.data_path);
 
 gui.config.data_path = config.data_path;
 gui.config.flag.flag_data = config.flag.flag_data;
+gui.config.data.N_XStep = config.data.N_XStep;
+gui.config.data.N_YStep = config.data.N_YStep;
 gui.config.data.XStep = config.data.XStep;
 gui.config.data.YStep = config.data.YStep;
 
