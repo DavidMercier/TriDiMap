@@ -41,22 +41,60 @@ data2import = [data.pathname_data, data.filename_data];
 %% Loading data
 if config.flag.flag_data
     if strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
+        % Columns in 'Results' sheet !
         [dataAll, txtAll] = xlsread(data2import, 'Results');
-        % First column is text in 'Results' sheet !
-        data.expValues.YM = dataAll(:,1);
-        data.expValues.H = dataAll(:,2);
+        
+        % X step in microns
+        ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
+        if ~isempty(ind_Xstep)
+            config.data.Xcoord = dataAll(:,ind_Xstep-1);
+            config.data.XStep = ...
+                abs(config.data.Xcoord(2) - config.data.Xcoord(1));
+        else
+            config.data.XStep = config.data.XStep_default;
+        end
+        
+        % Y step in microns
+        ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
+        if ~isempty(ind_Ystep)
+            config.data.Ycoord = dataAll(:,ind_Ystep-1);
+            config.data.YStep = ...
+                abs(config.data.Ycoord(sqrt(length(config.data.Ycoord)-3)+1) ...
+                - config.data.Ycoord(1));
+        else
+            config.data.YStep = config.data.YStep_default;
+        end
+        
+        % Young's modulus values
+        ind_YM = find(strncmp(txtAll(1,:), 'Avg Modulus', 10));
+        if ~isempty(ind_YM)
+            data.expValues.YM = dataAll(:,ind_YM-1);
+        else
+            data.expValues.YM = NaN;
+            config.flag.flag_data = 0;
+        end
+        % Hardness values
+        ind_H = find(strncmp(txtAll(1,:), 'Avg Hardness', 10));
+        if ~isempty(ind_H)
+            data.expValues.H = dataAll(:,ind_H-1);
+        else
+            data.expValues.H = NaN;
+            config.flag.flag_data = 0;
+        end
     end
     
-    % Vector to matrix (last three columns are average values in 'Results' sheet
-    data.expValues_mat.YM = reshape(data.expValues.YM(1:end-3,1),[NX,NY]);
-    data.expValues_mat.H = reshape(data.expValues.H(1:end-3,1),[NX,NY]);
-    
-    % Flip even columns to respect nanoindentation pattern
-    for evenIndex = 2:2:NY
-        data.expValues_mat.YM(:,evenIndex) = ...
-            flipud(data.expValues_mat.YM(:,evenIndex));
-        data.expValues_mat.H(:,evenIndex) = ...
-            flipud(data.expValues_mat.H(:,evenIndex));
+    if config.flag.flag_data
+        % Vector to matrix (last three columns are average values in 'Results' sheet
+        data.expValues_mat.YM = reshape(data.expValues.YM(1:end-3,1),[NX,NY]);
+        data.expValues_mat.H = reshape(data.expValues.H(1:end-3,1),[NX,NY]);
+        
+        % Flip even columns to respect nanoindentation pattern
+        for evenIndex = 2:2:NY
+            data.expValues_mat.YM(:,evenIndex) = ...
+                flipud(data.expValues_mat.YM(:,evenIndex));
+            data.expValues_mat.H(:,evenIndex) = ...
+                flipud(data.expValues_mat.H(:,evenIndex));
+        end
     end
 end
 
