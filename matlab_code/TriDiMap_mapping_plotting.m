@@ -1,6 +1,6 @@
 %% Copyright 2014 MERCIER David
 function TriDiMap_mapping_plotting(x_step, y_step, Nr, Nc, expValues, expProp, ...
-    normStep, interpolFac, cmin, cmax, varargin)
+    normStep, interpolFac, cmin, cmax, scaleAxis, varargin)
 %% Function to plot a 3D map of elastic/plastic properties in function of X/Y coordinates
 % x_step and y_step : Steps between indents in X and Y axis in microns.
 % Nr and Nc : Number of points used to smooth respectively rows and columns
@@ -9,6 +9,11 @@ function TriDiMap_mapping_plotting(x_step, y_step, Nr, Nc, expValues, expProp, .
 % normStep : Boolean to set step of normalization (0 = no normalization and 1 = normalization)
 % interpolFac : Interpolation factor to smooth data vizualization
 % cmin and cmax: Limits of colorbar
+% scaleAxis: Boolean to set colorbar
+
+if nargin < 11
+    scaleAxis = 0;
+end
 
 if nargin < 10
     cmin = 0;
@@ -118,6 +123,9 @@ set([hXLabel_1, hYLabel_1, hZLabel_1, hTitle_1], ...
     'Interpreter', 'Latex');
 
 colormap('jet');
+if scaleAxis
+    caxis([cmin, cmax]);
+end
 hcb1 = colorbar;
 ylabel(hcb1, zString, 'Interpreter', 'Latex');
 
@@ -144,6 +152,9 @@ set([hXLabel_2, hYLabel_2, hZLabel_2, hTitle_2], ...
     'Color', [0,0,0], 'FontSize', 14, 'Interpreter', 'Latex');
 
 colormap('jet');
+if scaleAxis
+    caxis([cmin, cmax]);
+end
 hcb2 = colorbar;
 ylabel(hcb2, zString, 'Interpreter', 'Latex');
 
@@ -181,7 +192,10 @@ set([hXLabel_1, hYLabel_1, hZLabel_1, hTitle_1], ...
     'Color', [0,0,0], 'FontSize', 14, ...
     'Interpreter', 'Latex');
 
-colormap('jet'); caxis([cmin, cmax]);
+colormap('jet'); 
+if scaleAxis
+    caxis([cmin, cmax]);
+end
 hcb3 = colorbar;
 ylabel(hcb3, zString, 'Interpreter', 'Latex');
 
