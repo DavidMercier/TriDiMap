@@ -24,8 +24,11 @@ gui.config.data.data_path = '.\data_indentation';
 
 %% Set default variables
 gui.config.data.normalizationStep = 0; % 0 if no normalization and 1 if normalization step
-gui.config.data.smooth_NC = 1; % Number of points used to smooth rows
-gui.config.data.smooth_NR = 1; % Number of points used to smooth columns
+
+gui.config.data.smooth_NC = 3; % Number of points used to smooth rows
+gui.config.data.smooth_NR = 3; % Number of points used to smooth columns
+% 1 = no smoothing and best is 3
+
 gui.config.data.N_XStep_default = 10; % Default number of steps along X axis
 gui.config.data.N_YStep_default = 10; % Default number of steps along Y axis
 gui.config.data.XStep_default = 10; % Default value of X step in microns

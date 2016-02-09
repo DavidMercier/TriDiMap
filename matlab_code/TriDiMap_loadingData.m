@@ -56,10 +56,19 @@ if config.flag.flag_data
             config.data.N_XStep = sqrt(length(config.data.Xcoord)-3); % Wrong if the indentation map is not square !
             config.data.Ycoord = dataAll(:,ind_Ystep-1);
             config.data.N_YStep = sqrt(length(config.data.Ycoord)-3); % Wrong if the indentation map is not square !
-            deltaX = abs(config.data.Xcoord(2) - config.data.Xcoord(1));
-            deltaY = abs(config.data.Ycoord(config.data.N_YStep+1) - ...
+            deltaXX = abs(config.data.Xcoord(2) - config.data.Xcoord(1));
+            deltaYX = abs(config.data.Ycoord(2) - config.data.Ycoord(1));
+            deltaYY = abs(config.data.Ycoord(config.data.N_YStep*2) - ...
                 config.data.Ycoord(1));
-            config.data.angleRotation = atand(deltaY/deltaX);
+            deltaXY = abs(config.data.Xcoord(config.data.N_YStep*2) - ...
+                config.data.Xcoord(1));
+            angleRotation_X = atand(deltaYX/deltaXX);
+            angleRotation_Y = atand(deltaXY/deltaYY);
+            if angleRotation_X == angleRotation_Y
+               config.data.angleRotation = angleRotation_X;
+            else
+                error('Wrong calculations of rotationnal angle');
+            end
         else
             config.data.angleRotation = config.data.angleRotation_default;
         end
@@ -67,14 +76,14 @@ if config.flag.flag_data
         
         % X step in microns
         if ~isempty(ind_Xstep)
-            config.data.XStep = deltaX / cosd(config.data.angleRotation);
+            config.data.XStep = deltaXX / cosd(config.data.angleRotation);
         else
             config.data.XStep = config.data.XStep_default;
         end
         
         % Y step in microns
         if ~isempty(ind_Ystep)
-            config.data.YStep = deltaY / cosd(config.data.angleRotation);
+            config.data.YStep = deltaYY / cosd(config.data.angleRotation);
         else
             config.data.YStep = config.data.YStep_default;
         end
