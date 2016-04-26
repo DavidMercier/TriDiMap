@@ -31,8 +31,8 @@ gui.config.data.data_path = '.\data_indentation';
 %% Set default variables
 gui.config.data.normalizationStep = 0; % 0 if no normalization and 1 if normalization step
 
-gui.config.data.smooth_NR = 1; % Number of points used to smooth rows
-gui.config.data.smooth_NC = 1; % Number of points used to smooth columns
+gui.config.data.smooth_NR = 2; % Number of points used to smooth rows
+gui.config.data.smooth_NC = 2; % Number of points used to smooth columns
 % 1 = no smoothing and best is 3
 
 gui.config.data.N_XStep_default = 24; % Default number of steps along X axis
@@ -45,7 +45,8 @@ gui.config.H_cmax = 20;
 gui.config.YM_cmin = 0;
 gui.config.YM_cmax = 300;
 gui.config.scaleAxis = 0; % Boolean to set color scale
-gui.config.interp = 0; % Boolean to set interpolation step
+gui.config.interp = 1; % Boolean to set interpolation step
+gui.config.noNan = 1; % Boolean to remove NaN values (blank pixels)
 
 % REMARKS %
 % Don't set a too high number of points to smooth rows and columns...
@@ -56,6 +57,14 @@ gui.config.interp = 0; % Boolean to set interpolation step
     TriDiMap_loadingData(gui.config);
 
 if config.flag.flag_data
+    
+    if gui.config.noNan
+    gui.data.expValues_mat.H = ...
+        TriDiMap_cleaningData(gui.data.expValues_mat.H);
+    
+    gui.data.expValues_mat.YM = ...
+        TriDiMap_cleaningData(gui.data.expValues_mat.YM);
+    end
     
     gui.config.data_path = config.data_path;
     gui.config.flag.flag_data = config.flag.flag_data;
