@@ -107,6 +107,9 @@ h(1) = surf(xData_interp, yData_interp, expValues_interp',...
     'FaceLighting','gouraud');
 hold on;
 
+% To see point markers
+% plot3(xData_interp, yData_interp, expValues_interp', '.','MarkerSize',15)
+
 % Settings
 shading interp;
 axis tight;
