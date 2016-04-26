@@ -65,7 +65,7 @@ if config.flag.flag_data
             angleRotation_X = atand(deltaYX/deltaXX);
             angleRotation_Y = atand(deltaXY/deltaYY);
             if angleRotation_X == angleRotation_Y
-               config.data.angleRotation = angleRotation_X;
+                config.data.angleRotation = angleRotation_X;
             else
                 error('Wrong calculations of rotationnal angle');
             end
@@ -102,6 +102,7 @@ if config.flag.flag_data
             data.expValues.H = NaN;
             config.flag.flag_data = 0;
         end
+
     end
     
     if config.flag.flag_data
