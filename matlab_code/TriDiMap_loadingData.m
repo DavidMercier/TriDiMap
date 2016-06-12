@@ -38,30 +38,54 @@ else
 end
 
 data2import = [data.pathname_data, data.filename_data];
+[pathstr,name,ext] = fileparts(data.filename_data);
 
 %% Loading data
 if config.flag.flag_data
     if strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
         
-        %% Columns in 'Results' sheet !
-        [dataAll, txtAll] = xlsread(data2import, 'Results');
-        ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
-        ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
-        ind_YM = find(strncmp(txtAll(1,:), 'Avg Modulus', 10));
-        ind_H = find(strncmp(txtAll(1,:), 'Avg Hardness', 10));
+        %% Results in Excel file
+        try
+            [dataAll, txtAll] = xlsread(data2import, 'Results');
+            dataType = 1; % Excel file from MTS
+        catch
+            [dataAll, txtAll] = xlsread(data2import, name);
+            dataType = 2; % Excel file from Hysitron
+        end
+        if dataType == 1
+            ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
+            ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
+            ind_YM = find(strncmp(txtAll(1,:), 'Avg Modulus', 10));
+            ind_H = find(strncmp(txtAll(1,:), 'Avg Hardness', 10));
+            endLines = 3;
+        elseif dataType == 2
+            ind_Xstep = find(strcmp(txtAll(3,:), 'X(mm)'));
+            ind_Ystep = find(strcmp(txtAll(3,:), 'Y(mm)'));
+            ind_YM = find(strncmp(txtAll(3,:), 'Er(GPa)', 10));
+            ind_H = find(strncmp(txtAll(3,:), 'H(GPa)', 10));
+            endLines = 0;
+        end
         
         % Rotation angle in degrees
         if ~isempty(ind_Xstep) && ~isempty(ind_Ystep)
             config.data.Xcoord = dataAll(:,ind_Xstep-1);
-            config.data.N_XStep = sqrt(length(config.data.Xcoord)-3); % Wrong if the indentation map is not square !
+            
+            config.data.N_XStep = sqrt(length(config.data.Xcoord)-endLines); % Wrong if the indentation map is not square !
             config.data.Ycoord = dataAll(:,ind_Ystep-1);
-            config.data.N_YStep = sqrt(length(config.data.Ycoord)-3); % Wrong if the indentation map is not square !
-            deltaXX = abs(config.data.Xcoord(2) - config.data.Xcoord(1));
-            deltaYX = abs(config.data.Ycoord(2) - config.data.Ycoord(1));
-            deltaYY = abs(config.data.Ycoord(config.data.N_YStep*2) - ...
-                config.data.Ycoord(1));
-            deltaXY = abs(config.data.Xcoord(config.data.N_YStep*2) - ...
-                config.data.Xcoord(1));
+            config.data.N_YStep = sqrt(length(config.data.Ycoord)-endLines); % Wrong if the indentation map is not square !
+            if dataType == 1
+                deltaXX = abs(config.data.Xcoord(2) - config.data.Xcoord(1));
+                deltaYX = abs(config.data.Ycoord(2) - config.data.Ycoord(1));
+                deltaYY = abs(config.data.Ycoord(config.data.N_YStep*2) - ...
+                    config.data.Ycoord(1));
+                deltaXY = abs(config.data.Xcoord(config.data.N_YStep*2) - ...
+                    config.data.Xcoord(1));
+            elseif dataType == 2
+                deltaXX = config.data.XStep_default;
+                deltaYX = 0;
+                deltaYY = config.data.YStep_default;
+                deltaXY = 0;
+            end
             angleRotation_X = atand(deltaYX/deltaXX);
             angleRotation_Y = atand(deltaXY/deltaYY);
             if angleRotation_X == angleRotation_Y
@@ -102,15 +126,15 @@ if config.flag.flag_data
             data.expValues.H = NaN;
             config.flag.flag_data = 0;
         end
-
+        
     end
     
     if config.flag.flag_data
         NX = config.data.N_XStep;
         NY = config.data.N_YStep;
         % Vector to matrix (last three columns are average values in 'Results' sheet
-        data.expValues_mat.YM = reshape(data.expValues.YM(1:end-3,1),[NX,NY]);
-        data.expValues_mat.H = reshape(data.expValues.H(1:end-3,1),[NX,NY]);
+        data.expValues_mat.YM = reshape(data.expValues.YM(1:end-endLines,1),[NX,NY]);
+        data.expValues_mat.H = reshape(data.expValues.H(1:end-endLines,1),[NX,NY]);
         
         % Flip even columns to respect nanoindentation pattern
         for evenIndex = 2:2:NY
