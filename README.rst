@@ -15,6 +15,21 @@ Keywords
 ---------
 Matlab script ; 3D mapping ; 2D projection ; elastic modulus ; hardness ; nanoindentation.
 
+How to use this Matlab toolbox
+-------------------------------
+1) Update the "demo.m" Matlab file:
+	- path of your dataset ;
+	- number of indents along X and Y axis ;
+	- step size along X and Y axis ;
+	- options of colorscale...
+
+2) Run into Matlab the script: demo.m
+
+3) Answer "yes" to the 1st question in the Command Window of Matlab,
+in order to add the above folder with subfolders to the matlab search path.
+
+4) Finaly, 3D maps of hardness and Young's modulus are plotted into 2 windows.
+
 Screenshots
 -------------
 
