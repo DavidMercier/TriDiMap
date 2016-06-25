@@ -35,10 +35,10 @@ gui.config.data.smooth_NR = 2; % Number of points used to smooth rows
 gui.config.data.smooth_NC = 2; % Number of points used to smooth columns
 % 1 = no smoothing and best is 3
 
-gui.config.data.N_XStep_default = 24; % Default number of steps along X axis
-gui.config.data.N_YStep_default = 24; % Default number of steps along Y axis
-gui.config.data.XStep_default = 5; % Default value of X step in microns
-gui.config.data.YStep_default = 5; % Default value of Y step in microns
+gui.config.data.N_XStep_default = 10; % Default number of steps along X axis
+gui.config.data.N_YStep_default = 10; % Default number of steps along Y axis
+gui.config.data.XStep_default = 2; % Default value of X step in microns
+gui.config.data.YStep_default = 2; % Default value of Y step in microns
 gui.config.data.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 gui.config.H_cmin = 0;
 gui.config.H_cmax = 20;
@@ -99,10 +99,12 @@ if config.flag.flag_data
             gui.config.data.smooth_NR, gui.config.data.smooth_NC, ...
             gui.data.expValues_mat.YM, 1, normStep, gui.config.interp, ...
             gui.config.YM_cmin, gui.config.YM_cmax, gui.config.scaleAxis);
+        guidata(gcf, gui);
         TriDiMap_mapping_plotting(gui.config.data.XStep, gui.config.data.YStep, ...
             gui.config.data.smooth_NR, gui.config.data.smooth_NC, ...
             gui.data.expValues_mat.H, 2, normStep, gui.config.interp,  ...
             gui.config.H_cmin, gui.config.H_cmax, gui.config.scaleAxis);
+        guidata(gcf, gui);
     end
 end
 end
