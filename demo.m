@@ -31,22 +31,26 @@ gui.config.data.data_path = '.\data_indentation';
 %% Set default variables
 gui.config.data.normalizationStep = 0; % 0 if no normalization and 1 if normalization step
 
-gui.config.data.smooth_NR = 2; % Number of points used to smooth rows
-gui.config.data.smooth_NC = 2; % Number of points used to smooth columns
+% Smoothing and Interpolation
+gui.config.interp = 1; % Boolean to set interpolation step
+gui.config.noNan = 1; % Boolean to remove NaN values (blank pixels)
+gui.config.data.smooth_NR = 1; % Number of points used to smooth rows
+gui.config.data.smooth_NC = 1; % Number of points used to smooth columns
 % 1 = no smoothing and best is 3
 
+% Configuration of the indentation map
 gui.config.data.N_XStep_default = 10; % Default number of steps along X axis
 gui.config.data.N_YStep_default = 10; % Default number of steps along Y axis
 gui.config.data.XStep_default = 2; % Default value of X step in microns
 gui.config.data.YStep_default = 2; % Default value of Y step in microns
 gui.config.data.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
-gui.config.H_cmin = 0;
-gui.config.H_cmax = 20;
-gui.config.YM_cmin = 0;
-gui.config.YM_cmax = 300;
-gui.config.scaleAxis = 0; % Boolean to set color scale
-gui.config.interp = 1; % Boolean to set interpolation step
-gui.config.noNan = 1; % Boolean to remove NaN values (blank pixels)
+
+% Colorbar setting
+gui.config.scaleAxis = 1; % Boolean to set color scale
+gui.config.H_cmin = 4; % in GPa
+gui.config.H_cmax = 9; %in GPa
+gui.config.YM_cmin = 0; % in GPa
+gui.config.YM_cmax = 300; % in GPa
 
 % REMARKS %
 % Don't set a too high number of points to smooth rows and columns...
