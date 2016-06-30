@@ -63,7 +63,7 @@ if config.flag.flag_data
                     try
                         [dataAll, txtAll] = xlsread(data2import, 'Results');
                         dataType = 2; % Excel file from Hysitron
-                        cqatch
+                    catch
                         disp(['No Excel sheet named:', 'Results', 'found in the Excel file !']);
                     end
                 end
