@@ -49,8 +49,25 @@ if config.flag.flag_data
             [dataAll, txtAll] = xlsread(data2import, 'Results');
             dataType = 1; % Excel file from MTS
         catch
-            [dataAll, txtAll] = xlsread(data2import, name);
-            dataType = 2; % Excel file from Hysitron
+            try
+                [dataAll, txtAll] = xlsread(data2import, name);
+                dataType = 2; % Excel file from Hysitron
+            catch
+                disp(['No Excel sheet named:', name, 'found in the Excel file !']);
+                try
+                    [dataAll, txtAll] = xlsread(data2import, 'Feuil1');
+                    dataType = 2; % Excel file from Hysitron
+                    
+                catch
+                    disp(['No Excel sheet named:', 'Feuil1', 'found in the Excel file !']);
+                    try
+                        [dataAll, txtAll] = xlsread(data2import, 'Results');
+                        dataType = 2; % Excel file from Hysitron
+                        cqatch
+                        disp(['No Excel sheet named:', 'Results', 'found in the Excel file !']);
+                    end
+                end
+            end
         end
         if dataType == 1
             ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
