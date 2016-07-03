@@ -26,8 +26,7 @@ How to use this Matlab toolbox
 
 2. Run into Matlab the script: demo.m.
 
-3. Answer "yes" to the 1st question in the Command Window of Matlab,
-in order to add the above folder with subfolders to the matlab search path.
+3. Answer "yes" to the 1st question in the Command Window of Matlab, in order to add the above folder with subfolders to the matlab search path.
 
 4. Finaly, 3D maps of hardness and Young's modulus are plotted into 2 windows.
 
