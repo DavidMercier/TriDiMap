@@ -33,7 +33,7 @@ How to use this Matlab toolbox
 Contributors
 -------------
 
-- Pierre Huyghes (`ULB <www.ulb.ac.be/>`_, Bruxelles) contributed Matlab code.
+- Pierre Huyghes (ULB, Bruxelles) contributed Matlab code.
 
 
 Screenshots
