@@ -13,7 +13,7 @@ Written by D. Mercier [1] (david.mercier@crmgroup.be / david9684@gmail.com).
 
 Keywords
 ---------
-Matlab script ; 3D mapping ; 2D projection ; elastic modulus ; hardness ; nanoindentation.
+Matlab script ; 3D mapping ; 2D projection ; elastic modulus ; hardness ; nanoindentation ; grid.
 
 How to use this Matlab toolbox
 -------------------------------
@@ -28,7 +28,13 @@ How to use this Matlab toolbox
 
 3. Answer "yes" to the 1st question in the Command Window of Matlab, in order to add the above folder with subfolders to the matlab search path.
 
-4. Finaly, 3D maps of hardness and Young's modulus are plotted into 2 windows.
+4. Finaly, 3D maps of hardness and elastic modulus are plotted into 2 windows.
+
+Contributors
+-------------
+
+- Pierre Huyghes (`ULB <www.ulb.ac.be/>`_, Bruxelles) contributed Matlab code.
+
 
 Screenshots
 -------------
