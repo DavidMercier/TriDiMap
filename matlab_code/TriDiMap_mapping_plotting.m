@@ -1,6 +1,7 @@
 %% Copyright 2014 MERCIER David
 function TriDiMap_mapping_plotting(x_step, y_step, Nr, Nc, expValues, expProp, ...
-    normStep, interpolFac, cmin, cmax, scaleAxis, varargin)
+    normStep, interpolFac, cmin, cmax, scaleAxis, TriDiView, FontSizeVal, ...
+    Markers, varargin)
 %% Function to plot a 3D map of elastic/plastic properties in function of X/Y coordinates
 % x_step and y_step : Steps between indents in X and Y axis in microns.
 % Nr and Nc : Number of points used to smooth respectively rows and columns
@@ -10,6 +11,21 @@ function TriDiMap_mapping_plotting(x_step, y_step, Nr, Nc, expValues, expProp, .
 % interpolFac : Interpolation factor to smooth data vizualization
 % cmin and cmax: Limits of colorbar
 % scaleAxis: Boolean to set colorbar
+% TriDiView: Boolean to set plots
+% FontSizeVal: Size of the font (legend, axes labels...)
+% Markers: Boolean to plot markers
+
+if nargin < 14
+    Markers = 1;
+end
+
+if nargin < 13
+    FontSizeVal = 14;
+end
+
+if nargin < 12
+    TriDiView = 0;
+end
 
 if nargin < 11
     scaleAxis = 0;
@@ -86,120 +102,155 @@ colormap hsv;
 % Axes properties
 if ~normStep
     if expProp == 1
-        zString = 'Young''s modulus (GPa)';
+        zString = 'Elastic modulus (GPa)';
     elseif expProp == 2
         zString = 'Hardness (GPa)';
     end
 elseif normStep
     if expProp == 1
-        zString = 'Normalized Young''s modulus';
+        zString = 'Normalized elastic modulus';
     elseif expProp == 2
         zString = 'Normalized Hardness';
     end
 end
 
-%% Subplot 1
-subplot(2,2,1);
-
-% 3D plot
-h(1) = surf(xData_interp, yData_interp, expValues_interp',...
-    'FaceColor','interp', 'EdgeColor','none',...
-    'FaceLighting','gouraud');
-hold on;
-
-% To see point markers
-% plot3(xData_interp, yData_interp, expValues_interp', '.','MarkerSize',15)
-
-% Settings
-shading interp;
-axis tight;
-view(50,50);
-camlight left;
-
-hXLabel_1 = xlabel('X coordinates ($\mu$m)');
-hYLabel_1 = ylabel('Y coordinates ($\mu$m)');
-hZLabel_1 = zlabel(zString);
-hTitle_1 = title(['3D map of ', zString], 'FontSize', 18);
-
-set([hXLabel_1, hYLabel_1, hZLabel_1, hTitle_1], ...
-    'Color', [0,0,0], 'FontSize', 14, ...
-    'Interpreter', 'Latex');
-
-colormap('jet');
-if scaleAxis
-    caxis([cmin, cmax]);
+if TriDiView
+    %% Subplot 1
+    subplot(2,2,1);
+    
+    % 3D plot
+    h(1) = surf(xData_interp, yData_interp, expValues_interp',...
+        'FaceColor','interp', 'EdgeColor','none',...
+        'FaceLighting','gouraud');
+    hold on;
+    
+    % To see point markers
+    % plot3(xData_interp, yData_interp, expValues_interp', '.','MarkerSize',15)
+    
+    % Settings
+    shading interp;
+    axis tight;
+    view(50,50);
+    camlight left;
+    
+    hXLabel_1 = xlabel('X coordinates ($\mu$m)');
+    hYLabel_1 = ylabel('Y coordinates ($\mu$m)');
+    hZLabel_1 = zlabel(zString);
+    hTitle_1 = title(['3D map of ', zString]);
+    
+    set([hXLabel_1, hYLabel_1, hZLabel_1, hTitle_1], ...
+        'Color', [0,0,0], 'FontSize', FontSizeVal, ...
+        'Interpreter', 'Latex');
+    
+    colormap('jet');
+    if scaleAxis
+        caxis([cmin, cmax]);
+    end
+    hcb1 = colorbar;
+    ylabel(hcb1, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+    
+    % Latex for TickLabel not possible for Matlab2014a...
+    % set(colorbar_handle,'TickLabelInterpreter', 'Latex');
+    
+    %% Subplot 2
+    subplot(2,2,3);
+    h(2) = surf(xData_interp, yData_interp, expValues_interp',...
+        'FaceColor','interp',...
+        'EdgeColor','none',...
+        'FaceLighting','gouraud');
+    
+    axis equal;
+    shading interp;
+    view(0,90);
+    
+    hXLabel_2 = xlabel('X coordinates ($\mu$m)');
+    hYLabel_2 = ylabel('Y coordinates ($\mu$m)');
+    hZLabel_2 = zlabel(zString);
+    hTitle_2 = title(['Mapping of ', zString]);
+    
+    set([hXLabel_2, hYLabel_2, hZLabel_2, hTitle_2], ...
+        'Color', [0,0,0], 'FontSize', FontSizeVal, 'Interpreter', 'Latex');
+    
+    colormap('jet');
+    if scaleAxis
+        caxis([cmin, cmax]);
+    end
+    hcb2 = colorbar;
+    ylabel(hcb2, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+    
+    %% Subplot 3
+    subplot(2,2,[2 4]);
+    
+    % 3D plot
+    h(3) = surf(xData_interp, yData_interp, expValues_interp',...
+        'FaceColor','interp', 'EdgeColor','none',...
+        'FaceLighting','gouraud');
+    hold on;
+    
+    % 3D surface plot
+    minZ = min(min(expValues_interp));
+    maxZ = max(max(expValues_interp));
+    Z_positionning = minZ - (maxZ - minZ)/2;
+    
+    h(4) = pcolor(xData_interp, yData_interp, expValues_interp');
+    set(h(4), 'ZData', Z_positionning + 0*expValues_interp);
+    set(h(4), 'FaceColor', 'interp', 'EdgeColor', 'interp');
+    hold off;
+    
+    % Settings
+    shading interp;
+    axis tight;
+    view(30,15);
+    camlight left;
+    
+    hXLabel_1 = xlabel('X coordinates ($\mu$m)');
+    hYLabel_1 = ylabel('Y coordinates ($\mu$m)');
+    hZLabel_1 = zlabel(zString);
+    hTitle_1 = title(['3D map + surface plot of ', zString]);
+    
+    set([hXLabel_1, hYLabel_1, hZLabel_1, hTitle_1], ...
+        'Color', [0,0,0], 'FontSize', FontSizeVal, ...
+        'Interpreter', 'Latex');
+    
+    colormap('jet');
+    if scaleAxis
+        caxis([cmin, cmax]);
+    end
+    hcb3 = colorbar;
+    ylabel(hcb3, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+    
+else
+    h(4) = surf(xData_interp, yData_interp, expValues_interp',...
+        'FaceColor','interp',...
+        'EdgeColor','none',...
+        'FaceLighting','gouraud');
+    % 'Marker', '+'
+    
+    hold on;
+    
+    if Markers
+        plot3(xData_interp, yData_interp, expValues_interp','k+');
+        hold on;
+    end
+    
+    axis equal;
+    shading interp;
+    view(0,90);
+    
+    hXLabel_4 = xlabel('X coordinates ($\mu$m)');
+    hYLabel_4 = ylabel('Y coordinates ($\mu$m)');
+    hZLabel_4 = zlabel(zString);
+    hTitle_4 = title(['Mapping of ', zString]);
+    
+    set([hXLabel_4, hYLabel_4, hZLabel_4, hTitle_4], ...
+        'Color', [0,0,0], 'FontSize', FontSizeVal, 'Interpreter', 'Latex');
+    
+    colormap('jet');
+    if scaleAxis
+        caxis([cmin, cmax]);
+    end
+    hcb4 = colorbar;
+    ylabel(hcb4, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+    
 end
-hcb1 = colorbar;
-ylabel(hcb1, zString, 'Interpreter', 'Latex');
-
-% Latex for TickLabel not possible for Matlab2014a...
-% set(colorbar_handle,'TickLabelInterpreter', 'Latex');
-
-%% Subplot 2
-subplot(2,2,3);
-h(2) = surf(xData_interp, yData_interp, expValues_interp',...
-    'FaceColor','interp',...
-    'EdgeColor','none',...
-    'FaceLighting','gouraud');
-
-axis equal;
-shading interp;
-view(0,90);
-
-hXLabel_2 = xlabel('X coordinates ($\mu$m)');
-hYLabel_2 = ylabel('Y coordinates ($\mu$m)');
-hZLabel_2 = zlabel(zString);
-hTitle_2 = title(['Mapping of ', zString], 'FontSize', 18);
-
-set([hXLabel_2, hYLabel_2, hZLabel_2, hTitle_2], ...
-    'Color', [0,0,0], 'FontSize', 14, 'Interpreter', 'Latex');
-
-colormap('jet');
-if scaleAxis
-    caxis([cmin, cmax]);
-end
-hcb2 = colorbar;
-ylabel(hcb2, zString, 'Interpreter', 'Latex');
-
-%% Subplot 3
-subplot(2,2,[2 4]);
-
-% 3D plot
-h(3) = surf(xData_interp, yData_interp, expValues_interp',...
-    'FaceColor','interp', 'EdgeColor','none',...
-    'FaceLighting','gouraud');
-hold on;
-
-% 3D surface plot
-minZ = min(min(expValues_interp));
-maxZ = max(max(expValues_interp));
-Z_positionning = minZ - (maxZ - minZ)/2;
-
-h(4) = pcolor(xData_interp, yData_interp, expValues_interp');
-set(h(4), 'ZData', Z_positionning + 0*expValues_interp);
-set(h(4), 'FaceColor', 'interp', 'EdgeColor', 'interp');
-hold off;
-
-% Settings
-shading interp;
-axis tight;
-view(30,15);
-camlight left;
-
-hXLabel_1 = xlabel('X coordinates ($\mu$m)');
-hYLabel_1 = ylabel('Y coordinates ($\mu$m)');
-hZLabel_1 = zlabel(zString);
-hTitle_1 = title(['3D map + surface plot of ', zString], 'FontSize', 18);
-
-set([hXLabel_1, hYLabel_1, hZLabel_1, hTitle_1], ...
-    'Color', [0,0,0], 'FontSize', 14, ...
-    'Interpreter', 'Latex');
-
-colormap('jet'); 
-if scaleAxis
-    caxis([cmin, cmax]);
-end
-hcb3 = colorbar;
-ylabel(hcb3, zString, 'Interpreter', 'Latex');
-
 end
