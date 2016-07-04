@@ -1,7 +1,7 @@
 %% Copyright 2014 MERCIER David
 function TriDiMap_mapping_plotting(x_step, y_step, smoothVal, expValues, expProp, ...
     normStep, interpol, interpolFac, cmin, cmax, scaleAxis, TriDiView, FontSizeVal, ...
-    Markers, varargin)
+    Markers, binarizedGrid, varargin)
 %% Function to plot a 3D map of elastic/plastic properties in function of X/Y coordinates
 % x_step and y_step : Steps between indents in X and Y axis in microns.
 % smooth : Number of points used to smooth respectively rows and columns (Nc and Nr)
@@ -14,6 +14,11 @@ function TriDiMap_mapping_plotting(x_step, y_step, smoothVal, expValues, expProp
 % TriDiView: Boolean to set plots
 % FontSizeVal: Size of the font (legend, axes labels...)
 % Markers: Boolean to plot markers
+% binarizedGrid: Boolean to binarize values of the grid
+
+if nargin < 15
+    binarizedGrid = 1;
+end
 
 if nargin < 14
     Markers = 1;
@@ -73,25 +78,80 @@ if nargin < 1
     x_step = 8; % in microns
 end
 
+%% Initialization of variables
+maxPlots = 5;
+h(1:maxPlots) = NaN;
+hXLabel(1:maxPlots) = NaN;
+hYLabel(1:maxPlots) = NaN;
+hZLabel(1:maxPlots) = NaN;
+hTitle(1:maxPlots) = NaN;
+
 %% Interpolation - Definition of pixels coordinates
 if ~interpol
     interpolFac = 0;
 end
-expValues_interp = interp2(expValues,interpolFac);
-maxValInterpol = max(max(expValues_interp));
-minValInterpol = min(min(expValues_interp));
+expValuesInterp = interp2(expValues,interpolFac);
+maxValInterpol = max(max(expValuesInterp));
+minValInterpol = min(min(expValuesInterp));
+meanValInterpol = mean(mean(expValuesInterp));
 
 %% Data smoothing
-expValues_interpSmoothed = smooth2a(expValues_interp, smoothVal, smoothVal);
-maxValSmoothed = max(max(expValues_interpSmoothed));
-minValSmoothed = min(min(expValues_interpSmoothed));
+expValuesSmoothed = smooth2a(expValuesInterp, smoothVal, smoothVal);
+maxValSmoothed = max(max(expValuesSmoothed));
+minValSmoothed = min(min(expValuesSmoothed));
+meanValSmoothed = mean(mean(expValuesSmoothed));
 
 %% Correction of loss after smoothing step
-ratioMax = (maxValInterpol/maxValSmoothed);
-ratioMin = (minValInterpol/minValSmoothed);
-ratioMean = mean([ratioMin, ratioMax]);
-%expValues_interp = expValues_interpSmoothed*ratioMean;
-expValues_interp = expValues_interpSmoothed;
+deltaMax = (maxValInterpol - maxValSmoothed);
+deltaMin = (minValInterpol - minValSmoothed);
+expValuesInterpSmoothed = zeros(length(expValuesInterp));
+
+for ii=1:length(expValuesInterp)
+    for jj=1:length(expValuesInterp)
+        if binarizedGrid == 0
+            if expValuesInterp(ii,jj) < meanValInterpol
+                expValuesInterpSmoothed(ii,jj) = ...
+                    expValuesSmoothed(ii,jj) - ...
+                    ((expValuesSmoothed(ii,jj) - expValuesInterp(ii,jj)) / ...
+                    (expValuesInterp(ii,jj)/minValInterpol));
+                
+            elseif expValuesInterp(ii,jj) > meanValInterpol
+                expValuesInterpSmoothed(ii,jj) = ...
+                    expValuesSmoothed(ii,jj) + ...
+                    ((expValuesInterp(ii,jj) - expValuesSmoothed(ii,jj)) * ...
+                    (expValuesInterp(ii,jj)/maxValInterpol));
+            else
+                expValuesInterpSmoothed(ii,jj) = expValuesSmoothed(ii,jj);
+            end
+            
+        elseif binarizedGrid == 1
+            if expValuesInterp(ii,jj) < meanValInterpol
+                expValuesInterpSmoothed(ii,jj) = ...
+                    expValuesSmoothed(ii,jj) + deltaMin;
+                
+                %                 expValuesInterpSmoothed(ii,jj) = ...
+                %                      expValuesSmoothed(ii,jj) + ...
+                %                     (expValuesInterp(ii,jj) - expValuesSmoothed(ii,jj));
+                % ==> Residual map equals zero
+                
+            elseif expValuesInterp(ii,jj) > meanValInterpol
+                expValuesInterpSmoothed(ii,jj) = ...
+                    expValuesSmoothed(ii,jj) + deltaMax;
+                
+            else
+                expValuesInterpSmoothed(ii,jj) = expValuesSmoothed(ii,jj);
+            end
+            
+        elseif binarizedGrid == 2
+            if expValuesInterp(ii,jj) < meanValInterpol
+                expValuesInterpSmoothed(ii,jj) = minValInterpol;
+                
+            elseif expValuesInterp(ii,jj) >= meanValInterpol
+                expValuesInterpSmoothed(ii,jj) = maxValInterpol;
+            end
+        end
+    end
+end
 
 %% Grid meshing
 [xData_markers, yData_markers] = ...
@@ -99,25 +159,24 @@ expValues_interp = expValues_interpSmoothed;
     0:y_step:(size(expValues,2)-1)*y_step);
 
 [xData_interp, yData_interp] = ...
-    meshgrid(0:x_step:(size(expValues_interp,1)-1)*x_step, ...
-    0:y_step:(size(expValues_interp,2)-1)*y_step);
+    meshgrid(0:x_step:(size(expValuesInterpSmoothed,1)-1)*x_step, ...
+    0:y_step:(size(expValuesInterpSmoothed,2)-1)*y_step);
 
 if interpol
     xData_interp = xData_interp./(2^(interpolFac));
     yData_interp = yData_interp./(2^(interpolFac));
 end
 
-%% Plots
+%% Plots properties
 scrsize = get(0, 'ScreenSize'); % Get screen size
 WX = 0.15 * scrsize(3); % X Position (bottom)
 WY = 0.10 * scrsize(4); % Y Position (left)
 WW = 0.70 * scrsize(3); % Width
 WH = 0.80 * scrsize(4); % Height
 
-figure('position', [WX, WY, WW, WH]);
+f(1) = figure('position', [WX, WY, WW, WH]);
 colormap hsv;
 
-% Axes properties
 if ~normStep
     if expProp == 1
         zString = 'Elastic modulus (GPa)';
@@ -132,12 +191,13 @@ elseif normStep
     end
 end
 
+%% 3 maps
 if TriDiView
     %% Subplot 1
     subplot(2,2,1);
     
     % 3D plot
-    h(1) = surf(xData_interp, yData_interp, expValues_interp',...
+    h(1) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
         'FaceColor','interp', 'EdgeColor','none',...
         'FaceLighting','gouraud');
     hold on;
@@ -151,14 +211,14 @@ if TriDiView
     view(50,50);
     camlight left;
     
-    hXLabel_1 = xlabel('X coordinates ($\mu$m)');
-    hYLabel_1 = ylabel('Y coordinates ($\mu$m)');
-    hZLabel_1 = zlabel(zString);
-    hTitle_1 = title(['3D map of ', zString]);
-    
-    set([hXLabel_1, hYLabel_1, hZLabel_1, hTitle_1], ...
+    hXLabel(1) = xlabel('X coordinates ($\mu$m)');
+    hYLabel(1) = ylabel('Y coordinates ($\mu$m)');
+    hZLabel(1) = zlabel(zString);
+    hTitle(1) = title(['3D map of ', zString]);
+    set([hXLabel(1), hYLabel(1), hZLabel(1), hTitle(1)], ...
         'Color', [0,0,0], 'FontSize', FontSizeVal, ...
         'Interpreter', 'Latex');
+    % Not working in a loop with handles of all labels... !
     
     colormap('jet');
     if scaleAxis
@@ -172,7 +232,7 @@ if TriDiView
     
     %% Subplot 2
     subplot(2,2,3);
-    h(2) = surf(xData_interp, yData_interp, expValues_interp',...
+    h(2) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
         'FaceColor','interp',...
         'EdgeColor','none',...
         'FaceLighting','gouraud');
@@ -181,13 +241,13 @@ if TriDiView
     shading interp;
     view(0,90);
     
-    hXLabel_2 = xlabel('X coordinates ($\mu$m)');
-    hYLabel_2 = ylabel('Y coordinates ($\mu$m)');
-    hZLabel_2 = zlabel(zString);
-    hTitle_2 = title(['Mapping of ', zString]);
-    
-    set([hXLabel_2, hYLabel_2, hZLabel_2, hTitle_2], ...
-        'Color', [0,0,0], 'FontSize', FontSizeVal, 'Interpreter', 'Latex');
+    hXLabel(2) = xlabel('X coordinates ($\mu$m)');
+    hYLabel(2) = ylabel('Y coordinates ($\mu$m)');
+    hZLabel(2) = zlabel(zString);
+    hTitle(2) = title(['Mapping of ', zString]);
+    set([hXLabel(2), hYLabel(2), hZLabel(2), hTitle(2)], ...
+        'Color', [0,0,0], 'FontSize', FontSizeVal, ...
+        'Interpreter', 'Latex');
     
     colormap('jet');
     if scaleAxis
@@ -200,19 +260,19 @@ if TriDiView
     subplot(2,2,[2 4]);
     
     % 3D plot
-    h(3) = surf(xData_interp, yData_interp, expValues_interp',...
+    h(3) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
         'FaceColor','interp', 'EdgeColor','none',...
         'FaceLighting','gouraud');
     hold on;
     
     % 3D surface plot
-    minZ = min(min(expValues_interp));
-    maxZ = max(max(expValues_interp));
+    minZ = min(min(expValuesInterpSmoothed));
+    maxZ = max(max(expValuesInterpSmoothed));
     Z_positionning = minZ - (maxZ - minZ)/2;
     
-    h(4) = pcolor(xData_interp, yData_interp, expValues_interp');
-    set(h(4), 'ZData', Z_positionning + 0*expValues_interp);
-    set(h(4), 'FaceColor', 'interp', 'EdgeColor', 'interp');
+    hpcolor = pcolor(xData_interp, yData_interp, expValuesInterpSmoothed');
+    set(hpcolor, 'ZData', Z_positionning + 0*expValuesInterpSmoothed);
+    set(hpcolor, 'FaceColor', 'interp', 'EdgeColor', 'interp');
     hold off;
     
     % Settings
@@ -221,12 +281,11 @@ if TriDiView
     view(30,15);
     camlight left;
     
-    hXLabel_1 = xlabel('X coordinates ($\mu$m)');
-    hYLabel_1 = ylabel('Y coordinates ($\mu$m)');
-    hZLabel_1 = zlabel(zString);
-    hTitle_1 = title(['3D map + surface plot of ', zString]);
-    
-    set([hXLabel_1, hYLabel_1, hZLabel_1, hTitle_1], ...
+    hXLabel(3) = xlabel('X coordinates ($\mu$m)');
+    hYLabel(3) = ylabel('Y coordinates ($\mu$m)');
+    hZLabel(3) = zlabel(zString);
+    hTitle(3) = title(['3D map + surface plot of ', zString]);
+    set([hXLabel(3), hYLabel(3), hZLabel(3), hTitle(3)], ...
         'Color', [0,0,0], 'FontSize', FontSizeVal, ...
         'Interpreter', 'Latex');
     
@@ -238,7 +297,8 @@ if TriDiView
     ylabel(hcb3, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
     
 else
-    h(4) = surf(xData_interp, yData_interp, expValues_interp',...
+    %% 1 map (with or without markers)
+    h(4) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
         'FaceColor','interp',...
         'EdgeColor','none',...
         'FaceLighting','gouraud');
@@ -246,22 +306,27 @@ else
     
     hold on;
     
+    % Set z positions of markers
+    markersVal = ones(length(expValues)) * maxValInterpol;
+    
     if Markers
-        plot3(xData_markers, yData_markers, expValues','k+');
+        plot3(xData_markers, yData_markers, markersVal,'k+');
         hold on;
     end
+    
+    hold off;
     
     axis equal;
     shading interp;
     view(0,90);
     
-    hXLabel_4 = xlabel('X coordinates ($\mu$m)');
-    hYLabel_4 = ylabel('Y coordinates ($\mu$m)');
-    hZLabel_4 = zlabel(zString);
-    hTitle_4 = title(['Mapping of ', zString]);
-    
-    set([hXLabel_4, hYLabel_4, hZLabel_4, hTitle_4], ...
-        'Color', [0,0,0], 'FontSize', FontSizeVal, 'Interpreter', 'Latex');
+    hXLabel(4) = xlabel('X coordinates ($\mu$m)');
+    hYLabel(4) = ylabel('Y coordinates ($\mu$m)');
+    hZLabel(4) = zlabel(zString);
+    hTitle(4) = title(['Mapping of ', zString]);
+    set([hXLabel(4), hYLabel(4), hZLabel(4), hTitle(4)], ...
+        'Color', [0,0,0], 'FontSize', FontSizeVal, ...
+        'Interpreter', 'Latex');
     
     colormap('jet');
     if scaleAxis
@@ -269,6 +334,37 @@ else
     end
     hcb4 = colorbar;
     ylabel(hcb4, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
-    
 end
+
+%% Plot residuals between interpolated data and smoothed data
+residualsVal = (expValuesInterpSmoothed' - expValuesInterp'); %./expValuesInterp
+zString = 'Residuals';
+
+f(2) = figure;
+h(5) = surf(xData_interp, yData_interp, residualsVal,...
+    'FaceColor','interp',...
+    'EdgeColor','none',...
+    'FaceLighting','gouraud');
+
+axis equal;
+shading interp;
+view(0,90);
+
+hXLabel(5) = xlabel('X coordinates ($\mu$m)');
+hYLabel(5) = ylabel('Y coordinates ($\mu$m)');
+hZLabel(5) = zlabel(zString);
+hTitle(5) = title(['Mapping of ', zString]);
+set([hXLabel(5), hYLabel(5), hZLabel(5), hTitle(5)], ...
+    'Color', [0,0,0], 'FontSize', FontSizeVal, ...
+    'Interpreter', 'Latex');
+
+colormap('jet');
+if scaleAxis
+    caxis([cmin, cmax]);
+end
+hcb5 = colorbar;
+ylabel(hcb5, [zString, ' ($\%$)'], ...
+    'Interpreter', 'Latex', ...
+    'FontSize', FontSizeVal);
+
 end
