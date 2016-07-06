@@ -32,15 +32,48 @@ How to use this Matlab toolbox
 
 Contributors
 -------------
-
 - Pierre Huyghes (ULB, Bruxelles) contributed Matlab code.
-
 
 Screenshots
 -------------
-
-.. figure:: pictures/screenshot_main_window.png
+.. figure:: pictures/multiMaps.png
    :scale: 50 %
    :align: center
    
-   *3D mapping of mechanical properties obtained from indentation tests*
+   *3D mappings of mechanical properties obtained from indentation tests with different views.*
+   
+.. figure:: pictures/1_hardnessMap_noInterp_noSmooth.png
+   :scale: 50 %
+   :align: center
+   
+   *3D raw mapping of mechanical properties without interpolation and smoothing.*
+   
+.. figure:: pictures/2_hardnessMap_Interp_noSmooth.png
+   :scale: 50 %
+   :align: center
+   
+   *3D mapping of mechanical properties with interpolation and no smoothing.*
+
+.. figure:: pictures/3_hardnessMap_Interp_Smooth.png
+   :scale: 50 %
+   :align: center
+   
+   *3D mapping of mechanical properties with interpolation and smoothing.*
+   
+.. figure:: pictures/3_hardnessDiffMap_InterpSmooth.png
+   :scale: 25 %
+   :align: center
+   
+   *Difference map of mechanical properties between interpolated and smoothed data.*
+   
+.. figure:: pictures/4_hardnessMap_Interp_Smooth_Binarized.png
+   :scale: 50 %
+   :align: center
+   
+   *3D mapping of mechanical properties with interpolation, smoothing and binarization.*
+   
+.. figure:: pictures/4_hardnessDiffMap_Interp_Smooth_Binarized.png
+   :scale: 25 %
+   :align: center
+   
+   *Difference map of mechanical properties between interpolated and smoothed/binarized data.*
