@@ -29,7 +29,7 @@ end
 gui.config.data_path = '.\data_indentation';
 
 %% Set default variables
-gui.config.TriDiView = 1; % Boolean to set plots (0 = 1 map / 1 = 3 maps)
+gui.config.TriDiView = 0; % Boolean to set plots (0 = 1 map / 1 = 3 maps)
 gui.config.normalizationStep = 0; % 0 if no normalization and 1 if normalization step
 
 % Smoothing and Interpolation
@@ -57,6 +57,8 @@ gui.config.angleRotation_default = 0; % Default rotation angle of the indentatio
 % Colorbar setting
 gui.config.Markers = 1; % Boolean to plot markers
 gui.config.scaleAxis = 0; % Boolean to set color scale
+gui.config.intervalScaleBar = 0; % Number of interval on the scale bar
+% 0 if continuous scalebar, and 5 to 10 to set interval number
 gui.config.H_cmin = 3; % in GPa
 gui.config.H_cmax = 10; %in GPa
 gui.config.YM_cmin = 150; % in GPa
@@ -156,7 +158,8 @@ if config.flag_data
         gui.config.scaleAxis, gui.config.TriDiView, ...
         gui.config.FontSizeVal, gui.config.Markers, ...
         gui.data.xData_markers, gui.data.yData_markers, ...
-        gui.data.expValues_mat.YM, gui.data.YM.expValuesInterp);
+        gui.data.expValues_mat.YM, gui.data.YM.expValuesInterp,...
+        gui.config.intervalScaleBar);
     
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
         gui.data.H.expValuesInterpSmoothed, 2, normStep, ...
@@ -164,7 +167,8 @@ if config.flag_data
         gui.config.scaleAxis, gui.config.TriDiView, ...
         gui.config.FontSizeVal, gui.config.Markers, ...
         gui.data.xData_markers, gui.data.yData_markers, ...
-        gui.data.expValues_mat.H, gui.data.H.expValuesInterp);
+        gui.data.expValues_mat.H, gui.data.H.expValuesInterp,...
+        gui.config.intervalScaleBar);
 end
 
 if config.flag_data

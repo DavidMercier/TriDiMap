@@ -2,7 +2,7 @@
 function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
     expValuesInterpSmoothed, expProp, normStep, cmin, cmax, ...
     scaleAxis, TriDiView, FontSizeVal, Markers, xData_markers, yData_markers, ...
-    expValues, expValuesInterp, varargin)
+    expValues, expValuesInterp, intervalScaleBar, varargin)
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
 % xData_interp and yData_interp: Interpolated x and y values
 % expValuesInterpSmoothed: Interpolated and smoothed z values
@@ -15,6 +15,11 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
 % Markers: Boolean to plot markers
 % xData_markers and yData_markers: Coordinates of markers
 % expValues: Raw dataset
+% intervalScaleBar: Number of interval on the scale bar
+
+if nargin < 15
+    intervalScaleBar = 10;
+end
 
 if nargin < 14
     %expValues = randi(101,101);
@@ -134,7 +139,11 @@ if TriDiView
         'Interpreter', 'Latex');
     % Not working in a loop with handles of all labels... !
     
-    colormap('jet');
+    if intervalScaleBar > 0
+        colormap(['jet(',num2str(intervalScaleBar),')']);
+    else
+        colormap('jet');
+    end
     if scaleAxis
         caxis([cmin, cmax]);
     end
@@ -163,7 +172,11 @@ if TriDiView
         'Color', [0,0,0], 'FontSize', FontSizeVal, ...
         'Interpreter', 'Latex');
     
-    colormap('jet');
+    if intervalScaleBar > 0
+        colormap(['jet(',num2str(intervalScaleBar),')']);
+    else
+        colormap('jet');
+    end
     if scaleAxis
         caxis([cmin, cmax]);
     end
@@ -203,7 +216,11 @@ if TriDiView
         'Color', [0,0,0], 'FontSize', FontSizeVal, ...
         'Interpreter', 'Latex');
     
-    colormap('jet');
+    if intervalScaleBar > 0
+        colormap(['jet(',num2str(intervalScaleBar),')']);
+    else
+        colormap('jet');
+    end
     if scaleAxis
         caxis([cmin, cmax]);
     end
@@ -242,7 +259,11 @@ else
         'Color', [0,0,0], 'FontSize', FontSizeVal, ...
         'Interpreter', 'Latex');
     
-    colormap('jet');
+    if intervalScaleBar > 0
+        colormap(['jet(',num2str(intervalScaleBar),')']);
+    else
+        colormap('jet');
+    end
     if scaleAxis
         caxis([cmin, cmax]);
     end
@@ -253,7 +274,7 @@ end
 %% Plot difference between interpolated data and smoothed data
 if ~TriDiView
     differenceVal = (expValuesInterpSmoothed' - expValuesInterp'); %./expValuesInterp
-   
+    
     f(2) = figure('position', [WX, WY, WW, WH]);
     colormap hsv;
     
@@ -275,7 +296,11 @@ if ~TriDiView
         'Color', [0,0,0], 'FontSize', FontSizeVal, ...
         'Interpreter', 'Latex');
     
-    colormap('jet');
+    if intervalScaleBar > 0
+        colormap(['jet(',num2str(intervalScaleBar),')']);
+    else
+        colormap('jet');
+    end
     if scaleAxis
         caxis([cmin, cmax]);
     end
