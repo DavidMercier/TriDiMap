@@ -4,7 +4,7 @@ function [config, data] = TriDiMap_loadingData(config)
 
 %% Open window to select file
 title_importdata_Window = 'File Selector from';
-data_path = config.data.data_path;
+data_path = config.data_path;
 
 [data.filename_data, data.pathname_data, filterindex_data] = ...
     uigetfile('*.xls;*.xlsx', ...
@@ -29,19 +29,19 @@ if isequal(data.filename_data,'')
     data.pathname_data = 'no_data';
     data.filename_data = 'no_data';
     ext = '.nul';
-    config.flag.flag_data = 0;
+    config.flag_data = 0;
 else
-    disp(['User selected', ...
+    disp(['User selected: ', ...
         fullfile(data.pathname_data, data.filename_data)]);
     [pathstr, name, ext] = fileparts(data.filename_data);
-    config.flag.flag_data = 1;
+    config.flag_data = 1;
 end
 
 data2import = [data.pathname_data, data.filename_data];
 [pathstr,name,ext] = fileparts(data.filename_data);
 
 %% Loading data
-if config.flag.flag_data
+if config.flag_data
     if strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
         
         %% Results in Excel file
@@ -85,48 +85,48 @@ if config.flag.flag_data
         
         % Rotation angle in degrees
         if ~isempty(ind_Xstep) && ~isempty(ind_Ystep)
-            config.data.Xcoord = dataAll(:,ind_Xstep-1);
+            config.Xcoord = dataAll(:,ind_Xstep-1);
             
-            config.data.N_XStep = sqrt(length(config.data.Xcoord)-endLines); % Wrong if the indentation map is not square !
-            config.data.Ycoord = dataAll(:,ind_Ystep-1);
-            config.data.N_YStep = sqrt(length(config.data.Ycoord)-endLines); % Wrong if the indentation map is not square !
+            config.N_XStep = sqrt(length(config.Xcoord)-endLines); % Wrong if the indentation map is not square !
+            config.Ycoord = dataAll(:,ind_Ystep-1);
+            config.N_YStep = sqrt(length(config.Ycoord)-endLines); % Wrong if the indentation map is not square !
             if dataType == 1
-                deltaXX = abs(config.data.Xcoord(2) - config.data.Xcoord(1));
-                deltaYX = abs(config.data.Ycoord(2) - config.data.Ycoord(1));
-                deltaYY = abs(config.data.Ycoord(config.data.N_YStep*2) - ...
-                    config.data.Ycoord(1));
-                deltaXY = abs(config.data.Xcoord(config.data.N_YStep*2) - ...
-                    config.data.Xcoord(1));
+                deltaXX = abs(config.Xcoord(2) - config.Xcoord(1));
+                deltaYX = abs(config.Ycoord(2) - config.Ycoord(1));
+                deltaYY = abs(config.Ycoord(config.N_YStep*2) - ...
+                    config.Ycoord(1));
+                deltaXY = abs(config.Xcoord(config.N_YStep*2) - ...
+                    config.Xcoord(1));
             elseif dataType == 2
-                deltaXX = config.data.XStep_default;
+                deltaXX = config.XStep_default;
                 deltaYX = 0;
-                deltaYY = config.data.YStep_default;
+                deltaYY = config.YStep_default;
                 deltaXY = 0;
             end
             angleRotation_X = atand(deltaYX/deltaXX);
             angleRotation_Y = atand(deltaXY/deltaYY);
             if angleRotation_X == angleRotation_Y
-                config.data.angleRotation = angleRotation_X;
+                config.angleRotation = angleRotation_X;
             else
                 error('Wrong calculations of rotationnal angle');
             end
         else
-            config.data.angleRotation = config.data.angleRotation_default;
+            config.angleRotation = config.angleRotation_default;
         end
-        config.data.angleRotation = mod(config.data.angleRotation, 90);
+        config.angleRotation = mod(config.angleRotation, 90);
         
         % X step in microns
         if ~isempty(ind_Xstep)
-            config.data.XStep = deltaXX / cosd(config.data.angleRotation);
+            config.XStep = deltaXX / cosd(config.angleRotation);
         else
-            config.data.XStep = config.data.XStep_default;
+            config.XStep = config.XStep_default;
         end
         
         % Y step in microns
         if ~isempty(ind_Ystep)
-            config.data.YStep = deltaYY / cosd(config.data.angleRotation);
+            config.YStep = deltaYY / cosd(config.angleRotation);
         else
-            config.data.YStep = config.data.YStep_default;
+            config.YStep = config.YStep_default;
         end
         
         % Young's modulus values
@@ -134,21 +134,21 @@ if config.flag.flag_data
             data.expValues.YM = dataAll(:,ind_YM-1);
         else
             data.expValues.YM = NaN;
-            config.flag.flag_data = 0;
+            config.flag_data = 0;
         end
         % Hardness values
         if ~isempty(ind_H)
             data.expValues.H = dataAll(:,ind_H-1);
         else
             data.expValues.H = NaN;
-            config.flag.flag_data = 0;
+            config.flag_data = 0;
         end
         
     end
     
-    if config.flag.flag_data
-        NX = config.data.N_XStep;
-        NY = config.data.N_YStep;
+    if config.flag_data
+        NX = config.N_XStep;
+        NY = config.N_YStep;
         % Vector to matrix (last three columns are average values in 'Results' sheet
         data.expValues_mat.YM = reshape(data.expValues.YM(1:end-endLines,1),[NX,NY]);
         data.expValues_mat.H = reshape(data.expValues.H(1:end-endLines,1),[NX,NY]);
