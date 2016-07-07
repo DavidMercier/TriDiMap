@@ -82,11 +82,4 @@ Screenshots
    :scale: 50 %
    :align: center
    
-   *3D mapping of mechanical properties with interpolation, smoothing and with a discretized scale bar.*
-   
-.. figure:: pictures/5_hardnessDiffMap_Interp_Smooth_Discretized.png
-   :scale: 25 %
-   :align: center
-   
-   *Difference map of mechanical properties between interpolated and smoothed, with a discretized scale bar.*
-   
+   *3D mapping of mechanical properties with interpolation, smoothing and with a discretized scale bar.*  

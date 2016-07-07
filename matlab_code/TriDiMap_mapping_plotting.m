@@ -296,14 +296,7 @@ if ~TriDiView
         'Color', [0,0,0], 'FontSize', FontSizeVal, ...
         'Interpreter', 'Latex');
     
-    if intervalScaleBar > 0
-        colormap(['jet(',num2str(intervalScaleBar),')']);
-    else
-        colormap('jet');
-    end
-    if scaleAxis
-        caxis([cmin, cmax]);
-    end
+    colormap('jet');
     hcb5 = colorbar;
     ylabel(hcb5, 'Difference (GPa)', ...
         'Interpreter', 'Latex', ...
