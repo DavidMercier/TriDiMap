@@ -30,11 +30,10 @@ gui.config.data_path = '.\data_indentation';
 
 %% Set default variables
 gui.config.TriDiView = 0; % Boolean to set plots (0 = 1 map / 1 = 3 maps)
-gui.config.normalizationStep = 1; 
-% 0 if no normalization, 1 if normalization with minimal value and 2 with
-% the maximum value
+gui.config.normalizationStep = 2;
+% 0 if no normalization, 1 if normalization with minimal value, 2 with
+% the maximum value and 3 with the mean value
 gui.config.translationStep = 0; % 0 if no normalization and 1 if normalization step
-
 
 % Smoothing and Interpolation
 gui.config.noNan = 1; % Boolean to remove NaN values (blank pixels)
@@ -90,18 +89,36 @@ if config.flag_data
     gui.config.YStep = config.YStep;
     
     %% Translation step
-    transStep = gui.config.translationStep;
-    if transStep
+    if gui.config.translationStep && ~gui.config.normalizationStep
         % Normalization of elastic modulus
         gui.data.expValues_mat_average.YM = mean(mean(gui.data.expValues_mat.YM));
         gui.data.expValues_mat_norm.YM = gui.data.expValues_mat.YM - gui.data.expValues_mat_average.YM;
         % Normalization of hardness
         gui.data.expValues_mat_average.H = mean(mean(gui.data.expValues_mat.H));
         gui.data.expValues_mat_norm.H = gui.data.expValues_mat.H - gui.data.expValues_mat_average.H;
+    elseif gui.config.translationStep && gui.config.normalizationStep
+        display('Translation not possible because normalization is active.');
+    end
+    
+    %% Normalization of dataset
+    if gui.config.normalizationStep > 0 && ~gui.config.translationStep
+        if gui.config.normalizationStep == 1
+            gui.data.expValues_mat.YM = gui.data.expValues_mat.YM/min(min(gui.data.expValues_mat.YM));
+            gui.data.expValues_mat.H = gui.data.expValues_mat.H/min(min(gui.data.expValues_mat.H));
+        elseif gui.config.normalizationStep == 2
+            gui.data.expValues_mat.YM = gui.data.expValues_mat.YM/max(max(gui.data.expValues_mat.YM));
+            gui.data.expValues_mat.H = gui.data.expValues_mat.H/max(max(gui.data.expValues_mat.H));
+        elseif gui.config.normalizationStep == 3
+            gui.data.expValues_mat.YM = gui.data.expValues_mat.YM/mean(mean(gui.data.expValues_mat.YM));
+            gui.data.expValues_mat.H = gui.data.expValues_mat.H/mean(mean(gui.data.expValues_mat.H));
+        end
+        
+    elseif gui.config.normalizationStep && transStep
+        display('Normalization not possible because translation is active.');
     end
     
     %% Interpolating, smoothing and binarizing steps of dataset
-    if transStep
+    if gui.config.translationStep
         [gui.data.YM.expValuesInterp, gui.data.YM.expValuesSmoothed, ...
             gui.data.YM.expValuesInterpSmoothed] = ...
             TriDiMap_interpolation_smoothing(...
@@ -157,7 +174,7 @@ if config.flag_data
     
     %% Run the 3D maps
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
-        gui.data.YM.expValuesInterpSmoothed, 1, transStep, ...
+        gui.data.YM.expValuesInterpSmoothed, 1, gui.config.normalizationStep, ...
         gui.config.YM_cmin, gui.config.YM_cmax, ...
         gui.config.scaleAxis, gui.config.TriDiView, ...
         gui.config.FontSizeVal, gui.config.Markers, ...
@@ -166,7 +183,7 @@ if config.flag_data
         gui.config.intervalScaleBar);
     
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
-        gui.data.H.expValuesInterpSmoothed, 2, transStep, ...
+        gui.data.H.expValuesInterpSmoothed, 2, gui.config.normalizationStep, ...
         gui.config.H_cmin, gui.config.H_cmax, ...
         gui.config.scaleAxis, gui.config.TriDiView, ...
         gui.config.FontSizeVal, gui.config.Markers, ...

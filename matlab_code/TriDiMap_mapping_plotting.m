@@ -7,7 +7,7 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
 % xData_interp and yData_interp: Interpolated x and y values
 % expValuesInterpSmoothed: Interpolated and smoothed z values
 % expProp: 1 = Elastic (Young's modulus) or 2 = Plastic (hardness) properties
-% normStep: Boolean to set step of normalization (0 = no normalization and 1 = normalization)
+% normStep: Variable to set step of normalization
 % cmin and cmax: Limits of colorbar
 % scaleAxis: Boolean to set colorbar
 % TriDiView: Boolean to set plots
@@ -102,12 +102,27 @@ if ~normStep
     elseif expProp == 2
         zString = 'Hardness (GPa)';
     end
-elseif normStep
-    if expProp == 1
-        zString = 'Normalized elastic modulus';
-    elseif expProp == 2
-        zString = 'Normalized hardness';
+elseif normStep > 0
+    if normStep == 1
+        if expProp == 1
+            zString = 'Normalized elastic modulus by minimum elastic modulus value';
+        elseif expProp == 2
+            zString = 'Normalized hardness by minimum hardness value';
+        end
+    elseif normStep == 2
+        if expProp == 1
+            zString = 'Normalized elastic modulus by maximum elastic modulus value';
+        elseif expProp == 2
+            zString = 'Normalized hardness by maximum hardness value';
+        end
+    elseif normStep == 3
+        if expProp == 1
+            zString = 'Normalized elastic modulus by mean elastic modulus value';
+        elseif expProp == 2
+            zString = 'Normalized hardness by mean hardness value';
+        end
     end
+    
 end
 
 %% 3 maps
