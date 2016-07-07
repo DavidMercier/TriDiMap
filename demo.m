@@ -30,7 +30,11 @@ gui.config.data_path = '.\data_indentation';
 
 %% Set default variables
 gui.config.TriDiView = 0; % Boolean to set plots (0 = 1 map / 1 = 3 maps)
-gui.config.normalizationStep = 0; % 0 if no normalization and 1 if normalization step
+gui.config.normalizationStep = 1; 
+% 0 if no normalization, 1 if normalization with minimal value and 2 with
+% the maximum value
+gui.config.translationStep = 0; % 0 if no normalization and 1 if normalization step
+
 
 % Smoothing and Interpolation
 gui.config.noNan = 1; % Boolean to remove NaN values (blank pixels)
@@ -57,7 +61,7 @@ gui.config.angleRotation_default = 0; % Default rotation angle of the indentatio
 % Colorbar setting
 gui.config.Markers = 1; % Boolean to plot markers
 gui.config.scaleAxis = 0; % Boolean to set color scale
-gui.config.intervalScaleBar = 0; % Number of interval on the scale bar
+gui.config.intervalScaleBar = 7; % Number of interval on the scale bar
 % 0 if continuous scalebar, and 5 to 10 to set interval number
 gui.config.H_cmin = 3; % in GPa
 gui.config.H_cmax = 10; %in GPa
@@ -85,9 +89,9 @@ if config.flag_data
     gui.config.XStep = config.XStep;
     gui.config.YStep = config.YStep;
     
-    %% Normalization step
-    normStep = gui.config.normalizationStep;
-    if normStep
+    %% Translation step
+    transStep = gui.config.translationStep;
+    if transStep
         % Normalization of elastic modulus
         gui.data.expValues_mat_average.YM = mean(mean(gui.data.expValues_mat.YM));
         gui.data.expValues_mat_norm.YM = gui.data.expValues_mat.YM - gui.data.expValues_mat_average.YM;
@@ -97,7 +101,7 @@ if config.flag_data
     end
     
     %% Interpolating, smoothing and binarizing steps of dataset
-    if normStep
+    if transStep
         [gui.data.YM.expValuesInterp, gui.data.YM.expValuesSmoothed, ...
             gui.data.YM.expValuesInterpSmoothed] = ...
             TriDiMap_interpolation_smoothing(...
@@ -153,7 +157,7 @@ if config.flag_data
     
     %% Run the 3D maps
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
-        gui.data.YM.expValuesInterpSmoothed, 1, normStep, ...
+        gui.data.YM.expValuesInterpSmoothed, 1, transStep, ...
         gui.config.YM_cmin, gui.config.YM_cmax, ...
         gui.config.scaleAxis, gui.config.TriDiView, ...
         gui.config.FontSizeVal, gui.config.Markers, ...
@@ -162,7 +166,7 @@ if config.flag_data
         gui.config.intervalScaleBar);
     
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
-        gui.data.H.expValuesInterpSmoothed, 2, normStep, ...
+        gui.data.H.expValuesInterpSmoothed, 2, transStep, ...
         gui.config.H_cmin, gui.config.H_cmax, ...
         gui.config.scaleAxis, gui.config.TriDiView, ...
         gui.config.FontSizeVal, gui.config.Markers, ...
