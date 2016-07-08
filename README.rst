@@ -42,6 +42,12 @@ Screenshots
    
    *3D mappings of mechanical properties obtained from indentation tests with different views.*
    
+.. figure:: pictures/0_hardnessMap_rawData.png
+   :scale: 50 %
+   :align: center
+   
+   *3D raw mapping of mechanical properties.*
+   
 .. figure:: pictures/1_hardnessMap_noInterp_noSmooth.png
    :scale: 50 %
    :align: center

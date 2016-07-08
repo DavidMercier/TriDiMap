@@ -2,7 +2,7 @@
 function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
     expValuesInterpSmoothed, expProp, normStep, cmin, cmax, ...
     scaleAxis, TriDiView, FontSizeVal, Markers, xData_markers, yData_markers, ...
-    expValues, expValuesInterp, intervalScaleBar, varargin)
+    expValues, expValuesInterp, intervalScaleBar, rawData, varargin)
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
 % xData_interp and yData_interp: Interpolated x and y values
 % expValuesInterpSmoothed: Interpolated and smoothed z values
@@ -16,6 +16,11 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
 % xData_markers and yData_markers: Coordinates of markers
 % expValues: Raw dataset
 % intervalScaleBar: Number of interval on the scale bar
+% rawData % Boolean to plot raw dataset (no interpolation, no smoothing...)
+
+if nargin < 16
+    rawData = 0;
+end
 
 if nargin < 15
     intervalScaleBar = 10;
@@ -131,16 +136,22 @@ if TriDiView
     subplot(2,2,1);
     
     % 3D plot
-    h(1) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
-        'FaceColor','interp', 'EdgeColor','none',...
-        'FaceLighting','gouraud');
-    hold on;
+    if ~rawData
+        h(1) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
+            'FaceColor','interp', 'EdgeColor','none',...
+            'FaceLighting','gouraud');
+        shading interp;
+        hold on;
+    else
+        h(1) = imagesc(expValuesInterpSmoothed',...
+            'XData',xData_interp,'YData',yData_interp);
+        set(gca,'YDir','normal');
+    end
     
     % To see point markers
     % plot3(xData_interp, yData_interp, expValues_interp', '.','MarkerSize',15)
     
-    % Settings
-    shading interp;
+    % Setting
     axis tight;
     view(50,50);
     camlight left;
@@ -170,13 +181,20 @@ if TriDiView
     
     %% Subplot 2
     subplot(2,2,3);
-    h(2) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
-        'FaceColor','interp',...
-        'EdgeColor','none',...
-        'FaceLighting','gouraud');
+    if ~rawData
+        h(2) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
+            'FaceColor','interp',...
+            'EdgeColor','none',...
+            'FaceLighting','gouraud');
+        shading interp;
+    else
+        h(2) = imagesc(expValuesInterpSmoothed',...
+            'XData',xData_interp,'YData',yData_interp);
+        set(gca,'YDir','normal');
+    end
     
     axis equal;
-    shading interp;
+    axis tight;
     view(0,90);
     
     hXLabel(2) = xlabel('X coordinates ($\mu$m)');
@@ -202,10 +220,17 @@ if TriDiView
     subplot(2,2,[2 4]);
     
     % 3D plot
-    h(3) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
-        'FaceColor','interp', 'EdgeColor','none',...
-        'FaceLighting','gouraud');
-    hold on;
+    if ~rawData
+        h(3) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
+            'FaceColor','interp', 'EdgeColor','none',...
+            'FaceLighting','gouraud');
+        shading interp;
+        hold on;
+    else
+        h(3) = imagesc(expValuesInterpSmoothed',...
+            'XData',xData_interp,'YData',yData_interp);
+        set(gca,'YDir','normal');
+    end
     
     % 3D surface plot
     minZ = min(min(expValuesInterpSmoothed));
@@ -218,7 +243,6 @@ if TriDiView
     hold off;
     
     % Settings
-    shading interp;
     axis tight;
     view(30,15);
     camlight left;
@@ -244,11 +268,17 @@ if TriDiView
     
 else
     %% 1 map (with or without markers)
-    h(4) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
-        'FaceColor','interp',...
-        'EdgeColor','none',...
-        'FaceLighting','gouraud');
-    % 'Marker', '+'
+    if ~rawData
+        h(4) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
+            'FaceColor','interp',...
+            'EdgeColor','none',...
+            'FaceLighting','gouraud');
+        % 'Marker', '+'
+    else
+        h(4) = imagesc(expValuesInterpSmoothed',...
+            'XData',xData_interp,'YData',yData_interp);
+        set(gca,'YDir','normal');
+    end
     
     hold on;
     
@@ -263,6 +293,7 @@ else
     hold off;
     
     axis equal;
+    axis tight;
     shading interp;
     view(0,90);
     
@@ -288,34 +319,36 @@ end
 
 %% Plot difference between interpolated data and smoothed data
 if ~TriDiView
-    differenceVal = (expValuesInterpSmoothed' - expValuesInterp'); %./expValuesInterp
-    
-    f(2) = figure('position', [WX, WY, WW, WH]);
-    colormap hsv;
-    
-    h(5) = surf(xData_interp, yData_interp, differenceVal,...
-        'FaceColor','interp',...
-        'EdgeColor','none',...
-        'FaceLighting','gouraud');
-    
-    axis equal;
-    shading interp;
-    view(0,90);
-    
-    hXLabel(5) = xlabel('X coordinates ($\mu$m)');
-    hYLabel(5) = ylabel('Y coordinates ($\mu$m)');
-    hZLabel(5) = zlabel(zString);
-    hTitle(5) = title(['Mapping of difference', ...
-        ' between interpolated and smoothed data']);
-    set([hXLabel(5), hYLabel(5), hZLabel(5), hTitle(5)], ...
-        'Color', [0,0,0], 'FontSize', FontSizeVal, ...
-        'Interpreter', 'Latex');
-    
-    colormap('jet');
-    hcb5 = colorbar;
-    ylabel(hcb5, 'Difference (GPa)', ...
-        'Interpreter', 'Latex', ...
-        'FontSize', FontSizeVal);
+    if ~rawData
+        differenceVal = (expValuesInterpSmoothed' - expValuesInterp'); %./expValuesInterp
+        
+        f(2) = figure('position', [WX, WY, WW, WH]);
+        colormap hsv;
+        
+        h(5) = surf(xData_interp, yData_interp, differenceVal,...
+            'FaceColor','interp',...
+            'EdgeColor','none',...
+            'FaceLighting','gouraud');
+        
+        axis equal;
+        shading interp;
+        view(0,90);
+        
+        hXLabel(5) = xlabel('X coordinates ($\mu$m)');
+        hYLabel(5) = ylabel('Y coordinates ($\mu$m)');
+        hZLabel(5) = zlabel(zString);
+        hTitle(5) = title(['Mapping of difference', ...
+            ' between interpolated and smoothed data']);
+        set([hXLabel(5), hYLabel(5), hZLabel(5), hTitle(5)], ...
+            'Color', [0,0,0], 'FontSize', FontSizeVal, ...
+            'Interpreter', 'Latex');
+        
+        colormap('jet');
+        hcb5 = colorbar;
+        ylabel(hcb5, 'Difference (GPa)', ...
+            'Interpreter', 'Latex', ...
+            'FontSize', FontSizeVal);
+    end
 end
 
 end

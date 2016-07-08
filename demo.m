@@ -29,8 +29,9 @@ end
 gui.config.data_path = '.\data_indentation';
 
 %% Set default variables
+gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
 gui.config.TriDiView = 0; % Boolean to set plots (0 = 1 map / 1 = 3 maps)
-gui.config.normalizationStep = 2;
+gui.config.normalizationStep = 0;
 % 0 if no normalization, 1 if normalization with minimal value, 2 with
 % the maximum value and 3 with the mean value
 gui.config.translationStep = 0; % 0 if no normalization and 1 if normalization step
@@ -59,14 +60,23 @@ gui.config.angleRotation_default = 0; % Default rotation angle of the indentatio
 
 % Colorbar setting
 gui.config.Markers = 1; % Boolean to plot markers
-gui.config.scaleAxis = 0; % Boolean to set color scale
-gui.config.intervalScaleBar = 7; % Number of interval on the scale bar
+gui.config.intervalScaleBar = 0; % Number of interval on the scale bar
 % 0 if continuous scalebar, and 5 to 10 to set interval number
+gui.config.scaleAxis = 0; % Boolean to set color scale
 gui.config.H_cmin = 3; % in GPa
 gui.config.H_cmax = 10; %in GPa
 gui.config.YM_cmin = 150; % in GPa
 gui.config.YM_cmax = 250; % in GPa
 gui.config.FontSizeVal = 14;
+
+if gui.config.rawData
+    gui.config.normalizationStep = 0;
+    gui.config.translationStep = 0;
+    gui.config.noNan = 0;
+    gui.config.interpBool = 0;
+    gui.config.smoothBool = 0;
+    gui.config.binarizedGrid = 0;
+end
 
 %% Load data from Excel files
 [config, gui.data] = TriDiMap_loadingData(gui.config);
@@ -156,20 +166,27 @@ if config.flag_data
     x_step = gui.config.XStep;
     y_step = gui.config.YStep;
     
+    gui.data.xData = 0:x_step:(size(gui.data.expValues_mat.YM,1)-1)*x_step;
+    gui.data.yData = 0:y_step:(size(gui.data.expValues_mat.YM,2)-1)*y_step;
+    
     [gui.data.xData_markers, gui.data.yData_markers] = ...
-        meshgrid(0:x_step:(size(gui.data.expValues_mat.YM,1)-1)*x_step, ...
-        0:y_step:(size(gui.data.expValues_mat.YM,2)-1)*y_step);
+        meshgrid(gui.data.xData, gui.data.yData);
     
     [xData_interp, yData_interp] = ...
         meshgrid(0:x_step:(size(gui.data.YM.expValuesInterpSmoothed,1)-1)*x_step, ...
         0:y_step:(size(gui.data.YM.expValuesInterpSmoothed,2)-1)*y_step);
     
-    if gui.config.interpBool
-        gui.data.xData_interp = xData_interp./(2^(gui.config.interpFact));
-        gui.data.yData_interp = yData_interp./(2^(gui.config.interpFact));
+    if gui.config.rawData
+        gui.data.xData_interp = gui.data.xData;
+        gui.data.yData_interp = gui.data.yData;
     else
-        gui.data.xData_interp = gui.data.xData_markers;
-        gui.data.yData_interp = gui.data.yData_markers;
+        if gui.config.interpBool
+            gui.data.xData_interp = xData_interp./(2^(gui.config.interpFact));
+            gui.data.yData_interp = yData_interp./(2^(gui.config.interpFact));
+        else
+            gui.data.xData_interp = gui.data.xData_markers;
+            gui.data.yData_interp = gui.data.yData_markers;
+        end
     end
     
     %% Run the 3D maps
@@ -180,7 +197,7 @@ if config.flag_data
         gui.config.FontSizeVal, gui.config.Markers, ...
         gui.data.xData_markers, gui.data.yData_markers, ...
         gui.data.expValues_mat.YM, gui.data.YM.expValuesInterp,...
-        gui.config.intervalScaleBar);
+        gui.config.intervalScaleBar, gui.config.rawData);
     
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
         gui.data.H.expValuesInterpSmoothed, 2, gui.config.normalizationStep, ...
@@ -189,7 +206,7 @@ if config.flag_data
         gui.config.FontSizeVal, gui.config.Markers, ...
         gui.data.xData_markers, gui.data.yData_markers, ...
         gui.data.expValues_mat.H, gui.data.H.expValuesInterp,...
-        gui.config.intervalScaleBar);
+        gui.config.intervalScaleBar, gui.config.rawData);
 end
 
 if config.flag_data
