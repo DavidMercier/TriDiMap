@@ -290,11 +290,14 @@ else
     hold on;
     
     % Set z positions of markers
-    markersVal = ones(length(expValues)) * max(max(expValuesInterpSmoothed));
+    if ~contourPlot
+        markersVal = ones(length(expValues)) * max(max(expValuesInterpSmoothed));
+    else
+        markersVal = ones(length(expValues));
+    end
     
     if Markers
         plot3(xData_markers, yData_markers, markersVal,'k+');
-        hold on;
     end
     
     hold off;
