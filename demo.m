@@ -29,7 +29,7 @@ end
 gui.config.data_path = '.\data_indentation';
 
 %% Set default variables
-gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
+gui.config.rawData = 0; % Boolean to plot raw dataset (no interpolation, no smoothing...)
 gui.config.TriDiView = 0; % Boolean to set plots (0 = 1 map / 1 = 3 maps)
 gui.config.normalizationStep = 0;
 % 0 if no normalization, 1 if normalization with minimal value, 2 with
@@ -58,11 +58,13 @@ gui.config.XStep_default = 2; % Default value of X step in microns
 gui.config.YStep_default = 2; % Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
-% Colorbar setting
+% Map / Colorbar setting
+gui.config.contourPlot = 0; % Boolean to plot contours
 gui.config.Markers = 1; % Boolean to plot markers
-gui.config.intervalScaleBar = 0; % Number of interval on the scale bar
+gui.config.intervalScaleBar_H = 7; % Number of interval on the scale bar for hardness
+gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
-gui.config.scaleAxis = 0; % Boolean to set color scale
+gui.config.scaleAxis = 1; % Boolean to set color scale
 gui.config.H_cmin = 3; % in GPa
 gui.config.H_cmax = 10; %in GPa
 gui.config.YM_cmin = 150; % in GPa
@@ -196,8 +198,9 @@ if config.flag_data
         gui.config.scaleAxis, gui.config.TriDiView, ...
         gui.config.FontSizeVal, gui.config.Markers, ...
         gui.data.xData_markers, gui.data.yData_markers, ...
-        gui.data.expValues_mat.YM, gui.data.YM.expValuesInterp,...
-        gui.config.intervalScaleBar, gui.config.rawData);
+        gui.data.expValues_mat.YM, gui.data.YM.expValuesInterp, ...
+        gui.config.intervalScaleBar_YM, gui.config.rawData, ...
+        gui.config.contourPlot);
     
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
         gui.data.H.expValuesInterpSmoothed, 2, gui.config.normalizationStep, ...
@@ -205,8 +208,9 @@ if config.flag_data
         gui.config.scaleAxis, gui.config.TriDiView, ...
         gui.config.FontSizeVal, gui.config.Markers, ...
         gui.data.xData_markers, gui.data.yData_markers, ...
-        gui.data.expValues_mat.H, gui.data.H.expValuesInterp,...
-        gui.config.intervalScaleBar, gui.config.rawData);
+        gui.data.expValues_mat.H, gui.data.H.expValuesInterp, ...
+        gui.config.intervalScaleBar_H, gui.config.rawData, ...
+        gui.config.contourPlot);
 end
 
 if config.flag_data

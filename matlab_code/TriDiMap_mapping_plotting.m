@@ -2,7 +2,7 @@
 function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
     expValuesInterpSmoothed, expProp, normStep, cmin, cmax, ...
     scaleAxis, TriDiView, FontSizeVal, Markers, xData_markers, yData_markers, ...
-    expValues, expValuesInterp, intervalScaleBar, rawData, varargin)
+    expValues, expValuesInterp, intervalScaleBar, rawData, contourPlot, varargin)
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
 % xData_interp and yData_interp: Interpolated x and y values
 % expValuesInterpSmoothed: Interpolated and smoothed z values
@@ -16,7 +16,8 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
 % xData_markers and yData_markers: Coordinates of markers
 % expValues: Raw dataset
 % intervalScaleBar: Number of interval on the scale bar
-% rawData % Boolean to plot raw dataset (no interpolation, no smoothing...)
+% rawData: Boolean to plot raw dataset (no interpolation, no smoothing...)
+% contourPlot: Boolean to plot contour
 
 if nargin < 16
     rawData = 0;
@@ -269,11 +270,17 @@ if TriDiView
 else
     %% 1 map (with or without markers)
     if ~rawData
-        h(4) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
-            'FaceColor','interp',...
-            'EdgeColor','none',...
-            'FaceLighting','gouraud');
-        % 'Marker', '+'
+        if ~contourPlot
+            h(4) = surf(xData_interp, yData_interp, expValuesInterpSmoothed',...
+                'FaceColor','interp',...
+                'EdgeColor','none',...
+                'FaceLighting','gouraud');
+            % 'Marker', '+'
+            shading interp;
+        else
+            contourf(xData_interp, yData_interp, expValuesInterpSmoothed',...
+                intervalScaleBar);
+        end
     else
         h(4) = imagesc(expValuesInterpSmoothed',...
             'XData',xData_interp,'YData',yData_interp);
@@ -294,7 +301,6 @@ else
     
     axis equal;
     axis tight;
-    shading interp;
     view(0,90);
     
     hXLabel(4) = xlabel('X coordinates ($\mu$m)');
