@@ -59,16 +59,16 @@ gui.config.YStep_default = 2; % Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
-gui.config.contourPlot = 0; % Boolean to plot contours
+gui.config.contourPlot = 1; % Boolean to plot contours
 gui.config.Markers = 1; % Boolean to plot markers
-gui.config.intervalScaleBar_H = 7; % Number of interval on the scale bar for hardness
+gui.config.intervalScaleBar_H = 15; % Number of interval on the scale bar for hardness
 gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
 gui.config.scaleAxis = 1; % Boolean to set color scale
-gui.config.H_cmin = 3; % in GPa
-gui.config.H_cmax = 10; %in GPa
+gui.config.H_cmin = 0; % in GPa
+gui.config.H_cmax = 15; %in GPa
 gui.config.YM_cmin = 150; % in GPa
-gui.config.YM_cmax = 250; % in GPa
+gui.config.YM_cmax = 350; % in GPa
 gui.config.FontSizeVal = 14;
 
 if gui.config.rawData
@@ -211,8 +211,15 @@ if config.flag_data
         gui.data.expValues_mat.H, gui.data.H.expValuesInterp, ...
         gui.config.intervalScaleBar_H, gui.config.rawData, ...
         gui.config.contourPlot);
+    
+    %% Fraction calculations
+    if gui.config.binarizedGrid > 0
+        TriDiMap_fractionData(gui.data.YM.expValuesInterpSmoothed, 1);
+        TriDiMap_fractionData(gui.data.H.expValuesInterpSmoothed, 2);
+    end
 end
 
+%% Saving results
 if config.flag_data
     assignin('base', 'TriDiMap_results', gui);
     display('Results are saved in the Matlab workspace in TriDiMap_results variable.');
