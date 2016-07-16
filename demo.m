@@ -34,7 +34,7 @@ gui.config.TriDiView = 0; % Boolean to set plots (0 = 1 map / 1 = 3 maps)
 gui.config.normalizationStep = 0;
 % 0 if no normalization, 1 if normalization with minimal value, 2 with
 % the maximum value and 3 with the mean value
-gui.config.translationStep = 0; % 0 if no normalization and 1 if normalization step
+gui.config.translationStep = 0; % 0 if no translation and 1 if translation step
 
 % Smoothing and Interpolation
 gui.config.noNan = 1; % Boolean to remove NaN values (blank pixels)
@@ -52,23 +52,23 @@ gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % or the absolute maximum/minimum values are decreasing !
 
 % Configuration of the indentation map
-gui.config.N_XStep_default = 10; % Default number of steps along X axis
-gui.config.N_YStep_default = 10; % Default number of steps along Y axis
-gui.config.XStep_default = 2; % Default value of X step in microns
-gui.config.YStep_default = 2; % Default value of Y step in microns
+gui.config.N_XStep_default = 25; % Default number of steps along X axis
+gui.config.N_YStep_default = 25; % Default number of steps along Y axis
+gui.config.XStep_default = 5; % Default value of X step in microns
+gui.config.YStep_default = 5;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
 gui.config.contourPlot = 1; % Boolean to plot contours
 gui.config.Markers = 1; % Boolean to plot markers
-gui.config.intervalScaleBar_H = 15; % Number of interval on the scale bar for hardness
+gui.config.intervalScaleBar_H = 7; % Number of interval on the scale bar for hardness
 gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
 gui.config.scaleAxis = 1; % Boolean to set color scale
-gui.config.H_cmin = 0; % in GPa
-gui.config.H_cmax = 15; %in GPa
+gui.config.H_cmin = 3; % in GPa
+gui.config.H_cmax = 10; %in GPa
 gui.config.YM_cmin = 150; % in GPa
-gui.config.YM_cmax = 350; % in GPa
+gui.config.YM_cmax = 250; % in GPa
 gui.config.FontSizeVal = 14;
 
 if gui.config.rawData
