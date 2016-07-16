@@ -61,23 +61,19 @@ gui.config.angleRotation_default = 0; % Default rotation angle of the indentatio
 % Map / Colorbar setting
 gui.config.contourPlot = 1; % Boolean to plot contours
 gui.config.Markers = 1; % Boolean to plot markers
-gui.config.intervalScaleBar_H = 7; % Number of interval on the scale bar for hardness
+gui.config.intervalScaleBar_H = 9; % Number of interval on the scale bar for hardness
 gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
-gui.config.scaleAxis = 1; % Boolean to set color scale
+gui.config.scaleAxis = 0; % Boolean to set color scale
 gui.config.H_cmin = 3; % in GPa
-gui.config.H_cmax = 10; %in GPa
+gui.config.H_cmax = 12; %in GPa
 gui.config.YM_cmin = 150; % in GPa
 gui.config.YM_cmax = 250; % in GPa
 gui.config.FontSizeVal = 14;
 
 if gui.config.rawData
-    gui.config.normalizationStep = 0;
-    gui.config.translationStep = 0;
-    gui.config.noNan = 0;
-    gui.config.interpBool = 0;
-    gui.config.smoothBool = 0;
-    gui.config.binarizedGrid = 0;
+    %gui.config.smoothBool = 0;
+    %gui.config.binarizedGrid = 0;
 end
 
 %% Load data from Excel files

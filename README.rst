@@ -46,46 +46,58 @@ Screenshots
    :scale: 50 %
    :align: center
    
-   *3D raw mapping of mechanical properties.*
+   *3D raw mapping of mechanical properties (pixel grid).*
+   
+.. figure:: pictures/0_hardnessMap_rawData_Interp.png
+   :scale: 50 %
+   :align: center
+   
+   *3D raw mapping of mechanical properties with interpolation (pixel grid).*
+
+.. figure:: pictures/0_hardnessMap_rawData_Interp_Binarized.png
+   :scale: 50 %
+   :align: center
+   
+   *3D raw mapping of mechanical properties with interpolation and binarization (pixel grid).*   
    
 .. figure:: pictures/1_hardnessMap_noInterp_noSmooth.png
    :scale: 50 %
    :align: center
    
-   *3D raw mapping of mechanical properties without interpolation and smoothing.*
+   *3D raw mapping of mechanical properties without interpolation and smoothing (surf function).*
    
 .. figure:: pictures/2_hardnessMap_Interp_noSmooth.png
    :scale: 50 %
    :align: center
    
-   *3D mapping of mechanical properties with interpolation and no smoothing.*
+   *3D mapping of mechanical properties with interpolation and no smoothing (surf function).*
 
 .. figure:: pictures/3_hardnessMap_Interp_Smooth.png
    :scale: 50 %
    :align: center
    
-   *3D mapping of mechanical properties with interpolation and smoothing.*
+   *3D mapping of mechanical properties with interpolation and smoothing (surf function).*
    
 .. figure:: pictures/3_hardnessDiffMap_InterpSmooth.png
    :scale: 25 %
    :align: center
    
-   *Difference map of mechanical properties between interpolated and smoothed data.*
+   *Difference map of mechanical properties between interpolated and smoothed data (surf function).*
    
 .. figure:: pictures/4_hardnessMap_Interp_Smooth_Binarized.png
    :scale: 50 %
    :align: center
    
-   *3D mapping of mechanical properties with interpolation, smoothing and binarization.*
+   *3D mapping of mechanical properties with interpolation, smoothing and binarization (surf function).*
    
 .. figure:: pictures/4_hardnessDiffMap_Interp_Smooth_Binarized.png
    :scale: 25 %
    :align: center
    
-   *Difference map of mechanical properties between interpolated and smoothed/binarized data.*
+   *Difference map of mechanical properties between interpolated and smoothed/binarized data (surf function).*
    
 .. figure:: pictures/5_hardnessMap_Interp_Smooth_Discretized.png
    :scale: 50 %
    :align: center
    
-   *3D mapping of mechanical properties with interpolation, smoothing and with a discretized scale bar.*  
+   *3D mapping of mechanical properties with interpolation, smoothing and with a discretized scale bar (surf function).*  
