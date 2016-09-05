@@ -2,22 +2,28 @@
 function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
     expValuesInterpSmoothed, expProp, normStep, cmin, cmax, ...
     scaleAxis, TriDiView, FontSizeVal, Markers, xData_markers, yData_markers, ...
-    expValues, expValuesInterp, intervalScaleBar, rawData, contourPlot, varargin)
+    expValues, expValuesInterp, intervalScaleBar, rawData, contourPlot, ...
+    legendStr, varargin)
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
-% xData_interp and yData_interp: Interpolated x and y values
-% expValuesInterpSmoothed: Interpolated and smoothed z values
-% expProp: 1 = Elastic (Young's modulus) or 2 = Plastic (hardness) properties
-% normStep: Variable to set step of normalization
-% cmin and cmax: Limits of colorbar
-% scaleAxis: Boolean to set colorbar
-% TriDiView: Boolean to set plots
-% FontSizeVal: Size of the font (legend, axes labels...)
-% Markers: Boolean to plot markers
-% xData_markers and yData_markers: Coordinates of markers
-% expValues: Raw dataset
-% intervalScaleBar: Number of interval on the scale bar
-% rawData: Boolean to plot raw dataset (no interpolation, no smoothing...)
-% contourPlot: Boolean to plot contour
+% 1) et 2) xData_interp and yData_interp: Interpolated x and y values
+% 3) expValuesInterpSmoothed: Interpolated and smoothed z values
+% 4) expProp: 1 = Elastic (Young's modulus) or 2 = Plastic (hardness) properties
+% 5) normStep: Variable to set step of normalization
+% 6) et 7) cmin and cmax: Limits of colorbar
+% 8) scaleAxis: Boolean to set colorbar
+% 9) TriDiView: Boolean to set plots
+% 10) FontSizeVal: Size of the font (legend, axes labels...)
+% 11) Markers: Boolean to plot markers
+% 12) xData_markers and yData_markers: Coordinates of markers
+% 13) expValues: Raw dataset
+% 14) intervalScaleBar: Number of interval on the scale bar
+% 15) rawData: Boolean to plot raw dataset (no interpolation, no smoothing...)
+% 16) contourPlot: Boolean to plot contour
+% 17) legendStr: Strings for legend
+
+if nargin < 17
+    legendStr = {'Phase1' , 'Phase2'};
+end
 
 if nargin < 16
     rawData = 0;
@@ -167,9 +173,14 @@ if TriDiView
     % Not working in a loop with handles of all labels... !
     
     if intervalScaleBar > 0
-        colormap(['jet(',num2str(intervalScaleBar),')']);
+        if ~rawData
+            colormap(['jet(',num2str(intervalScaleBar),')']);
+        else
+            colormap([1,1,1;0,0,0]); % Black and white
+        end
     else
         colormap('jet');
+        % Use flipud to reverse colormap
     end
     if scaleAxis
         caxis([cmin, cmax]);
@@ -207,9 +218,14 @@ if TriDiView
         'Interpreter', 'Latex');
     
     if intervalScaleBar > 0
-        colormap(['jet(',num2str(intervalScaleBar),')']);
+        if ~rawData
+            colormap(['jet(',num2str(intervalScaleBar),')']);
+        else
+            colormap([1,1,1;0,0,0]); % Black and white
+        end
     else
         colormap('jet');
+        % Use flipud to reverse colormap
     end
     if scaleAxis
         caxis([cmin, cmax]);
@@ -257,9 +273,14 @@ if TriDiView
         'Interpreter', 'Latex');
     
     if intervalScaleBar > 0
-        colormap(['jet(',num2str(intervalScaleBar),')']);
+        if ~rawData
+            colormap(['jet(',num2str(intervalScaleBar),')']);
+        else
+            colormap([1,1,1;0,0,0]); % Black and white
+        end
     else
         colormap('jet');
+        % Use flipud to reverse colormap
     end
     if scaleAxis
         caxis([cmin, cmax]);
@@ -288,10 +309,11 @@ else
     end
     
     hold on;
+    maxVal = max(max(expValuesInterpSmoothed));
     
     % Set z positions of markers
     if ~contourPlot
-        markersVal = ones(length(expValues)) * max(max(expValuesInterpSmoothed));
+        markersVal = ones(length(expValues)) * maxVal;
     else
         markersVal = ones(length(expValues));
     end
@@ -300,8 +322,7 @@ else
         plot3(xData_markers, yData_markers, markersVal,'k+');
     end
     
-    hold off;
-    
+    hold on;
     axis equal;
     axis tight;
     view(0,90);
@@ -315,15 +336,41 @@ else
         'Interpreter', 'Latex');
     
     if intervalScaleBar > 0
-        colormap(['jet(',num2str(intervalScaleBar),')']);
+        if ~rawData
+            colormap(['jet(',num2str(intervalScaleBar),')']);
+        else
+            cmap = [1,1,1;0,0,0];
+            colormap(cmap); % Black and white
+            %colormap(['jet(',num2str(intervalScaleBar),')']);
+        end
     else
         colormap('jet');
+        % Use flipud to reverse colormap
     end
     if scaleAxis
         caxis([cmin, cmax]);
     end
-    hcb4 = colorbar;
-    ylabel(hcb4, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+    if rawData
+        %set(hcb4,'YTick',[0:maxVal:maxVal]);
+        %hcb4 = colorbar;
+        %ylabel(hcb4, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+        legendBinaryMap('w', 'k', 's', 's', legendStr, FontSizeVal);
+        
+    else
+        hcb4 = colorbar;
+        ylabel(hcb4, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+    end
+    
+    set(gca, 'Fontsize', FontSizeVal);
+    hold off;
+    if rawData
+        fracBW = sum(sum(expValuesInterpSmoothed))/(size(expValuesInterpSmoothed,1)*size(expValuesInterpSmoothed,2)*255);
+        display(['Fraction of particles (', zString, ' map) :']);
+        disp(fracBW);
+        display(['Fraction of matrix (', zString, ' map) :']);
+        disp(1-fracBW);
+    end
+    
 end
 
 %% Plot difference between interpolated data and smoothed data
@@ -352,7 +399,7 @@ if ~TriDiView
             'Color', [0,0,0], 'FontSize', FontSizeVal, ...
             'Interpreter', 'Latex');
         
-        colormap('jet');
+        colormap('jet'); % Use flipud to reverse colormap
         hcb5 = colorbar;
         ylabel(hcb5, 'Difference (GPa)', ...
             'Interpreter', 'Latex', ...

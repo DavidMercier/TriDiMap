@@ -2,7 +2,7 @@
 function [expValuesInterp, expValuesSmoothed, expValuesInterpSmoothed] = ...
     TriDiMap_interpolation_smoothing(...
     expValues, interpolBool, interpolFac, ...
-    smoothBool, smoothFact, binarizedGrid, varargin)
+    smoothBool, smoothFact, binarizedGrid, criterion, varargin)
 %% Function to interpolate, to smooth and to binarize a 3D dataset
 % x_step and y_step: Steps between indents in X and Y axis in microns.
 % expValues: Values of experimental properties obtained by indentation in GPa.
@@ -62,13 +62,13 @@ for ii=1:length(expValuesInterp)
     for jj=1:length(expValuesInterp)
         if binarizedGrid == 0
             if smoothBool
-                if expValuesInterp(ii,jj) < meanValInterpol
+                if expValuesInterp(ii,jj) < criterion
                     expValuesInterpSmoothed(ii,jj) = ...
                         expValuesSmoothed(ii,jj) - ...
                         ((expValuesSmoothed(ii,jj) - expValuesInterp(ii,jj)) / ...
                         (expValuesInterp(ii,jj)/minValInterpol));
                     
-                elseif expValuesInterp(ii,jj) > meanValInterpol
+                elseif expValuesInterp(ii,jj) > criterion
                     expValuesInterpSmoothed(ii,jj) = ...
                         expValuesSmoothed(ii,jj) + ...
                         ((expValuesInterp(ii,jj) - expValuesSmoothed(ii,jj)) * ...
@@ -81,7 +81,7 @@ for ii=1:length(expValuesInterp)
             end
             
         elseif binarizedGrid == 1
-            if expValuesInterp(ii,jj) < meanValInterpol
+            if expValuesInterp(ii,jj) < criterion
                 expValuesInterpSmoothed(ii,jj) = ...
                     expValuesSmoothed(ii,jj) + deltaMin;
                 
@@ -90,7 +90,7 @@ for ii=1:length(expValuesInterp)
                 %                     (expValuesInterp(ii,jj) - expValuesSmoothed(ii,jj));
                 % ==> Residual map equals zero
                 
-            elseif expValuesInterp(ii,jj) > meanValInterpol
+            elseif expValuesInterp(ii,jj) > criterion
                 expValuesInterpSmoothed(ii,jj) = ...
                     expValuesSmoothed(ii,jj) + deltaMax;
                 
@@ -99,10 +99,10 @@ for ii=1:length(expValuesInterp)
             end
             
         elseif binarizedGrid == 2
-            if expValuesInterp(ii,jj) < meanValInterpol
+            if expValuesInterp(ii,jj) < criterion
                 expValuesInterpSmoothed(ii,jj) = minValInterpol;
                 
-            elseif expValuesInterp(ii,jj) >= meanValInterpol
+            elseif expValuesInterp(ii,jj) >= criterion
                 expValuesInterpSmoothed(ii,jj) = maxValInterpol;
             end
         end
