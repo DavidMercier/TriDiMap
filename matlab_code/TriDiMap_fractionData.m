@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function TriDiMap_fractionData(data, dataType)
+function TriDiMap_fractionData(data, dataType, criterion)
 %% Function to get fraction of each phases
 
 if dataType == 1
@@ -8,7 +8,7 @@ elseif dataType == 2
     str = 'hardness';
 end
 
-ind = find(data <=mean(mean(data)));
+ind = find(data <=criterion);
 fractionMin = length(ind)/(length(data)^2);
 fractionMax = 1 - fractionMin;
 display(['Fraction of phase with lower ', str, ': ']);
