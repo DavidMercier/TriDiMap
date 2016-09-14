@@ -14,6 +14,8 @@ if data_path ~= 0
     config.data_path = data_path;
 end
 
+dataType = config.dataType;
+
 %% Handle canceled file selection
 if data.filename_data == 0
     data.filename_data = '';
@@ -45,30 +47,26 @@ if config.flag_data
     if strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
         
         %% Results in Excel file
-        try
+        if dataType == 1 % Excel file from MTS
             [dataAll, txtAll] = xlsread(data2import, 'Results');
-            dataType = 1; % Excel file from MTS
-        catch
+        elseif dataType == 2 % Excel file from Hysitron
             try
                 [dataAll, txtAll] = xlsread(data2import, name);
-                dataType = 2; % Excel file from Hysitron
             catch
                 disp(['No Excel sheet named:', name, 'found in the Excel file !']);
                 try
                     [dataAll, txtAll] = xlsread(data2import, 'Feuil1');
-                    dataType = 2; % Excel file from Hysitron
-                    
                 catch
                     disp(['No Excel sheet named:', 'Feuil1', 'found in the Excel file !']);
                     try
                         [dataAll, txtAll] = xlsread(data2import, 'Results');
-                        dataType = 2; % Excel file from Hysitron
                     catch
                         disp(['No Excel sheet named:', 'Results', 'found in the Excel file !']);
                     end
                 end
             end
         end
+        
         if dataType == 1
             ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
             ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
@@ -81,6 +79,14 @@ if config.flag_data
             ind_YM = find(strncmp(txtAll(3,:), 'Er(GPa)', 10));
             ind_H = find(strncmp(txtAll(3,:), 'H(GPa)', 10));
             endLines = 0;
+            if isempty(ind_Xstep)
+                ind_Xstep = find(strcmp(txtAll(1,:), 'X(mm)'));
+                ind_Ystep = find(strcmp(txtAll(1,:), 'Y(mm)'));
+                ind_YM = find(strncmp(txtAll(1,:), 'Er(GPa)', 10));
+                ind_H = find(strncmp(txtAll(1,:), 'H(GPa)', 10));
+            else
+                display('No headerlines found !');
+            end
         end
         
         % Rotation angle in degrees
