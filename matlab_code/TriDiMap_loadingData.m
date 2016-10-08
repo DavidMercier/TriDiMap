@@ -91,11 +91,17 @@ if config.flag_data
         
         % Rotation angle in degrees
         if ~isempty(ind_Xstep) && ~isempty(ind_Ystep)
-            config.Xcoord = dataAll(:,ind_Xstep-1);
-            
-            config.N_XStep = sqrt(length(config.Xcoord)-endLines); % Wrong if the indentation map is not square !
-            config.Ycoord = dataAll(:,ind_Ystep-1);
-            config.N_YStep = sqrt(length(config.Ycoord)-endLines); % Wrong if the indentation map is not square !
+            if config.N_XStep_default == config.N_YStep_default
+                config.Xcoord = dataAll(:,ind_Xstep-1);
+                config.N_XStep = sqrt(length(config.Xcoord)-endLines); % Wrong if the indentation map is not square !
+                config.Ycoord = dataAll(:,ind_Ystep-1);
+                config.N_YStep = sqrt(length(config.Ycoord)-endLines); % Wrong if the indentation map is not square !
+            else
+                config.Xcoord = dataAll(:,ind_Xstep-1);
+                config.Ycoord = dataAll(:,ind_Ystep-1);
+                config.N_XStep = config.N_XStep_default;
+                config.N_YStep = config.N_YStep_default;
+            end
             if dataType == 1
                 deltaXX = abs(config.Xcoord(2) - config.Xcoord(1));
                 deltaYX = abs(config.Ycoord(2) - config.Ycoord(1));
@@ -114,7 +120,8 @@ if config.flag_data
             if angleRotation_X == angleRotation_Y
                 config.angleRotation = angleRotation_X;
             else
-                error('Wrong calculations of rotationnal angle');
+                display('Wrong calculations of rotationnal angle');
+                config.angleRotation = config.angleRotation_default;
             end
         else
             config.angleRotation = config.angleRotation_default;

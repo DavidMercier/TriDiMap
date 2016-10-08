@@ -56,10 +56,10 @@ meanValSmoothed = mean(mean(expValuesSmoothed));
 %% Correction of loss after smoothing step
 deltaMax = (maxValInterpol - maxValSmoothed);
 deltaMin = (minValInterpol - minValSmoothed);
-expValuesInterpSmoothed = zeros(length(expValuesInterp));
+expValuesInterpSmoothed = zeros(size(expValuesInterp,1), size(expValuesInterp,2));
 
-for ii=1:length(expValuesInterp)
-    for jj=1:length(expValuesInterp)
+for ii=1:size(expValuesInterp,1)
+    for jj=1:size(expValuesInterp,2)
         if binarizedGrid == 0
             if smoothBool
                 if expValuesInterp(ii,jj) < criterion

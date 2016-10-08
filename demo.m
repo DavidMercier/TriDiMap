@@ -32,13 +32,14 @@ gui.config.data_path = '.\data_indentation';
 gui.config.data_path = 'N:\Projects\2015_NoChrome_JFVH\160523_NI_MO\2016-05-20 Batch #00001\NC493_matrix\';
 %gui.config.data_path = 'N:\Projects\2015_NoChrome_JFVH\160527_NI_MO\NC493_matrix625indents\NC493_matrix625indents_50nm.xls';
 gui.config.data_path = 'N:\Projects\2016_QNP_Huyghes\ExcelFiles';
+gui.config.data_path = 'N:\Projects\2016_PlasmLiq_JFVH';
 
 % gui.config.imageRaw_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_0.png';
 % gui.config.imageRawBW_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_1.png';
 % gui.config.imageScaled_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_1-1.png';
 
 %% Set default variables
-gui.config.dataType = 2; % Boolean to load MTS (1) or Hysitron (2) file
+gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
 gui.config.rawData = 0; % Boolean to plot raw dataset (no interpolation, no smoothing...)
 gui.config.plotImage = 0;
 gui.config.TriDiView = 0; % Boolean to set plots (0 = 1 map / 1 = 3 maps)
@@ -63,23 +64,23 @@ gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % or the absolute maximum/minimum values are decreasing !
 
 % Configuration of the indentation map
-gui.config.N_XStep_default = 10; % Default number of steps along X axis
-gui.config.N_YStep_default = 10; % Default number of steps along Y axis
-gui.config.XStep_default = 15; % Default value of X step in microns
-gui.config.YStep_default = 15;% Default value of Y step in microns
+gui.config.N_XStep_default = 12; % Default number of steps along X axis
+gui.config.N_YStep_default = 16; % Default number of steps along Y axis
+gui.config.XStep_default = 1.5; % Default value of X step in microns
+gui.config.YStep_default = 1.5;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
 gui.config.contourPlot = 1; % Boolean to plot contours
-gui.config.Markers = 1; % Boolean to plot markers
-gui.config.intervalScaleBar_H = 9; % Number of interval on the scale bar for hardness
-gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for elastic modulus
+gui.config.Markers = 0; % Boolean to plot markers
+gui.config.intervalScaleBar_H = 10; % Number of interval on the scale bar for hardness
+gui.config.intervalScaleBar_YM = 15; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
 gui.config.scaleAxis = 1; % Boolean to set color scale
-gui.config.H_cmin = 3; % in GPa
-gui.config.H_cmax = 12; %in GPa
-gui.config.YM_cmin = 150; % in GPa
-gui.config.YM_cmax = 250; % in GPa
+gui.config.H_cmin = 0; % in GPa
+gui.config.H_cmax = 10; %in GPa
+gui.config.YM_cmin = 0; % in GPa
+gui.config.YM_cmax = 150; % in GPa
 gui.config.FontSizeVal = 14;
 gui.config.Legend = {'Ni', 'SiC'};
 gui.config.LegendMatch = {'Match', 'No match'};
@@ -87,7 +88,7 @@ gui.config.LegendMatch = {'Match', 'No match'};
 %criterion = mean(mean(data)) ??
 criterion_YM = 250;
 %criterion_YM = mean(mean(gui.data.YM.expValuesInterpSmoothed));
-criterion_H = 7.5;
+criterion_H = 2;
 %criterion_H = mean(mean(gui.data.YM.expValuesInterpSmoothed));
     
 if gui.config.rawData
