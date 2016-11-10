@@ -2,6 +2,7 @@
 function dataCleaned = TriDiMap_cleaningData(data)
 %% Function to replace NaN values to avoid blank pixels
 
+data(data == 0) = NaN;
 [row, col] = find(isnan(data));
 
 for ii = 1:length(row)

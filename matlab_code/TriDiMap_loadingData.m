@@ -72,6 +72,22 @@ if config.flag_data
             ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
             ind_YM = find(strncmp(txtAll(1,:), 'Avg Modulus', 10));
             ind_H = find(strncmp(txtAll(1,:), 'Avg Hardness', 10));
+            if isempty(ind_YM)
+                if config.flagSKoss.typeData == 1
+                    ind_YM = find(strncmp(txtAll(1,:), 'E Average Over Defined Range', 10));
+                elseif config.flagSKoss.typeData == 2
+                    ind_YM = find(strncmp(txtAll(1,:), 'Modulus From Unload', 10));
+                end
+                flagSKoss = 1;
+            end
+            if isempty(ind_H)
+                if config.flagSKoss.typeData == 1
+                    ind_H = find(strncmp(txtAll(1,:), 'H Average Over Defined Range', 10));
+                elseif config.flagSKoss.typeData == 2
+                    ind_H = find(strncmp(txtAll(1,:), 'Hardness From Unload', 10));
+                end
+                flagSKoss = 1;
+            end
             endLines = 3;
         elseif dataType == 2
             ind_Xstep = find(strcmp(txtAll(3,:), 'X(mm)'));
@@ -92,9 +108,17 @@ if config.flag_data
         % Rotation angle in degrees
         if ~isempty(ind_Xstep) && ~isempty(ind_Ystep)
             if config.N_XStep_default == config.N_YStep_default
-                config.Xcoord = dataAll(:,ind_Xstep-1);
+                if flagSKoss
+                    config.Xcoord = dataAll(:,ind_Xstep);
+                else
+                    config.Xcoord = dataAll(:,ind_Xstep-1);
+                end
                 config.N_XStep = sqrt(length(config.Xcoord)-endLines); % Wrong if the indentation map is not square !
-                config.Ycoord = dataAll(:,ind_Ystep-1);
+                if flagSKoss
+                    config.Ycoord = dataAll(:,ind_Ystep);
+                else
+                    config.Ycoord = dataAll(:,ind_Ystep-1);
+                end
                 config.N_YStep = sqrt(length(config.Ycoord)-endLines); % Wrong if the indentation map is not square !
             else
                 config.Xcoord = dataAll(:,ind_Xstep-1);
@@ -115,8 +139,8 @@ if config.flag_data
                 deltaYY = config.YStep_default;
                 deltaXY = 0;
             end
-            angleRotation_X = atand(deltaYX/deltaXX);
-            angleRotation_Y = atand(deltaXY/deltaYY);
+            angleRotation_X = round(atand(deltaYX/deltaXX));
+            angleRotation_Y = round(atand(deltaXY/deltaYY));
             if angleRotation_X == angleRotation_Y
                 config.angleRotation = angleRotation_X;
             else
@@ -144,14 +168,22 @@ if config.flag_data
         
         % Young's modulus values
         if ~isempty(ind_YM)
-            data.expValues.YM = dataAll(:,ind_YM-1);
+            if flagSKoss
+                data.expValues.YM = dataAll(:,ind_YM);
+            else
+                data.expValues.YM = dataAll(:,ind_YM-1);
+            end
         else
             data.expValues.YM = NaN;
             config.flag_data = 0;
         end
         % Hardness values
         if ~isempty(ind_H)
-            data.expValues.H = dataAll(:,ind_H-1);
+            if flagSKoss
+                data.expValues.H = dataAll(:,ind_H);
+            else
+                data.expValues.H = dataAll(:,ind_H-1);
+            end
         else
             data.expValues.H = NaN;
             config.flag_data = 0;
