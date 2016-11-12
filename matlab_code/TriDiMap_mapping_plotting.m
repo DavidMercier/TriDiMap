@@ -3,7 +3,7 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
     expValuesInterpSmoothed, expProp, normStep, cmin, cmax, ...
     scaleAxis, TriDiView, FontSizeVal, Markers, xData_markers, yData_markers, ...
     expValues, expValuesInterp, intervalScaleBar, rawData, contourPlot, ...
-    legendStr, varargin)
+    legendStr, fracCalc, varargin)
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
 % 1) et 2) xData_interp and yData_interp: Interpolated x and y values
 % 3) expValuesInterpSmoothed: Interpolated and smoothed z values
@@ -20,16 +20,25 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
 % 15) rawData: Boolean to plot raw dataset (no interpolation, no smoothing...)
 % 16) contourPlot: Boolean to plot contour
 % 17) legendStr: Strings for legend
+% 18) fracCalc: Boolean to plot raw dataset in black and white and to calculate phase fraction
 
-if nargin < 17
+if nargin < 20
+    fracCalc = 0;
+end
+
+if nargin < 19
     legendStr = {'Phase1' , 'Phase2'};
 end
 
-if nargin < 16
+if nargin < 18
+    contourPlot = 0;
+end
+
+if nargin < 17
     rawData = 0;
 end
 
-if nargin < 15
+if nargin < 16
     intervalScaleBar = 10;
 end
 
@@ -306,6 +315,7 @@ else
         h(4) = imagesc(expValuesInterpSmoothed',...
             'XData',xData_interp,'YData',yData_interp);
         set(gca,'YDir','normal');
+        set(h(4),'alphadata',~isnan(expValuesInterpSmoothed')) 
     end
     
     hold on;
@@ -339,9 +349,12 @@ else
         if ~rawData
             colormap(['jet(',num2str(intervalScaleBar),')']);
         else
-            cmap = [1,1,1;0,0,0];
-            colormap(cmap); % Black and white
-            %colormap(['jet(',num2str(intervalScaleBar),')']);
+            if fracCalc
+                cmap = [1,1,1;0,0,0];
+                colormap(cmap); % Black and white
+            else
+                colormap(['jet(',num2str(intervalScaleBar),')']);
+            end
         end
     else
         colormap('jet');
@@ -350,20 +363,16 @@ else
     if scaleAxis
         caxis([cmin, cmax]);
     end
-    if rawData
-        %set(hcb4,'YTick',[0:maxVal:maxVal]);
-        %hcb4 = colorbar;
-        %ylabel(hcb4, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+    hcb4 = colorbar;
+    ylabel(hcb4, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+    if fracCalc
+        set(hcb4,'YTick',[0:maxVal:maxVal]);
         legendBinaryMap('w', 'k', 's', 's', legendStr, FontSizeVal);
-        
-    else
-        hcb4 = colorbar;
-        ylabel(hcb4, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
     end
     
     set(gca, 'Fontsize', FontSizeVal);
     hold off;
-    if rawData
+    if rawData && fracCalc
         fracBW = sum(sum(expValuesInterpSmoothed))/(size(expValuesInterpSmoothed,1)*size(expValuesInterpSmoothed,2)*255);
         display(['Fraction of particles (', zString, ' map) :']);
         disp(fracBW);
