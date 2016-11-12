@@ -28,14 +28,14 @@ catch
     gui.config.tridim_root = get_tridim_root; % ensure that environment is set
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% VARIABLES TO MODIFY/UPDATE
+
 gui.config.data_path = '.\data_indentation';
 
 % gui.config.imageRaw_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_0.png';
 % gui.config.imageRawBW_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_1.png';
 % gui.config.imageScaled_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_1-1.png';
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VARIABLES TO MODIFY/UPDATE
 
 %% Set default variables
 gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
