@@ -32,6 +32,7 @@ end
 % VARIABLES TO MODIFY/UPDATE
 
 gui.config.data_path = '.\data_indentation';
+gui.config.data_path = 'N:\Projects\2016_H_Embrittlement_Hubert\2016-11-15 Batch #00001';
 
 % gui.config.imageRaw_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_0.png';
 % gui.config.imageRawBW_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_1.png';
@@ -67,8 +68,8 @@ gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % Configuration of the indentation map
 gui.config.N_XStep_default = 10; % Default number of steps along X axis
 gui.config.N_YStep_default = 10; % Default number of steps along Y axis
-gui.config.XStep_default = 100; % Default value of X step in microns
-gui.config.YStep_default = 100;% Default value of Y step in microns
+gui.config.XStep_default = 50; % Default value of X step in microns
+gui.config.YStep_default = 50;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
@@ -81,7 +82,7 @@ gui.config.scaleAxis = 1; % Boolean to set color scale
 gui.config.H_cmin = 0; % in GPa
 gui.config.H_cmax = 5; %in GPa
 gui.config.YM_cmin = 0; % in GPa
-gui.config.YM_cmax = 50; % in GPa
+gui.config.YM_cmax = 200; % in GPa
 gui.config.FontSizeVal = 14;
 gui.config.Legend = {'Ni', 'SiC'};
 gui.config.LegendMatch = {'Match', 'No match'};

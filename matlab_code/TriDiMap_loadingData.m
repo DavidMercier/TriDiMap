@@ -79,6 +79,8 @@ if config.flag_data
                     ind_YM = find(strncmp(txtAll(1,:), 'Modulus From Unload', 10));
                 end
                 flagSKoss = 1;
+            else
+                flagSKoss = 0;
             end
             if isempty(ind_H)
                 if config.flagSKoss.typeData == 1
@@ -87,6 +89,8 @@ if config.flag_data
                     ind_H = find(strncmp(txtAll(1,:), 'Hardness From Unload', 10));
                 end
                 flagSKoss = 1;
+            else
+                flagSKoss = 0;
             end
             endLines = 3;
         elseif dataType == 2
