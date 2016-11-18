@@ -3,12 +3,12 @@ function demo
 %% Function to run the Matlab code for the 3D mapping of indentation data
 %Black = [0,0,0] / White  = [255,255,255];
 
-% clear all
-% clear classes % not included in clear all
-% close all
-% commandwindow
-% clc
-% delete(findobj(allchild(0), '-regexp', 'Tag', '^Msgbox_'))
+clear all
+clear classes % not included in clear all
+close all
+commandwindow
+clc
+delete(findobj(allchild(0), '-regexp', 'Tag', '^Msgbox_'))
 
 %% Define gui structure variable
 gui = struct();
@@ -30,25 +30,26 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % VARIABLES TO MODIFY/UPDATE
-
+% Path of nanoindentation Excel file
 gui.config.data_path = '.\data_indentation';
-gui.config.data_path = 'N:\Projects\2016_H_Embrittlement_Hubert\2016-11-15 Batch #00001';
 
-% gui.config.imageRaw_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_0.png';
-% gui.config.imageRawBW_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_1.png';
-% gui.config.imageScaled_path = 'N:\Projects\2015_NoChrome_JFVH\160811_MO_Matlab\MatrixBefore_1-1.png';
+% Path of optical observations
+gui.config.plotImage = 1;
+gui.config.imageRaw_path = '.\data_image\MatrixBefore_0.png';
+gui.config.imageRawBW_path = '.\data_image\MatrixBefore_1.png';
+gui.config.imageScaled_path = '.\data_image\MatrixBefore_1-1.png';
 
 %% Set default variables
 gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
+% Only for special MTS Excel file (for S. Kossman)
+gui.config.flagSKoss.typeData = 1; % 1 for averaged E and H, and 2 for E and H from unload
+
+gui.config.TriDiView = 1; % Variable to set type of plots (1 = 1 map / 2 = 3 maps)
 gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
 gui.config.fracCalc = 0; % Boolean to plot raw dataset in black and white and to calculate phase fraction
-gui.config.plotImage = 0;
-gui.config.TriDiView = 0; % Boolean to set plots (0 = 1 map / 1 = 3 maps)
-gui.config.normalizationStep = 0;
-% 0 if no normalization, 1 if normalization with minimal value, 2 with
-% the maximum value and 3 with the mean value
+
+gui.config.normalizationStep = 0; % 0 if no normalization, 1 if normalization with minimal value, 2 with the maximum value and 3 with the mean value
 gui.config.translationStep = 0; % 0 if no translation and 1 if translation step
-gui.config.flagSKoss.typeData = 1; % 1 for averaged E and H, and 2 for E and H from unload
 
 % Smoothing and Interpolation
 gui.config.noNan = 1; % Boolean to remove NaN values (blank pixels)
@@ -66,10 +67,10 @@ gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % or the absolute maximum/minimum values are decreasing !
 
 % Configuration of the indentation map
-gui.config.N_XStep_default = 10; % Default number of steps along X axis
-gui.config.N_YStep_default = 10; % Default number of steps along Y axis
-gui.config.XStep_default = 50; % Default value of X step in microns
-gui.config.YStep_default = 50;% Default value of Y step in microns
+gui.config.N_XStep_default = 25; % Default number of steps along X axis
+gui.config.N_YStep_default = 25; % Default number of steps along Y axis
+gui.config.XStep_default = 2; % Default value of X step in microns
+gui.config.YStep_default = 2;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
@@ -80,9 +81,9 @@ gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for e
 % 0 if continuous scalebar, and 5 to 10 to set interval number
 gui.config.scaleAxis = 1; % Boolean to set color scale
 gui.config.H_cmin = 0; % in GPa
-gui.config.H_cmax = 5; %in GPa
+gui.config.H_cmax = 40; %in GPa
 gui.config.YM_cmin = 0; % in GPa
-gui.config.YM_cmax = 200; % in GPa
+gui.config.YM_cmax = 400; % in GPa
 gui.config.FontSizeVal = 14;
 gui.config.Legend = {'Ni', 'SiC'};
 gui.config.LegendMatch = {'Match', 'No match'};
@@ -90,7 +91,7 @@ gui.config.LegendMatch = {'Match', 'No match'};
 %criterion = mean(mean(data)) ??
 criterion_YM = 250;
 %criterion_YM = mean(mean(gui.data.YM.expValuesInterpSmoothed));
-criterion_H = 2;
+criterion_H = 6;
 %criterion_H = mean(mean(gui.data.YM.expValuesInterpSmoothed));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -105,7 +106,8 @@ if ~gui.config.noNan
     gui.config.binarizedGrid = 0;
     display('Interpolation and smoothing not active, because NaN values not removed/corrected.');
 end
-if gui.config.fracCalc
+if gui.config.plotImage
+    gui.config.fracCalc = 1;
     gui.config.intervalScaleBar_H = 2;
     gui.config.intervalScaleBar_YM = 2;
 end
@@ -320,13 +322,13 @@ if config.flag_data
         WW = 0.70 * scrsize(3); % Width
         WH = 0.80 * scrsize(4); % Height
         
-        f(3) = figure('position', [WX, WY, WW, WH]);
-        hi(3) = image(gui.data.picture_raw);
-        hold on;
-        axisMap([], 'Raw microstructural map', gui.config.FontSizeVal, ...
-            (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
-            (gui.config.N_YStep_default-1)*gui.config.YStep_default);
-        hold off;
+%         f(3) = figure('position', [WX, WY, WW, WH]);
+%         hi(3) = image(gui.data.picture_raw);
+%         hold on;
+%         axisMap([], 'Raw microstructural map', gui.config.FontSizeVal, ...
+%             (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
+%             (gui.config.N_YStep_default-1)*gui.config.YStep_default);
+%         hold off;
         
         f(4) = figure('position', [WX, WY, WW, WH]);
         hi(4) = imagesc(gui.data.picture_raw, 'XData',xData_interp,'YData',yData_interp);

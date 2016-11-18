@@ -147,7 +147,7 @@ elseif normStep > 0
 end
 
 %% 3 maps
-if TriDiView
+if TriDiView == 2
     %% Subplot 1
     subplot(2,2,1);
     
@@ -297,7 +297,7 @@ if TriDiView
     hcb3 = colorbar;
     ylabel(hcb3, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
     
-else
+elseif TriDiView == 1
     %% 1 map (with or without markers)
     if ~rawData
         if ~contourPlot
@@ -363,10 +363,12 @@ else
     if scaleAxis
         caxis([cmin, cmax]);
     end
-    hcb4 = colorbar;
-    ylabel(hcb4, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+    if ~fracCalc
+        hcb4 = colorbar;
+        ylabel(hcb4, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+    end
     if fracCalc
-        set(hcb4,'YTick',[0:maxVal:maxVal]);
+        %set(hcb4,'YTick',[0:maxVal/2:maxVal]);
         legendBinaryMap('w', 'k', 's', 's', legendStr, FontSizeVal);
     end
     
