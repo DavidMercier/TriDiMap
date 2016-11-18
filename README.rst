@@ -19,6 +19,8 @@ How to use this Matlab toolbox
 -------------------------------
 1. Update the "demo.m" Matlab file:
 	- path of your dataset ;
+	- path of your images (optional)
+	- set type of plot
 	- set interpolation and smoothing steps ;
 	- number of indents along X and Y axis ;
 	- step size along X and Y axis ;
@@ -28,7 +30,7 @@ How to use this Matlab toolbox
 
 3. Answer "yes" to the 1st question in the Command Window of Matlab, in order to add the above folder with subfolders to the matlab search path.
 
-4. Finaly, 3D maps of hardness and elastic modulus are plotted into 2 windows.
+4. Finaly, maps of hardness and elastic modulus are plotted.
 
 Contributors
 -------------
