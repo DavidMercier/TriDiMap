@@ -369,17 +369,21 @@ if config.flag_data
         
         %% Calculation of maps difference
         %gui.results.diffYM = (rot90(YM_binarized) == flipud(gui.data.picture_scaled));
-        gui.results.diffYM = (rot90(int8(YM_binarized))) - (flipud(int8(gui.data.picture_scaled)));
+        gui.results.diffYM = rot90(int8(YM_binarized)) - flipud(int8(gui.data.picture_scaled));
         gui.results.diffYM(gui.results.diffYM~=0)=1;
         
         %gui.results.diffH = (rot90(H_binarized) == flipud(gui.data.picture_scaled));
-        gui.results.diffH = (rot90(int8(H_binarized))) - (flipud(int8(gui.data.picture_scaled)));
+        gui.results.diffH = rot90(int8(H_binarized)) - flipud(int8(gui.data.picture_scaled));
         gui.results.diffH(gui.results.diffH~=0)=1;
+        
+        gui.results.diff_EH = rot90(int8(YM_binarized)) - rot90(int8(H_binarized));
+        gui.results.diff_EH(gui.results.diff_EH~=0)=1;
         
         diff_YM_error = sum(sum(gui.results.diffYM))/(gui.config.N_XStep_default * gui.config.N_YStep_default);
         diff_H_error = sum(sum(gui.results.diffH))/(gui.config.N_XStep_default * gui.config.N_YStep_default);
+        diff_EH_error = sum(sum(gui.results.diff_EH))/(gui.config.N_XStep_default * gui.config.N_YStep_default);
         % Display % of error - If 0, then perfect match and if 1 perfect mismatch.
-        display(diff_YM_error); display(diff_H_error);
+        display(diff_YM_error); display(diff_H_error); display(diff_EH_error);
         
         f(7) = figure('position', [WX, WY, WW, WH]);
         hi(7) = imagesc(flipud(gui.results.diffYM), 'XData',xData_interp,'YData',yData_interp);
@@ -399,6 +403,14 @@ if config.flag_data
         legendBinaryMap('w', 'k', 's', 's', gui.config.LegendMatch, gui.config.FontSizeVal);
         hold off;
         
+        f(9) = figure('position', [WX, WY, WW, WH]);
+        hi(9) = imagesc(flipud(gui.results.diff_EH), 'XData',xData_interp,'YData',yData_interp);
+        hold on;
+        axisMap(gray, 'Elastic modulus-Hardness difference map', gui.config.FontSizeVal, ...
+            (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
+            (gui.config.N_YStep_default-1)*gui.config.YStep_default);
+        legendBinaryMap('w', 'k', 's', 's', gui.config.LegendMatch, gui.config.FontSizeVal);
+        hold off;
         
     end
 end
