@@ -32,11 +32,9 @@ end
 % VARIABLES TO MODIFY/UPDATE
 % Path of nanoindentation Excel file
 gui.config.data_path = '.\data_indentation';
-gui.config.data_path = 'N:\Projects\2016_H_Embrittlement_Hubert\2016-11-15 Batch #00001';
-gui.config.data_path = 'N:\Projects\2015_NoChrome_JFVH\160527_NI_MO';
 
 % Path of optical observations
-gui.config.plotImage = 1; % Boolean to plot optical observations
+gui.config.plotImage = 0; % Boolean to plot optical observations
 % Set paths only if plotImage = 1
 gui.config.imageRaw_path = '.\data_image\MatrixBefore_0.png';
 gui.config.imageRawBW_path = '.\data_image\MatrixBefore_1.png';
@@ -48,7 +46,7 @@ gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
 gui.config.flagSKoss.typeData = 1; % 1 for averaged E and H, and 2 for E and H from unload
 
 gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
-gui.config.fracCalc = 1; % Boolean to plot raw dataset in black and white and to calculate phase fraction
+gui.config.fracCalc = 0; % Boolean to plot raw dataset in black and white and to calculate phase fraction
 
 gui.config.normalizationStep = 0; % 0 if no normalization, 1 if normalization with minimal value, 2 with the maximum value and 3 with the mean value
 gui.config.translationStep = 0; % 0 if no translation and 1 if translation step
@@ -246,7 +244,6 @@ end
 %% Difference map
 if config.flag_data
     if gui.config.fracCalc == 1
-        
         YM_binarized = zeros(gui.config.N_XStep_default, gui.config.N_YStep_default);
         H_binarized = zeros(gui.config.N_XStep_default, gui.config.N_YStep_default);
         for ii = 1:1:gui.config.N_XStep_default
@@ -263,10 +260,15 @@ if config.flag_data
                 end
             end
         end
+        YM = YM_binarized;
+        H = H_binarized;
+    else
+        YM = gui.data.YM.expValuesInterpSmoothed;
+        H = gui.data.H.expValuesInterpSmoothed;
     end
     
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
-        YM_binarized, 1, gui.config.normalizationStep, ...
+        YM, 1, gui.config.normalizationStep, ...
         gui.config.YM_cmin, gui.config.YM_cmax, ...
         gui.config.scaleAxis, ...
         gui.config.FontSizeVal, gui.config.Markers, ...
@@ -277,7 +279,7 @@ if config.flag_data
         gui.config.fracCalc);
     
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
-        H_binarized, 2, gui.config.normalizationStep, ...
+        H, 2, gui.config.normalizationStep, ...
         gui.config.H_cmin, gui.config.H_cmax, ...
         gui.config.scaleAxis, ...
         gui.config.FontSizeVal, gui.config.Markers, ...
