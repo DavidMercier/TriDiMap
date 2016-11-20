@@ -32,9 +32,12 @@ end
 % VARIABLES TO MODIFY/UPDATE
 % Path of nanoindentation Excel file
 gui.config.data_path = '.\data_indentation';
+gui.config.data_path = 'N:\Projects\2016_H_Embrittlement_Hubert\2016-11-15 Batch #00001';
+gui.config.data_path = 'N:\Projects\2015_NoChrome_JFVH\160527_NI_MO';
 
 % Path of optical observations
-gui.config.plotImage = 1;
+gui.config.plotImage = 1; % Boolean to plot optical observations
+% Set paths only if plotImage = 1
 gui.config.imageRaw_path = '.\data_image\MatrixBefore_0.png';
 gui.config.imageRawBW_path = '.\data_image\MatrixBefore_1.png';
 gui.config.imageScaled_path = '.\data_image\MatrixBefore_1-1.png';
@@ -44,9 +47,8 @@ gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
 % Only for special MTS Excel file (for S. Kossman)
 gui.config.flagSKoss.typeData = 1; % 1 for averaged E and H, and 2 for E and H from unload
 
-gui.config.TriDiView = 1; % Variable to set type of plots (1 = 1 map / 2 = 3 maps)
 gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
-gui.config.fracCalc = 0; % Boolean to plot raw dataset in black and white and to calculate phase fraction
+gui.config.fracCalc = 1; % Boolean to plot raw dataset in black and white and to calculate phase fraction
 
 gui.config.normalizationStep = 0; % 0 if no normalization, 1 if normalization with minimal value, 2 with the maximum value and 3 with the mean value
 gui.config.translationStep = 0; % 0 if no translation and 1 if translation step
@@ -58,7 +60,7 @@ gui.config.interpFact = 2; % Factor of interpolation
 % 0 for no interpolation, 1 or 2 is the best
 gui.config.smoothBool = 0; % Boolean to correct values after smoothing
 gui.config.smoothFact = 2; % Number of points used to smooth rows and columns
-% 0 = no smoothing and best is 1 or 2
+% 0 = no smoothing and 1 or 2 is the best
 gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % 0 = no binarization / 1 = smoothed binarization / 2 = binarization
 
@@ -74,31 +76,32 @@ gui.config.YStep_default = 2;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
+gui.config.FontSizeVal = 14;
 gui.config.contourPlot = 0; % Boolean to plot contours
-gui.config.Markers = 1; % Boolean to plot markers
+gui.config.Markers = 0; % Boolean to plot markers
+gui.config.scaleAxis = 1; % Boolean to set color scale (0 for auto scale)
+gui.config.H_cmin = 0; % Minimum hardness value in GPa
+gui.config.H_cmax = 40; % Maximum hardness value in GPa
+gui.config.YM_cmin = 0; % Minimum elastic modulus value in GPa
+gui.config.YM_cmax = 400; % Maximum elastic modulus value in GPa
 gui.config.intervalScaleBar_H = 10; % Number of interval on the scale bar for hardness
 gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
-gui.config.scaleAxis = 1; % Boolean to set color scale
-gui.config.H_cmin = 0; % in GPa
-gui.config.H_cmax = 40; %in GPa
-gui.config.YM_cmin = 0; % in GPa
-gui.config.YM_cmax = 400; % in GPa
-gui.config.FontSizeVal = 14;
-gui.config.Legend = {'Ni', 'SiC'};
+
+% Setting for phase fraction
+gui.config.Legend = {'Ni', 'SiC'}; % {'Softest phase', 'Hardest phase'}
 gui.config.LegendMatch = {'Match', 'No match'};
 
 %criterion = mean(mean(data)) ??
 criterion_YM = 250;
 %criterion_YM = mean(mean(gui.data.YM.expValuesInterpSmoothed));
-criterion_H = 6;
+criterion_H = 7;
 %criterion_H = mean(mean(gui.data.YM.expValuesInterpSmoothed));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if gui.config.rawData
     gui.config.smoothBool = 0;
-    gui.config.binarizedGrid = 0;
 end
 if ~gui.config.noNan
     gui.config.interpBool = 0;
@@ -107,6 +110,7 @@ if ~gui.config.noNan
     display('Interpolation and smoothing not active, because NaN values not removed/corrected.');
 end
 if gui.config.plotImage
+    gui.config.rawData = 1;
     gui.config.fracCalc = 1;
     gui.config.intervalScaleBar_H = 2;
     gui.config.intervalScaleBar_YM = 2;
@@ -196,7 +200,7 @@ if config.flag_data
                 gui.config.binarizedGrid, criterion_H);
         end
     else
-        gui.data.YM.expValuesInterp = gui.data.expValues_mat.YM; 
+        gui.data.YM.expValuesInterp = gui.data.expValues_mat.YM;
         gui.data.YM.expValuesSmoothed = gui.data.expValues_mat.YM;
         gui.data.YM.expValuesInterpSmoothed = gui.data.expValues_mat.YM;
         gui.data.H.expValuesInterp = gui.data.expValues_mat.H;
@@ -231,32 +235,6 @@ if config.flag_data
         end
     end
     
-    %% Run the 3D maps
-    if gui.config.plotImage == 0
-        
-        TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
-            gui.data.YM.expValuesInterpSmoothed, 1, gui.config.normalizationStep, ...
-            gui.config.YM_cmin, gui.config.YM_cmax, ...
-            gui.config.scaleAxis, gui.config.TriDiView, ...
-            gui.config.FontSizeVal, gui.config.Markers, ...
-            gui.data.xData_markers, gui.data.yData_markers, ...
-            gui.data.expValues_mat.YM, gui.data.YM.expValuesInterp, ...
-            gui.config.intervalScaleBar_YM, gui.config.rawData, ...
-            gui.config.contourPlot, gui.config.Legend, ...
-            gui.config.fracCalc);
-        
-        TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
-            gui.data.H.expValuesInterpSmoothed, 2, gui.config.normalizationStep, ...
-            gui.config.H_cmin, gui.config.H_cmax, ...
-            gui.config.scaleAxis, gui.config.TriDiView, ...
-            gui.config.FontSizeVal, gui.config.Markers, ...
-            gui.data.xData_markers, gui.data.yData_markers, ...
-            gui.data.expValues_mat.H, gui.data.H.expValuesInterp, ...
-            gui.config.intervalScaleBar_H, gui.config.rawData, ...
-            gui.config.contourPlot, gui.config.Legend, ...
-            gui.config.fracCalc);
-    end
-    
     %% Fraction calculations
     
     if gui.config.binarizedGrid > 0
@@ -267,7 +245,7 @@ end
 
 %% Difference map
 if config.flag_data
-    if gui.config.plotImage == 1
+    if gui.config.fracCalc == 1
         
         YM_binarized = zeros(gui.config.N_XStep_default, gui.config.N_YStep_default);
         H_binarized = zeros(gui.config.N_XStep_default, gui.config.N_YStep_default);
@@ -285,29 +263,31 @@ if config.flag_data
                 end
             end
         end
-        
-        TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
-            YM_binarized, 1, gui.config.normalizationStep, ...
-            gui.config.YM_cmin, gui.config.YM_cmax, ...
-            gui.config.scaleAxis, gui.config.TriDiView, ...
-            gui.config.FontSizeVal, gui.config.Markers, ...
-            gui.data.xData_markers, gui.data.yData_markers, ...
-            gui.data.expValues_mat.YM, gui.data.YM.expValuesInterp, ...
-            gui.config.intervalScaleBar_YM, gui.config.rawData, ...
-            gui.config.contourPlot, gui.config.Legend, ...
-            gui.config.fracCalc);
-        
-        TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
-            H_binarized, 2, gui.config.normalizationStep, ...
-            gui.config.H_cmin, gui.config.H_cmax, ...
-            gui.config.scaleAxis, gui.config.TriDiView, ...
-            gui.config.FontSizeVal, gui.config.Markers, ...
-            gui.data.xData_markers, gui.data.yData_markers, ...
-            gui.data.expValues_mat.H, gui.data.H.expValuesInterp, ...
-            gui.config.intervalScaleBar_H, gui.config.rawData, ...
-            gui.config.contourPlot, gui.config.Legend, ...
-            gui.config.fracCalc);
-        
+    end
+    
+    TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
+        YM_binarized, 1, gui.config.normalizationStep, ...
+        gui.config.YM_cmin, gui.config.YM_cmax, ...
+        gui.config.scaleAxis, ...
+        gui.config.FontSizeVal, gui.config.Markers, ...
+        gui.data.xData_markers, gui.data.yData_markers, ...
+        gui.data.expValues_mat.YM, gui.data.YM.expValuesInterp, ...
+        gui.config.intervalScaleBar_YM, gui.config.rawData, ...
+        gui.config.contourPlot, gui.config.Legend, ...
+        gui.config.fracCalc);
+    
+    TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
+        H_binarized, 2, gui.config.normalizationStep, ...
+        gui.config.H_cmin, gui.config.H_cmax, ...
+        gui.config.scaleAxis, ...
+        gui.config.FontSizeVal, gui.config.Markers, ...
+        gui.data.xData_markers, gui.data.yData_markers, ...
+        gui.data.expValues_mat.H, gui.data.H.expValuesInterp, ...
+        gui.config.intervalScaleBar_H, gui.config.rawData, ...
+        gui.config.contourPlot, gui.config.Legend, ...
+        gui.config.fracCalc);
+    
+    if gui.config.plotImage
         %% Plot figure
         gui.data.picture_raw = flipud(imread(gui.config.imageRaw_path));
         gui.data.picture_rawBW = flipud(imread(gui.config.imageRawBW_path));
@@ -322,13 +302,13 @@ if config.flag_data
         WW = 0.70 * scrsize(3); % Width
         WH = 0.80 * scrsize(4); % Height
         
-%         f(3) = figure('position', [WX, WY, WW, WH]);
-%         hi(3) = image(gui.data.picture_raw);
-%         hold on;
-%         axisMap([], 'Raw microstructural map', gui.config.FontSizeVal, ...
-%             (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
-%             (gui.config.N_YStep_default-1)*gui.config.YStep_default);
-%         hold off;
+        %         f(3) = figure('position', [WX, WY, WW, WH]);
+        %         hi(3) = image(gui.data.picture_raw);
+        %         hold on;
+        %         axisMap([], 'Raw microstructural map', gui.config.FontSizeVal, ...
+        %             (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
+        %             (gui.config.N_YStep_default-1)*gui.config.YStep_default);
+        %         hold off;
         
         f(4) = figure('position', [WX, WY, WW, WH]);
         hi(4) = imagesc(gui.data.picture_raw, 'XData',xData_interp,'YData',yData_interp);
@@ -411,7 +391,6 @@ if config.flag_data
             (gui.config.N_YStep_default-1)*gui.config.YStep_default);
         legendBinaryMap('w', 'k', 's', 's', gui.config.LegendMatch, gui.config.FontSizeVal);
         hold off;
-        
     end
 end
 
