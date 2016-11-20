@@ -44,7 +44,7 @@ Screenshots
    
    *3D mapping of sample hardness obtained from indentation tests.*
    
-.. figure:: pictures/TriDiMap2.gif
+.. figure:: pictures/TriDiMap_2.gif
    :scale: 50 %
    :align: center
    
