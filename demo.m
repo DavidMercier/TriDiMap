@@ -34,7 +34,7 @@ end
 gui.config.data_path = '.\data_indentation';
 
 % Path of optical observations
-gui.config.plotImage = 0; % Boolean to plot optical observations
+gui.config.plotImage = 1; % Boolean to plot optical observations
 % Set paths only if plotImage = 1
 gui.config.imageRaw_path = '.\data_image\MatrixBefore_0.png';
 gui.config.imageRawBW_path = '.\data_image\MatrixBefore_1.png';
@@ -46,7 +46,7 @@ gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
 gui.config.flagSKoss.typeData = 1; % 1 for averaged E and H, and 2 for E and H from unload
 
 gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
-gui.config.fracCalc = 0; % Boolean to plot raw dataset in black and white and to calculate phase fraction
+gui.config.fracCalc = 1; % Boolean to plot raw dataset in black and white and to calculate phase fraction
 
 gui.config.normalizationStep = 0; % 0 if no normalization, 1 if normalization with minimal value, 2 with the maximum value and 3 with the mean value
 gui.config.translationStep = 0; % 0 if no translation and 1 if translation step
@@ -350,23 +350,14 @@ if config.flag_data
         disp(1-fracBW);
         
         %% Calculation of maps difference
+        % Display % of error - If 0, then perfect match and if 1 perfect mismatch.
+        
+        % Difference between microstructure map and YM map
         %gui.results.diffYM = (rot90(YM_binarized) == flipud(gui.data.picture_scaled));
         gui.results.diffYM = rot90(int8(YM_binarized)) - flipud(int8(gui.data.picture_scaled));
         gui.results.diffYM(gui.results.diffYM~=0)=1;
-        
-        %gui.results.diffH = (rot90(H_binarized) == flipud(gui.data.picture_scaled));
-        gui.results.diffH = rot90(int8(H_binarized)) - flipud(int8(gui.data.picture_scaled));
-        gui.results.diffH(gui.results.diffH~=0)=1;
-        
-        gui.results.diff_EH = rot90(int8(YM_binarized)) - rot90(int8(H_binarized));
-        gui.results.diff_EH(gui.results.diff_EH~=0)=1;
-        
         diff_YM_error = sum(sum(gui.results.diffYM))/(gui.config.N_XStep_default * gui.config.N_YStep_default);
-        diff_H_error = sum(sum(gui.results.diffH))/(gui.config.N_XStep_default * gui.config.N_YStep_default);
-        diff_EH_error = sum(sum(gui.results.diff_EH))/(gui.config.N_XStep_default * gui.config.N_YStep_default);
-        % Display % of error - If 0, then perfect match and if 1 perfect mismatch.
-        display(diff_YM_error); display(diff_H_error); display(diff_EH_error);
-        
+        display(diff_YM_error);
         f(7) = figure('position', [WX, WY, WW, WH]);
         hi(7) = imagesc(flipud(gui.results.diffYM), 'XData',xData_interp,'YData',yData_interp);
         hold on;
@@ -376,6 +367,12 @@ if config.flag_data
         legendBinaryMap('w', 'k', 's', 's', gui.config.LegendMatch, gui.config.FontSizeVal);
         hold off;
         
+        % Difference between microstructure map and H map
+        %gui.results.diffH = (rot90(H_binarized) == flipud(gui.data.picture_scaled));
+        gui.results.diffH = rot90(int8(H_binarized)) - flipud(int8(gui.data.picture_scaled));
+        gui.results.diffH(gui.results.diffH~=0)=1;
+        diff_H_error = sum(sum(gui.results.diffH))/(gui.config.N_XStep_default * gui.config.N_YStep_default);
+        display(diff_H_error);
         f(8) = figure('position', [WX, WY, WW, WH]);
         hi(8) = imagesc(flipud(gui.results.diffH), 'XData',xData_interp,'YData',yData_interp);
         hold on;
@@ -385,6 +382,11 @@ if config.flag_data
         legendBinaryMap('w', 'k', 's', 's', gui.config.LegendMatch, gui.config.FontSizeVal);
         hold off;
         
+        % Difference between YM map and H map
+        gui.results.diff_EH = rot90(int8(YM_binarized)) - rot90(int8(H_binarized));
+        gui.results.diff_EH(gui.results.diff_EH~=0)=1;
+        diff_EH_error = sum(sum(gui.results.diff_EH))/(gui.config.N_XStep_default * gui.config.N_YStep_default);
+        display(diff_EH_error);
         f(9) = figure('position', [WX, WY, WW, WH]);
         hi(9) = imagesc(flipud(gui.results.diff_EH), 'XData',xData_interp,'YData',yData_interp);
         hold on;
@@ -393,6 +395,32 @@ if config.flag_data
             (gui.config.N_YStep_default-1)*gui.config.YStep_default);
         legendBinaryMap('w', 'k', 's', 's', gui.config.LegendMatch, gui.config.FontSizeVal);
         hold off;
+        
+        % Difference between microstructure map and YM map (only black pixels)
+        for ii = 1:size(YM_binarized,1)
+            for jj = 1:size(YM_binarized,2)
+                if rot90(int8(YM_binarized(ii,jj))) == 127 && flipud(int8(gui.data.picture_scaled(ii,jj))) == 127
+                    gui.results.diffYM2(ii,jj) = 0;
+                else
+                    gui.results.diffYM2(ii,jj) = 1;
+                end
+            end
+        end
+        diff_YM_error2 = sum(sum(abs(gui.results.diffYM2-1)))/(sum(sum(gui.data.picture_scaled/255)));
+        display(diff_YM_error2);
+        
+        % Difference between microstructure map and H map (only black pixels)
+        for ii = 1:size(H_binarized,1)
+            for jj = 1:size(H_binarized,2)
+                if rot90(int8(H_binarized(ii,jj))) == 127 && flipud(int8(gui.data.picture_scaled(ii,jj))) == 127
+                    gui.results.diffH2(ii,jj) = 0;
+                else
+                    gui.results.diffH2(ii,jj) = 1;
+                end
+            end
+        end
+        diff_H_error2 = sum(sum(abs(gui.results.diffH2-1)))/(sum(sum(gui.data.picture_scaled/255)));
+        display(diff_H_error2);
     end
 end
 
