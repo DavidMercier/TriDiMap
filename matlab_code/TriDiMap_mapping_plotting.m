@@ -171,15 +171,18 @@ if ~contourPlot
 else
     markersVal = ones(length(expValues));
 end
+hold on;
 
 if Markers
     plot3(xData_markers, yData_markers, markersVal,'k+');
+    hold on;
 end
 
-hold on;
 axis equal;
 axis tight;
 view(0,90);
+zlim([0 2]);
+hold on;
 
 hXLabel(1) = xlabel('X coordinates ($\mu$m)');
 hYLabel(1) = ylabel('Y coordinates ($\mu$m)');
