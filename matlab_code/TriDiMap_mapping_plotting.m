@@ -180,6 +180,9 @@ end
 
 axis equal;
 axis tight;
+if length(xData_interp) > 5*length(yData_interp) || length(yData_interp) > 5*length(xData_interp)
+    axis normal;
+end
 view(0,90);
 zlim([0 2]);
 hold on;
