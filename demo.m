@@ -34,7 +34,7 @@ end
 gui.config.data_path = '.\data_indentation';
 
 % Path of optical observations
-gui.config.plotImage = 1; % Boolean to plot optical observations
+gui.config.plotImage = 0; % Boolean to plot optical observations
 % Set paths only if plotImage = 1
 gui.config.imageRaw_path = '.\data_image\MatrixBefore_0.png';
 gui.config.imageRawBW_path = '.\data_image\MatrixBefore_1.png';
@@ -46,17 +46,17 @@ gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
 gui.config.flagSKoss.typeData = 1; % 1 for averaged E and H, and 2 for E and H from unload
 
 gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
-gui.config.fracCalc = 1; % Boolean to plot raw dataset in black and white and to calculate phase fraction
+gui.config.fracCalc = 0; % Boolean to plot raw dataset in black and white and to calculate phase fraction
 
 gui.config.normalizationStep = 0; % 0 if no normalization, 1 if normalization with minimal value, 2 with the maximum value and 3 with the mean value
 gui.config.translationStep = 0; % 0 if no translation and 1 if translation step
 
 % Smoothing and Interpolation
 gui.config.noNan = 1; % Boolean to remove NaN values (blank pixels)
-gui.config.interpBool = 0; % Boolean to activate interpolation
+gui.config.interpBool = 1; % Boolean to activate interpolation
 gui.config.interpFact = 2; % Factor of interpolation
 % 0 for no interpolation, 1 or 2 is the best
-gui.config.smoothBool = 0; % Boolean to correct values after smoothing
+gui.config.smoothBool = 1; % Boolean to correct values after smoothing
 gui.config.smoothFact = 2; % Number of points used to smooth rows and columns
 % 0 = no smoothing and 1 or 2 is the best
 gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
@@ -67,21 +67,21 @@ gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % or the absolute maximum/minimum values are decreasing !
 
 % Configuration of the indentation map
-gui.config.N_XStep_default = 25; % Default number of steps along X axis
-gui.config.N_YStep_default = 25; % Default number of steps along Y axis
-gui.config.XStep_default = 2; % Default value of X step in microns
-gui.config.YStep_default = 2;% Default value of Y step in microns
+gui.config.N_XStep_default = 150; % Default number of steps along X axis
+gui.config.N_YStep_default = 4; % Default number of steps along Y axis
+gui.config.XStep_default = 30; % Default value of X step in microns
+gui.config.YStep_default = 30;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
 gui.config.FontSizeVal = 14;
-gui.config.contourPlot = 0; % Boolean to plot contours
+gui.config.contourPlot = 1; % Boolean to plot contours
 gui.config.Markers = 0; % Boolean to plot markers
 gui.config.scaleAxis = 1; % Boolean to set color scale (0 for auto scale)
-gui.config.H_cmin = 0; % Minimum hardness value in GPa
-gui.config.H_cmax = 40; % Maximum hardness value in GPa
-gui.config.YM_cmin = 0; % Minimum elastic modulus value in GPa
-gui.config.YM_cmax = 400; % Maximum elastic modulus value in GPa
+gui.config.H_cmin = 5; % Minimum hardness value in GPa
+gui.config.H_cmax = 15; % Maximum hardness value in GPa
+gui.config.YM_cmin = 160; % Minimum elastic modulus value in GPa
+gui.config.YM_cmax = 260; % Maximum elastic modulus value in GPa
 gui.config.intervalScaleBar_H = 10; % Number of interval on the scale bar for hardness
 gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
@@ -112,6 +112,10 @@ if gui.config.plotImage
     gui.config.fracCalc = 1;
     gui.config.intervalScaleBar_H = 2;
     gui.config.intervalScaleBar_YM = 2;
+end
+if gui.config.N_XStep_default ~= gui.config.N_YStep_default
+    gui.config.Markers = 0;
+    display('Markers can''t be plotted, because grid is not square !');
 end
 
 %% Load data from Excel files
