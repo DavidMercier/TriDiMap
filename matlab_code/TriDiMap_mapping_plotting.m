@@ -113,8 +113,10 @@ WH = 0.80 * scrsize(4); % Height
 if ~normStep
     if expProp == 1
         zString = 'Elastic modulus (GPa)';
+        zString = 'Module d''\''elasticit\''e (GPa)';
     elseif expProp == 2
         zString = 'Hardness (GPa)';
+        zString = 'Duret\''e (GPa)';
     end
 elseif normStep > 0
     if normStep == 1
@@ -184,7 +186,8 @@ if length(xData_interp) > 5*length(yData_interp) || length(yData_interp) > 5*len
     axis normal;
 end
 view(0,90);
-zlim([0 2]);
+%zlim([0 2]);
+zlim auto;
 hold on;
 
 hXLabel(1) = xlabel('X coordinates ($\mu$m)');
