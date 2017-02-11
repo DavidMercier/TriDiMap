@@ -133,10 +133,10 @@ if config.flag_data
             if dataType == 1
                 deltaXX = abs(config.Xcoord(2) - config.Xcoord(1));
                 deltaYX = abs(config.Ycoord(2) - config.Ycoord(1));
-                deltaYY = abs(config.Ycoord(config.N_YStep*2) - ...
-                    config.Ycoord(1));
-                deltaXY = abs(config.Xcoord(config.N_YStep*2) - ...
-                    config.Xcoord(1));
+                deltaYY = abs(config.Ycoord(config.N_YStep) - ...
+                    config.Ycoord(1)); %config.N_YStep*2 ???
+                deltaXY = abs(config.Xcoord(config.N_YStep) - ...
+                    config.Xcoord(1)); %config.N_YStep*2 ???
             elseif dataType == 2
                 deltaXX = config.XStep_default;
                 deltaYX = 0;
