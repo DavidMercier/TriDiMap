@@ -32,9 +32,6 @@ end
 % VARIABLES TO MODIFY/UPDATE
 % Path of nanoindentation Excel file
 gui.config.data_path = '.\data_indentation';
-gui.config.data_path = 'N:\Projects\2015_NoChrome_JFVH\160523_NI_MO\2016-05-20 Batch #00001\NC493_matrix\NC493_matrix.xls';
-gui.config.data_path = 'N:\Projects\2016_Laser4Rolls_Walmag\2016-12-15 Batch #00001\Carbures_GWA\Carbures_GWA.xls';
-gui.config.data_path = 'N:\Projects\2017_UCL_Mélodie\2017-02-06 Batch #00001';
 
 % Path of optical observations
 gui.config.plotImage = 0; % Boolean to plot optical observations
@@ -48,7 +45,7 @@ gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
 % Only for special MTS Excel file (for S. Kossman)
 gui.config.flagSKoss.typeData = 1; % 1 for averaged E and H, and 2 for E and H from unload
 
-gui.config.rawData = 0; % Boolean to plot raw dataset (no interpolation, no smoothing...)
+gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
 gui.config.fracCalc = 0; % Boolean to plot raw dataset in black and white and to calculate phase fraction
 
 gui.config.normalizationStep = 0; % 0 if no normalization, 1 if normalization with minimal value, 2 with the maximum value and 3 with the mean value
@@ -70,10 +67,10 @@ gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % or the absolute maximum/minimum values are decreasing !
 
 % Configuration of the indentation map
-gui.config.N_XStep_default = 20; % Default number of steps along X axis
-gui.config.N_YStep_default = 40; % Default number of steps along Y axis
-gui.config.XStep_default = 2; % Default value of X step in microns
-gui.config.YStep_default = 2;% Default value of Y step in microns
+gui.config.N_XStep_default = 150; % Default number of steps along X axis
+gui.config.N_YStep_default = 4; % Default number of steps along Y axis
+gui.config.XStep_default = 30; % Default value of X step in microns
+gui.config.YStep_default = 30;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
@@ -81,12 +78,12 @@ gui.config.FontSizeVal = 14;
 gui.config.contourPlot = 1; % Boolean to plot contours
 gui.config.Markers = 0; % Boolean to plot markers
 gui.config.scaleAxis = 1; % Boolean to set color scale (0 for auto scale)
-gui.config.H_cmin = 0; % Minimum hardness value in GPa
-gui.config.H_cmax = 10; % Maximum hardness value in GPa
-gui.config.YM_cmin = 100; % Minimum elastic modulus value in GPa
-gui.config.YM_cmax = 300; % Maximum elastic modulus value in GPa
-gui.config.intervalScaleBar_H = 20; % Number of interval on the scale bar for hardness
-gui.config.intervalScaleBar_YM = 20; % Number of interval on the scale bar for elastic modulus
+gui.config.H_cmin = 5; % Minimum hardness value in GPa
+gui.config.H_cmax = 15; % Maximum hardness value in GPa
+gui.config.YM_cmin = 160; % Minimum elastic modulus value in GPa
+gui.config.YM_cmax = 260; % Maximum elastic modulus value in GPa
+gui.config.intervalScaleBar_H = 10; % Number of interval on the scale bar for hardness
+gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
 
 % Setting for phase fraction

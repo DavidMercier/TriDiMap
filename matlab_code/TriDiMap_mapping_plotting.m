@@ -113,10 +113,10 @@ WH = 0.80 * scrsize(4); % Height
 if ~normStep
     if expProp == 1
         zString = 'Elastic modulus (GPa)';
-        %zString = 'Module d''\''elasticit\''e (GPa)';
+        zString = 'Module d''\''elasticit\''e (GPa)';
     elseif expProp == 2
         zString = 'Hardness (GPa)';
-        %zString = 'Duret\''e (GPa)';
+        zString = 'Duret\''e (GPa)';
     end
 elseif normStep > 0
     if normStep == 1
