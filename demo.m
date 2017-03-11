@@ -129,7 +129,6 @@ if gui.config.N_XStep_default ~= gui.config.N_YStep_default
     %display('Markers can''t be plotted, because grid is not square !');
 end
 if gui.flag.licenceFlag_1
-    gui.config.noNan = 0; % Boolean to remove NaN values (blank pixels)
     display('No Statistics Toolbox found !');
 end
 
