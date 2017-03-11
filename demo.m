@@ -3,13 +3,6 @@ function demo
 %% Function to run the Matlab code for the 3D mapping of indentation data
 %Black = [0,0,0] / White  = [255,255,255];
 
-%%%%
-% To save as cropped maps
-%colorbar off
-%axis off
-%set(title(gcf),'visible','off')
-%%%
-
 clear all
 clear classes % not included in clear all
 close all
@@ -84,8 +77,8 @@ gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % or the absolute maximum/minimum values are decreasing !
 
 % Configuration of the indentation map
-gui.config.N_XStep_default = 40; % Default number of steps along X axis
-gui.config.N_YStep_default = 15; % Default number of steps along Y axis
+gui.config.N_XStep_default = 25; % Default number of steps along X axis
+gui.config.N_YStep_default = 25; % Default number of steps along Y axis
 gui.config.XStep_default = 1.5; % Default value of X step in microns
 gui.config.YStep_default = 1.5;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
@@ -95,12 +88,12 @@ gui.config.FontSizeVal = 14;
 gui.config.contourPlot = 1; % Boolean to plot contours
 gui.config.Markers = 0; % Boolean to plot markers
 gui.config.scaleAxis = 1; % Boolean to set color scale (0 for auto scale)
-gui.config.H_cmin = 3; % Minimum hardness value in GPa
-gui.config.H_cmax = 5; % Maximum hardness value in GPa
-gui.config.YM_cmin = 60; % Minimum elastic modulus value in GPa
-gui.config.YM_cmax = 140; % Maximum elastic modulus value in GPa
-gui.config.intervalScaleBar_H = 12; % Number of interval on the scale bar for hardness
-gui.config.intervalScaleBar_YM = 8; % Number of interval on the scale bar for elastic modulus
+gui.config.H_cmin = 0; % Minimum hardness value in GPa
+gui.config.H_cmax = 20; % Maximum hardness value in GPa
+gui.config.YM_cmin = 0; % Minimum elastic modulus value in GPa
+gui.config.YM_cmax = 400; % Maximum elastic modulus value in GPa
+gui.config.intervalScaleBar_H = 20; % Number of interval on the scale bar for hardness
+gui.config.intervalScaleBar_YM = 20; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
 
 % Setting for phase fraction
