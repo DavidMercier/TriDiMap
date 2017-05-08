@@ -99,6 +99,7 @@ if config.flag_data
             ind_YM = find(strncmp(txtAll(3,:), 'Er(GPa)', 10));
             ind_H = find(strncmp(txtAll(3,:), 'H(GPa)', 10));
             endLines = 0;
+            flagSKoss = 0;
             if isempty(ind_Xstep)
                 ind_Xstep = find(strcmp(txtAll(1,:), 'X(mm)'));
                 ind_Ystep = find(strcmp(txtAll(1,:), 'Y(mm)'));
