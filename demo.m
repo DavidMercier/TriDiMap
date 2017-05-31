@@ -42,9 +42,6 @@ end
 % VARIABLES TO MODIFY/UPDATE
 % Path of nanoindentation Excel file
 gui.config.data_path = '.\data_indentation';
-gui.config.data_path = 'N:\Dropbox\Archives_Boulot\2012-2015_PostDoc\Samples\6_TiAl5Sn2.5\2014-01-01_NanoIndentation\multipleplot TiAlSn.xls';
-gui.config.data_path = 'N:\Projects\2016_Invar_Nutal\2016-11-18 Batch #00002';
-gui.config.data_path = 'N:\Projects\2016_Laser4Rolls_Walmag\2017-05_Nanoindentation/2017-02-22 Batch #00001/4L_mapping2';
 
 % Path of optical observations
 gui.config.plotImage = 0; % Boolean to plot optical observations
