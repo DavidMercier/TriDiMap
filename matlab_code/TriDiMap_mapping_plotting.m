@@ -3,7 +3,7 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
     expValuesInterpSmoothed, expProp, normStep, cmin, cmax, ...
     scaleAxis, FontSizeVal, Markers, xData_markers, yData_markers, ...
     expValues, expValuesInterp, intervalScaleBar, rawData, contourPlot, ...
-    legendStr, fracCalc, varargin)
+    legendStr, fracCalc, logZ, varargin)
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
 % 1) et 2) xData_interp and yData_interp: Interpolated x and y values
 % 3) expValuesInterpSmoothed: Interpolated and smoothed z values
@@ -21,6 +21,7 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
 % 17) contourPlot: Boolean to plot contour
 % 18) legendStr: Strings for legend
 % 19) fracCalc: Boolean to plot raw dataset in black and white and to calculate phase fraction
+% 20) logZ: Boolean to set Z axis in a log scale
 
 if nargin < 19
     fracCalc = 0;
@@ -144,6 +145,7 @@ end
 %% 1 map (with or without markers)
 f(1) = figure('position', [WX, WY, WW, WH]);
 colormap hsv;
+Contours = cmin:(cmax-cmin)/intervalScaleBar:cmax;
 
 if ~rawData
     if ~contourPlot
@@ -154,12 +156,22 @@ if ~rawData
         % 'Marker', '+'
         shading interp;
     else
-        contourf(xData_interp, yData_interp, expValuesInterpSmoothed',...
-            intervalScaleBar);
+        if logZ
+            contourf(xData_interp, yData_interp, log(expValuesInterpSmoothed'),...
+                intervalScaleBar);
+        else
+            contourf(xData_interp, yData_interp, expValuesInterpSmoothed',...
+                intervalScaleBar);
+        end
     end
 else
-    h(1) = imagesc(expValuesInterpSmoothed',...
-        'XData',xData_interp,'YData',yData_interp);
+    if logZ
+        h(1) = imagesc(real(log(expValuesInterpSmoothed')),...
+            'XData',xData_interp,'YData',yData_interp);
+    else
+        h(1) = imagesc((expValuesInterpSmoothed'),...
+            'XData',xData_interp,'YData',yData_interp);
+    end
     set(gca,'YDir','normal');
     set(h(1),'alphadata',~isnan(expValuesInterpSmoothed'))
 end
@@ -188,6 +200,13 @@ end
 view(0,90);
 %zlim([0 2]);
 zlim auto;
+if logZ && ~contourPlot
+    set(gca, 'zsc', 'log');
+    %set(h(1), 'cdata', real(log10(get(h(1), 'cdata'))));
+end
+if logZ && rawData
+    set(gca, 'zsc', 'linear');
+end
 hold on;
 
 hXLabel(1) = xlabel('X coordinates ($\mu$m)');
@@ -200,24 +219,51 @@ set([hXLabel(1), hYLabel(1), hZLabel(1), hTitle(1)], ...
 
 if intervalScaleBar > 0
     if ~rawData
-        colormap(['jet(',num2str(intervalScaleBar),')']);
+        if ~contourPlot
+            cmap = ['jet(',num2str(intervalScaleBar),')'];
+        else
+            if logZ
+                cmap = 'jet';
+            else
+                cmap = ['jet(',num2str(intervalScaleBar),')'];
+            end
+        end
     else
         if fracCalc
-            cmap = [1,1,1;0,0,0];
-            colormap(cmap); % Black and white
+            cmap = [1,1,1;0,0,0]; % Black and white
         else
-            colormap(['jet(',num2str(intervalScaleBar),')']);
+            if logZ
+                cmap = 'jet';
+            else
+                cmap = ['jet(',num2str(intervalScaleBar),')'];
+            end
         end
     end
+    colormap(cmap);
 else
     colormap('jet');
     % Use flipud to reverse colormap
 end
 if scaleAxis
-    caxis([cmin, cmax]);
+    if logZ && contourPlot
+        caxis(log([cmin, cmax]));
+    elseif logZ && rawData
+        caxis(log([cmin, cmax]));
+    else
+        caxis([cmin, cmax]);
+    end
 end
 if ~fracCalc
-    hcb1 = colorbar;
+    if logZ && contourPlot
+        hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
+    elseif logZ && rawData
+        hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
+    else
+        hcb1 = colorbar;
+    end
+    %if logScale
+    %hcb1 = colorbar('Yscale','log');
+    %end
     ylabel(hcb1, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
 end
 if fracCalc

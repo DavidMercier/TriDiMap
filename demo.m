@@ -18,7 +18,7 @@ gui.config.numerics = struct();
 
 %% Check License of Statistics Toolbox
 license_msg = ['Sorry, no license found for the Matlab ', ...
-    'Statistics Toolbox™ !'];
+    'Statistics Toolbox!'];
 if  license('checkout', 'Statistics_Toolbox') == 0
     warning(license_msg);
     gui.flag.licenceFlag_1 = 0;
@@ -42,6 +42,9 @@ end
 % VARIABLES TO MODIFY/UPDATE
 % Path of nanoindentation Excel file
 gui.config.data_path = '.\data_indentation';
+gui.config.data_path = 'N:\Dropbox\Archives_Boulot\2012-2015_PostDoc\Samples\6_TiAl5Sn2.5\2014-01-01_NanoIndentation\multipleplot TiAlSn.xls';
+gui.config.data_path = 'N:\Projects\2016_Invar_Nutal\2016-11-18 Batch #00002';
+gui.config.data_path = 'N:\Projects\2016_Laser4Rolls_Walmag\2017-05_Nanoindentation/2017-02-22 Batch #00001/4L_mapping2';
 
 % Path of optical observations
 gui.config.plotImage = 0; % Boolean to plot optical observations
@@ -53,7 +56,7 @@ gui.config.imageScaled_path = '.\data_image\MatrixBefore_1-1.png';
 %% Set default variables
 gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
 % Only for special MTS Excel file (for S. Kossman)
-gui.config.flagSKoss.typeData = 1; % 1 for averaged E and H, and 2 for E and H from unload
+gui.config.flagSKoss.typeData = 0; % 1 for averaged E and H, and 2 for E and H from unload
 
 gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
 gui.config.fracCalc = 0; % Boolean to plot raw dataset in black and white and to calculate phase fraction
@@ -79,8 +82,8 @@ gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % Configuration of the indentation map
 gui.config.N_XStep_default = 25; % Default number of steps along X axis
 gui.config.N_YStep_default = 25; % Default number of steps along Y axis
-gui.config.XStep_default = 1.5; % Default value of X step in microns
-gui.config.YStep_default = 1.5;% Default value of Y step in microns
+gui.config.XStep_default = 60; % Default value of X step in microns
+gui.config.YStep_default = 60;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
@@ -88,13 +91,14 @@ gui.config.FontSizeVal = 14;
 gui.config.contourPlot = 1; % Boolean to plot contours
 gui.config.Markers = 0; % Boolean to plot markers
 gui.config.scaleAxis = 1; % Boolean to set color scale (0 for auto scale)
-gui.config.H_cmin = 0; % Minimum hardness value in GPa
-gui.config.H_cmax = 20; % Maximum hardness value in GPa
-gui.config.YM_cmin = 0; % Minimum elastic modulus value in GPa
-gui.config.YM_cmax = 400; % Maximum elastic modulus value in GPa
-gui.config.intervalScaleBar_H = 20; % Number of interval on the scale bar for hardness
-gui.config.intervalScaleBar_YM = 20; % Number of interval on the scale bar for elastic modulus
+gui.config.H_cmin = 5; % Minimum hardness value in GPa
+gui.config.H_cmax = 15; % Maximum hardness value in GPa
+gui.config.YM_cmin = 150; % Minimum elastic modulus value in GPa
+gui.config.YM_cmax = 250; % Maximum elastic modulus value in GPa
+gui.config.intervalScaleBar_H = 10; % Number of interval on the scale bar for hardness
+gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
+gui.config.logZ = 1; % Boolean to set Z axis in a log scale
 
 % Setting for phase fraction
 gui.config.Legend = {'Ni', 'SiC'}; % {'Softest phase', 'Hardest phase'}
@@ -110,6 +114,8 @@ criterion_H = 7;
 
 if gui.config.rawData
     gui.config.smoothBool = 0;
+    gui.config.contourPlot = 0;
+    display('Contour plot not active, when raw data is plotted (2D map) !');
 end
 if ~gui.config.noNan
     gui.config.interpBool = 0;
@@ -131,7 +137,7 @@ end
 if gui.flag.licenceFlag_1
     display('No Statistics Toolbox found !');
 end
-
+    
 %% Load data from Excel files
 [config, gui.data] = TriDiMap_loadingData(gui.config);
 
@@ -225,8 +231,8 @@ if config.flag_data
     end
     
     %% Grid meshing
-    x_step = gui.config.N_XStep_default; %gui.config.XStep;
-    y_step = gui.config.N_YStep_default; %gui.config.YStep;
+    x_step = gui.config.XStep;
+    y_step = gui.config.YStep;
     
     if gui.config.N_XStep_default == gui.config.N_YStep_default
         gui.data.xData = 0:x_step:(size(gui.data.expValues_mat.YM,1)-1)*x_step;
@@ -302,7 +308,8 @@ if config.flag_data
         gui.data.expValues_mat.YM, gui.data.YM.expValuesInterp, ...
         gui.config.intervalScaleBar_YM, gui.config.rawData, ...
         gui.config.contourPlot, gui.config.Legend, ...
-        gui.config.fracCalc);
+        gui.config.fracCalc, ...
+        gui.config.logZ);
     
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
         H, 2, gui.config.normalizationStep, ...
@@ -313,7 +320,8 @@ if config.flag_data
         gui.data.expValues_mat.H, gui.data.H.expValuesInterp, ...
         gui.config.intervalScaleBar_H, gui.config.rawData, ...
         gui.config.contourPlot, gui.config.Legend, ...
-        gui.config.fracCalc);
+        gui.config.fracCalc, ...
+        gui.config.logZ);
     
     if gui.config.plotImage
         %% Plot figure
