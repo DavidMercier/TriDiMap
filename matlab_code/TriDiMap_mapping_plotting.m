@@ -3,7 +3,7 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
     expValuesInterpSmoothed, expProp, normStep, cmin, cmax, ...
     scaleAxis, FontSizeVal, Markers, xData_markers, yData_markers, ...
     expValues, expValuesInterp, intervalScaleBar, rawData, contourPlot, ...
-    legendStr, fracCalc, logZ, varargin)
+    legendStr, fracCalc, logZ, minorTicks, varargin)
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
 % 1) et 2) xData_interp and yData_interp: Interpolated x and y values
 % 3) expValuesInterpSmoothed: Interpolated and smoothed z values
@@ -22,6 +22,15 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
 % 18) legendStr: Strings for legend
 % 19) fracCalc: Boolean to plot raw dataset in black and white and to calculate phase fraction
 % 20) logZ: Boolean to set Z axis in a log scale
+% 21) minorTicks: Boolean to set Z axis in a log scale
+
+if nargin < 21
+    minorTicks = 0;
+end
+
+if nargin < 20
+    logZ = 0;
+end
 
 if nargin < 19
     fracCalc = 0;
@@ -260,6 +269,10 @@ if ~fracCalc
         hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
     else
         hcb1 = colorbar;
+    end
+    
+    if minorTicks
+        set(hcb1, 'YMinorTick', 'on');
     end
     %if logScale
     %hcb1 = colorbar('Yscale','log');

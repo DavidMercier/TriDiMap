@@ -53,7 +53,7 @@ gui.config.imageScaled_path = '.\data_image\MatrixBefore_1-1.png';
 %% Set default variables
 gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
 % Only for special MTS Excel file (for S. Kossman)
-gui.config.flagSKoss.typeData = 0; % 1 for averaged E and H, and 2 for E and H from unload
+gui.config.flagSKoss.typeData = 1; % 1 for averaged E and H, and 2 for E and H from unload
 
 gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
 gui.config.fracCalc = 0; % Boolean to plot raw dataset in black and white and to calculate phase fraction
@@ -77,10 +77,10 @@ gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % or the absolute maximum/minimum values are decreasing !
 
 % Configuration of the indentation map
-gui.config.N_XStep_default = 25; % Default number of steps along X axis
-gui.config.N_YStep_default = 25; % Default number of steps along Y axis
-gui.config.XStep_default = 60; % Default value of X step in microns
-gui.config.YStep_default = 60;% Default value of Y step in microns
+gui.config.N_XStep_default = 10; % Default number of steps along X axis
+gui.config.N_YStep_default = 10; % Default number of steps along Y axis
+gui.config.XStep_default = 75; % Default value of X step in microns
+gui.config.YStep_default = 75;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
@@ -95,7 +95,8 @@ gui.config.YM_cmax = 250; % Maximum elastic modulus value in GPa
 gui.config.intervalScaleBar_H = 10; % Number of interval on the scale bar for hardness
 gui.config.intervalScaleBar_YM = 10; % Number of interval on the scale bar for elastic modulus
 % 0 if continuous scalebar, and 5 to 10 to set interval number
-gui.config.logZ = 1; % Boolean to set Z axis in a log scale
+gui.config.logZ = 0; % Boolean to set Z axis in a log scale
+gui.config.minorTicks = 1; % Boolean to set Z axis in a log scale
 
 % Setting for phase fraction
 gui.config.Legend = {'Ni', 'SiC'}; % {'Softest phase', 'Hardest phase'}
@@ -306,7 +307,8 @@ if config.flag_data
         gui.config.intervalScaleBar_YM, gui.config.rawData, ...
         gui.config.contourPlot, gui.config.Legend, ...
         gui.config.fracCalc, ...
-        gui.config.logZ);
+        gui.config.logZ, ...
+        gui.config.minorTicks);
     
     TriDiMap_mapping_plotting(gui.data.xData_interp, gui.data.yData_interp, ...
         H, 2, gui.config.normalizationStep, ...
@@ -318,7 +320,8 @@ if config.flag_data
         gui.config.intervalScaleBar_H, gui.config.rawData, ...
         gui.config.contourPlot, gui.config.Legend, ...
         gui.config.fracCalc, ...
-        gui.config.logZ);
+        gui.config.logZ, ...
+        gui.config.minorTicks);
     
     if gui.config.plotImage
         %% Plot figure
