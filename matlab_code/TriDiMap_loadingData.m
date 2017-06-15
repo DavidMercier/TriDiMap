@@ -73,6 +73,12 @@ if config.flag_data
             ind_YM = find(strncmp(txtAll(1,:), 'Avg Modulus', 10));
             ind_H = find(strncmp(txtAll(1,:), 'Avg Hardness', 10));
             if isempty(ind_YM)
+                ind_YM = find(strncmp(txtAll(1,:), 'Modulus At Max Load', 10));
+            end
+            if isempty(ind_H)
+                ind_H = find(strncmp(txtAll(1,:), 'Hardness At Max Load', 10));
+            end
+            if isempty(ind_YM)
                 if config.flagSKoss.typeData == 1
                     ind_YM = find(strncmp(txtAll(1,:), 'E Average Over Defined Range', 10));
                 elseif config.flagSKoss.typeData == 2
@@ -136,10 +142,10 @@ if config.flag_data
                 deltaYX = abs(config.Ycoord(2) - config.Ycoord(1));
                 deltaYY = abs(config.Ycoord(config.N_YStep+1) - ...
                     config.Ycoord(1));
-					% config.N_YStep*2 ???
+                % config.N_YStep*2 ???
                 deltaXY = abs(config.Xcoord(config.N_YStep) - ...
                     config.Xcoord(1));
-					% config.N_YStep*2 ???
+                % config.N_YStep*2 ???
             elseif dataType == 2
                 deltaXX = config.XStep_default;
                 deltaYX = 0;
@@ -156,6 +162,8 @@ if config.flag_data
             end
         else
             config.angleRotation = config.angleRotation_default;
+            config.N_XStep = config.N_XStep_default;
+            config.N_YStep = config.N_YStep_default;
         end
         config.angleRotation = mod(config.angleRotation, 90);
         
@@ -181,6 +189,7 @@ if config.flag_data
                 data.expValues.YM = dataAll(:,ind_YM-1);
             end
         else
+            display('No elastic modulus values found !');
             data.expValues.YM = NaN;
             config.flag_data = 0;
         end
@@ -192,6 +201,7 @@ if config.flag_data
                 data.expValues.H = dataAll(:,ind_H-1);
             end
         else
+            display('No hardness values found !');
             data.expValues.H = NaN;
             config.flag_data = 0;
         end
