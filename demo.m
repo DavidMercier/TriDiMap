@@ -3,12 +3,12 @@ function demo
 %% Function to run the Matlab code for the 3D mapping of indentation data
 %Black = [0,0,0] / White  = [255,255,255];
 
-clear all
-clear classes % not included in clear all
-close all
-commandwindow
-clc
-delete(findobj(allchild(0), '-regexp', 'Tag', '^Msgbox_'))
+% clear all
+% clear classes % not included in clear all
+% close all
+% commandwindow
+% clc
+% delete(findobj(allchild(0), '-regexp', 'Tag', '^Msgbox_'))
 
 %% Define gui structure variable
 gui = struct();
@@ -53,7 +53,8 @@ gui.config.imageScaled_path = '.\data_image\MatrixBefore_1-1.png';
 %% Set default variables
 gui.config.dataType = 1; % Boolean to load MTS (1) or Hysitron (2) file
 % Only for special MTS Excel file (for S. Kossman)
-gui.config.flagSKoss.typeData = 1; % 1 for averaged E and H, and 2 for E and H from unload
+gui.config.flagSKoss.typeData = 0; % 0 if not data from ULille
+% 1 for averaged E and H, and 2 for E and H from unload
 
 gui.config.rawData = 1; % Boolean to plot raw dataset (no interpolation, no smoothing...)
 gui.config.fracCalc = 0; % Boolean to plot raw dataset in black and white and to calculate phase fraction
@@ -77,10 +78,10 @@ gui.config.binarizedGrid = 0; % Variable to binarize values of the grid
 % or the absolute maximum/minimum values are decreasing !
 
 % Configuration of the indentation map
-gui.config.N_XStep_default = 10; % Default number of steps along X axis
-gui.config.N_YStep_default = 10; % Default number of steps along Y axis
-gui.config.XStep_default = 75; % Default value of X step in microns
-gui.config.YStep_default = 75;% Default value of Y step in microns
+gui.config.N_XStep_default = 25; % Default number of steps along X axis
+gui.config.N_YStep_default = 25; % Default number of steps along Y axis
+gui.config.XStep_default = 2; % Default value of X step in microns
+gui.config.YStep_default = 2;% Default value of Y step in microns
 gui.config.angleRotation_default = 0; % Default rotation angle of the indentation map in degrees
 
 % Map / Colorbar setting
@@ -88,8 +89,8 @@ gui.config.FontSizeVal = 14;
 gui.config.contourPlot = 1; % Boolean to plot contours
 gui.config.Markers = 0; % Boolean to plot markers
 gui.config.scaleAxis = 1; % Boolean to set color scale (0 for auto scale)
-gui.config.H_cmin = 5; % Minimum hardness value in GPa
-gui.config.H_cmax = 15; % Maximum hardness value in GPa
+gui.config.H_cmin = 2; % Minimum hardness value in GPa
+gui.config.H_cmax = 12; % Maximum hardness value in GPa
 gui.config.YM_cmin = 150; % Minimum elastic modulus value in GPa
 gui.config.YM_cmax = 250; % Maximum elastic modulus value in GPa
 gui.config.intervalScaleBar_H = 10; % Number of interval on the scale bar for hardness
@@ -235,13 +236,10 @@ if config.flag_data
     if gui.config.N_XStep_default == gui.config.N_YStep_default
         gui.data.xData = 0:x_step:(size(gui.data.expValues_mat.YM,1)-1)*x_step;
         gui.data.yData = 0:y_step:(size(gui.data.expValues_mat.YM,2)-1)*y_step;
-    elseif gui.config.N_XStep_default > gui.config.N_YStep_default
+    elseif gui.config.N_XStep_default ~= gui.config.N_YStep_default
         gui.data.xData = 0:x_step:(size(gui.data.expValues_mat.YM,1)-1)*x_step;
-        gui.data.yData = gui.data.xData;
-    elseif gui.config.N_XStep_default < gui.config.N_YStep_default
         gui.data.yData = 0:y_step:(size(gui.data.expValues_mat.YM,2)-1)*y_step;
-        gui.data.xData = gui.data.yData;
-    end   
+    end
     
     [gui.data.xData_markers, gui.data.yData_markers] = ...
         meshgrid(gui.data.xData, gui.data.yData);
