@@ -3,7 +3,7 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
     expValuesInterpSmoothed, expProp, normStep, cmin, cmax, ...
     scaleAxis, FontSizeVal, Markers, xData_markers, yData_markers, ...
     expValues, expValuesInterp, intervalScaleBar, rawData, contourPlot, ...
-    legendStr, fracCalc, logZ, minorTicks, varargin)
+    legendStr, fracCalc, logZ, minorTicks, pathStr, nameFile, savePlot, varargin)
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
 % 1) et 2) xData_interp and yData_interp: Interpolated x and y values
 % 3) expValuesInterpSmoothed: Interpolated and smoothed z values
@@ -23,6 +23,9 @@ function TriDiMap_mapping_plotting(xData_interp, yData_interp, ...
 % 19) fracCalc: Boolean to plot raw dataset in black and white and to calculate phase fraction
 % 20) logZ: Boolean to set Z axis in a log scale
 % 21) minorTicks: Boolean to set Z axis in a log scale
+% 22) pathStr: File path
+% 23) nameFile: File name
+% 24) savePlot: Flag to save or not plot
 
 if nargin < 21
     minorTicks = 0;
@@ -124,9 +127,11 @@ if ~normStep
     if expProp == 1
         zString = 'Elastic modulus (GPa)';
         %zString = 'Module d''\''elasticit\''e (GPa)';
+        plotName = 'E';
     elseif expProp == 2
         zString = 'Hardness (GPa)';
         %zString = 'Duret\''e (GPa)';
+        plotName = 'H';
     end
 elseif normStep > 0
     if normStep == 1
@@ -292,6 +297,12 @@ if rawData && fracCalc
     disp(fracBW);
     display(['Fraction of matrix (', zString, ' map) :']);
     disp(1-fracBW);
+end
+
+if savePlot
+    saveas(gcf,[pathStr,nameFile,'_',plotName],'png');
+    set(gca,'position',[0 0 1 1],'units','normalized')
+    saveas(gcf,[pathStr,nameFile,'_',plotName,'_cropped'],'png');
 end
 
 %% Plot difference between interpolated data and smoothed data

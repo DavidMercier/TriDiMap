@@ -42,6 +42,9 @@ end
 data2import = [data.pathname_data, data.filename_data];
 [pathstr,name,ext] = fileparts(data.filename_data);
 
+config.name = name;
+config.pathStr = data.pathname_data;
+
 %% Loading data
 if config.flag_data
     if strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
@@ -64,6 +67,11 @@ if config.flag_data
                         disp(['No Excel sheet named:', 'Results', 'found in the Excel file !']);
                     end
                 end
+            end
+        elseif dataType == 3
+            try
+                [dataAll, txtAll, raw] = xlsread(data2import, 'Sheet1');
+            catch
             end
         end
         
@@ -114,6 +122,13 @@ if config.flag_data
             else
                 display('No headerlines found !');
             end
+        elseif dataType == 3
+            ind_Xstep = '';
+            ind_Ystep = '';
+            ind_YM = find(strncmp(txtAll(1,:), 'E', 10));
+            ind_H = find(strncmp(txtAll(1,:), 'H', 10));
+            flagSKoss = 0;
+            endLines = 0;
         end
         
         % Rotation angle in degrees
@@ -186,7 +201,11 @@ if config.flag_data
             if flagSKoss
                 data.expValues.YM = dataAll(:,ind_YM);
             else
-                data.expValues.YM = dataAll(:,ind_YM-1);
+                if dataType ~= 3
+                    data.expValues.YM = dataAll(:,ind_YM-1);
+                else
+                    data.expValues.YM = str2num(char(raw(3:end,ind_YM)));
+                end
             end
         else
             display('No elastic modulus values found !');
@@ -198,7 +217,11 @@ if config.flag_data
             if flagSKoss
                 data.expValues.H = dataAll(:,ind_H);
             else
-                data.expValues.H = dataAll(:,ind_H-1);
+                if dataType ~= 3
+                    data.expValues.H = dataAll(:,ind_H-1);
+                else
+                    data.expValues.H = str2num(char(raw(3:end,ind_H)));
+                end
             end
         else
             display('No hardness values found !');
