@@ -1,0 +1,9 @@
+%% Copyright 2014 MERCIER David
+function list_Val = listVal
+
+list_Val = {...
+    'Min'; ...
+    'Mean'; ...
+    'Max'};
+
+end

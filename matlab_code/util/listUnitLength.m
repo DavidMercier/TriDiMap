@@ -1,0 +1,9 @@
+%% Copyright 2014 MERCIER David
+function listUnit_Length = listUnitLength
+
+listUnit_Length = {...
+    'nm'; ...
+    'µm'; ...
+    'mm'};
+
+end

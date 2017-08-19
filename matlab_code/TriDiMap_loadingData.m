@@ -1,20 +1,25 @@
 %% Copyright 2014 MERCIER David
-function [config, data] = TriDiMap_loadingData(config)
+function [config, data] = TriDiMap_loadingData
 %% Function to load Excel data from indentation tests
+TriDiMap_getParam;
+
+g = guidata(gcf);
+config = g.config;
+h = g.handles;
 
 %% Open window to select file
 title_importdata_Window = 'File Selector from';
-data_path = config.data_path;
+data_path = g.config.data.data_path;
 
 [data.filename_data, data.pathname_data, filterindex_data] = ...
     uigetfile('*.xls;*.xlsx', ...
     char(title_importdata_Window), data_path);
 
 if data_path ~= 0
-    config.data_path = data_path;
+    g.config.data.data_path = data_path;
 end
 
-dataType = config.dataType;
+dataType = get(h.pm_set_file, 'Value');
 
 %% Handle canceled file selection
 if data.filename_data == 0
@@ -80,6 +85,7 @@ if config.flag_data
             ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
             ind_YM = find(strncmp(txtAll(1,:), 'Avg Modulus', 10));
             ind_H = find(strncmp(txtAll(1,:), 'Avg Hardness', 10));
+            flagSKoss = 0;
             if isempty(ind_YM)
                 ind_YM = find(strncmp(txtAll(1,:), 'Modulus At Max Load', 10));
             end
@@ -87,24 +93,18 @@ if config.flag_data
                 ind_H = find(strncmp(txtAll(1,:), 'Hardness At Max Load', 10));
             end
             if isempty(ind_YM)
-                if config.flagSKoss.typeData == 1
-                    ind_YM = find(strncmp(txtAll(1,:), 'E Average Over Defined Range', 10));
-                elseif config.flagSKoss.typeData == 2
+                ind_YM = find(strncmp(txtAll(1,:), 'E Average Over Defined Range', 10));
+                if isempty(ind_YM)
                     ind_YM = find(strncmp(txtAll(1,:), 'Modulus From Unload', 10));
                 end
                 flagSKoss = 1;
-            else
-                flagSKoss = 0;
             end
             if isempty(ind_H)
-                if config.flagSKoss.typeData == 1
-                    ind_H = find(strncmp(txtAll(1,:), 'H Average Over Defined Range', 10));
-                elseif config.flagSKoss.typeData == 2
+                ind_H = find(strncmp(txtAll(1,:), 'H Average Over Defined Range', 10));
+                if isempty(ind_H)
                     ind_H = find(strncmp(txtAll(1,:), 'Hardness From Unload', 10));
                 end
                 flagSKoss = 1;
-            else
-                flagSKoss = 0;
             end
             endLines = 3;
         elseif dataType == 2
@@ -247,5 +247,12 @@ if config.flag_data
         end
     end
 end
+
+g.data = data;
+g.config = config;
+g.handles = h;
+guidata(gcf, g);
+
+TriDiMap_runPlot;
 
 end
