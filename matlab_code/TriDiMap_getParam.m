@@ -1,8 +1,10 @@
 %% Copyright 2014 MERCIER David
 function TriDiMap_getParam
 %% Function to get parameters from the GUI
-TriDiMap_updateUnit;
-
+gui = guidata(gcf);
+if ~gui.config.saveFlag
+    TriDiMap_updateUnit;
+end
 gui = guidata(gcf);
 
 gui.config.dataType = get(gui.handles.pm_set_file, 'Value');

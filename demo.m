@@ -44,6 +44,7 @@ gui.config.version_toolbox = '1.0';
 gui.config.data.data_path = '.\data_indentation';
 
 %% Variables initialization
+gui.config.saveFlag = 0;
 gui.config.flag_data = 0;
 gui.config.cminOld = 0;
 gui.config.cmaxOld = 10;
