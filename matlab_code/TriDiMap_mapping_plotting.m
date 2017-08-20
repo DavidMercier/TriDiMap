@@ -21,6 +21,14 @@ logZ = gui.config.logZ;
 minorTicks = gui.config.minorTicks;
 colormapStr = gui.config.colorMap;
 
+%% Check
+if cmin > cmax
+    cmax = cmin*1.2;
+    warning('Minimum property value has to be lower than the maximum property value !');
+    gui.config.cmax = cmax;
+    set(gui.handles.value_colorMax_GUI, 'String', num2str(cmax));
+end
+
 %% 1 map (with or without markers)
 Contours = cmin:(cmax-cmin)/intervalScaleBar:cmax;
 
