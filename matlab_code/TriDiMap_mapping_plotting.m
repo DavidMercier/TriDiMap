@@ -179,8 +179,17 @@ if gui.config.MinMax
     [rowMax, colMax] = find(data2plot==max(data2plot(:)));
     strmin = min(data2plot(:));
     strmax = max(data2plot(:));
-    text(rowMin, colMin, num2str(strmin), 'Color','Black','FontSize',14);
-    text(rowMax, colMax, num2str(strmax), 'Color','Black','FontSize',14);
+    
+    %((round(abs(x_value)/gui.config.XStep)+1)*gui.config.interpFactVal)-(gui.config.interpFactVal-1)
+    
+    text(...
+        (((rowMin+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.XStep, ...
+        (((colMin+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.YStep, ...
+        num2str(strmin), 'Color','Black','FontSize',FontSizeVal);
+    text(...
+        (((rowMax+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.XStep, ...
+        (((colMax+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.YStep, ...
+        num2str(strmax), 'Color','Black','FontSize',FontSizeVal);
 end
 
 if logZ && contourPlot

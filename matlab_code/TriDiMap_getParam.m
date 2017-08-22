@@ -12,7 +12,6 @@ gui.config.N_XStep_default = str2num(get(gui.handles.value_numXindents_GUI, 'Str
 gui.config.N_YStep_default = str2num(get(gui.handles.value_numYindents_GUI, 'String'));
 gui.config.XStep_default = str2num(get(gui.handles.value_deltaXindents_GUI, 'String'));
 gui.config.YStep_default = str2num(get(gui.handles.value_deltaYindents_GUI, 'String'));
-gui.config.angleRotation_default = str2num(get(gui.handles.value_angleRot_GUI, 'String'));
 
 gui.config.property = get(gui.handles.property_GUI, 'Value');
 
@@ -47,7 +46,22 @@ else
 end
 
 gui.config.interpBool = get(gui.handles.cb_interpMap_GUI, 'Value');
+if gui.config.interpBool == 0
+    gui.config.interpFactVal = 1;
+end
 gui.config.interpFact = get(gui.handles.slider_interpMap_GUI, 'Value');
+if gui.config.interpBool == 1
+    if gui.config.interpFact == 1
+        gui.config.interpFactVal = 2;
+    elseif gui.config.interpFact == 2
+        gui.config.interpFactVal = 4;
+    elseif gui.config.interpFact == 3
+        gui.config.interpFactVal = 8;
+    elseif gui.config.interpFact == 4
+        gui.config.interpFactVal = 16;
+    end
+end
+
 gui.config.smoothBool = get(gui.handles.cb_smoothMap_GUI, 'Value');
 gui.config.smoothFact = get(gui.handles.slider_smoothMap_GUI, 'Value');
 if gui.config.smoothBool

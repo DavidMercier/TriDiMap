@@ -173,7 +173,7 @@ if config.flag_data
                 config.angleRotation = angleRotation_X;
             else
                 display('Wrong calculations of rotationnal angle');
-                config.angleRotation = config.angleRotation_default;
+                config.angleRotation = 0;
             end
         else
             config.angleRotation = config.angleRotation_default;
