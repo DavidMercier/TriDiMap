@@ -15,20 +15,19 @@ gui.config.YStep_default = str2num(get(gui.handles.value_deltaYindents_GUI, 'Str
 gui.config.angleRotation_default = str2num(get(gui.handles.value_angleRot_GUI, 'String'));
 
 gui.config.property = get(gui.handles.property_GUI, 'Value');
+
 gui.config.rawData = get(gui.handles.cb_pixData_GUI, 'Value');
-gui.config.noNan = get(gui.handles.cb_pixNaN_GUI, 'Value');
 if gui.config.rawData
-    gui.config.smoothBool = 0;
-    set(gui.handles.cb_smoothMap_GUI, 'Visible', 'off');
-    set(gui.handles.slider_smoothMap_GUI, 'Visible', 'off');
     gui.config.contourPlot = 0;
     set(gui.handles.cb_contourPlotMap_GUI, 'Visible', 'off');
-    display('Smoothing and contour plot not active, when pixelized data is plotted !');
+    display('Contour plot not active, when pixelized data is plotted !');
 else
     set(gui.handles.cb_smoothMap_GUI, 'Visible', 'on');
     set(gui.handles.slider_smoothMap_GUI, 'Visible', 'on');
     set(gui.handles.cb_contourPlotMap_GUI, 'Visible', 'on');
 end
+
+gui.config.noNan = get(gui.handles.cb_pixNaN_GUI, 'Value');
 if ~gui.config.noNan
     gui.config.interpBool = 0;
     set(gui.handles.cb_interpMap_GUI, 'Visible', 'off');
@@ -46,6 +45,7 @@ else
     set(gui.handles.cb_smoothMap_GUI, 'Visible', 'on');
     set(gui.handles.slider_smoothMap_GUI, 'Visible', 'on');
 end
+
 gui.config.interpBool = get(gui.handles.cb_interpMap_GUI, 'Value');
 gui.config.interpFact = get(gui.handles.slider_interpMap_GUI, 'Value');
 gui.config.smoothBool = get(gui.handles.cb_smoothMap_GUI, 'Value');
@@ -75,6 +75,7 @@ else
 end
 
 gui.config.contourPlot = get(gui.handles.cb_contourPlotMap_GUI, 'Value');
+gui.config.flipColor = get(gui.handles.cb_flipColormap_GUI, 'Value');
 gui.config.scaleAxis = get(gui.handles.cb_autoColorbar_GUI, 'Value');
 gui.config.cmin = str2num(get(gui.handles.value_colorMin_GUI, 'String'));
 gui.config.cmax = str2num(get(gui.handles.value_colorMax_GUI, 'String'));

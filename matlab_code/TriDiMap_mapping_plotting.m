@@ -3,7 +3,7 @@ function TriDiMap_mapping_plotting
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
 gui = guidata(gcf);
 
-FontSizeVal = 14;
+FontSizeVal = gui.config.FontSizeVal;
 xData_interp = gui.data.xData_interp;
 yData_interp = gui.data.yData_interp;
 data2plot = gui.data.data2plot;
@@ -20,14 +20,6 @@ contourPlot = gui.config.contourPlot;
 logZ = gui.config.logZ;
 minorTicks = gui.config.minorTicks;
 colormapStr = gui.config.colorMap;
-
-%% Check
-if cmin > cmax
-    cmax = cmin*1.2;
-    warning('Minimum property value has to be lower than the maximum property value !');
-    gui.config.cmax = cmax;
-    set(gui.handles.value_colorMax_GUI, 'String', num2str(cmax));
-end
 
 %% 1 map (with or without markers)
 Contours = cmin:(cmax-cmin)/intervalScaleBar:cmax;
@@ -127,10 +119,19 @@ if intervalScaleBar > 0
             cmap = [colormapStr, '(',num2str(intervalScaleBar),')'];
         end
     end
-    colormap(cmap);
-else
-    colormap(colormapStr);
-    % Use flipud to reverse colormap
+    cmap_Flip = colormap(cmap);
+    if ~gui.config.flipColor
+        colormap(cmap_Flip);
+    else
+        colormap(flipud(cmap_Flip));
+    end
+elseif intervalScaleBar == 0
+    cmap_Flip = colormap([colormapStr, '(',num2str(10000),')']);
+    if ~gui.config.flipColor
+        colormap(cmap_Flip);
+    else
+        colormap(flipud(cmap_Flip));
+    end
 end
 if ~gui.config.scaleAxis
     if cmin == round(min(data2plot(:)))
@@ -139,6 +140,12 @@ if ~gui.config.scaleAxis
     end
     if cmax == round(max(data2plot(:)))
         cmax = gui.config.cmaxOld;
+        set(gui.handles.value_colorMax_GUI, 'String', num2str(cmax));
+    end
+    if cmin >= cmax
+        cmax = cmin*1.2;
+        warning('Minimum property value has to be lower than the maximum property value !');
+        gui.config.cmax = cmax;
         set(gui.handles.value_colorMax_GUI, 'String', num2str(cmax));
     end
     if logZ && contourPlot

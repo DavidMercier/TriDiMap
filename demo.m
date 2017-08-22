@@ -48,6 +48,7 @@ gui.config.saveFlag = 0;
 gui.config.flag_data = 0;
 gui.config.cminOld = 0;
 gui.config.cmaxOld = 10;
+gui.config.FontSizeVal = 14;
 
 % Path of optical observations
 gui.config.plotImage = 0; % Boolean to plot optical observations
