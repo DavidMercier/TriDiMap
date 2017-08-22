@@ -176,7 +176,7 @@ if config.flag_data
                 config.angleRotation = 0;
             end
         else
-            config.angleRotation = config.angleRotation_default;
+            config.angleRotation = 0;
             config.N_XStep = config.N_XStep_default;
             config.N_YStep = config.N_YStep_default;
         end

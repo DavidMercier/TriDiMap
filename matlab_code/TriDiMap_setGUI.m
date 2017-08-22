@@ -512,7 +512,7 @@ handles.unit_z_values_GUI = uicontrol('Parent', gcf,...
 
 %% Plot configuration
 handles.AxisPlot_GUI = axes('Parent', gcf,...
-    'Position', [0.33 0.10 0.65 0.75]);
+    'Position', [0.33 0.10 0.60 0.75]);
 
 set(gcf,'CurrentAxes', handles.AxisPlot_GUI);
 
@@ -527,7 +527,7 @@ handles.save_GUI = uicontrol('Parent', gcf,...
     'FontSize', 12,...
     'BackgroundColor', [0.745 0.745 0.745]);
 
-%% Coordinate system
+%% Coordinates system
 xVal = 0.93;
 yVal = 0.89;
 arrowLength = 0.03;
