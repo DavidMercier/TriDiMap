@@ -8,14 +8,14 @@ config = gui.config;
 
 %% Clean data from Excel files
 if config.flag_data
+    dataYM = gui.data.expValues_mat.YM;
+    dataH = gui.data.expValues_mat.H;
     
     if gui.config.noNan
-        gui.data.expValues_mat.YM = ...
-            TriDiMap_cleaningData(gui.data.expValues_mat.YM);
-        gui.data.expValues_mat.H = ...
-            TriDiMap_cleaningData(gui.data.expValues_mat.H);
-        YM4calc = gui.data.expValues_mat.YM;
-        H4calc = gui.data.expValues_mat.H;
+        dataYM_cleaned = TriDiMap_cleaningData(dataYM);
+        dataH_cleaned = TriDiMap_cleaningData(dataH);
+        dataYM = dataYM_cleaned;
+        dataH = dataH_cleaned;
     end
     
     gui.config.data_path = config.data_path;
@@ -28,11 +28,11 @@ if config.flag_data
     %% Translation step
     if gui.config.translationStep && ~gui.config.normalizationStep
         % Normalization of elastic modulus
-        gui.data.expValues_mat_average.YM = mean(mean(gui.data.expValues_mat.YM));
-        gui.data.expValues_mat_norm.YM = gui.data.expValues_mat.YM - gui.data.expValues_mat_average.YM;
+        gui.data.expValues_mat_average.YM = mean(mean(dataYM));
+        gui.data.expValues_mat_norm.YM = dataYM - gui.data.expValues_mat_average.YM;
         % Normalization of hardness
-        gui.data.expValues_mat_average.H = mean(mean(gui.data.expValues_mat.H));
-        gui.data.expValues_mat_norm.H = gui.data.expValues_mat.H - gui.data.expValues_mat_average.H;
+        gui.data.expValues_mat_average.H = mean(mean(dataH));
+        gui.data.expValues_mat_norm.H = dataH - gui.data.expValues_mat_average.H;
     elseif gui.config.translationStep && gui.config.normalizationStep
         display('Translation not possible because normalization is active.');
     end
@@ -40,14 +40,14 @@ if config.flag_data
     %% Normalization of dataset
     if gui.config.normalizationStep && ~gui.config.translationStep
         if gui.config.normalizationStepVal == 1
-            YM4calc = gui.data.expValues_mat.YM/min(min(gui.data.expValues_mat.YM));
-            H4calc = gui.data.expValues_mat.H/min(min(gui.data.expValues_mat.H));
+            dataYM = dataYM/min(min(dataYM));
+            dataH = dataH/min(min(dataH));
         elseif gui.config.normalizationStepVal == 2
-            YM4calc = gui.data.expValues_mat.YM/mean(mean(gui.data.expValues_mat.YM));
-            H4calc = gui.data.expValues_mat.H/mean(mean(gui.data.expValues_mat.H));
+            dataYM = dataYM/mean(mean(dataYM));
+            dataH = dataH/mean(mean(dataH));
         elseif gui.config.normalizationStepVal == 3
-            YM4calc = gui.data.expValues_mat.YM/max(max(gui.data.expValues_mat.YM));
-            H4calc = gui.data.expValues_mat.H/max(max(gui.data.expValues_mat.H));
+            dataYM = dataYM/max(max(dataYM));
+            dataH = dataH/max(max(dataH));
         end
         
     elseif gui.config.normalizationStep && transStep
@@ -59,25 +59,25 @@ if config.flag_data
         [gui.data.YM.expValuesInterp, gui.data.YM.expValuesSmoothed, ...
             gui.data.YM.expValuesInterpSmoothed] = ...
             TriDiMap_interpolation_smoothing(...
-            YM4calc, ...
+            dataYM, ...
             gui.config.interpBool, gui.config.interpFact, ...
             gui.config.smoothBool, gui.config.smoothFact,...
             gui.config.binarizedGrid);
-
+        
         [gui.data.H.expValuesInterp, gui.data.H.expValuesSmoothed, ...
             gui.data.H.expValuesInterpSmoothed] = ...
             TriDiMap_interpolation_smoothing(...
-            H4calc, ...
+            dataH, ...
             gui.config.interpBool, gui.config.interpFact, ...
             gui.config.smoothBool, gui.config.smoothFact,...
             gui.config.binarizedGrid);
     else
-        gui.data.YM.expValuesInterp = gui.data.expValues_mat.YM;
-        gui.data.YM.expValuesSmoothed = gui.data.expValues_mat.YM;
-        gui.data.YM.expValuesInterpSmoothed = gui.data.expValues_mat.YM;
-        gui.data.H.expValuesInterp = gui.data.expValues_mat.H;
-        gui.data.H.expValuesSmoothed = gui.data.expValues_mat.H;
-        gui.data.H.expValuesInterpSmoothed = gui.data.expValues_mat.H;
+        gui.data.YM.expValuesInterp = dataYM;
+        gui.data.YM.expValuesSmoothed = dataYM;
+        gui.data.YM.expValuesInterpSmoothed = dataYM;
+        gui.data.H.expValuesInterp = dataH;
+        gui.data.H.expValuesSmoothed = dataH;
+        gui.data.H.expValuesInterpSmoothed = dataH;
     end
     
     %% Grid meshing
@@ -85,31 +85,35 @@ if config.flag_data
     y_step = gui.config.YStep;
     
     if gui.config.N_XStep_default == gui.config.N_YStep_default
-        gui.data.xData = 0:x_step:(size(gui.data.expValues_mat.YM,1)-1)*x_step;
-        gui.data.yData = 0:y_step:(size(gui.data.expValues_mat.YM,2)-1)*y_step;
+        gui.data.xData = 0:x_step:(size(dataYM,1)-1)*x_step;
+        gui.data.yData = 0:y_step:(size(dataYM,2)-1)*y_step;
     elseif gui.config.N_XStep_default ~= gui.config.N_YStep_default
-        gui.data.xData = 0:x_step:(size(gui.data.expValues_mat.YM,1)-1)*x_step;
-        gui.data.yData = 0:y_step:(size(gui.data.expValues_mat.YM,2)-1)*y_step;
+        gui.data.xData = 0:x_step:(size(dataYM,1)-1)*x_step;
+        gui.data.yData = 0:y_step:(size(dataYM,2)-1)*y_step;
     end
     
-    [gui.data.xData_markers, gui.data.yData_markers] = ...
-        meshgrid(gui.data.xData, gui.data.yData);
-    
-    [xData_interp, yData_interp] = ...
-        meshgrid(0:x_step:(size(gui.data.YM.expValuesInterpSmoothed,1)-1)*x_step, ...
-        0:y_step:(size(gui.data.YM.expValuesInterpSmoothed,2)-1)*y_step);
+    if gui.config.N_XStep ~= gui.config.N_YStep
+        [gui.data.xData_markers, gui.data.yData_markers] = ...
+            meshgrid(1:length(gui.data.xData),1:length(gui.data.yData));
+        gui.data.xData_markers = (gui.data.xData_markers-1)*x_step;
+        gui.data.yData_markers = (gui.data.yData_markers-1)*y_step;
+    else
+        [gui.data.xData_markers, gui.data.yData_markers] = ...
+            meshgrid(gui.data.xData, gui.data.yData);
+    end
+    %     [xData_interp, yData_interp] = ...
+    %         meshgrid(0:x_step:(size(gui.data.YM.expValuesInterpSmoothed,1)-1)*x_step, ...
+    %         0:y_step:(size(gui.data.YM.expValuesInterpSmoothed,2)-1)*y_step);
     
     if gui.config.rawData
         gui.data.xData_interp = gui.data.xData;
         gui.data.yData_interp = gui.data.yData;
-    else
-        if gui.config.interpBool
-            gui.data.xData_interp = xData_interp./(2^(gui.config.interpFact));
-            gui.data.yData_interp = yData_interp./(2^(gui.config.interpFact));
-        else
-            gui.data.xData_interp = gui.data.xData_markers;
-            gui.data.yData_interp = gui.data.yData_markers;
-        end
+        %     elseif gui.config.rawData && gui.config.interpBool
+        %         gui.data.xData_interp = xData_interp./(2^(gui.config.interpFact));
+        %         gui.data.yData_interp = yData_interp./(2^(gui.config.interpFact));
+    elseif ~gui.config.rawData
+        gui.data.xData_interp = gui.data.xData_markers;
+        gui.data.yData_interp = gui.data.yData_markers;
     end
 end
 
@@ -154,7 +158,7 @@ if config.flag_data
     guidata(gcf, gui);
     if get(gui.handles.cb_errorMap_GUI, 'Value')
         TriDiMap_error_plotting;
-    else    
+    else
         TriDiMap_mapping_plotting;
     end
     gui = guidata(gcf);

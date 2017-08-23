@@ -68,6 +68,7 @@ if gui.config.smoothBool
     set(gui.handles.cb_errorMap_GUI, 'Visible', 'on');
 else
     set(gui.handles.cb_errorMap_GUI, 'Visible', 'off');
+    set(gui.handles.cb_errorMap_GUI, 'Value', 0);
 end
 
 gui.config.normalizationStep = get(gui.handles.cb_normMap_GUI, 'Value');
@@ -117,13 +118,6 @@ if gui.config.plotImage
     gui.config.fracCalc = 1;
     gui.config.intervalScaleBar_H = 2;
     gui.config.intervalScaleBar_YM = 2;
-end
-if gui.config.N_XStep_default ~= gui.config.N_YStep_default
-    gui.config.Markers = 0;
-    set(gui.handles.cb_markers_GUI, 'Visible', 'off');
-    display('Markers can''t be plotted, because grid is not square !');
-else
-    set(gui.handles.cb_markers_GUI, 'Visible', 'on');
 end
 
 guidata(gcf, gui);

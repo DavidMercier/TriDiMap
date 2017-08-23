@@ -62,10 +62,13 @@ if ~contourPlot
 else
     markersVal = ones(length(expValues));
 end
+if gui.config.N_XStep ~= gui.config.N_YStep
+    markersVal = ones(size(expValues,1),size(expValues,2));
+end
 hold on;
 
 if Markers
-    plot3(xData_markers, yData_markers, markersVal,'k+');
+    plot3(xData_markers', yData_markers', markersVal,'k+');
     hold on;
 end
 
