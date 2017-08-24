@@ -10,8 +10,8 @@ gui = guidata(gcf);
 gui.config.dataType = get(gui.handles.pm_set_file, 'Value');
 gui.config.N_XStep_default = str2num(get(gui.handles.value_numXindents_GUI, 'String'));
 gui.config.N_YStep_default = str2num(get(gui.handles.value_numYindents_GUI, 'String'));
-gui.config.XStep_default = str2num(get(gui.handles.value_deltaXindents_GUI, 'String'));
-gui.config.YStep_default = str2num(get(gui.handles.value_deltaYindents_GUI, 'String'));
+gui.config.XStep = str2num(get(gui.handles.value_deltaXindents_GUI, 'String'));
+gui.config.YStep = str2num(get(gui.handles.value_deltaYindents_GUI, 'String'));
 
 gui.config.property = get(gui.handles.property_GUI, 'Value');
 
@@ -21,8 +21,6 @@ if gui.config.rawData
     set(gui.handles.cb_contourPlotMap_GUI, 'Visible', 'off');
     display('Contour plot not active, when pixelized data is plotted !');
 else
-    set(gui.handles.cb_smoothMap_GUI, 'Visible', 'on');
-    set(gui.handles.slider_smoothMap_GUI, 'Visible', 'on');
     set(gui.handles.cb_contourPlotMap_GUI, 'Visible', 'on');
 end
 
@@ -30,26 +28,26 @@ gui.config.noNan = get(gui.handles.cb_pixNaN_GUI, 'Value');
 if ~gui.config.noNan
     gui.config.interpBool = 0;
     set(gui.handles.cb_interpMap_GUI, 'Visible', 'off');
-    set(gui.handles.slider_interpMap_GUI, 'Visible', 'off');
+    set(gui.handles.pm_interpMap_GUI, 'Visible', 'off');
     gui.config.smoothBool = 0;
     set(gui.handles.cb_smoothMap_GUI, 'Visible', 'off');
-    set(gui.handles.slider_smoothMap_GUI, 'Visible', 'off');
+    set(gui.handles.pm_smoothMap_GUI, 'Visible', 'off');
     gui.config.binarizedGrid = 0;
     display('Interpolation and smoothing not active, because NaN values not removed/corrected !');
 else
     set(gui.handles.cb_interpMap_GUI, 'Visible', 'on');
-    set(gui.handles.slider_interpMap_GUI, 'Visible', 'on');
+    set(gui.handles.pm_interpMap_GUI, 'Visible', 'on');
     set(gui.handles.cb_smoothMap_GUI, 'Visible', 'on');
-    set(gui.handles.slider_smoothMap_GUI, 'Visible', 'on');
-    set(gui.handles.cb_smoothMap_GUI, 'Visible', 'on');
-    set(gui.handles.slider_smoothMap_GUI, 'Visible', 'on');
+    set(gui.handles.pm_smoothMap_GUI, 'Visible', 'on');
+    set(gui.handles.cb_errorMap_GUI, 'Visible', 'on');
 end
 
 gui.config.interpBool = get(gui.handles.cb_interpMap_GUI, 'Value');
 if gui.config.interpBool == 0
     gui.config.interpFactVal = 1;
 end
-gui.config.interpFact = get(gui.handles.slider_interpMap_GUI, 'Value');
+gui.config.interpFactStr = get_value_popupmenu(gui.handles.pm_interpMap_GUI, listInterp);
+gui.config.interpFact = get(gui.handles.pm_interpMap_GUI, 'Value');
 if gui.config.interpBool == 1
     if gui.config.interpFact == 1
         gui.config.interpFactVal = 2;
@@ -60,33 +58,50 @@ if gui.config.interpBool == 1
     elseif gui.config.interpFact == 4
         gui.config.interpFactVal = 16;
     end
+    set(gui.handles.pm_interpMap_GUI, 'Visible', 'on');
+else
+    set(gui.handles.pm_interpMap_GUI, 'Visible', 'off');
 end
 
 gui.config.smoothBool = get(gui.handles.cb_smoothMap_GUI, 'Value');
-gui.config.smoothFact = get(gui.handles.slider_smoothMap_GUI, 'Value');
+gui.config.smoothFactStr = get_value_popupmenu(gui.handles.pm_smoothMap_GUI, listSmooth);
+gui.config.smoothFact = get(gui.handles.pm_smoothMap_GUI, 'Value');
 if gui.config.smoothBool
     set(gui.handles.cb_errorMap_GUI, 'Visible', 'on');
+    set(gui.handles.pm_smoothMap_GUI, 'Visible', 'on');
 else
     set(gui.handles.cb_errorMap_GUI, 'Visible', 'off');
     set(gui.handles.cb_errorMap_GUI, 'Value', 0);
+    set(gui.handles.pm_smoothMap_GUI, 'Visible', 'off');
 end
 
 gui.config.normalizationStep = get(gui.handles.cb_normMap_GUI, 'Value');
 gui.config.normalizationStepVal = get(gui.handles.pm_normMap_GUI, 'Value');
 if gui.config.normalizationStep
-    set(gui.handles.pm_normMap_GUI, 'Visible', 'on');
     set(gui.handles.cb_autoColorbar_GUI, 'Value', 1);
+    set(gui.handles.cb_transMap_GUI, 'Visible', 'off');
+    set(gui.handles.value_transMap_GUI, 'Visible', 'off'); 
 else
-    set(gui.handles.pm_normMap_GUI, 'Visible', 'off');
+    set(gui.handles.cb_transMap_GUI, 'Visible', 'on');
+    set(gui.handles.value_transMap_GUI, 'Visible', 'on');
 end
 gui.config.translationStep = get(gui.handles.cb_transMap_GUI, 'Value');
-gui.config.translationStepVal = get(gui.handles.value_transMap_GUI, 'Value');
+gui.config.translationStepVal = str2num(get(gui.handles.value_transMap_GUI, 'String'));
 if gui.config.translationStep
     set(gui.handles.value_transMap_GUI, 'Visible', 'on');
     set(gui.handles.unit_transMap_GUI, 'Visible', 'on');
+    set(gui.handles.cb_normMap_GUI, 'Visible', 'off');
+    set(gui.handles.pm_normMap_GUI, 'Visible', 'off');
 else
     set(gui.handles.value_transMap_GUI, 'Visible', 'off');
     set(gui.handles.unit_transMap_GUI, 'Visible', 'off');
+    set(gui.handles.cb_normMap_GUI, 'Visible', 'on');
+    set(gui.handles.pm_normMap_GUI, 'Visible', 'on');
+end
+if gui.config.normalizationStep
+    set(gui.handles.pm_normMap_GUI, 'Visible', 'on');
+else
+    set(gui.handles.pm_normMap_GUI, 'Visible', 'off');
 end
 
 gui.config.contourPlot = get(gui.handles.cb_contourPlotMap_GUI, 'Value');

@@ -14,6 +14,9 @@ set(gui.handles.unit_x_values_GUI, 'string', strUnit_Length);
 set(gui.handles.unit_y_values_GUI, 'string', strUnit_Length);
 set(gui.handles.unit_z_values_GUI, 'string', strUnit_Property);
 set(gui.handles.unit_transMap_GUI, 'string', strUnit_Property);
+set(gui.handles.unit_MinVal_GUI, 'string', strUnit_Property);
+set(gui.handles.unit_MeanVal_GUI, 'string', strUnit_Property);
+set(gui.handles.unit_MaxVal_GUI, 'string', strUnit_Property);
 
 gui.config.strUnit_Length = strUnit_Length;
 gui.config.strUnit_Property = strUnit_Property;

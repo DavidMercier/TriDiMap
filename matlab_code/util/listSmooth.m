@@ -1,0 +1,9 @@
+%% Copyright 2014 MERCIER David
+function listSmoothVal = listSmooth
+
+listSmoothVal = {...
+    '1'; ...
+    '2'; ...
+    '3'};
+
+end

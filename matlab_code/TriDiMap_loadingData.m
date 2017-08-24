@@ -9,7 +9,13 @@ h = g.handles;
 
 %% Open window to select file
 title_importdata_Window = 'File Selector from';
-data_path = g.config.data.data_path;
+
+if ~isempty(config.data.data_pathNew)
+    data_path = config.data.data_pathNew;
+else
+    data_path = config.data.data_path;
+end
+
 
 [data.filename_data, data.pathname_data, filterindex_data] = ...
     uigetfile('*.xls;*.xlsx', ...
@@ -33,10 +39,11 @@ end
 
 if isequal(data.filename_data,'')
     disp('User selected Cancel');
-    data.pathname_data = 'no_data';
+    data.pathname_data = '';
     data.filename_data = 'no_data';
     ext = '.nul';
     config.flag_data = 0;
+    config.flagValid = 0;
 else
     disp(['User selected: ', ...
         fullfile(data.pathname_data, data.filename_data)]);
@@ -49,6 +56,8 @@ data2import = [data.pathname_data, data.filename_data];
 
 config.name = name;
 config.pathStr = data.pathname_data;
+config.data.data_pathNew = data.pathname_data;
+set(g.handles.opendata_str_GUI, 'String', data.pathname_data);
 
 %% Loading data
 if config.flag_data
@@ -185,6 +194,8 @@ if config.flag_data
         % X step in microns
         if ~isempty(ind_Xstep)
             config.XStep = deltaXX / cosd(config.angleRotation);
+            set(g.handles.value_deltaXindents_GUI, 'String', num2str(config.XStep));
+            set(g.handles.value_deltaYindents_GUI, 'String', num2str(config.YStep));
         else
             config.XStep = config.XStep_default;
         end
@@ -245,13 +256,15 @@ if config.flag_data
                 data.expValues_mat.H(:,evenIndex) = ...
                     flipud(data.expValues_mat.H(:,evenIndex));
             end
-            gui.data.flagValid = 1;
+            config.flagValid = 1;
         catch
             data.expValues_mat.YM = 0;
             data.expValues_mat.H = 0;
             errordlg('Wrong inputs for number of indents along X or/and Y axis !');
-            gui.data.flagValid = 0;
+            config.flagValid = 0;
         end
+    else
+        config.flagValid = 0;
     end
 end
 
@@ -259,7 +272,7 @@ g.data = data;
 g.config = config;
 g.handles = h;
 guidata(gcf, g);
-if gui.data.flagValid
+if config.flagValid
     TriDiMap_runPlot;
 end
 end

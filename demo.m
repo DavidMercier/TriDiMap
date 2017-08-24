@@ -14,6 +14,10 @@ gui.config = struct();
 gui.config.data = struct();
 gui.config.numerics = struct();
 
+%% Check Matlab version
+v = ver;
+gui.config.MatlabRelease = v(1).Release;
+
 %% Check License of Statistics Toolbox
 license_msg = ['Sorry, no license found for the Matlab ', ...
     'Statistics Toolbox!'];
@@ -42,6 +46,7 @@ gui.config.version_toolbox = '2.0';
 % gui.config.url_help = 'http://nims.readthedocs.org/en/latest/';
 % gui.config.pdf_help = 'https://media.readthedocs.org/pdf/nims/latest/nims.pdf';
 gui.config.data.data_path = '.\data_indentation';
+gui.config.data.data_pathNew = '.\data_indentation';
 
 %% Variables initialization
 gui.config.saveFlag = 0;
@@ -49,6 +54,8 @@ gui.config.flag_data = 0;
 gui.config.cminOld = 0;
 gui.config.cmaxOld = 10;
 gui.config.FontSizeVal = 14;
+gui.config.XStep_default = 2;
+gui.config.YStep_default = 2;
 
 % Path of optical observations
 gui.config.plotImage = 0; % Boolean to plot optical observations

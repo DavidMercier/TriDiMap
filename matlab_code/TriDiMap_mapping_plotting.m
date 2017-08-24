@@ -22,7 +22,15 @@ minorTicks = gui.config.minorTicks;
 colormapStr = gui.config.colorMap;
 
 %% 1 map (with or without markers)
-Contours = cmin:(cmax-cmin)/intervalScaleBar:cmax;
+if logZ
+    if cmin < 1
+        cmin = 1;
+        set(gui.handles.value_colorMin_GUI, 'String', num2str(cmin));
+    end
+end
+if gui.config.cminOld < 0
+    gui.config.cminOld = 0;
+end
 
 if ~rawData
     if ~contourPlot
@@ -195,6 +203,7 @@ if gui.config.MinMax
         num2str(strmax), 'Color','Black','FontSize',FontSizeVal);
 end
 
+Contours = cmin:(cmax-cmin)/intervalScaleBar:cmax;
 if logZ && contourPlot
     hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
 elseif logZ && rawData

@@ -12,29 +12,8 @@ if config.flag_data
     dataH = gui.data.expValues_mat.H;
     
     if gui.config.noNan
-        dataYM_cleaned = TriDiMap_cleaningData(dataYM);
-        dataH_cleaned = TriDiMap_cleaningData(dataH);
-        dataYM = dataYM_cleaned;
-        dataH = dataH_cleaned;
-    end
-    
-    gui.config.data_path = config.data_path;
-    gui.config.flag_data = config.flag_data;
-    gui.config.N_XStep = config.N_XStep;
-    gui.config.N_YStep = config.N_YStep;
-    gui.config.XStep = config.XStep;
-    gui.config.YStep = config.YStep;
-    
-    %% Translation step
-    if gui.config.translationStep && ~gui.config.normalizationStep
-        % Normalization of elastic modulus
-        gui.data.expValues_mat_average.YM = mean(mean(dataYM));
-        gui.data.expValues_mat_norm.YM = dataYM - gui.data.expValues_mat_average.YM;
-        % Normalization of hardness
-        gui.data.expValues_mat_average.H = mean(mean(dataH));
-        gui.data.expValues_mat_norm.H = dataH - gui.data.expValues_mat_average.H;
-    elseif gui.config.translationStep && gui.config.normalizationStep
-        display('Translation not possible because normalization is active.');
+        dataYM = TriDiMap_cleaningData(dataYM);
+        dataH = TriDiMap_cleaningData(dataH);
     end
     
     %% Normalization of dataset
@@ -49,8 +28,16 @@ if config.flag_data
             dataYM = dataYM/max(max(dataYM));
             dataH = dataH/max(max(dataH));
         end
-        
-    elseif gui.config.normalizationStep && transStep
+        display('Translation not possible because normalization is active.');
+    end
+    
+    %% Translation step
+    if gui.config.translationStep && ~gui.config.normalizationStep
+        dataYM = dataYM + gui.config.translationStepVal;
+        dataYM((dataYM)<0) = 0;
+        dataH = dataH + gui.config.translationStepVal;
+        dataH((dataH)<0) = 0;
+        display('Negative values for the property are replaced by 0.');
         display('Normalization not possible because translation is active.');
     end
     
@@ -101,19 +88,16 @@ if config.flag_data
         [gui.data.xData_markers, gui.data.yData_markers] = ...
             meshgrid(gui.data.xData, gui.data.yData);
     end
-    %     [xData_interp, yData_interp] = ...
-    %         meshgrid(0:x_step:(size(gui.data.YM.expValuesInterpSmoothed,1)-1)*x_step, ...
-    %         0:y_step:(size(gui.data.YM.expValuesInterpSmoothed,2)-1)*y_step);
     
     if gui.config.rawData
         gui.data.xData_interp = gui.data.xData;
         gui.data.yData_interp = gui.data.yData;
-        %     elseif gui.config.rawData && gui.config.interpBool
-        %         gui.data.xData_interp = xData_interp./(2^(gui.config.interpFact));
-        %         gui.data.yData_interp = yData_interp./(2^(gui.config.interpFact));
     elseif ~gui.config.rawData
-        gui.data.xData_interp = gui.data.xData_markers;
-        gui.data.yData_interp = gui.data.yData_markers;
+        [xData_interp,  yData_interp] = ...
+            meshgrid(0:x_step:(size(gui.data.YM.expValuesInterpSmoothed,1)-1)*x_step, ...
+            0:y_step:(size(gui.data.YM.expValuesInterpSmoothed,2)-1)*y_step);
+        gui.data.xData_interp = xData_interp./(2^(gui.config.interpFact));
+        gui.data.yData_interp = yData_interp./(2^(gui.config.interpFact));
     end
 end
 
@@ -124,6 +108,13 @@ if config.flag_data
     elseif gui.config.property == 2
         gui.data.data2plot = gui.data.H.expValuesInterpSmoothed;
     end
+    
+    minVal = min(min(gui.data.data2plot));
+    meanVal = mean(mean(gui.data.data2plot));
+    maxVal = max(max(gui.data.data2plot));
+    set(gui.handles.value_MinVal_GUI, 'String', num2str(minVal));
+    set(gui.handles.value_MeanVal_GUI, 'String', num2str(meanVal));
+    set(gui.handles.value_MaxVal_GUI, 'String', num2str(maxVal));
     
     if ~gui.config.normalizationStep
         if gui.config.property == 1
