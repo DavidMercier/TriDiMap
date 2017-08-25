@@ -1,17 +1,18 @@
 %% Copyright 2014 MERCIER David
 function TriDiMap_runPlot
 %% Function to run the mapping
+reset(gca);
 TriDiMap_getParam;
-
 gui = guidata(gcf);
 config = gui.config;
-if gui.config.property == 1
-    data2use = gui.data.expValues_mat.YM;
-elseif gui.config.property == 2
-    data2use = gui.data.expValues_mat.H;
-end
-%% Crop data
+
 if config.flag_data
+    if gui.config.property == 1
+        data2use = gui.data.expValues_mat.YM;
+    elseif gui.config.property == 2
+        data2use = gui.data.expValues_mat.H;
+    end
+    %% Crop data
     data2use = TriDiMap_cropping(data2use);
     if length(data2use) == 1
         config.flag_data = 0;
@@ -147,6 +148,9 @@ if config.flag_data
         TriDiMap_mapping_plotting;
     end
     gui = guidata(gcf);
+else
+    errordlg(['First set indentation grid parameters and load an Excel file '...
+        'to plot a property map !']);
 end
 guidata(gcf, gui);
 end
