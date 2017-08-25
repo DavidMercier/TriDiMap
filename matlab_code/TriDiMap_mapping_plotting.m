@@ -13,7 +13,6 @@ cmax = gui.config.cmax;
 Markers = gui.config.Markers;
 xData_markers = gui.data.xData_markers;
 yData_markers = gui.data.yData_markers;
-expValues = gui.data.expValues_mat.YM;
 intervalScaleBar = gui.config.intervalScaleBar;
 rawData = gui.config.rawData;
 contourPlot = gui.config.contourPlot;
@@ -66,17 +65,15 @@ maxVal = max(max(data2plot));
 
 % Set z positions of markers
 if ~contourPlot
-    markersVal = ones(length(expValues)) * maxVal;
+    markersVal = ones(size(xData_markers,1),size(xData_markers,2)) * maxVal;
 else
-    markersVal = ones(length(expValues));
+    markersVal = ones(size(xData_markers,1),size(xData_markers,2));
 end
-if gui.config.N_XStep ~= gui.config.N_YStep
-    markersVal = ones(size(expValues,1),size(expValues,2));
-end
+
 hold on;
 
 if Markers
-    plot3(xData_markers', yData_markers', markersVal,'k+');
+    plot3(xData_markers', yData_markers', markersVal','k+');
     hold on;
 end
 

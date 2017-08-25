@@ -15,6 +15,11 @@ gui.config.YStep = str2num(get(gui.handles.value_deltaYindents_GUI, 'String'));
 
 gui.config.property = get(gui.handles.property_GUI, 'Value');
 
+gui.config.MinXCrop = str2num(get(gui.handles.value_MinXCrop_GUI, 'String'));
+gui.config.MaxXCrop = str2num(get(gui.handles.value_MaxXCrop_GUI, 'String'));
+gui.config.MinYCrop = str2num(get(gui.handles.value_MinYCrop_GUI, 'String'));
+gui.config.MaxYCrop = str2num(get(gui.handles.value_MaxYCrop_GUI, 'String'));
+
 gui.config.rawData = get(gui.handles.cb_pixData_GUI, 'Value');
 if gui.config.rawData
     gui.config.contourPlot = 0;
@@ -26,10 +31,10 @@ end
 
 gui.config.noNan = get(gui.handles.cb_pixNaN_GUI, 'Value');
 if ~gui.config.noNan
-    gui.config.interpBool = 0;
+    set(gui.handles.cb_interpMap_GUI, 'Value', 0);
     set(gui.handles.cb_interpMap_GUI, 'Visible', 'off');
     set(gui.handles.pm_interpMap_GUI, 'Visible', 'off');
-    gui.config.smoothBool = 0;
+    set(gui.handles.cb_smoothMap_GUI, 'Value', 0);
     set(gui.handles.cb_smoothMap_GUI, 'Visible', 'off');
     set(gui.handles.pm_smoothMap_GUI, 'Visible', 'off');
     gui.config.binarizedGrid = 0;

@@ -86,6 +86,12 @@ if config.flag_data
             try
                 [dataAll, txtAll, raw] = xlsread(data2import, 'Sheet1');
             catch
+                disp(['No Excel sheet named:', 'Sheet1', 'found in the Excel file !']);
+                try
+                    [dataAll, txtAll, raw] = xlsread(data2import, 'Feuil1');
+                catch
+                    disp(['No Excel sheet named:', 'Feuil1', 'found in the Excel file !']);
+                end
             end
         end
         
@@ -267,6 +273,11 @@ if config.flag_data
         config.flagValid = 0;
     end
 end
+
+set(h.value_MinXCrop_GUI, 'String', 1);
+set(h.value_MaxXCrop_GUI, 'String', num2str(get(h.value_numXindents_GUI, 'String')));
+set(h.value_MinYCrop_GUI, 'String', 1);
+set(h.value_MaxYCrop_GUI, 'String', num2str(get(h.value_numYindents_GUI, 'String')));
 
 g.data = data;
 g.config = config;

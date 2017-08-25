@@ -2,13 +2,8 @@ function TriDiMap_error_plotting
 %% Plot difference between interpolated data and smoothed data
 gui = guidata(gcf);
 
-if gui.config.property == 1
-    differenceVal = (gui.data.YM.expValuesInterpSmoothed' - ...
-        gui.data.YM.expValuesInterp');
-elseif gui.config.property == 2
-    differenceVal = (gui.data.H.expValuesInterpSmoothed' - ...
-        gui.data.H.expValuesInterp');
-end
+differenceVal = (gui.data.expValuesInterpSmoothed' - ...
+    gui.data.expValuesInterp');
 
 hError = surf(gui.data.xData_interp, gui.data.yData_interp, ...
     differenceVal,...
@@ -19,7 +14,6 @@ hError = surf(gui.data.xData_interp, gui.data.yData_interp, ...
 axis equal;
 shading interp;
 view(0,90);
-
 
 if strcmp(gui.config.strUnit_Length, 'µm')
     gui.config.strUnit_Length_Latex = '$\mu$m';

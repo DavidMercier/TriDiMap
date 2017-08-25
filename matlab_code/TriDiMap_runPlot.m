@@ -5,66 +5,57 @@ TriDiMap_getParam;
 
 gui = guidata(gcf);
 config = gui.config;
-
-%% Clean data from Excel files
+if gui.config.property == 1
+    data2use = gui.data.expValues_mat.YM;
+elseif gui.config.property == 2
+    data2use = gui.data.expValues_mat.H;
+end
+%% Crop data
 if config.flag_data
-    dataYM = gui.data.expValues_mat.YM;
-    dataH = gui.data.expValues_mat.H;
-    
+    data2use = TriDiMap_cropping(data2use);
+    if length(data2use) == 1
+        config.flag_data = 0;
+    end
+end
+%% Clean data
+if config.flag_data
     if gui.config.noNan
-        dataYM = TriDiMap_cleaningData(dataYM);
-        dataH = TriDiMap_cleaningData(dataH);
+        data2use = TriDiMap_cleaningData(data2use);
     end
     
     %% Normalization of dataset
     if gui.config.normalizationStep && ~gui.config.translationStep
         if gui.config.normalizationStepVal == 1
-            dataYM = dataYM/min(min(dataYM));
-            dataH = dataH/min(min(dataH));
+            data2use = data2use/min(min(data2use));
         elseif gui.config.normalizationStepVal == 2
-            dataYM = dataYM/mean(mean(dataYM));
-            dataH = dataH/mean(mean(dataH));
+            data2use = data2use/mean(mean(data2use));
         elseif gui.config.normalizationStepVal == 3
-            dataYM = dataYM/max(max(dataYM));
-            dataH = dataH/max(max(dataH));
+            data2use = data2use/max(max(data2use));
         end
         display('Translation not possible because normalization is active.');
     end
     
     %% Translation step
     if gui.config.translationStep && ~gui.config.normalizationStep
-        dataYM = dataYM + gui.config.translationStepVal;
-        dataYM((dataYM)<0) = 0;
-        dataH = dataH + gui.config.translationStepVal;
-        dataH((dataH)<0) = 0;
+        data2use = data2use + gui.config.translationStepVal;
+        data2use((data2use)<0) = 0;
         display('Negative values for the property are replaced by 0.');
         display('Normalization not possible because translation is active.');
     end
     
     %% Interpolating, smoothing and binarizing steps of dataset
     if gui.config.noNan
-        [gui.data.YM.expValuesInterp, gui.data.YM.expValuesSmoothed, ...
-            gui.data.YM.expValuesInterpSmoothed] = ...
+        [gui.data.expValuesInterp, gui.data.expValuesSmoothed, ...
+            gui.data.expValuesInterpSmoothed] = ...
             TriDiMap_interpolation_smoothing(...
-            dataYM, ...
-            gui.config.interpBool, gui.config.interpFact, ...
-            gui.config.smoothBool, gui.config.smoothFact,...
-            gui.config.binarizedGrid);
-        
-        [gui.data.H.expValuesInterp, gui.data.H.expValuesSmoothed, ...
-            gui.data.H.expValuesInterpSmoothed] = ...
-            TriDiMap_interpolation_smoothing(...
-            dataH, ...
+            data2use, ...
             gui.config.interpBool, gui.config.interpFact, ...
             gui.config.smoothBool, gui.config.smoothFact,...
             gui.config.binarizedGrid);
     else
-        gui.data.YM.expValuesInterp = dataYM;
-        gui.data.YM.expValuesSmoothed = dataYM;
-        gui.data.YM.expValuesInterpSmoothed = dataYM;
-        gui.data.H.expValuesInterp = dataH;
-        gui.data.H.expValuesSmoothed = dataH;
-        gui.data.H.expValuesInterpSmoothed = dataH;
+        gui.data.expValuesInterp = data2use;
+        gui.data.expValuesSmoothed = data2use;
+        gui.data.expValuesInterpSmoothed = data2use;
     end
     
     %% Grid meshing
@@ -72,11 +63,11 @@ if config.flag_data
     y_step = gui.config.YStep;
     
     if gui.config.N_XStep_default == gui.config.N_YStep_default
-        gui.data.xData = 0:x_step:(size(dataYM,1)-1)*x_step;
-        gui.data.yData = 0:y_step:(size(dataYM,2)-1)*y_step;
+        gui.data.xData = 0:x_step:(size(data2use,1)-1)*x_step;
+        gui.data.yData = 0:y_step:(size(data2use,2)-1)*y_step;
     elseif gui.config.N_XStep_default ~= gui.config.N_YStep_default
-        gui.data.xData = 0:x_step:(size(dataYM,1)-1)*x_step;
-        gui.data.yData = 0:y_step:(size(dataYM,2)-1)*y_step;
+        gui.data.xData = 0:x_step:(size(data2use,1)-1)*x_step;
+        gui.data.yData = 0:y_step:(size(data2use,2)-1)*y_step;
     end
     
     if gui.config.N_XStep ~= gui.config.N_YStep
@@ -92,10 +83,17 @@ if config.flag_data
     if gui.config.rawData
         gui.data.xData_interp = gui.data.xData;
         gui.data.yData_interp = gui.data.yData;
+        if get(gui.handles.cb_errorMap_GUI, 'Value')
+            [xData_interp,  yData_interp] = ...
+                meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
+                0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
+            gui.data.xData_interp = xData_interp./(2^(gui.config.interpFact));
+            gui.data.yData_interp = yData_interp./(2^(gui.config.interpFact));
+        end
     elseif ~gui.config.rawData
         [xData_interp,  yData_interp] = ...
-            meshgrid(0:x_step:(size(gui.data.YM.expValuesInterpSmoothed,1)-1)*x_step, ...
-            0:y_step:(size(gui.data.YM.expValuesInterpSmoothed,2)-1)*y_step);
+            meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
+            0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
         gui.data.xData_interp = xData_interp./(2^(gui.config.interpFact));
         gui.data.yData_interp = yData_interp./(2^(gui.config.interpFact));
     end
@@ -103,11 +101,7 @@ end
 
 %% Legend + Map
 if config.flag_data
-    if gui.config.property == 1
-        gui.data.data2plot = gui.data.YM.expValuesInterpSmoothed;
-    elseif gui.config.property == 2
-        gui.data.data2plot = gui.data.H.expValuesInterpSmoothed;
-    end
+    gui.data.data2plot = gui.data.expValuesInterpSmoothed;
     
     minVal = min(min(gui.data.data2plot));
     meanVal = mean(mean(gui.data.data2plot));
