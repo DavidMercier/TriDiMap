@@ -21,15 +21,19 @@ minorTicks = gui.config.minorTicks;
 colormapStr = gui.config.colorMap;
 
 %% 1 map (with or without markers)
+if gui.config.cminOld < 0
+    gui.config.cminOld = 0;
+end
 if logZ
     if cmin < 1
         cmin = 1;
         set(gui.handles.value_colorMin_GUI, 'String', num2str(cmin));
     end
+    if gui.config.cminOld == 0
+        gui.config.cminOld = 1;
+    end
 end
-if gui.config.cminOld < 0
-    gui.config.cminOld = 0;
-end
+
 
 if ~rawData
     if ~contourPlot
