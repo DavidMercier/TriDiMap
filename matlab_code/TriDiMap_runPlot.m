@@ -51,8 +51,7 @@ if config.flag_data
             TriDiMap_interpolation_smoothing(...
             data2use, ...
             gui.config.interpBool, gui.config.interpFact, ...
-            gui.config.smoothBool, gui.config.smoothFact,...
-            gui.config.binarizedGrid);
+            gui.config.smoothBool, gui.config.smoothFact);
     else
         gui.data.expValuesInterp = data2use;
         gui.data.expValuesSmoothed = data2use;
@@ -152,5 +151,6 @@ else
     errordlg(['First set indentation grid parameters and load an Excel file '...
         'to plot a property map !']);
 end
+coordSyst(gui.handles.MainWindow);
 guidata(gcf, gui);
 end

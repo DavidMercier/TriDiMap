@@ -284,6 +284,10 @@ g.config = config;
 g.handles = h;
 guidata(gcf, g);
 if config.flagValid
-    TriDiMap_runPlot;
+    if strcmp(get(g.handles.binarization_GUI, 'String'), 'BINARIZATION')
+        TriDiMap_runPlot;
+    else
+        TriDiMap_runBin;
+    end
 end
 end

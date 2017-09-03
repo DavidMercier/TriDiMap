@@ -23,7 +23,7 @@ gui.handles.MainWindow = figure('Name', ...
 guidata(gcf, gui);
 
 %% GUI building
-gui.handles = TriDiMap_setGUI;
+gui.handles = TriDiMap_setGUI(1);
 guidata(gcf, gui);
 
 end

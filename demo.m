@@ -47,22 +47,22 @@ gui.config.version_toolbox = '2.0';
 % gui.config.pdf_help = 'https://media.readthedocs.org/pdf/nims/latest/nims.pdf';
 gui.config.data.data_path = '.\data_indentation';
 gui.config.data.data_pathNew = '.\data_indentation';
+gui.config.image.image_path = '.\data_image';
+gui.config.image.image_pathNew = '.\data_image';
+
+%gui.config.image.imageRaw_path = '.\data_image';
+%gui.config.image.imageScaled_path = '.\data_image';
 
 %% Variables initialization
 gui.config.saveFlag = 0;
+gui.config.saveFlagBin = 0;
 gui.config.flag_data = 0;
+gui.config.flag_image = 0;
 gui.config.cminOld = 0;
 gui.config.cmaxOld = 10;
 gui.config.FontSizeVal = 14;
 gui.config.XStep_default = 2;
 gui.config.YStep_default = 2;
-
-% Path of optical observations
-gui.config.plotImage = 0; % Boolean to plot optical observations
-% Set paths only if plotImage = 1
-gui.config.imageRaw_path = '.\data_image\MatrixBefore_0.png';
-gui.config.imageRawBW_path = '.\data_image\MatrixBefore_1.png';
-gui.config.imageScaled_path = '.\data_image\MatrixBefore_1-1.png';
 
 %% GUI generation
 TriDiMap_GUI(gui);
