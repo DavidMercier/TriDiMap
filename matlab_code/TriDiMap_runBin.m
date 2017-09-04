@@ -2,7 +2,7 @@
 function TriDiMap_runBin
 %% Function to run the binarization
 reset(gca);
-
+TriDiMap_getParam;
 gui = guidata(gcf);
 config = gui.config;
 
@@ -65,6 +65,9 @@ if config.flag_data
     disp(fractionMin);
     display(['Fraction of phase with higher ', str, ': ']);
     disp(fractionMax);
+    
+    set(gui.handles.value_ratioLow_GUI, 'string', num2str(fractionMin*100));
+    set(gui.handles.value_ratioHigh_GUI, 'string', num2str(fractionMax*100));
     
     legendStr = gui.config.legendStr;
     if gui.config.legendBinMap

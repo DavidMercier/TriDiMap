@@ -1,7 +1,9 @@
 %% Copyright 2014 MERCIER David
-function [ output_args ] = TriDiMap_diff_plotting
+function TriDiMap_diff_plotting
 %% Function to plot the difference between property map and microscopic image
 gui = guidata(gcf);
+
+cMap = gui.config.colorMap;
 
 % Display % of error - If 0, then perfect match and if 1 perfect mismatch.
 
@@ -9,16 +11,18 @@ gui = guidata(gcf);
 gui.results.diffYM = rot90(int8(gui.data.data2plot)) - ...
     flipud(int8(gui.image.image2plot));
 gui.results.diffYM(gui.results.diffYM~=0)=1;
-diff_YM_error = sum(sum(gui.results.diffYM))/...
+diff_error = sum(sum(gui.results.diffYM))/...
     (gui.config.N_XStep_default * gui.config.N_YStep_default);
-display(diff_YM_error);
+display(diff_error);
+set(gui.handles.value_diffVal_GUI, 'String', num2str((1-diff_error)*100));
 
 hFig = imagesc(flipud(gui.results.diffYM), ...
     'XData',gui.data.xData_interp,'YData',gui.data.yData_interp);
 
-axisMap(gray, 'Difference map', gui.config.FontSizeVal, ...
+axisMap(cMap, 'Difference map', gui.config.FontSizeVal, ...
     (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
-    (gui.config.N_YStep_default-1)*gui.config.YStep_default);
+    (gui.config.N_YStep_default-1)*gui.config.YStep_default, ...
+    gui.config.flipColor);
 axis equal;
 axis tight;
 

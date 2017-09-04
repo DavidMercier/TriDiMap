@@ -7,6 +7,8 @@ FontSizeVal = gui.config.FontSizeVal;
 xData_interp = gui.data.xData_interp;
 yData_interp = gui.data.yData_interp;
 data2plot = gui.data.data2plot;
+cMap = gui.config.colorMap;
+
 if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     zString = gui.config.legend;
     cmin = gui.config.cmin;
@@ -19,7 +21,6 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     contourPlot = gui.config.contourPlot;
     logZ = gui.config.logZ;
     minorTicks = gui.config.minorTicks;
-    colormapStr = gui.config.colorMap;
     
     %% 1 map (with or without markers)
     if gui.config.cminOld < 0
@@ -116,19 +117,19 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     if intervalScaleBar > 0
         if ~rawData
             if ~contourPlot
-                cmap = [colormapStr, '(',num2str(intervalScaleBar),')'];
+                cmap = [cMap, '(',num2str(intervalScaleBar),')'];
             else
                 if logZ
-                    cmap = colormapStr;
+                    cmap = cMap;
                 else
-                    cmap = [colormapStr, '(',num2str(intervalScaleBar),')'];
+                    cmap = [cMap, '(',num2str(intervalScaleBar),')'];
                 end
             end
         else
             if logZ
-                cmap = colormapStr;
+                cmap = cMap;
             else
-                cmap = [colormapStr, '(',num2str(intervalScaleBar),')'];
+                cmap = [cMap, '(',num2str(intervalScaleBar),')'];
             end
         end
         cmap_Flip = colormap(cmap);
@@ -138,7 +139,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
             colormap(flipud(cmap_Flip));
         end
     elseif intervalScaleBar == 0
-        cmap_Flip = colormap([colormapStr, '(',num2str(10000),')']);
+        cmap_Flip = colormap([cMap, '(',num2str(10000),')']);
         if ~gui.config.flipColor
             colormap(cmap_Flip);
         else
@@ -229,10 +230,11 @@ else
         'XData',xData_interp,'YData',yData_interp);
     set(gca,'YDir','normal');
     set(hFig,'alphadata',~isnan(data2plot'));
-    axisMap(gray, 'Binarized property map', ...
-    gui.config.FontSizeVal, ...
-    (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
-    (gui.config.N_YStep_default-1)*gui.config.YStep_default);
+    axisMap(cMap, 'Binarized property map', ...
+        gui.config.FontSizeVal, ...
+        (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
+        (gui.config.N_YStep_default-1)*gui.config.YStep_default, ...
+        gui.config.flipColor);
     axis equal;
     axis tight;
 end

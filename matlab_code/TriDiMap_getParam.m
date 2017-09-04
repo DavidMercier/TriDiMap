@@ -20,6 +20,9 @@ gui.config.MaxXCrop = str2num(get(gui.handles.value_MaxXCrop_GUI, 'String'));
 gui.config.MinYCrop = str2num(get(gui.handles.value_MinYCrop_GUI, 'String'));
 gui.config.MaxYCrop = str2num(get(gui.handles.value_MaxYCrop_GUI, 'String'));
 
+gui.config.colorMap = char(get_value_popupmenu(gui.handles.colormap_GUI, listColormap));
+gui.config.flipColor = get(gui.handles.cb_flipColormap_GUI, 'Value');
+
 if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     gui.config.rawData = get(gui.handles.cb_pixData_GUI, 'Value');
     if gui.config.rawData
@@ -111,7 +114,6 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     end
     
     gui.config.contourPlot = get(gui.handles.cb_contourPlotMap_GUI, 'Value');
-    gui.config.flipColor = get(gui.handles.cb_flipColormap_GUI, 'Value');
     gui.config.scaleAxis = get(gui.handles.cb_autoColorbar_GUI, 'Value');
     gui.config.cmin = str2num(get(gui.handles.value_colorMin_GUI, 'String'));
     gui.config.cmax = str2num(get(gui.handles.value_colorMax_GUI, 'String'));
@@ -121,7 +123,6 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     gui.config.Markers = get(gui.handles.cb_markers_GUI, 'Value');
     gui.config.MinMax = get(gui.handles.cb_MinMax_plot_GUI, 'Value');
     gui.config.minorTicks = get(gui.handles.cb_tickColorBar_GUI, 'Value');
-    gui.config.colorMap = char(get_value_popupmenu(gui.handles.colormap_GUI, listColormap));
 else
     gui.config.rawData = 1;
     gui.config.noNan = 1;

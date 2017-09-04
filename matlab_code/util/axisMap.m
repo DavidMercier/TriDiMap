@@ -1,6 +1,10 @@
 %% Copyright 2014 MERCIER David
-function axisMap(cmap, titleStr, FontSizeVal, xMax, yMax, varargin)
+function axisMap(cmap, titleStr, FontSizeVal, xMax, yMax, flipFlag, varargin)
 %% Function to set axis for a binary map.
+
+if nargin < 6
+    flipFlag = 0;
+end
 
 if nargin < 5
     yMax = 1;
@@ -24,7 +28,9 @@ end
 
 if ~isempty(cmap)
     colormap(cmap);
-    colormap(flipud(cmap));
+    if flipFlag
+        colormap(flipud(colormap(cmap)));
+    end
 end
 set(gca,'YDir','normal');
 axis equal;
