@@ -8,85 +8,109 @@ config = gui.config;
 
 %% Data
 if config.flag_data
-    if gui.config.property == 1
-        data2use = gui.data.expValues_mat.YM;
-    elseif gui.config.property == 2
-        data2use = gui.data.expValues_mat.H;
-    end
-    % Crop data
-    data2use = TriDiMap_cropping(data2use);
-    if length(data2use) == 1
-        config.flag_data = 0;
-    end
-    
-    % Clean data
-    if gui.config.noNan
-        data2use = TriDiMap_cleaningData(data2use);
-    end
-    
-    % Grid meshing
-    x_step = gui.config.XStep;
-    y_step = gui.config.YStep;
-    
-    if gui.config.N_XStep_default == gui.config.N_YStep_default
-        gui.data.xData = 0:x_step:(size(data2use,1)-1)*x_step;
-        gui.data.yData = 0:y_step:(size(data2use,2)-1)*y_step;
-    elseif gui.config.N_XStep_default ~= gui.config.N_YStep_default
-        gui.data.xData = 0:x_step:(size(data2use,1)-1)*x_step;
-        gui.data.yData = 0:y_step:(size(data2use,2)-1)*y_step;
-    end
-    gui.data.xData_interp = gui.data.xData;
-    gui.data.yData_interp = gui.data.yData;
-    
-    % Binarization
-    data_binarized = zeros(gui.config.N_XStep_default, gui.config.N_YStep_default);
-    for ii = 1:1:gui.config.N_XStep_default
-        for jj = 1:1:gui.config.N_YStep_default
-            if data2use(ii,jj) > gui.config.criterionBinMap
-                data_binarized(ii,jj) = 255;
-            else
-                data_binarized(ii,jj) = 0;
+    for iProp = 1:2
+        if iProp == 1
+            data2use = gui.data.expValues_mat.YM;
+        elseif iProp == 2
+            data2use = gui.data.expValues_mat.H;
+        end
+        % Crop data
+        data2use = TriDiMap_cropping(data2use);
+        if length(data2use) == 1
+            config.flag_data = 0;
+        end
+        
+        % Clean data
+        if gui.config.noNan
+            data2use = TriDiMap_cleaningData(data2use);
+        end
+        
+        % Grid meshing
+        x_step = gui.config.XStep;
+        y_step = gui.config.YStep;
+        
+        if gui.config.N_XStep_default == gui.config.N_YStep_default
+            gui.data.xData = 0:x_step:(size(data2use,1)-1)*x_step;
+            gui.data.yData = 0:y_step:(size(data2use,2)-1)*y_step;
+        elseif gui.config.N_XStep_default ~= gui.config.N_YStep_default
+            gui.data.xData = 0:x_step:(size(data2use,1)-1)*x_step;
+            gui.data.yData = 0:y_step:(size(data2use,2)-1)*y_step;
+        end
+        gui.data.xData_interp = gui.data.xData;
+        gui.data.yData_interp = gui.data.yData;
+        
+        if iProp == 1
+            str = 'elastic modulus';
+            crit = gui.config.criterionBinMap_E;
+        elseif iProp == 2
+            str = 'hardness';
+            crit = gui.config.criterionBinMap_H;
+        end
+        
+        % Binarization
+        data_binarized = zeros(gui.config.N_XStep_default, ...
+            gui.config.N_YStep_default);
+        for ii = 1:1:gui.config.N_XStep_default
+            for jj = 1:1:gui.config.N_YStep_default
+                if data2use(ii,jj) > crit
+                    data_binarized(ii,jj) = 255;
+                else
+                    data_binarized(ii,jj) = 0;
+                end
+            end
+        end
+        
+        ind = find(data2use <= crit);
+        fractionMin = length(ind)/(length(data2use)^2);
+        fractionMax = 1 - fractionMin;
+        display(['Fraction of phase with lower ', str, ': ']);
+        disp(fractionMin);
+        display(['Fraction of phase with higher ', str, ': ']);
+        disp(fractionMax);
+        
+        if iProp == 1
+            gui.data.data2plot_E = data_binarized;
+            set(gui.handles.value_ratioLow_E_GUI, 'string', num2str(fractionMin*100));
+            set(gui.handles.value_ratioHigh_E_GUI, 'string', num2str(fractionMax*100));
+        elseif iProp == 2
+            gui.data.data2plot_H = data_binarized;
+            set(gui.handles.value_ratioLow_H_GUI, 'string', num2str(fractionMin*100));
+            set(gui.handles.value_ratioHigh_H_GUI, 'string', num2str(fractionMax*100));
+        end
+        
+        gui.data.data2plot = data_binarized;
+
+        legendStr = gui.config.legendStr;
+        if gui.config.legendBinMap
+            %set(hcb1,'YTick',[0:maxVal/2:maxVal]);
+            legendBinaryMap('w', 'k', 's', 's', legendStr, FontSizeVal);
+        end
+        
+        data2plot = gui.data.data2plot;
+        fracBW = sum(sum(data2plot))/(size(data2plot,1)*size(data2plot,2)*255);
+        display(['Fraction of matrix (', str, ' map) :']);
+        disp(1-fracBW);
+        display(['Fraction of particles (', str, ' map) :']);
+        disp(fracBW);
+        
+        guidata(gcf, gui);
+        
+        if gui.config.saveFlagBin == 0
+            % Binarized map
+            if config.flag_data && iProp == 1
+                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_1);
+                gui.legend = 'elastic modulus';
+                guidata(gcf, gui);
+                TriDiMap_mapping_plotting;
+            end
+            if config.flag_data && iProp == 2
+                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_2);
+                gui.legend = 'hardness';
+                guidata(gcf, gui);
+                TriDiMap_mapping_plotting;
             end
         end
     end
-    
-    gui.data.data2plot = data_binarized;
-    
-    if gui.config.property == 1
-        str = 'elastic modulus';
-    elseif gui.config.property == 2
-        str = 'hardness';
-    end
-    
-    ind = find(data2use <= gui.config.criterionBinMap);
-    fractionMin = length(ind)/(length(data2use)^2);
-    fractionMax = 1 - fractionMin;
-    display(['Fraction of phase with lower ', str, ': ']);
-    disp(fractionMin);
-    display(['Fraction of phase with higher ', str, ': ']);
-    disp(fractionMax);
-    
-    set(gui.handles.value_ratioLow_GUI, 'string', num2str(fractionMin*100));
-    set(gui.handles.value_ratioHigh_GUI, 'string', num2str(fractionMax*100));
-    
-    legendStr = gui.config.legendStr;
-    if gui.config.legendBinMap
-        %set(hcb1,'YTick',[0:maxVal/2:maxVal]);
-        legendBinaryMap('w', 'k', 's', 's', legendStr, FontSizeVal);
-    end
-    
-    % Phase fraction calculation
-    if gui.config.property == 1
-        zString = 'Elastic modulus';
-    elseif gui.config.property == 2
-        zString = 'Hardness';
-    end
-    data2plot = gui.data.data2plot;
-    fracBW = sum(sum(data2plot))/(size(data2plot,1)*size(data2plot,2)*255);
-    display(['Fraction of matrix (', zString, ' map) :']);
-    disp(1-fracBW);
-    display(['Fraction of particles (', zString, ' map) :']);
-    disp(fracBW);
     
     %% Image
     if config.flag_image
@@ -97,20 +121,23 @@ if config.flag_data
     guidata(gcf, gui);
     
     if gui.config.saveFlagBin == 0
-        % Binarized map
-        if config.flag_data
-            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_1);
-            TriDiMap_mapping_plotting;
-        end
         % Binarized image
         if config.flag_image
-            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_2);
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_3);
             TriDiMap_image_plotting;
         end
         % Difference map
         if config.flag_data && config.flag_image
-            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_3);
-            TriDiMap_diff_plotting;
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_4);
+            TriDiMap_diff_plotting(1);
+        end
+        if config.flag_data && config.flag_image
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_5);
+            TriDiMap_diff_plotting(2);
+        end
+        if config.flag_data && config.flag_image
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_6);
+            TriDiMap_diff_plotting(3);
         end
     end
 else
@@ -120,8 +147,14 @@ end
 if gui.config.saveFlagBin == 1
     TriDiMap_mapping_plotting;
 elseif gui.config.saveFlagBin == 2
-    TriDiMap_image_plotting;
+    TriDiMap_mapping_plotting;
 elseif gui.config.saveFlagBin == 3
+    TriDiMap_image_plotting;
+elseif gui.config.saveFlagBin == 4
+    TriDiMap_diff_plotting;
+elseif gui.config.saveFlagBin == 5
+    TriDiMap_diff_plotting;
+elseif gui.config.saveFlagBin == 6
     TriDiMap_diff_plotting;
 end
 
