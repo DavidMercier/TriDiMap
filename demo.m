@@ -60,7 +60,7 @@ gui.config.flag_data = 0;
 gui.config.flag_image = 0;
 gui.config.cminOld = 0;
 gui.config.cmaxOld = 10;
-gui.config.FontSizeVal = 14;
+gui.config.FontSizeVal = 12;
 gui.config.XStep_default = 2;
 gui.config.YStep_default = 2;
 

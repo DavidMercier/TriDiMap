@@ -145,17 +145,21 @@ else
 end
 
 if gui.config.saveFlagBin == 1
+    gui.data.data2plot = gui.data.data2plot_E;
+    guidata(gcf, gui);    
     TriDiMap_mapping_plotting;
 elseif gui.config.saveFlagBin == 2
+    gui.data.data2plot = gui.data.data2plot_H;
+    guidata(gcf, gui); 
     TriDiMap_mapping_plotting;
 elseif gui.config.saveFlagBin == 3
     TriDiMap_image_plotting;
 elseif gui.config.saveFlagBin == 4
-    TriDiMap_diff_plotting;
+    TriDiMap_diff_plotting(1);
 elseif gui.config.saveFlagBin == 5
-    TriDiMap_diff_plotting;
+    TriDiMap_diff_plotting(2);
 elseif gui.config.saveFlagBin == 6
-    TriDiMap_diff_plotting;
+    TriDiMap_diff_plotting(3);
 end
 
 coordSyst(gui.handles.MainWindow);

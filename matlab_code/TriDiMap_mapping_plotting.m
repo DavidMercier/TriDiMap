@@ -226,6 +226,8 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     hold off;
     
 else
+    cMap = gui.config.colorMap;
+    
     hFig = imagesc((data2plot'),...
         'XData',xData_interp,'YData',yData_interp);
     set(gca,'YDir','normal');
