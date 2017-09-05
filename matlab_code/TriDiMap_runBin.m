@@ -1,8 +1,14 @@
 %% Copyright 2014 MERCIER David
-function TriDiMap_runBin
+function TriDiMap_runBin(plotMatch, varargin)
 %% Function to run the binarization
-reset(gca);
-TriDiMap_getParam;
+if nargin < 1
+    plotMatch = 0;
+end
+
+if ~plotMatch
+    reset(gca);
+    TriDiMap_getParam;
+end
 gui = guidata(gcf);
 config = gui.config;
 
@@ -63,10 +69,12 @@ if config.flag_data
         ind = find(data2use <= crit);
         fractionMin = length(ind)/(length(data2use)^2);
         fractionMax = 1 - fractionMin;
-        display(['Fraction of phase with lower ', str, ': ']);
-        disp(fractionMin);
-        display(['Fraction of phase with higher ', str, ': ']);
-        disp(fractionMax);
+        if ~plotMatch
+            display(['Fraction of phase with lower ', str, ': ']);
+            disp(fractionMin);
+            display(['Fraction of phase with higher ', str, ': ']);
+            disp(fractionMax);
+        end
         
         if iProp == 1
             gui.data.data2plot_E = data_binarized;
@@ -79,7 +87,7 @@ if config.flag_data
         end
         
         gui.data.data2plot = data_binarized;
-
+        
         legendStr = gui.config.legendStr;
         if gui.config.legendBinMap
             %set(hcb1,'YTick',[0:maxVal/2:maxVal]);
@@ -87,15 +95,16 @@ if config.flag_data
         end
         
         data2plot = gui.data.data2plot;
-        fracBW = sum(sum(data2plot))/(size(data2plot,1)*size(data2plot,2)*255);
-        display(['Fraction of matrix (', str, ' map) :']);
-        disp(1-fracBW);
-        display(['Fraction of particles (', str, ' map) :']);
-        disp(fracBW);
-        
+        if ~plotMatch
+            fracBW = sum(sum(data2plot))/(size(data2plot,1)*size(data2plot,2)*255);
+            display(['Fraction of matrix (', str, ' map) :']);
+            disp(1-fracBW);
+            display(['Fraction of particles (', str, ' map) :']);
+            disp(fracBW);
+        end
         guidata(gcf, gui);
         
-        if gui.config.saveFlagBin == 0
+        if gui.config.saveFlagBin == 0 && ~plotMatch
             % Binarized map
             if config.flag_data && iProp == 1
                 set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_1);
@@ -113,31 +122,38 @@ if config.flag_data
     end
     
     %% Image
-    if config.flag_image
+    if config.flag_image && ~plotMatch
         gui.image.image2plot = gui.image.image2use;
+    end
+    
+    if config.flag_data && config.flag_image
+        set(gui.handles.plotAllCritVal_GUI, ...
+            'Visible', 'on');
     end
     
     %% Plot binarized map, image and difference map
     guidata(gcf, gui);
     
-    if gui.config.saveFlagBin == 0
-        % Binarized image
-        if config.flag_image
-            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_3);
-            TriDiMap_image_plotting;
-        end
-        % Difference map
-        if config.flag_data && config.flag_image
-            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_4);
-            TriDiMap_diff_plotting(1);
-        end
-        if config.flag_data && config.flag_image
-            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_5);
-            TriDiMap_diff_plotting(2);
-        end
-        if config.flag_data && config.flag_image
-            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_6);
-            TriDiMap_diff_plotting(3);
+    if  ~plotMatch
+        if gui.config.saveFlagBin == 0
+            % Binarized image
+            if config.flag_image
+                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_3);
+                TriDiMap_image_plotting;
+            end
+            % Difference map
+            if config.flag_data && config.flag_image
+                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_4);
+                TriDiMap_diff_plotting(1);
+            end
+            if config.flag_data && config.flag_image
+                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_5);
+                TriDiMap_diff_plotting(2);
+            end
+            if config.flag_data && config.flag_image
+                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_6);
+                TriDiMap_diff_plotting(3);
+            end
         end
     end
 else
@@ -146,11 +162,11 @@ end
 
 if gui.config.saveFlagBin == 1
     gui.data.data2plot = gui.data.data2plot_E;
-    guidata(gcf, gui);    
+    guidata(gcf, gui);
     TriDiMap_mapping_plotting;
 elseif gui.config.saveFlagBin == 2
     gui.data.data2plot = gui.data.data2plot_H;
-    guidata(gcf, gui); 
+    guidata(gcf, gui);
     TriDiMap_mapping_plotting;
 elseif gui.config.saveFlagBin == 3
     TriDiMap_image_plotting;

@@ -1,6 +1,10 @@
 %% Copyright 2014 MERCIER David
-function TriDiMap_diff_plotting(property)
+function diff_error = TriDiMap_diff_plotting(property, plotMatch, varargin)
 %% Function to plot the difference between property map and microscopic image
+if nargin < 2
+    plotMatch = 0;
+end
+
 gui = guidata(gcf);
 
 cMap = gui.config.colorMap;
@@ -24,45 +28,47 @@ if property < 3
     gui.results.diff(gui.results.diff~=0)=1;
     diff_error = sum(sum(gui.results.diff))/...
         (gui.config.N_XStep_default * gui.config.N_YStep_default);
-    display(diff_error);
-    if property == 1
-        set(gui.handles.value_diffValE_GUI, 'String', num2str((1-diff_error)*100));
-        strTitle = 'E-Image difference map';
-    elseif property == 2
-        set(gui.handles.value_diffValH_GUI, 'String', num2str((1-diff_error)*100));
-        strTitle = 'H-Image difference map';
+    if ~plotMatch
+        display(diff_error);
+        if property == 1
+            set(gui.handles.value_diffValE_GUI, 'String', num2str((1-diff_error)*100));
+            strTitle = 'E-Image difference map';
+        elseif property == 2
+            set(gui.handles.value_diffValH_GUI, 'String', num2str((1-diff_error)*100));
+            strTitle = 'H-Image difference map';
+        end
+        
+        hFig = imagesc(flipud(gui.results.diff), ...
+            'XData',gui.data.xData_interp,'YData',gui.data.yData_interp);
+        
+        axisMap(cMap, strTitle, gui.config.FontSizeVal, ...
+            (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
+            (gui.config.N_YStep_default-1)*gui.config.YStep_default, ...
+            gui.config.flipColor);
+        axis equal;
+        axis tight;
+        
+        %legendBinaryMap('w', 'k', 's', 's', gui.config.LegendMatch, gui.config.FontSizeVal);
     end
-    
-    hFig = imagesc(flipud(gui.results.diff), ...
-        'XData',gui.data.xData_interp,'YData',gui.data.yData_interp);
-    
-    axisMap(cMap, strTitle, gui.config.FontSizeVal, ...
-        (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
-        (gui.config.N_YStep_default-1)*gui.config.YStep_default, ...
-        gui.config.flipColor);
-    axis equal;
-    axis tight;
-    
-    %legendBinaryMap('w', 'k', 's', 's', gui.config.LegendMatch, gui.config.FontSizeVal);
-    
 else
     %% Difference between E map and H map
     gui.results.diff_EH = rot90(int8(data2plot_E)) - rot90(int8(data2plot_H));
     gui.results.diff_EH(gui.results.diff_EH~=0)=1;
-    diff_EH_error = sum(sum(gui.results.diff_EH))/(gui.config.N_XStep_default * gui.config.N_YStep_default);
-    display(diff_EH_error);
-    set(gui.handles.value_diffValEH_GUI, 'String', num2str((1-diff_EH_error)*100));
-    
-    hFig = imagesc(flipud(gui.results.diff_EH), ...
-        'XData',gui.data.xData_interp, 'YData',gui.data.yData_interp);
-    
-    axisMap(cMap, 'E-H difference map', gui.config.FontSizeVal, ...
-        (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
-        (gui.config.N_YStep_default-1)*gui.config.YStep_default, ...
-        gui.config.flipColor);
-    
-    % legendBinaryMap('w', 'k', 's', 's', gui.config.LegendMatch, gui.config.FontSizeVal);
-    
+    diff_error = sum(sum(gui.results.diff_EH))/(gui.config.N_XStep_default * gui.config.N_YStep_default);
+    if ~plotMatch
+        display(diff_error);
+        set(gui.handles.value_diffValEH_GUI, 'String', num2str((1-diff_error)*100));
+        
+        hFig = imagesc(flipud(gui.results.diff_EH), ...
+            'XData',gui.data.xData_interp, 'YData',gui.data.yData_interp);
+        
+        axisMap(cMap, 'E-H difference map', gui.config.FontSizeVal, ...
+            (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
+            (gui.config.N_YStep_default-1)*gui.config.YStep_default, ...
+            gui.config.flipColor);
+        
+        % legendBinaryMap('w', 'k', 's', 's', gui.config.LegendMatch, gui.config.FontSizeVal);
+    end
 end
 %% Difference between microstructure map and YM map (only black pixels)
 % for ii = 1:size(YM_binarized,1)
