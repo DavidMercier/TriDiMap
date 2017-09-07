@@ -78,12 +78,16 @@ if config.flag_data
         
         if iProp == 1
             gui.data.data2plot_E = data_binarized;
-            set(gui.handles.value_ratioLow_E_GUI, 'string', num2str(fractionMin*100));
-            set(gui.handles.value_ratioHigh_E_GUI, 'string', num2str(fractionMax*100));
+            if ~plotMatch
+                set(gui.handles.value_ratioLow_E_GUI, 'string', num2str(fractionMin*100));
+                set(gui.handles.value_ratioHigh_E_GUI, 'string', num2str(fractionMax*100));
+            end
         elseif iProp == 2
             gui.data.data2plot_H = data_binarized;
-            set(gui.handles.value_ratioLow_H_GUI, 'string', num2str(fractionMin*100));
-            set(gui.handles.value_ratioHigh_H_GUI, 'string', num2str(fractionMax*100));
+            if ~plotMatch
+                set(gui.handles.value_ratioLow_H_GUI, 'string', num2str(fractionMin*100));
+                set(gui.handles.value_ratioHigh_H_GUI, 'string', num2str(fractionMax*100));
+            end
         end
         
         gui.data.data2plot = data_binarized;
@@ -129,6 +133,8 @@ if config.flag_data
     if config.flag_data && config.flag_image
         set(gui.handles.plotAllCritVal_GUI, ...
             'Visible', 'on');
+        set(gui.handles.title_numThres_GUI, 'Visible', 'on');
+        set(gui.handles.value_numThres_GUI, 'Visible', 'on');
     end
     
     %% Plot binarized map, image and difference map
