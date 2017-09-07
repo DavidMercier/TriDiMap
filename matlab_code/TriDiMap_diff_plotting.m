@@ -117,18 +117,21 @@ else
         display(diff_error);
         set(gui.handles.value_diffValEH_GUI, 'String', num2str((1-diff_error)*100));
         
-        hFig = imagesc(flipud(gui.results.diff_EH), ...
+        hFig(1) = imagesc(flipud(gui.results.diff_EH), ...
             'XData',gui.data.xData_interp, 'YData',gui.data.yData_interp);
         
         axisMap(cMap, 'E-H difference map', gui.config.FontSizeVal, ...
             (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
             (gui.config.N_YStep_default-1)*gui.config.YStep_default, ...
             gui.config.flipColor);
-        
+        hold on;
         if get(gui.handles.cb_legend_GUI, 'Value')
-            %             legend(hFig, 'No Match', 'Match', ...
-            %                 'FontSize', gui.config.FontSizeVal, ...
-            %                 'Location', 'eastoutside');
+            hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor','k');
+            hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor','w');
+            hLeg = legend([hFig(2) hFig(3)],'Match','No match', ...
+                'Location','EastOutside');
+            pos = get(hLeg,'position');
+            set(hLeg, 'position',[0.9 0.25 pos(3:4)]);
         end
     end
 end

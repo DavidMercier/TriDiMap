@@ -5,7 +5,7 @@ gui = guidata(gcf);
 
 cMap = gui.config.colorMap;
 
-hFig = imagesc(flipud(gui.image.image2use), ...
+hFig(1) = imagesc(flipud(gui.image.image2use), ...
     'XData',gui.data.xData_interp,'YData',gui.data.yData_interp);
 axisMap(cMap, 'Binarized microscopical image', ...
     gui.config.FontSizeVal, ...
@@ -14,6 +14,15 @@ axisMap(cMap, 'Binarized microscopical image', ...
     gui.config.flipColor);
 axis equal;
 axis tight;
+hold on;
+if get(gui.handles.cb_legend_GUI, 'Value')
+    hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor','k');
+    hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor','w');
+    hLeg = legend([hFig(2) hFig(3)],'Soft phase','Hard phase', ...
+        'Location','EastOutside');
+    pos = get(hLeg,'position');
+    set(hLeg, 'position',[0.9 0.70 pos(3:4)]);
+end
 
 guidata(gcf, gui);
 
