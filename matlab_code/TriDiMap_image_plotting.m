@@ -18,10 +18,12 @@ hold on;
 if get(gui.handles.cb_legend_GUI, 'Value')
     hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor','k');
     hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor','w');
-    hLeg = legend([hFig(2) hFig(3)],'Soft phase','Hard phase', ...
+    gui.handles.hLeg1 = legend([hFig(2) hFig(3)],'Soft phase','Stiff/Hard phase', ...
         'Location','EastOutside');
-    pos = get(hLeg,'position');
-    set(hLeg, 'position',[0.9 0.70 pos(3:4)]);
+    pos = get(gui.handles.hLeg1,'position');
+    set(gui.handles.hLeg1, 'position',[0.87 0.70 pos(3:4)]);
+else
+    legend('hide');
 end
 
 guidata(gcf, gui);

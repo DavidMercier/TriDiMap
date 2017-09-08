@@ -2,8 +2,8 @@
 function listPixVal = listPixel
 
 listPixVal = {...
-    'All phases'; 
-    'Only hard phase'};
-    %'Only white pixels'};
+    'All phases';
+    'Only stiff/hard phase';
+    'Only soft pixels'};
 
 end

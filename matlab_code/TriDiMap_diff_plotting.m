@@ -9,7 +9,7 @@ gui = guidata(gcf);
 
 cMap = gui.config.colorMap;
 
-% Display % of error - If 0, then perfect match and if 1 perfect mismatch.
+% Display % of error - If 1, then perfect match and if 0 perfect mismatch.
 
 if property == 1
     data2plot = gui.data.data2plot_E;
@@ -27,9 +27,6 @@ if property < 3
         gui.results.diff = rot90(int8(data2plot)) - ...
             (int8(gui.image.image2plot));
         gui.results.diff(gui.results.diff~=0)=1;
-        diff_error = sum(sum(gui.results.diff))/...
-            (gui.config.N_XStep_default * gui.config.N_YStep_default);
-        
     elseif get(gui.handles.pixelList_GUI, 'Value') == 2
         d2plot = rot90(data2plot);
         for ii = 1:size(data2plot,1)
@@ -42,22 +39,21 @@ if property < 3
                 end
             end
         end
-        diff_error = sum(sum(abs(gui.results.diff)))/...
-            (sum(sum(gui.image.image2plot/255)));
-        
-        %     elseif get(gui.handles.pixelList_GUI, 'Value') == 3
-        %         for ii = 1:size(data2plot,1)
-        %             for jj = 1:size(data2plot,2)
-        %                 if rot90(int8(data2plot(ii,jj))) == 127 && flipud(int8(gui.image.image2plot(ii,jj))) == 127
-        %                     gui.results.diff(ii,jj) = 1;
-        %                 else
-        %                     gui.results.diff(ii,jj) = 0;
-        %                 end
-        %             end
-        %         end
-        %         diff_error = sum(sum(abs(gui.results.diff-1)))/...
-        %             (sum(sum(gui.image.image2plot/255)));
+    elseif get(gui.handles.pixelList_GUI, 'Value') == 3
+        d2plot = rot90(data2plot);
+        for ii = 1:size(data2plot,1)
+            for jj = 1:size(data2plot,2)
+                if (int8(d2plot(ii,jj))) == 0 && ...
+                        (int8(gui.image.image2plot(ii,jj))) == 0
+                    gui.results.diff(ii,jj) = 1;
+                else
+                    gui.results.diff(ii,jj) = 0;
+                end
+            end
+        end
     end
+    diff_error = sum(sum(abs(gui.results.diff)))/ ...
+        (gui.config.N_XStep_default * gui.config.N_YStep_default);
     
     if ~plotMatch
         display(diff_error);
@@ -100,22 +96,26 @@ else
                 end
             end
         end
-        %     elseif get(gui.handles.pixelList_GUI, 'Value') == 3
-        %         for ii = 1:size(data2plot_E,1)
-        %             for jj = 1:size(data2plot_E,2)
-        %                 if rot90(int8(data2plot_E(ii,jj))) == 127 && rot90(int8(data2plot_H(ii,jj))) == 127
-        %                     gui.results.diff_EH(ii,jj) = 1;
-        %                 else
-        %                     gui.results.diff_EH(ii,jj) = 0;
-        %                 end
-        %             end
-        %         end
+    elseif get(gui.handles.pixelList_GUI, 'Value') == 3
+        d2plot_E = rot90(data2plot_E);
+        d2plot_H = rot90(data2plot_H);
+        for ii = 1:size(data2plot_E,1)
+            for jj = 1:size(data2plot_E,2)
+                if (int8(d2plot_E(ii,jj))) == 0 && ...
+                        (int8(d2plot_H(ii,jj))) == 0
+                    gui.results.diff_EH(ii,jj) = 1;
+                else
+                    gui.results.diff_EH(ii,jj) = 0;
+                end
+            end
+        end
     end
     diff_error = sum(sum(gui.results.diff_EH)) / ...
         (gui.config.N_XStep_default * gui.config.N_YStep_default);
     if ~plotMatch
         display(diff_error);
-        set(gui.handles.value_diffValEH_GUI, 'String', num2str((1-diff_error)*100));
+        set(gui.handles.value_diffValEH_GUI, 'String', ...
+            num2str((1-diff_error)*100));
         
         hFig(1) = imagesc(flipud(gui.results.diff_EH), ...
             'XData',gui.data.xData_interp, 'YData',gui.data.yData_interp);
@@ -128,10 +128,14 @@ else
         if get(gui.handles.cb_legend_GUI, 'Value')
             hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor','k');
             hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor','w');
-            hLeg = legend([hFig(2) hFig(3)],'Match','No match', ...
+            gui.handles.hLeg2 = legend([hFig(2) hFig(3)],'Match','No match', ...
                 'Location','EastOutside');
-            pos = get(hLeg,'position');
-            set(hLeg, 'position',[0.9 0.25 pos(3:4)]);
+            pos = get(gui.handles.hLeg2,'position');
+            set(gui.handles.hLeg2, 'position',[0.87 0.25 pos(3:4)]);
+        else
+            legend('hide');
         end
     end
+end
+guidata(gcf, gui);
 end

@@ -79,28 +79,26 @@ if config.flag_data
         if iProp == 1
             gui.data.data2plot_E = data_binarized;
             if ~plotMatch
-                set(gui.handles.value_ratioLow_E_GUI, 'string', num2str(fractionMin*100));
-                set(gui.handles.value_ratioHigh_E_GUI, 'string', num2str(fractionMax*100));
+                set(gui.handles.value_ratioLow_E_GUI, ...
+                    'string', num2str(fractionMin*100));
+                set(gui.handles.value_ratioHigh_E_GUI, ...
+                    'string', num2str(fractionMax*100));
             end
         elseif iProp == 2
             gui.data.data2plot_H = data_binarized;
             if ~plotMatch
-                set(gui.handles.value_ratioLow_H_GUI, 'string', num2str(fractionMin*100));
-                set(gui.handles.value_ratioHigh_H_GUI, 'string', num2str(fractionMax*100));
+                set(gui.handles.value_ratioLow_H_GUI, 'string', ...
+                    num2str(fractionMin*100));
+                set(gui.handles.value_ratioHigh_H_GUI, 'string', ...
+                    num2str(fractionMax*100));
             end
         end
-        
         gui.data.data2plot = data_binarized;
-        
-        legendStr = gui.config.legendStr;
-        if gui.config.legendBinMap
-            %set(hcb1,'YTick',[0:maxVal/2:maxVal]);
-            legendBinaryMap('w', 'k', 's', 's', legendStr, FontSizeVal);
-        end
         
         data2plot = gui.data.data2plot;
         if ~plotMatch
-            fracBW = sum(sum(data2plot))/(size(data2plot,1)*size(data2plot,2)*255);
+            fracBW = sum(sum(data2plot))/(size(data2plot,1)*...
+                size(data2plot,2)*255);
             display(['Fraction of matrix (', str, ' map) :']);
             disp(1-fracBW);
             display(['Fraction of particles (', str, ' map) :']);
@@ -129,10 +127,19 @@ if config.flag_data
     if config.flag_image && ~plotMatch
         gui.image.image2plot = gui.image.image2use;
     end
+    if ~plotMatch
+        data2use = gui.image.image2use;
+        indI = find(data2use == 0);
+        fractionMin = length(indI)/(length(data2use)^2);
+        fractionMax = 1 - fractionMin;
+        set(gui.handles.value_ratioLow_I_GUI, 'string', ...
+            num2str(fractionMin*100));
+        set(gui.handles.value_ratioHigh_I_GUI, 'string', ...
+            num2str(fractionMax*100));
+    end
     
     if config.flag_data && config.flag_image
-        set(gui.handles.plotAllCritVal_GUI, ...
-            'Visible', 'on');
+        set(gui.handles.plotAllCritVal_GUI, 'Visible', 'on');
         set(gui.handles.title_numThres_GUI, 'Visible', 'on');
         set(gui.handles.value_numThres_GUI, 'Visible', 'on');
     end
