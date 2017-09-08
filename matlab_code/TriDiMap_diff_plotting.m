@@ -126,12 +126,14 @@ else
             gui.config.flipColor);
         hold on;
         if get(gui.handles.cb_legend_GUI, 'Value')
-            hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor','k');
-            hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor','w');
+            cmap = colormap;
+            hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
+            hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
             gui.handles.hLeg2 = legend([hFig(2) hFig(3)],'Match','No match', ...
                 'Location','EastOutside');
             pos = get(gui.handles.hLeg2,'position');
             set(gui.handles.hLeg2, 'position',[0.87 0.25 pos(3:4)]);
+            legend boxoff ;
         else
             legend('hide');
         end
