@@ -80,17 +80,17 @@ if config.flag_data
             gui.data.data2plot_E = data_binarized;
             if ~plotMatch
                 set(gui.handles.value_ratioLow_E_GUI, ...
-                    'string', num2str(fractionMin*100));
+                    'string', num2str(round(fractionMin*1000)/10));
                 set(gui.handles.value_ratioHigh_E_GUI, ...
-                    'string', num2str(fractionMax*100));
+                    'string', num2str(round(fractionMax*1000)/10));
             end
         elseif iProp == 2
             gui.data.data2plot_H = data_binarized;
             if ~plotMatch
                 set(gui.handles.value_ratioLow_H_GUI, 'string', ...
-                    num2str(fractionMin*100));
+                    num2str(round(fractionMin*1000)/10));
                 set(gui.handles.value_ratioHigh_H_GUI, 'string', ...
-                    num2str(fractionMax*100));
+                    num2str(round(fractionMax*1000)/10));
             end
         end
         gui.data.data2plot = data_binarized;
@@ -133,9 +133,9 @@ if config.flag_data
         fractionMin = length(indI)/(length(data2use)^2);
         fractionMax = 1 - fractionMin;
         set(gui.handles.value_ratioLow_I_GUI, 'string', ...
-            num2str(fractionMin*100));
+            num2str(round(fractionMin*1000)/10));
         set(gui.handles.value_ratioHigh_I_GUI, 'string', ...
-            num2str(fractionMax*100));
+            num2str(round(fractionMax*1000)/10));
     end
     
     if config.flag_data && config.flag_image
@@ -147,26 +147,24 @@ if config.flag_data
     %% Plot binarized map, image and difference map
     guidata(gcf, gui);
     
-    if  ~plotMatch
-        if gui.config.saveFlagBin == 0
-            % Binarized image
-            if config.flag_image
-                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_3);
-                TriDiMap_image_plotting;
-            end
-            % Difference map
-            if config.flag_data && config.flag_image
-                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_4);
-                TriDiMap_diff_plotting(1);
-            end
-            if config.flag_data && config.flag_image
-                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_5);
-                TriDiMap_diff_plotting(2);
-            end
-            if config.flag_data && config.flag_image
-                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_6);
-                TriDiMap_diff_plotting(3);
-            end
+    if gui.config.saveFlagBin == 0 && ~plotMatch
+        % Binarized image
+        if config.flag_image
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_3);
+            TriDiMap_image_plotting;
+        end
+        % Difference map
+        if config.flag_data && config.flag_image
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_4);
+            TriDiMap_diff_plotting(1);
+        end
+        if config.flag_data && config.flag_image
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_5);
+            TriDiMap_diff_plotting(2);
+        end
+        if config.flag_data && config.flag_image
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_6);
+            TriDiMap_diff_plotting(3);
         end
     end
 else
