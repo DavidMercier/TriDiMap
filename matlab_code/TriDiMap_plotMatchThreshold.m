@@ -11,8 +11,6 @@ maxH = 2*round(nanmean(g.data.expValues.H));
 crit_E = 0:maxE/numThres:maxE;
 crit_H = 0:maxH/numThres:maxH;
 
-diff_errorE = zeros(1,length(crit_E));
-diff_errorH = zeros(1,length(crit_H));
 matchPercent_E = zeros(1,length(crit_E));
 matchPercent_H = zeros(1,length(crit_H));
 for ii = 1:length(crit_E)
@@ -20,10 +18,8 @@ for ii = 1:length(crit_E)
     g.config.criterionBinMap_H = crit_H(ii);
     guidata(gcf, g);
     TriDiMap_runBin(1);
-    diff_errorE(ii) = TriDiMap_diff_plotting(1,1);
-    diff_errorH(ii) = TriDiMap_diff_plotting(2,1);
-    matchPercent_E(ii) = (1-diff_errorE(ii))*100;
-    matchPercent_H(ii) = (1-diff_errorH(ii))*100;
+    matchPercent_E(ii) = TriDiMap_diff_plotting(1,1);
+    matchPercent_H(ii) = TriDiMap_diff_plotting(2,1);
 end
 
 hNewFig_E = figure;
@@ -49,7 +45,6 @@ set([hXLabel, hYLabel, hTitle], ...
 grid on;
 
 % For elastic modulus vs hardness
-diff_errorEH = zeros(length(crit_E), length(crit_H));
 matchPercent_EH = zeros(length(crit_E), length(crit_H));
 
 h = waitbar(0,'Please wait...');
@@ -59,8 +54,7 @@ for ii = 1:length(crit_E)
         g.config.criterionBinMap_H = crit_H(jj);
         guidata(gcf, g);
         TriDiMap_runBin(1);
-        diff_errorEH(ii,jj) = TriDiMap_diff_plotting(3,1);
-        matchPercent_EH(ii,jj) = (1-diff_errorEH(ii,jj))*100;
+        matchPercent_EH(ii,jj) = TriDiMap_diff_plotting(3,1);
     end
     waitbar(ii / length(crit_E));
 end

@@ -127,18 +127,17 @@ if config.flag_data
     if config.flag_image && ~plotMatch
         gui.image.image2plot = gui.image.image2use;
     end
-    if ~plotMatch
-        data2use = gui.image.image2use;
-        indI = find(data2use == 0);
-        fractionMin = length(indI)/(length(data2use)^2);
-        fractionMax = 1 - fractionMin;
-        set(gui.handles.value_ratioLow_I_GUI, 'string', ...
-            num2str(round(fractionMin*1000)/10));
-        set(gui.handles.value_ratioHigh_I_GUI, 'string', ...
-            num2str(round(fractionMax*1000)/10));
-    end
-    
     if config.flag_data && config.flag_image
+        if ~plotMatch
+            data2use = gui.image.image2use;
+            indI = find(data2use == 0);
+            fractionMin = length(indI)/(length(data2use)^2);
+            fractionMax = 1 - fractionMin;
+            set(gui.handles.value_ratioLow_I_GUI, 'string', ...
+                num2str(round(fractionMin*1000)/10));
+            set(gui.handles.value_ratioHigh_I_GUI, 'string', ...
+                num2str(round(fractionMax*1000)/10));
+        end
         set(gui.handles.plotAllCritVal_GUI, 'Visible', 'on');
         set(gui.handles.title_numThres_GUI, 'Visible', 'on');
         set(gui.handles.value_numThres_GUI, 'Visible', 'on');

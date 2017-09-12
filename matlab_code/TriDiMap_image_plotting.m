@@ -2,7 +2,6 @@
 function TriDiMap_image_plotting
 %% Function to plot a microscopical image
 gui = guidata(gcf);
-set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_3);
 cMap = gui.config.colorMap;
 
 hFig(1) = imagesc(flipud(gui.image.image2use), ...
