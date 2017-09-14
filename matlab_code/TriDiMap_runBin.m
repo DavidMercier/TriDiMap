@@ -138,6 +138,7 @@ if config.flag_data
             set(gui.handles.value_ratioHigh_I_GUI, 'string', ...
                 num2str(round(fractionMax*1000)/10));
         end
+        set(gui.handles.optCritVal_GUI, 'Visible', 'on');
         set(gui.handles.plotAllCritVal_GUI, 'Visible', 'on');
         set(gui.handles.title_numThres_GUI, 'Visible', 'on');
         set(gui.handles.value_numThres_GUI, 'Visible', 'on');
@@ -157,13 +158,26 @@ if config.flag_data
             set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_4);
             TriDiMap_diff_plotting(1);
         end
-        if config.flag_data && config.flag_image
-            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_5);
-            TriDiMap_diff_plotting(2);
+        gui = guidata(gcf);
+        if gui.config.sizeCheck
+            if config.flag_data && config.flag_image
+                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_5);
+                TriDiMap_diff_plotting(2);
+            end
+            if config.flag_data && config.flag_image
+                set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_6);
+                TriDiMap_diff_plotting(3);
+            end
         end
-        if config.flag_data && config.flag_image
+        if ~config.flag_image
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_3);
+            cla(gca);
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_4);
+            cla(gca);
+            set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_5);
+            cla(gca);
             set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_6);
-            TriDiMap_diff_plotting(3);
+            cla(gca);
         end
     end
 else

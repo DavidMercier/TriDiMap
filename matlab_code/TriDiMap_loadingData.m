@@ -287,6 +287,8 @@ if config.flagValid
     if strcmp(get(g.handles.binarization_GUI, 'String'), 'BINARIZATION')
         TriDiMap_runPlot;
     else
+        g.config.flag_image = 0;
+        guidata(gcf, g);
         TriDiMap_runBin;
     end
 end

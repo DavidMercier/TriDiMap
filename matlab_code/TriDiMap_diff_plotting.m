@@ -22,64 +22,75 @@ end
 
 if property < 3
     %% Difference between property map and image
-    if get(gui.handles.pixelList_GUI, 'Value') == 1
-        %gui.results.diff = (rot90(data2plot) == flipud(gui.image.image2plot));
-        gui.results.diff = rot90(int8(data2plot)) - ...
-            (int8(gui.image.image2plot));
-        gui.results.diff(gui.results.diff~=0) = 1;
-    diff_error = (1-(sum(sum(abs(gui.results.diff)))/ ...
-        (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;
-    elseif get(gui.handles.pixelList_GUI, 'Value') == 2
-        d2plot = rot90(data2plot);
-        for ii = 1:size(data2plot,1)
-            for jj = 1:size(data2plot,2)
-                if (int8(d2plot(ii,jj))) > 0 && ...
-                        (int8(gui.image.image2plot(ii,jj))) > 0
-                    gui.results.diff(ii,jj) = 0;
-                else
-                    gui.results.diff(ii,jj) = 1;
-                end
-            end
-        end
-    diff_error = (((gui.config.N_XStep_default * gui.config.N_YStep_default) - ...
-        sum(sum(abs(gui.results.diff)))) / sum(sum(data2plot/255)))*100;
-    elseif get(gui.handles.pixelList_GUI, 'Value') == 3
-        d2plot = rot90(data2plot);
-        for ii = 1:size(data2plot,1)
-            for jj = 1:size(data2plot,2)
-                if (int8(d2plot(ii,jj))) == 0 && ...
-                        (int8(gui.image.image2plot(ii,jj))) == 0
-                    gui.results.diff(ii,jj) = 0;
-                else
-                    gui.results.diff(ii,jj) = 1;
-                end
-            end
-        end
-    diff_error = (1-((sum(sum(abs(gui.results.diff))))/...
-        (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;
+    image2plot = gui.image.image2plot;
+    if size(data2plot) == size(image2plot)
+        gui.config.sizeCheck = 1;
+    else
+        gui.config.sizeCheck = 0;
     end
-
-    if ~plotMatch
-        display(diff_error);
-        if property == 1
-            set(gui.handles.value_diffValE_GUI, 'String', ...
-                num2str(round(diff_error*10)/10));
-            strTitle = 'E-Image difference map';
-        elseif property == 2
-            set(gui.handles.value_diffValH_GUI, 'String', ...
-                num2str(round(diff_error*10)/10));
-            strTitle = 'H-Image difference map';
+    
+    if gui.config.sizeCheck
+        if get(gui.handles.pixelList_GUI, 'Value') == 1
+            %gui.results.diff = (rot90(data2plot) == flipud(image2plot));
+            gui.results.diff = rot90(int8(data2plot)) - ...
+                (int8(image2plot));
+            gui.results.diff(gui.results.diff~=0) = 1;
+            diff_error = (1-(sum(sum(abs(gui.results.diff)))/ ...
+                (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;
+        elseif get(gui.handles.pixelList_GUI, 'Value') == 2
+            d2plot = rot90(data2plot);
+            for ii = 1:size(data2plot,1)
+                for jj = 1:size(data2plot,2)
+                    if (int8(d2plot(ii,jj))) > 0 && ...
+                            (int8(image2plot(ii,jj))) > 0
+                        gui.results.diff(ii,jj) = 0;
+                    else
+                        gui.results.diff(ii,jj) = 1;
+                    end
+                end
+            end
+            diff_error = (((gui.config.N_XStep_default * gui.config.N_YStep_default) - ...
+                sum(sum(abs(gui.results.diff)))) / sum(sum(data2plot/255)))*100;
+        elseif get(gui.handles.pixelList_GUI, 'Value') == 3
+            d2plot = rot90(data2plot);
+            for ii = 1:size(data2plot,1)
+                for jj = 1:size(data2plot,2)
+                    if (int8(d2plot(ii,jj))) == 0 && ...
+                            (int8(image2plot(ii,jj))) == 0
+                        gui.results.diff(ii,jj) = 0;
+                    else
+                        gui.results.diff(ii,jj) = 1;
+                    end
+                end
+            end
+            diff_error = (1-((sum(sum(abs(gui.results.diff))))/...
+                (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;
         end
         
-        hFig = imagesc(flipud(gui.results.diff), ...
-            'XData',gui.data.xData_interp,'YData',gui.data.yData_interp);
-        
-        axisMap(cMap, strTitle, gui.config.FontSizeVal, ...
-            (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
-            (gui.config.N_YStep_default-1)*gui.config.YStep_default, ...
-            gui.config.flipColor);
-        axis equal;
-        axis tight;
+        if ~plotMatch
+            display(diff_error);
+            if property == 1
+                set(gui.handles.value_diffValE_GUI, 'String', ...
+                    num2str(round(diff_error*10)/10));
+                strTitle = 'E-Image difference map';
+            elseif property == 2
+                set(gui.handles.value_diffValH_GUI, 'String', ...
+                    num2str(round(diff_error*10)/10));
+                strTitle = 'H-Image difference map';
+            end
+            
+            hFig = imagesc(flipud(gui.results.diff), ...
+                'XData',gui.data.xData_interp,'YData',gui.data.yData_interp);
+            
+            axisMap(cMap, strTitle, gui.config.FontSizeVal, ...
+                (gui.config.N_XStep_default-1)*gui.config.XStep_default, ...
+                (gui.config.N_YStep_default-1)*gui.config.YStep_default, ...
+                gui.config.flipColor);
+            axis equal;
+            axis tight;
+        end
+    else
+        errordlg('Not the same size between property maps and microstructural image !');
     end
     %% Difference between E map and H map
 else
@@ -87,8 +98,8 @@ else
         gui.results.diff_EH = rot90(int8(data2plot_E)) - ...
             rot90(int8(data2plot_H));
         gui.results.diff_EH(gui.results.diff_EH~=0)=1;
-    diff_error = (1-(sum(sum(gui.results.diff_EH)) / ...
-        (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;
+        diff_error = (1-(sum(sum(gui.results.diff_EH)) / ...
+            (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;
     elseif get(gui.handles.pixelList_GUI, 'Value') == 2
         d2plot_E = rot90(data2plot_E);
         d2plot_H = rot90(data2plot_H);
@@ -102,8 +113,8 @@ else
                 end
             end
         end
-    diff_error = (((gui.config.N_XStep_default * gui.config.N_YStep_default) - ...
-        sum(sum(abs(gui.results.diff_EH)))) / sum(sum(data2plot_E/255)))*100;
+        diff_error = (((gui.config.N_XStep_default * gui.config.N_YStep_default) - ...
+            sum(sum(abs(gui.results.diff_EH)))) / sum(sum(data2plot_E/255)))*100;
     elseif get(gui.handles.pixelList_GUI, 'Value') == 3
         d2plot_E = rot90(data2plot_E);
         d2plot_H = rot90(data2plot_H);
@@ -117,8 +128,8 @@ else
                 end
             end
         end
-    diff_error = (1-((sum(sum(abs(gui.results.diff_EH))))/...
-        (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100; 
+        diff_error = (1-((sum(sum(abs(gui.results.diff_EH))))/...
+            (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;
     end
     if ~plotMatch
         display(diff_error);
