@@ -56,6 +56,7 @@ gui.config.image.image_pathNew = '.\data_image';
 %% Variables initialization
 gui.config.saveFlag = 0;
 gui.config.saveFlagBin = 0;
+gui.config.sizeCheck = 0;
 gui.config.flag_data = 0;
 gui.config.flag_image = 0;
 gui.config.cminOld = 0;
