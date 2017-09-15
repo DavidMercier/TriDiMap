@@ -21,6 +21,10 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
 else
     set(gui.handles.unit_criterionE_GUI, 'string', strUnit_Property);
     set(gui.handles.unit_criterionH_GUI, 'string', strUnit_Property);
+    set(gui.handles.unit_valMeanLow_E_GUI, 'string', strUnit_Property);
+    set(gui.handles.unit_valMeanHigh_E_GUI, 'string', strUnit_Property);
+    set(gui.handles.unit_valMeanLow_H_GUI, 'string', strUnit_Property);
+    set(gui.handles.unit_valMeanHigh_H_GUI, 'string', strUnit_Property);
 end
 gui.config.strUnit_Length = strUnit_Length;
 gui.config.strUnit_Property = strUnit_Property;
