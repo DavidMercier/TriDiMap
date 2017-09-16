@@ -30,6 +30,7 @@ if config.flag_data
         
         if iProp == 1
             gui.data.data2plot_E = data_binarized;
+            crit = gui.config.criterionBinMap_E;
             if ~plotMatch
                 set(gui.handles.value_ratioLow_E_GUI, ...
                     'string', num2str(round(fractionMin*1000)/10));
@@ -38,6 +39,7 @@ if config.flag_data
             end
         elseif iProp == 2
             gui.data.data2plot_H = data_binarized;
+            crit = gui.config.criterionBinMap_H;
             if ~plotMatch
                 set(gui.handles.value_ratioLow_H_GUI, 'string', ...
                     num2str(round(fractionMin*1000)/10));
@@ -45,11 +47,41 @@ if config.flag_data
                     num2str(round(fractionMax*1000)/10));
             end
         end
+        
+        data2useHard = zeros(gui.config.N_XStep_default, ...
+            gui.config.N_YStep_default);
+        data2useSoft = zeros(gui.config.N_XStep_default, ...
+            gui.config.N_YStep_default);
+        for ii = 1:1:gui.config.N_XStep_default
+            for jj = 1:1:gui.config.N_YStep_default
+                if data2use(ii,jj) > crit
+                    data2useHard(ii,jj) = data2use(ii,jj);
+                    data2useSoft(ii,jj) = NaN;
+                else
+                    data2useHard(ii,jj) = NaN;
+                    data2useSoft(ii,jj) = data2use(ii,jj);
+                end
+            end
+        end
+        
         gui.data.data2plot = data_binarized;
         
         if iProp == 1
+            gui.data.meanE_soft = nanmean(nanmean(data2useSoft));
+            gui.data.meanE_hard = nanmean(nanmean(data2useHard));
+            set(gui.handles.value_valMeanLow_E_GUI, ...
+                'String', num2str(gui.data.meanE_soft));
+            set(gui.handles.value_valMeanHigh_E_GUI, ...
+                'String', num2str(gui.data.meanE_hard));
+            gui.data.data2plot_E = data_binarized;
             str = 'elastic modulus';
         elseif iProp == 2
+            gui.data.meanH_soft = nanmean(nanmean(data2useSoft));
+            gui.data.meanH_hard = nanmean(nanmean(data2useHard));
+            set(gui.handles.value_valMeanLow_H_GUI, ...
+                'String', num2str(gui.data.meanH_soft));
+            set(gui.handles.value_valMeanHigh_H_GUI, ...
+                'String', num2str(gui.data.meanH_hard));
             str = 'hardness';
         end
         

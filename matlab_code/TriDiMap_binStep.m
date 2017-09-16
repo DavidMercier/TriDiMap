@@ -39,36 +39,16 @@ elseif iProp == 2
 end
 
 % Binarization
-data2useHard = zeros(gui.config.N_XStep_default, ...
-    gui.config.N_YStep_default);
-data2useSoft = zeros(gui.config.N_XStep_default, ...
-    gui.config.N_YStep_default);
 data_binarized = zeros(gui.config.N_XStep_default, ...
     gui.config.N_YStep_default);
 for ii = 1:1:gui.config.N_XStep_default
     for jj = 1:1:gui.config.N_YStep_default
         if data2use(ii,jj) > crit
             data_binarized(ii,jj) = 255;
-            data2useHard(ii,jj) = data2use(ii,jj);
-            data2useSoft(ii,jj) = 0;
         else
             data_binarized(ii,jj) = 0;
-            data2useHard(ii,jj) = 0;
-            data2useSoft(ii,jj) = data2use(ii,jj);
         end
     end
-end
-
-if iProp == 1
-    gui.data.meanE_soft = mean(mean(data2useSoft));
-    gui.data.meanE_hard = mean(mean(data2useHard));
-    set(gui.handles.value_valMeanLow_E_GUI, 'String', num2str(gui.data.meanE_soft));
-    set(gui.handles.value_valMeanHigh_E_GUI, 'String', num2str(gui.data.meanE_hard));
-elseif iProp == 2
-    gui.data.meanH_soft = mean(mean(data2useSoft));
-    gui.data.meanH_hard = mean(mean(data2useHard));
-    set(gui.handles.value_valMeanLow_H_GUI, 'String', num2str(gui.data.meanH_soft));
-    set(gui.handles.value_valMeanHigh_H_GUI, 'String', num2str(gui.data.meanH_hard));
 end
 
 ind = find(data2use <= crit);

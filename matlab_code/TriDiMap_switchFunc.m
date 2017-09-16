@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function TriDiMap_binarization
+function TriDiMap_switchFunc
 %% Function to swith the button on the GUI between mapping and binarization
 
 gui = guidata(gcf);
