@@ -1005,9 +1005,9 @@ if module == 2
         'HorizontalAlignment', 'left');
     
     %% Mean values
-    x1 = 0.02; x2 = 0.08; x3 = 0.11; x4 = 0.135; x5 = 0.21; x6 = 0.24;
+    x1 = 0.02; x2 = 0.07; x3 = 0.11; x4 = 0.135; x5 = 0.2; x6 = 0.24;
     y = 0.17;
-    w1 = 0.06; w2 = 0.03; w3 = 0.02;
+    w1 = 0.06; w2 = 0.04; w3 = 0.02;
     h = 0.02;
     
     handles.title_valMeanLow_E_GUI = uicontrol('Parent', gcf,...

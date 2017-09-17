@@ -43,9 +43,9 @@ end
 
 guidata(gcf, g);
 set(g.handles.value_criterionE_GUI, 'String', ...
-    num2str(g.config.criterionBinMap_E));
+    num2str(round(g.config.criterionBinMap_E*10)/10));
 set(g.handles.value_criterionH_GUI, 'String', ...
-    num2str(g.config.criterionBinMap_H));
+    num2str(round(g.config.criterionBinMap_H*10)/10));
 
 TriDiMap_runBin;
 

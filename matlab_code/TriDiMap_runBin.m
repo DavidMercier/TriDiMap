@@ -67,21 +67,25 @@ if config.flag_data
         gui.data.data2plot = data_binarized;
         
         if iProp == 1
-            gui.data.meanE_soft = nanmean(nanmean(data2useSoft));
-            gui.data.meanE_hard = nanmean(nanmean(data2useHard));
+            gui.data.meanE_soft = round(nanmean(nanmean(data2useSoft))*10)/10;
+            gui.data.stdE_soft = round(nanstd(reshape(data2useSoft, [length(data2useSoft)^2 1]))*10)/10;
+            gui.data.meanE_hard = round(nanmean(nanmean(data2useHard))*10)/10;
+            gui.data.stdE_hard = round(nanstd(reshape(data2useHard, [length(data2useHard)^2 1]))*10)/10;
             set(gui.handles.value_valMeanLow_E_GUI, ...
-                'String', num2str(gui.data.meanE_soft));
+                'String', [num2str(gui.data.meanE_soft),'±',num2str(gui.data.stdE_soft)]);
             set(gui.handles.value_valMeanHigh_E_GUI, ...
-                'String', num2str(gui.data.meanE_hard));
+                'String', [num2str(gui.data.meanE_hard),'±',num2str(gui.data.stdE_hard)]);
             gui.data.data2plot_E = data_binarized;
             str = 'elastic modulus';
         elseif iProp == 2
-            gui.data.meanH_soft = nanmean(nanmean(data2useSoft));
-            gui.data.meanH_hard = nanmean(nanmean(data2useHard));
+            gui.data.meanH_soft = round(nanmean(nanmean(data2useSoft))*10)/10;
+            gui.data.stdH_soft = round(nanstd(reshape(data2useSoft, [length(data2useSoft)^2 1]))*10)/10;
+            gui.data.meanH_hard = round(nanmean(nanmean(data2useHard))*10)/10;
+            gui.data.stdH_hard = round(nanstd(reshape(data2useHard, [length(data2useHard)^2 1]))*10)/10;
             set(gui.handles.value_valMeanLow_H_GUI, ...
-                'String', num2str(gui.data.meanH_soft));
+                'String', [num2str(gui.data.meanH_soft),'±',num2str(gui.data.stdH_soft)]);
             set(gui.handles.value_valMeanHigh_H_GUI, ...
-                'String', num2str(gui.data.meanH_hard));
+                'String', [num2str(gui.data.meanH_hard),'±',num2str(gui.data.stdH_hard)]);
             str = 'hardness';
         end
         
