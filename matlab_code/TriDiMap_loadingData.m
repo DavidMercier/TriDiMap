@@ -98,6 +98,12 @@ if config.flag_data
         if dataType == 1
             ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
             ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
+            if isempty(ind_Xstep)
+                ind_Xstep = find(strncmp(txtAll(1,:), '_XLocation', 10))-1;
+            end
+            if isempty(ind_Ystep)
+                ind_Ystep = find(strncmp(txtAll(1,:), '_YLocation', 10))-1;
+            end
             ind_YM = find(strncmp(txtAll(1,:), 'Avg Modulus', 10));
             ind_H = find(strncmp(txtAll(1,:), 'Avg Hardness', 10));
             flagSKoss = 0;
@@ -120,6 +126,12 @@ if config.flag_data
                     ind_H = find(strncmp(txtAll(1,:), 'Hardness From Unload', 10));
                 end
                 flagSKoss = 1;
+            end
+            if isempty(ind_YM)
+                ind_YM = find(strncmp(txtAll(1,:), 'AvgModulus', 10))-1;
+            end
+            if isempty(ind_H)
+                ind_H = find(strncmp(txtAll(1,:), 'AvgHardness', 10))-1;
             end
             endLines = 3;
         elseif dataType == 2
