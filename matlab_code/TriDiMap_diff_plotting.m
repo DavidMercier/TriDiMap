@@ -12,9 +12,11 @@ cMap = gui.config.colorMap;
 % Display % of error - If 1, then perfect match and if 0 perfect mismatch.
 
 if property == 1
-    data2plot = gui.data.data2plot_E;
+    data2plot = rot90(gui.data.data2plot_E);
+    dataE = rot90(gui.data.expValues_mat.YM);
 elseif property == 2
-    data2plot = gui.data.data2plot_H;
+    data2plot = rot90(gui.data.data2plot_H);
+    dataH = rot90(gui.data.expValues_mat.H);
 elseif property == 3
     data2plot_E = gui.data.data2plot_E;
     data2plot_H = gui.data.data2plot_H;
@@ -31,12 +33,27 @@ if property < 3
     
     if gui.config.sizeCheck
         if get(gui.handles.pixelList_GUI, 'Value') == 1
-            %gui.results.diff = (rot90(data2plot) == flipud(image2plot));
-            gui.results.diff = rot90(int8(data2plot)) - ...
-                (int8(image2plot));
+            gui.results.diff = int8(data2plot) - (int8(image2plot));
             gui.results.diff(gui.results.diff~=0) = 1;
             diff_error = (1-(sum(sum(abs(gui.results.diff)))/ ...
                 (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;
+            data2plot_soft = (data2plot==0);
+            image2plot_soft = (image2plot==0);
+            gui.results.matchSoft = ((data2plot_soft + image2plot_soft)==2);
+            data2plot_hard = (data2plot==255);
+            image2plot_hard = (image2plot==255);
+            gui.results.matchHard = ((data2plot_hard + image2plot_hard)==2);
+            if property == 1
+                display(nanmean(dataE(gui.results.matchSoft==1)));
+                display(nanstd(dataE(gui.results.matchSoft==1)));
+                display(nanmean(dataE(gui.results.matchHard==1)));
+                display(nanstd(dataE(gui.results.matchHard==1)));
+            elseif property == 2
+                display(nanmean(dataH(gui.results.matchSoft==1)));
+                display(nanstd(dataH(gui.results.matchSoft==1)));
+                display(nanmean(dataH(gui.results.matchHard==1)));
+                display(nanstd(dataH(gui.results.matchHard==1)));
+            end
         elseif get(gui.handles.pixelList_GUI, 'Value') == 2
             d2plot = rot90(data2plot);
             for ii = 1:size(data2plot,1)
