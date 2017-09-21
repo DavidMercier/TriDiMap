@@ -60,6 +60,8 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         else
             hFig = imagesc((data2plot'),...
                 'XData',xData_interp,'YData',yData_interp);
+%             zVal = zeros(length(xData_interp));
+%             hFig = scatter3(xData_interp, yData_interp, zVal);
         end
         set(gca,'YDir','normal');
         set(hFig,'alphadata',~isnan(data2plot'));
@@ -102,10 +104,18 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     if strcmp(gui.config.strUnit_Length, 'µm')
         gui.config.strUnit_Length_Latex = '$\mu$m';
         hXLabel = xlabel(strcat({'X coordinates ('},gui.config.strUnit_Length_Latex, ')'));
-        hYLabel = ylabel(strcat({'Y coordinates ('},gui.config.strUnit_Length_Latex, ')'));
+        if ~gui.config.flagZplot
+            hYLabel = ylabel(strcat({'Y coordinates ('},gui.config.strUnit_Length_Latex, ')'));
+        else
+            hYLabel = ylabel(strcat({'Z coordinates ('},gui.config.strUnit_Length_Latex, ')'));
+        end
     else
         hXLabel = xlabel(strcat({'X coordinates ('},gui.config.strUnit_Length, ')'));
-        hYLabel = ylabel(strcat({'Y coordinates ('},gui.config.strUnit_Length, ')'));
+        if ~gui.config.flagZplot
+            hYLabel = ylabel(strcat({'Y coordinates ('},gui.config.strUnit_Length, ')'));
+        else
+            hYLabel = ylabel(strcat({'Z coordinates ('},gui.config.strUnit_Length, ')'));
+        end
     end
     hZLabel = zlabel(zString);
     hTitle(1) = title(strcat({'Mapping of '}, zString));

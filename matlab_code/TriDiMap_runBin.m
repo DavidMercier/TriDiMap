@@ -197,5 +197,6 @@ elseif gui.config.saveFlagBin == 6
 end
 
 coordSyst(gui.handles.MainWindow);
+gui = guidata(gcf);
 guidata(gcf, gui);
 end

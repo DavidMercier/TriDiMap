@@ -16,7 +16,6 @@ else
     data_path = config.data.data_path;
 end
 
-
 [data.filename_data, data.pathname_data, filterindex_data] = ...
     uigetfile('*.xls;*.xlsx', ...
     char(title_importdata_Window), data_path);
@@ -58,6 +57,9 @@ config.name = name;
 config.pathStr = data.pathname_data;
 config.data.data_pathNew = data.pathname_data;
 set(g.handles.opendata_str_GUI, 'String', data.pathname_data);
+
+data2import = [data.pathname_data, data.filename_data];
+[pathstr,name,ext] = fileparts(data.filename_data);
 
 %% Loading data
 if config.flag_data
@@ -290,6 +292,8 @@ set(h.value_MinXCrop_GUI, 'String', 1);
 set(h.value_MaxXCrop_GUI, 'String', num2str(get(h.value_numXindents_GUI, 'String')));
 set(h.value_MinYCrop_GUI, 'String', 1);
 set(h.value_MaxYCrop_GUI, 'String', num2str(get(h.value_numYindents_GUI, 'String')));
+
+config.flagZplot = 0;
 
 g.data = data;
 g.config = config;

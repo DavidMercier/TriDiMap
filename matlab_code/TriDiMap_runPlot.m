@@ -6,11 +6,42 @@ TriDiMap_getParam;
 gui = guidata(gcf);
 config = gui.config;
 
+if ~gui.config.flagZplot
+    if isfield(gui, 'handlesCS')
+        if isfield(gui.handlesCS, 'arrowX_Z')
+            delete(gui.handlesCS.arrowX_Z);
+        end
+    end
+    if isfield(gui, 'handlesCS')
+        if isfield(gui.handlesCS, 'textX_Z')
+            delete(gui.handlesCS.textX_Z);
+        end
+    end
+    if isfield(gui, 'handlesCS')
+        if isfield(gui.handlesCS, 'arrowZ')
+            delete(gui.handlesCS.arrowZ);
+        end
+    end
+    if isfield(gui, 'handlesCS')
+        if isfield(gui.handlesCS, 'textZ')
+            delete(gui.handlesCS.textZ);
+        end
+    end
+end
+
 if config.flag_data
     if gui.config.property == 1
-        data2use = gui.data.expValues_mat.YM;
+        if ~gui.config.flagZplot
+            data2use = gui.data.expValues_mat.YM;
+        else
+            data2use = gui.data3D.meanZVal_YM;
+        end
     elseif gui.config.property == 2
-        data2use = gui.data.expValues_mat.H;
+        if ~gui.config.flagZplot
+            data2use = gui.data.expValues_mat.H;
+        else
+            data2use = gui.data3D.meanZVal_H;
+        end
     end
     %% Crop data
     data2use = TriDiMap_cropping(data2use);
@@ -68,6 +99,9 @@ if config.flag_data
     elseif gui.config.N_XStep_default ~= gui.config.N_YStep_default
         gui.data.xData = 0:x_step:(size(data2use,1)-1)*x_step;
         gui.data.yData = 0:y_step:(size(data2use,2)-1)*y_step;
+    end
+    if gui.config.flagZplot
+        gui.data.yData = -gui.data.yData;
     end
     
     if gui.config.N_XStep ~= gui.config.N_YStep
@@ -152,5 +186,6 @@ else
         'to plot a property map !']);
 end
 coordSyst(gui.handles.MainWindow);
+gui = guidata(gcf);
 guidata(gcf, gui);
 end
