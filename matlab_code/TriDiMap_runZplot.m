@@ -10,7 +10,7 @@ answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 gui.config.flagZplot = 1;
 guidata(gcf, gui);
 
-if str2num(answer{:}) > 1
+if ~isempty(answer) && str2num(answer{:}) > 1
     if ~isempty(answer)
         gui = guidata(gcf);
         for ii = 1:str2num(answer{:})
@@ -44,14 +44,12 @@ if str2num(answer{:}) > 1
         guidata(gcf, gui);
         
         TriDiMap_runPlot;
-        delete(gui.handlesCS.arrowX);
-        delete(gui.handlesCS.textX);
-        delete(gui.handlesCS.arrowY);
-        delete(gui.handlesCS.textY);
         
     else
         display('No 3D data loaded !');
     end
-else
-    errordlg('Load more than 1 file for Z plot !');
+elseif ~isempty(answer)
+    if str2num(answer{:}) < 2
+        errordlg('Load more than 1 file for Z plot !');
+    end
 end

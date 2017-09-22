@@ -3,12 +3,13 @@ function TriDiMap_saveExcel
 %% Function to plot match as a function of all threshold
 
 g = guidata(gcf);
+sZFac = size(g.data.data2plot,1)*size(g.data.data2plot,2);
 
 if g.config.flag_data
     
     maxProperty = 2;
     % Reshape matrices
-    dataFlipped = zeros(length(g.data.data2plot),length(g.data.data2plot),maxProperty);
+    dataFlipped = zeros(size(g.data.data2plot,1),size(g.data.data2plot,2),maxProperty);
     for ii = 1:1:maxProperty
         set(g.handles.property_GUI, 'Value', ii);
         guidata(gcf, g);
@@ -17,26 +18,25 @@ if g.config.flag_data
         
         dataFlipped(:,:,ii) = g.data.data2plot;
         if mod(length(g.data.data2plot),2) == 1
-            for jj = 2:2:length(g.data.data2plot)-1
+            for jj = 2:2:size(g.data.data2plot,2)-1
                 dataFlipped(:,jj,ii) = flipud(dataFlipped(:,jj,ii));
             end
         elseif mod(length(g.data.data2plot),2) == 0
-            for jj = 2:2:length(g.data.data2plot)
+            for jj = 2:2:size(g.data.data2plot,2)
                 dataFlipped(:,jj,ii) = flipud(dataFlipped(:,jj,ii));
             end
         end
     end
     
     % Create variable to write into .xls file
-    dataReshaped(:,1:maxProperty) = zeros(length(g.data.data2plot)^2,maxProperty);
+    dataReshaped(:,1:maxProperty) = zeros(sZFac,maxProperty);
     meanVal = zeros(1,maxProperty);
     stdVal = zeros(1,maxProperty);
     covVal = zeros(1,maxProperty);
-    allTest = 1:1:length(g.data.data2plot)^2;
+    allTest = 1:1:sZFac;
     testVal = cellstr(strcat('T', num2str(allTest(:))));
     for ii = 1:1:maxProperty
-        dataReshaped(:,ii) = reshape(dataFlipped(:,:,ii), ...
-            [(length(g.data.data2plot)^2),1]);
+        dataReshaped(:,ii) = reshape(dataFlipped(:,:,ii), [sZFac,1]);
         meanVal(1,ii) = mean(dataReshaped(:,ii));
         stdVal(1,ii) = std(dataReshaped(:,ii));
         covVal(1,ii) = cov(dataReshaped(:,ii))/100;
@@ -58,6 +58,8 @@ if g.config.flag_data
         fileName = [g.data.filename_data,'_smooth_x',smFacStr];
     elseif valInterp == 1 && valSmooth == 1
         fileName = [g.data.filename_data,'_interp_',ipFacStr,'smooth_x',smFacStr];
+    elseif g.config.flagZplot
+        fileName = [g.data.filename_data,'_ZPlot'];
     else
         fileName = [g.data.filename_data,'_NoModification'];
     end
@@ -69,13 +71,13 @@ if g.config.flag_data
     xlswrite(fileName,testVal,'Results','A3');
     xlswrite(fileName,dataReshaped(:,:),'Results','B3');
     xlswrite(fileName,row_header,'Results', ...
-        ['A', num2str((length(g.data.data2plot)^2)+3)]);
+        ['A', num2str((sZFac)+3)]);
     xlswrite(fileName,meanVal(:,:),'Results', ...
-        ['B', num2str((length(g.data.data2plot)^2)+3)]);
+        ['B', num2str((sZFac)+3)]);
     xlswrite(fileName,stdVal(:,:),'Results', ...
-        ['B', num2str((length(g.data.data2plot)^2)+4)]);
+        ['B', num2str((sZFac)+4)]);
     xlswrite(fileName,covVal(:,:),'Results', ...
-        ['B', num2str((length(g.data.data2plot)^2)+5)]);
+        ['B', num2str((sZFac)+5)]);
     
     Message = 'Results were exported in .xls file !';
     display(Message);

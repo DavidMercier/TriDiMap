@@ -6,29 +6,6 @@ TriDiMap_getParam;
 gui = guidata(gcf);
 config = gui.config;
 
-if ~gui.config.flagZplot
-    if isfield(gui, 'handlesCS')
-        if isfield(gui.handlesCS, 'arrowX_Z')
-            delete(gui.handlesCS.arrowX_Z);
-        end
-    end
-    if isfield(gui, 'handlesCS')
-        if isfield(gui.handlesCS, 'textX_Z')
-            delete(gui.handlesCS.textX_Z);
-        end
-    end
-    if isfield(gui, 'handlesCS')
-        if isfield(gui.handlesCS, 'arrowZ')
-            delete(gui.handlesCS.arrowZ);
-        end
-    end
-    if isfield(gui, 'handlesCS')
-        if isfield(gui.handlesCS, 'textZ')
-            delete(gui.handlesCS.textZ);
-        end
-    end
-end
-
 if config.flag_data
     if gui.config.property == 1
         if ~gui.config.flagZplot

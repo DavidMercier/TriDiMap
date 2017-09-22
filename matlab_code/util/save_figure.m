@@ -13,9 +13,15 @@ end
 %% Definition of path and filenames
 pathname_sav_fig = gui.config.data_path;
 if isfield(gui.config,'property')
-    filename_sav_fig1 = [gui.config.name, '_' ,property, '_GUI'];
-    filename_sav_fig2 = [gui.config.name, '_' ,property, '_map'];
-    filename_sav_fig3 = [gui.config.name, '_' ,property, '_mapCropped'];
+    if ~gui.config.flagZplot
+        filename_sav_fig1 = [gui.config.name, '_' ,property, '_GUI'];
+        filename_sav_fig2 = [gui.config.name, '_' ,property, '_map'];
+        filename_sav_fig3 = [gui.config.name, '_' ,property, '_mapCropped'];
+    else
+        filename_sav_fig1 = [gui.config.name, '_' ,property, '_GUI_Zplot'];
+        filename_sav_fig2 = [gui.config.name, '_' ,property, '_map_Zplot'];
+        filename_sav_fig3 = [gui.config.name, '_' ,property, '_mapCropped_Zplot'];
+    end
     isolated_figure_title1 = fullfile(pathname_sav_fig, filename_sav_fig1);
     isolated_figure_title2 = fullfile(pathname_sav_fig, filename_sav_fig2);
     isolated_figure_title3 = fullfile(pathname_sav_fig, filename_sav_fig3);
