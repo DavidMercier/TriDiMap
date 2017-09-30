@@ -63,6 +63,9 @@ if g.config.flag_data
     else
         fileName = [g.data.filename_data,'_NoModification'];
     end
+    if g.config.flagCrop
+        fileName = [fileName, '_Cropped'];
+    end
     fileName = [fileName, '.xls'];
     
     pwd = cd(g.data.pathname_data);

@@ -57,17 +57,16 @@ config.image.image_pathNew = image.pathname_image;
 set(g.handles.openimage_str_GUI, 'String', image.pathname_image);
 
 %% Check Image
-image.image2use = imread([image.pathname_image, image.filename_image]);
-config.flagImageValid = 1;
-
-%% Loading image
 if config.flag_image
+    image.image2use = imread([image.pathname_image, image.filename_image]);
+    config.flagImageValid = 1;
     
-g.image = image;
-g.config = config;
-g.handles = h;
-guidata(gcf, g);
-if config.flagImageValid
-    TriDiMap_runBin;
-end
+    %% Loading image
+    g.image = image;
+    g.config = config;
+    g.handles = h;
+    guidata(gcf, g);
+    if config.flagImageValid
+        TriDiMap_runBin;
+    end
 end

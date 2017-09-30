@@ -68,9 +68,9 @@ if config.flag_data
         
         if iProp == 1
             gui.data.meanE_soft = round(nanmean(nanmean(data2useSoft))*10)/10;
-            gui.data.stdE_soft = round(nanstd(reshape(data2useSoft, [length(data2useSoft)^2 1]))*10)/10;
+            gui.data.stdE_soft = round(nanstd(reshape(data2useSoft, [size(data2useSoft,1)*size(data2useSoft,2) 1]))*10)/10;
             gui.data.meanE_hard = round(nanmean(nanmean(data2useHard))*10)/10;
-            gui.data.stdE_hard = round(nanstd(reshape(data2useHard, [length(data2useHard)^2 1]))*10)/10;
+            gui.data.stdE_hard = round(nanstd(reshape(data2useHard, [size(data2useHard,1)*size(data2useHard,2) 1]))*10)/10;
             set(gui.handles.value_valMeanLow_E_GUI, ...
                 'String', [num2str(gui.data.meanE_soft),'±',num2str(gui.data.stdE_soft)]);
             set(gui.handles.value_valMeanHigh_E_GUI, ...
@@ -79,9 +79,9 @@ if config.flag_data
             str = 'elastic modulus';
         elseif iProp == 2
             gui.data.meanH_soft = round(nanmean(nanmean(data2useSoft))*10)/10;
-            gui.data.stdH_soft = round(nanstd(reshape(data2useSoft, [length(data2useSoft)^2 1]))*10)/10;
+            gui.data.stdH_soft = round(nanstd(reshape(data2useSoft, [size(data2useSoft,1)*size(data2useSoft,2) 1]))*10)/10;
             gui.data.meanH_hard = round(nanmean(nanmean(data2useHard))*10)/10;
-            gui.data.stdH_hard = round(nanstd(reshape(data2useHard, [length(data2useHard)^2 1]))*10)/10;
+            gui.data.stdH_hard = round(nanstd(reshape(data2useHard, [size(data2useHard,1)*size(data2useHard,2) 1]))*10)/10;
             set(gui.handles.value_valMeanLow_H_GUI, ...
                 'String', [num2str(gui.data.meanH_soft),'±',num2str(gui.data.stdH_soft)]);
             set(gui.handles.value_valMeanHigh_H_GUI, ...

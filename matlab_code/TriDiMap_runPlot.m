@@ -21,7 +21,7 @@ if config.flag_data
         end
     end
     %% Crop data
-    data2use = TriDiMap_cropping(data2use);
+    [data2use, gui.config.flagCrop] = TriDiMap_cropping(data2use);
     if length(data2use) == 1
         config.flag_data = 0;
     end

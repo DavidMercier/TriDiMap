@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function dataCropped = TriDiMap_cropping(data)
+function [dataCropped, flagCrop] = TriDiMap_cropping(data)
 %% Function to crop the map
 gui = guidata(gcf);
 config = gui.config;
@@ -54,4 +54,5 @@ if flagCrop
 else
     dataCropped = 0;
 end
+
 end
