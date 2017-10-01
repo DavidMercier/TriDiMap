@@ -3,7 +3,9 @@ function TriDiMap_saveExcel
 %% Function to plot match as a function of all threshold
 
 g = guidata(gcf);
-sZFac = size(g.data.data2plot,1)*size(g.data.data2plot,2);
+sz1 = size(g.data.data2plot,1);
+sz2 = size(g.data.data2plot,2);
+sZFac = sz1*sz2;
 
 if g.config.flag_data
     
@@ -47,8 +49,7 @@ if g.config.flag_data
     row_header(1:3,1) = {'Mean','Std. Dev.','% COV'};
     
     % Generate .xls file
-    sz = length(g.data.data2plot);
-    ipFacStr = [num2str(sz),'x',num2str(sz)];
+    ipFacStr = [num2str(sz1),'x',num2str(sz2)];
     smFacStr = get_value_popupmenu(g.handles.pm_smoothMap_GUI, listSmooth);
     valInterp = get(g.handles.cb_interpMap_GUI, 'Value');
     valSmooth = get(g.handles.cb_smoothMap_GUI, 'Value');
@@ -60,11 +61,10 @@ if g.config.flag_data
         fileName = [g.data.filename_data,'_interp_',ipFacStr,'smooth_x',smFacStr];
     elseif g.config.flagZplot
         fileName = [g.data.filename_data,'_ZPlot'];
+    elseif g.config.flagCrop
+        fileName = [g.data.filename_data,'_crop_',ipFacStr];
     else
         fileName = [g.data.filename_data,'_NoModification'];
-    end
-    if g.config.flagCrop
-        fileName = [fileName, '_Cropped'];
     end
     fileName = [fileName, '.xls'];
     
