@@ -97,169 +97,173 @@ if config.flag_data
             end
         end
         
-        if dataType == 1
-            ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
-            ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
-            if isempty(ind_Xstep)
-                ind_Xstep = find(strncmp(txtAll(1,:), '_XLocation', 10))-1;
-            end
-            if isempty(ind_Ystep)
-                ind_Ystep = find(strncmp(txtAll(1,:), '_YLocation', 10))-1;
-            end
-            ind_YM = find(strncmp(txtAll(1,:), 'Avg Modulus', 10));
-            ind_H = find(strncmp(txtAll(1,:), 'Avg Hardness', 10));
-            flagSKoss = 0;
-            if isempty(ind_YM)
-                ind_YM = find(strncmp(txtAll(1,:), 'Modulus At Max Load', 10));
-            end
-            if isempty(ind_H)
-                ind_H = find(strncmp(txtAll(1,:), 'Hardness At Max Load', 10));
-            end
-            if isempty(ind_YM)
-                ind_YM = find(strncmp(txtAll(1,:), 'E Average Over Defined Range', 10));
+        try
+            if dataType == 1
+                ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
+                ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
+                if isempty(ind_Xstep)
+                    ind_Xstep = find(strncmp(txtAll(1,:), '_XLocation', 10))-1;
+                end
+                if isempty(ind_Ystep)
+                    ind_Ystep = find(strncmp(txtAll(1,:), '_YLocation', 10))-1;
+                end
+                ind_YM = find(strncmp(txtAll(1,:), 'Avg Modulus', 10));
+                ind_H = find(strncmp(txtAll(1,:), 'Avg Hardness', 10));
+                flagSKoss = 0;
                 if isempty(ind_YM)
-                    ind_YM = find(strncmp(txtAll(1,:), 'Modulus From Unload', 10));
+                    ind_YM = find(strncmp(txtAll(1,:), 'Modulus At Max Load', 10));
                 end
-                flagSKoss = 1;
-            end
-            if isempty(ind_H)
-                ind_H = find(strncmp(txtAll(1,:), 'H Average Over Defined Range', 10));
                 if isempty(ind_H)
-                    ind_H = find(strncmp(txtAll(1,:), 'Hardness From Unload', 10));
+                    ind_H = find(strncmp(txtAll(1,:), 'Hardness At Max Load', 10));
                 end
-                flagSKoss = 1;
+                if isempty(ind_YM)
+                    ind_YM = find(strncmp(txtAll(1,:), 'E Average Over Defined Range', 10));
+                    if isempty(ind_YM)
+                        ind_YM = find(strncmp(txtAll(1,:), 'Modulus From Unload', 10));
+                    end
+                    flagSKoss = 1;
+                end
+                if isempty(ind_H)
+                    ind_H = find(strncmp(txtAll(1,:), 'H Average Over Defined Range', 10));
+                    if isempty(ind_H)
+                        ind_H = find(strncmp(txtAll(1,:), 'Hardness From Unload', 10));
+                    end
+                    flagSKoss = 1;
+                end
+                if isempty(ind_YM)
+                    ind_YM = find(strncmp(txtAll(1,:), 'AvgModulus', 10))-1;
+                end
+                if isempty(ind_H)
+                    ind_H = find(strncmp(txtAll(1,:), 'AvgHardness', 10))-1;
+                end
+                endLines = 3;
+            elseif dataType == 2
+                ind_Xstep = find(strcmp(txtAll(3,:), 'X(mm)'));
+                ind_Ystep = find(strcmp(txtAll(3,:), 'Y(mm)'));
+                ind_YM = find(strncmp(txtAll(3,:), 'Er(GPa)', 10));
+                ind_H = find(strncmp(txtAll(3,:), 'H(GPa)', 10));
+                endLines = 0;
+                flagSKoss = 0;
+                if isempty(ind_Xstep)
+                    ind_Xstep = find(strcmp(txtAll(1,:), 'X(mm)'));
+                    ind_Ystep = find(strcmp(txtAll(1,:), 'Y(mm)'));
+                    ind_YM = find(strncmp(txtAll(1,:), 'Er(GPa)', 10));
+                    ind_H = find(strncmp(txtAll(1,:), 'H(GPa)', 10));
+                else
+                    display('No headerlines found !');
+                end
+            elseif dataType == 3
+                ind_Xstep = '';
+                ind_Ystep = '';
+                ind_YM = find(strncmp(txtAll(1,:), 'E', 10));
+                ind_H = find(strncmp(txtAll(1,:), 'H', 10));
+                flagSKoss = 0;
+                endLines = 0;
             end
-            if isempty(ind_YM)
-                ind_YM = find(strncmp(txtAll(1,:), 'AvgModulus', 10))-1;
-            end
-            if isempty(ind_H)
-                ind_H = find(strncmp(txtAll(1,:), 'AvgHardness', 10))-1;
-            end
-            endLines = 3;
-        elseif dataType == 2
-            ind_Xstep = find(strcmp(txtAll(3,:), 'X(mm)'));
-            ind_Ystep = find(strcmp(txtAll(3,:), 'Y(mm)'));
-            ind_YM = find(strncmp(txtAll(3,:), 'Er(GPa)', 10));
-            ind_H = find(strncmp(txtAll(3,:), 'H(GPa)', 10));
-            endLines = 0;
-            flagSKoss = 0;
-            if isempty(ind_Xstep)
-                ind_Xstep = find(strcmp(txtAll(1,:), 'X(mm)'));
-                ind_Ystep = find(strcmp(txtAll(1,:), 'Y(mm)'));
-                ind_YM = find(strncmp(txtAll(1,:), 'Er(GPa)', 10));
-                ind_H = find(strncmp(txtAll(1,:), 'H(GPa)', 10));
-            else
-                display('No headerlines found !');
-            end
-        elseif dataType == 3
-            ind_Xstep = '';
-            ind_Ystep = '';
-            ind_YM = find(strncmp(txtAll(1,:), 'E', 10));
-            ind_H = find(strncmp(txtAll(1,:), 'H', 10));
-            flagSKoss = 0;
-            endLines = 0;
-        end
-        
-        % Rotation angle in degrees
-        if ~isempty(ind_Xstep) && ~isempty(ind_Ystep)
-            if config.N_XStep_default == config.N_YStep_default
-                if flagSKoss
-                    config.Xcoord = dataAll(:,ind_Xstep);
+            
+            % Rotation angle in degrees
+            if ~isempty(ind_Xstep) && ~isempty(ind_Ystep)
+                if config.N_XStep_default == config.N_YStep_default
+                    if flagSKoss
+                        config.Xcoord = dataAll(:,ind_Xstep);
+                    else
+                        config.Xcoord = dataAll(:,ind_Xstep-1);
+                    end
+                    config.N_XStep = sqrt(length(config.Xcoord)-endLines); % Wrong if the indentation map is not square !
+                    if flagSKoss
+                        config.Ycoord = dataAll(:,ind_Ystep);
+                    else
+                        config.Ycoord = dataAll(:,ind_Ystep-1);
+                    end
+                    config.N_YStep = sqrt(length(config.Ycoord)-endLines); % Wrong if the indentation map is not square !
                 else
                     config.Xcoord = dataAll(:,ind_Xstep-1);
-                end
-                config.N_XStep = sqrt(length(config.Xcoord)-endLines); % Wrong if the indentation map is not square !
-                if flagSKoss
-                    config.Ycoord = dataAll(:,ind_Ystep);
-                else
                     config.Ycoord = dataAll(:,ind_Ystep-1);
+                    config.N_XStep = config.N_XStep_default;
+                    config.N_YStep = config.N_YStep_default;
                 end
-                config.N_YStep = sqrt(length(config.Ycoord)-endLines); % Wrong if the indentation map is not square !
+                if dataType == 1
+                    deltaXX = abs(config.Xcoord(2) - config.Xcoord(1));
+                    deltaYX = abs(config.Ycoord(2) - config.Ycoord(1));
+                    deltaYY = abs(config.Ycoord(config.N_YStep+1) - ...
+                        config.Ycoord(1));
+                    % config.N_YStep*2 ???
+                    deltaXY = abs(config.Xcoord(config.N_YStep) - ...
+                        config.Xcoord(1));
+                    % config.N_YStep*2 ???
+                elseif dataType == 2
+                    deltaXX = config.XStep_default;
+                    deltaYX = 0;
+                    deltaYY = config.YStep_default;
+                    deltaXY = 0;
+                end
+                angleRotation_X = round(atand(deltaYX/deltaXX));
+                angleRotation_Y = round(atand(deltaXY/deltaYY));
+                if angleRotation_X == angleRotation_Y
+                    config.angleRotation = angleRotation_X;
+                else
+                    display('Wrong calculations of rotationnal angle');
+                    config.angleRotation = 0;
+                end
             else
-                config.Xcoord = dataAll(:,ind_Xstep-1);
-                config.Ycoord = dataAll(:,ind_Ystep-1);
+                config.angleRotation = 0;
                 config.N_XStep = config.N_XStep_default;
                 config.N_YStep = config.N_YStep_default;
             end
-            if dataType == 1
-                deltaXX = abs(config.Xcoord(2) - config.Xcoord(1));
-                deltaYX = abs(config.Ycoord(2) - config.Ycoord(1));
-                deltaYY = abs(config.Ycoord(config.N_YStep+1) - ...
-                    config.Ycoord(1));
-                % config.N_YStep*2 ???
-                deltaXY = abs(config.Xcoord(config.N_YStep) - ...
-                    config.Xcoord(1));
-                % config.N_YStep*2 ???
-            elseif dataType == 2
-                deltaXX = config.XStep_default;
-                deltaYX = 0;
-                deltaYY = config.YStep_default;
-                deltaXY = 0;
-            end
-            angleRotation_X = round(atand(deltaYX/deltaXX));
-            angleRotation_Y = round(atand(deltaXY/deltaYY));
-            if angleRotation_X == angleRotation_Y
-                config.angleRotation = angleRotation_X;
+            config.angleRotation = mod(config.angleRotation, 90);
+            
+            % X step in microns
+            if ~isempty(ind_Xstep)
+                config.XStep = deltaXX / cosd(config.angleRotation);
+                set(g.handles.value_deltaXindents_GUI, 'String', num2str(config.XStep));
+                set(g.handles.value_deltaYindents_GUI, 'String', num2str(config.YStep));
             else
-                display('Wrong calculations of rotationnal angle');
-                config.angleRotation = 0;
+                config.XStep = config.XStep_default;
             end
-        else
-            config.angleRotation = 0;
-            config.N_XStep = config.N_XStep_default;
-            config.N_YStep = config.N_YStep_default;
-        end
-        config.angleRotation = mod(config.angleRotation, 90);
-        
-        % X step in microns
-        if ~isempty(ind_Xstep)
-            config.XStep = deltaXX / cosd(config.angleRotation);
-            set(g.handles.value_deltaXindents_GUI, 'String', num2str(config.XStep));
-            set(g.handles.value_deltaYindents_GUI, 'String', num2str(config.YStep));
-        else
-            config.XStep = config.XStep_default;
-        end
-        
-        % Y step in microns
-        if ~isempty(ind_Ystep)
-            config.YStep = deltaYY / cosd(config.angleRotation);
-        else
-            config.YStep = config.YStep_default;
-        end
-        
-        % Young's modulus values
-        if ~isempty(ind_YM)
-            if flagSKoss
-                data.expValues.YM = dataAll(:,ind_YM);
+            
+            % Y step in microns
+            if ~isempty(ind_Ystep)
+                config.YStep = deltaYY / cosd(config.angleRotation);
             else
-                if dataType ~= 3
-                    data.expValues.YM = dataAll(:,ind_YM-1);
+                config.YStep = config.YStep_default;
+            end
+            
+            % Young's modulus values
+            if ~isempty(ind_YM)
+                if flagSKoss
+                    data.expValues.YM = dataAll(:,ind_YM);
                 else
-                    data.expValues.YM = str2num(char(raw(3:end,ind_YM)));
+                    if dataType ~= 3
+                        data.expValues.YM = dataAll(:,ind_YM-1);
+                    else
+                        data.expValues.YM = str2num(char(raw(3:end,ind_YM)));
+                    end
                 end
-            end
-        else
-            display('No elastic modulus values found !');
-            data.expValues.YM = NaN;
-            config.flag_data = 0;
-        end
-        % Hardness values
-        if ~isempty(ind_H)
-            if flagSKoss
-                data.expValues.H = dataAll(:,ind_H);
             else
-                if dataType ~= 3
-                    data.expValues.H = dataAll(:,ind_H-1);
-                else
-                    data.expValues.H = str2num(char(raw(3:end,ind_H)));
-                end
+                display('No elastic modulus values found !');
+                data.expValues.YM = NaN;
+                config.flag_data = 0;
             end
-        else
-            display('No hardness values found !');
-            data.expValues.H = NaN;
+            % Hardness values
+            if ~isempty(ind_H)
+                if flagSKoss
+                    data.expValues.H = dataAll(:,ind_H);
+                else
+                    if dataType ~= 3
+                        data.expValues.H = dataAll(:,ind_H-1);
+                    else
+                        data.expValues.H = str2num(char(raw(3:end,ind_H)));
+                    end
+                end
+            else
+                display('No hardness values found !');
+                data.expValues.H = NaN;
+                config.flag_data = 0;
+            end
+        catch
             config.flag_data = 0;
+            errordlg('Wrong inputs');
         end
-        
     end
     
     if config.flag_data
