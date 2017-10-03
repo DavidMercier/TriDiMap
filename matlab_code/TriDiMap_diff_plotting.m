@@ -55,10 +55,9 @@ if property < 3
                 display(nanstd(dataH(gui.results.matchHard==1)));
             end
         elseif get(gui.handles.pixelList_GUI, 'Value') == 2
-            d2plot = rot90(data2plot);
             for ii = 1:size(data2plot,1)
                 for jj = 1:size(data2plot,2)
-                    if (int8(d2plot(ii,jj))) > 0 && ...
+                    if (int8(data2plot(ii,jj))) > 0 && ...
                             (int8(image2plot(ii,jj))) > 0
                         gui.results.diff(ii,jj) = 0;
                     else
@@ -69,10 +68,9 @@ if property < 3
             diff_error = (((gui.config.N_XStep_default * gui.config.N_YStep_default) - ...
                 sum(sum(abs(gui.results.diff)))) / sum(sum(data2plot/255)))*100;
         elseif get(gui.handles.pixelList_GUI, 'Value') == 3
-            d2plot = rot90(data2plot);
             for ii = 1:size(data2plot,1)
                 for jj = 1:size(data2plot,2)
-                    if (int8(d2plot(ii,jj))) == 0 && ...
+                    if (int8(data2plot(ii,jj))) == 0 && ...
                             (int8(image2plot(ii,jj))) == 0
                         gui.results.diff(ii,jj) = 0;
                     else
@@ -120,8 +118,8 @@ else
     elseif get(gui.handles.pixelList_GUI, 'Value') == 2
         d2plot_E = rot90(data2plot_E);
         d2plot_H = rot90(data2plot_H);
-        for ii = 1:size(data2plot_E,1)
-            for jj = 1:size(data2plot_E,2)
+        for ii = 1:size(d2plot_E,1)
+            for jj = 1:size(d2plot_H,2)
                 if (int8(d2plot_E(ii,jj))) > 0 && ...
                         (int8(d2plot_H(ii,jj))) > 0
                     gui.results.diff_EH(ii,jj) = 0;
@@ -135,8 +133,8 @@ else
     elseif get(gui.handles.pixelList_GUI, 'Value') == 3
         d2plot_E = rot90(data2plot_E);
         d2plot_H = rot90(data2plot_H);
-        for ii = 1:size(data2plot_E,1)
-            for jj = 1:size(data2plot_E,2)
+        for ii = 1:size(d2plot_E,1)
+            for jj = 1:size(d2plot_H,2)
                 if (int8(d2plot_E(ii,jj))) == 0 && ...
                         (int8(d2plot_H(ii,jj))) == 0
                     gui.results.diff_EH(ii,jj) = 0;
@@ -148,6 +146,7 @@ else
         diff_error = (1-((sum(sum(abs(gui.results.diff_EH))))/...
             (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;
     end
+    
     if ~plotMatch
         display(diff_error);
         set(gui.handles.value_diffValEH_GUI, 'String', ...
