@@ -1,6 +1,11 @@
 %% Copyright 2014 MERCIER David
-function axisMap(cmap, titleStr, FontSizeVal, xMax, yMax, flipFlag, varargin)
+function axisMap(cmap, titleStr, FontSizeVal, xMax, yMax, flipFlag, unitStr, ...
+    varargin)
 %% Function to set axis for a binary map.
+
+if nargin < 7
+    unitStr = '$\mu$m';
+end
 
 if nargin < 6
     flipFlag = 0;
@@ -35,8 +40,11 @@ end
 set(gca,'YDir','normal');
 axis equal;
 axis tight;
-hXLabel = xlabel('X coordinates ($\mu$m)');
-hYLabel = ylabel('Y coordinates ($\mu$m)');
+if strcmp(unitStr, 'µm')
+    unitStr = '$\mu$m';
+end
+hXLabel = xlabel(strcat('X coordinates (', unitStr, ')'));
+hYLabel = ylabel(strcat('Y coordinates (', unitStr, ')'));
 hTitle = title(titleStr);
 set([hXLabel, hYLabel, hTitle], ...
     'Color', [0,0,0], 'FontSize', FontSizeVal, ...
