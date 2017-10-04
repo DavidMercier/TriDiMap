@@ -158,6 +158,7 @@ if config.flag_data
     else
         TriDiMap_mapping_plotting;
     end
+    TriDiMap_option_plotting;
     gui = guidata(gcf);
 else
     errordlg(['First set indentation grid parameters and load an Excel file '...

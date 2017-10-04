@@ -1,3 +1,4 @@
+%% Copyright 2014 MERCIER David
 function TriDiMap_error_plotting
 %% Plot difference between interpolated data and smoothed data
 gui = guidata(gcf);
@@ -35,9 +36,11 @@ if ~gui.config.flipColor
 else
     colormap(flipud(gui.config.colorMap));
 end
-hcb = colorbar;
-ylabel(hcb, 'Error map (GPa)', ...
+gui.handle.hcb1 = colorbar;
+ylabel(gui.handle.hcb1, strcat('Error map (', gui.config.strUnit_Property,')'), ...
     'Interpreter', 'Latex', ...
     'FontSize', gui.config.FontSizeVal);
+
+guidata(gcf, gui);
 
 end

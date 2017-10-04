@@ -13,14 +13,10 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     zString = gui.config.legend;
     cmin = gui.config.cmin;
     cmax = gui.config.cmax;
-    Markers = gui.config.Markers;
-    xData_markers = gui.data.xData_markers;
-    yData_markers = gui.data.yData_markers;
     intervalScaleBar = gui.config.intervalScaleBar;
     rawData = gui.config.rawData;
     contourPlot = gui.config.contourPlot;
     logZ = gui.config.logZ;
-    minorTicks = gui.config.minorTicks;
     
     %% 1 map (with or without markers)
     if gui.config.cminOld < 0
@@ -68,21 +64,6 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     end
     
     hold on;
-    maxVal = max(max(data2plot));
-    
-    % Set z positions of markers
-    if ~contourPlot
-        markersVal = ones(size(xData_markers,1),size(xData_markers,2)) * maxVal;
-    else
-        markersVal = ones(size(xData_markers,1),size(xData_markers,2));
-    end
-    
-    hold on;
-    
-    if Markers
-        plot3(xData_markers', yData_markers', markersVal','k+');
-        hold on;
-    end
     
     axis equal;
     axis tight;
@@ -191,36 +172,6 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         gui.config.cmax = num2str(round(max(data2plot(:))));
     end
     
-    if gui.config.grid
-        grid on;
-    else
-        grid off;
-    end
-    
-    if gui.config.MinMax
-        [rowMin, colMin] = find(data2plot==min(data2plot(:)));
-        [rowMax, colMax] = find(data2plot==max(data2plot(:)));
-        strmin = min(data2plot(:));
-        strmax = max(data2plot(:));
-        
-        %((round(abs(x_value)/gui.config.XStep)+1)*gui.config.interpFactVal)-(gui.config.interpFactVal-1)
-        text(...
-            (((rowMax+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.XStep, ...
-            (((colMax+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.YStep, ...
-            num2str(strmax), 'Color','Black','FontSize',FontSizeVal);
-        if gui.config.flagZplot
-            text(...
-                (((rowMin+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.XStep, ...
-                -(((colMin+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.YStep, ...
-                num2str(strmin), 'Color','Black','FontSize',FontSizeVal);
-        else
-            text(...
-                (((rowMin+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.XStep, ...
-                (((colMin+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.YStep, ...
-                num2str(strmin), 'Color','Black','FontSize',FontSizeVal);
-        end
-    end
-    
     Contours = cmin:(cmax-cmin)/intervalScaleBar:cmax;
     if logZ && contourPlot
         hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
@@ -230,14 +181,12 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         hcb1 = colorbar;
     end
     
-    if minorTicks
-        set(hcb1, 'YMinorTick', 'on');
-    end
     %if logScale
     %hcb1 = colorbar('Yscale','log');
     %end
     ylabel(hcb1, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
     
+    gui.handle.hcb1 = hcb1;
     set(gca, 'Fontsize', FontSizeVal);
     hold off;
     
