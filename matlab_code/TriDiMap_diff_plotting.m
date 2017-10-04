@@ -171,6 +171,7 @@ else
             legend boxoff ;
         else
             try
+                delete(gui.handles.hLeg2)
                 legend('hide');
             catch
             end
