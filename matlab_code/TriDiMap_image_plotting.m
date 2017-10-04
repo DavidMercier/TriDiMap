@@ -24,7 +24,11 @@ if get(gui.handles.cb_legend_GUI, 'Value')
     set(gui.handles.hLeg1, 'position',[0.87 0.70 pos(3:4)]);
     legend boxoff;
 else
-    legend('hide');
+    try
+        delete(gui.handles.hLeg1)
+        legend('hide');
+    catch
+    end
 end
 
 guidata(gcf, gui);

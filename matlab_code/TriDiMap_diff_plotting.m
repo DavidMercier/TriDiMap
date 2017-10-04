@@ -170,7 +170,10 @@ else
             set(gui.handles.hLeg2, 'position',[0.87 0.25 pos(3:4)]);
             legend boxoff ;
         else
-            legend('hide');
+            try
+                legend('hide');
+            catch
+            end
         end
     end
 end
