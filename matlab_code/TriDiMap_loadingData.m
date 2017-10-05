@@ -307,6 +307,10 @@ if config.flagValid
     if strcmp(get(g.handles.binarization_GUI, 'String'), 'BINARIZATION')
         TriDiMap_runPlot;
     else
+        set(g.handles.value_criterionE_GUI, 'String', ...
+            num2str(round(nanmean(g.data.expValues.YM))));
+        set(g.handles.value_criterionH_GUI, 'String', ...
+            num2str(round(nanmean(g.data.expValues.H))));
         g.config.flag_image = 0;
         guidata(gcf, g);
         TriDiMap_runBin;

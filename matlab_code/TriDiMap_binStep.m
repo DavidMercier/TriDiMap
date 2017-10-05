@@ -39,10 +39,13 @@ elseif iProp == 2
 end
 
 % Binarization
-data_binarized = zeros(gui.config.N_XStep_default, ...
-    gui.config.N_YStep_default);
-for ii = 1:1:gui.config.N_XStep_default
-    for jj = 1:1:gui.config.N_YStep_default
+XStep = str2num(get(gui.handles.value_MaxXCrop_GUI, 'String')) - ...
+    str2num(get(gui.handles.value_MinXCrop_GUI, 'String'));
+YStep = str2num(get(gui.handles.value_MaxYCrop_GUI, 'String')) - ...
+    str2num(get(gui.handles.value_MinYCrop_GUI, 'String'));
+data_binarized = zeros(XStep+1, YStep+1);
+for ii = 1:1:XStep+1
+    for jj = 1:1:YStep+1
         if data2use(ii,jj) > crit
             data_binarized(ii,jj) = 255;
         else
