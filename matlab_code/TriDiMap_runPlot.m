@@ -105,8 +105,13 @@ if config.flag_data
         [xData_interp,  yData_interp] = ...
             meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
             0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
-        gui.data.xData_interp = xData_interp./(2^(config.interpFact));
-        gui.data.yData_interp = yData_interp./(2^(config.interpFact));
+        if get(gui.handles.cb_interpMap_GUI, 'Value')
+            gui.data.xData_interp = xData_interp./(2^(config.interpFact));
+            gui.data.yData_interp = yData_interp./(2^(config.interpFact));
+        else
+            gui.data.xData_interp = xData_interp;
+            gui.data.yData_interp = yData_interp;
+        end
     end
 end
 
