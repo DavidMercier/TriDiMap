@@ -19,24 +19,29 @@ end
 if gui.config.MinMax
     [rowMin, colMin] = find(data2plot==min(data2plot(:)));
     [rowMax, colMax] = find(data2plot==max(data2plot(:)));
-    strmin = min(data2plot(:));
-    strmax = max(data2plot(:));
+    strmin = num2str(min(data2plot(:)));
+    strmax = num2str(max(data2plot(:)));
+    if ~get(gui.handles.cb_pixData_GUI, 'Value')
+        zVal = max(data2plot(:));
+    else
+        zVal = 0;
+    end
     
     %((round(abs(x_value)/gui.config.XStep)+1)*gui.config.interpFactVal)-(gui.config.interpFactVal-1)
     text(...
         (((rowMax+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.XStep, ...
         (((colMax+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.YStep, ...
-        num2str(strmax), 'Color','Black','FontSize',FontSizeVal);
+        zVal, strmax, 'Color','Black','FontSize',FontSizeVal);
     if gui.config.flagZplot
         text(...
             (((rowMin+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.XStep, ...
             -(((colMin+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.YStep, ...
-            num2str(strmin), 'Color','Black','FontSize',FontSizeVal);
+            zVal, strmin, 'Color','Black','FontSize',FontSizeVal);
     else
         text(...
             (((rowMin+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.XStep, ...
             (((colMin+(gui.config.interpFactVal-1))/gui.config.interpFactVal)-1)*gui.config.YStep, ...
-            num2str(strmin), 'Color','Black','FontSize',FontSizeVal);
+            zVal, strmin, 'Color','Black','FontSize',FontSizeVal);
     end
 end
 
