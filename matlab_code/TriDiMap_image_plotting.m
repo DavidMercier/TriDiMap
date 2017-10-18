@@ -16,12 +16,17 @@ axis tight;
 hold on;
 if get(gui.handles.cb_legend_GUI, 'Value')
     cmap = colormap;
-    hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
-    hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
-    gui.handles.hLeg1 = legend([hFig(2) hFig(3)],'Stiff/Hard phase','Soft phase',...
+    if get(gui.handles.cb_flipColormap_GUI, 'Value')
+        hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
+        hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
+    else
+        hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
+        hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
+    end
+    gui.handles.hLeg0 = legend([hFig(2) hFig(3)],'Soft phase','Stiff/Hard phase',...
         'Location','EastOutside');
-    pos = get(gui.handles.hLeg1,'position');
-    set(gui.handles.hLeg1, 'position',[0.87 0.70 pos(3:4)]);
+    pos = get(gui.handles.hLeg0,'position');
+    set(gui.handles.hLeg0, 'position',[0.87 0.70 pos(3:4)]);
     legend boxoff;
 else
     try

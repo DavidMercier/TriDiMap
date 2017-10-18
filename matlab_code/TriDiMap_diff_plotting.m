@@ -33,8 +33,12 @@ if property < 3
     
     if gui.config.sizeCheck
         if get(gui.handles.pixelList_GUI, 'Value') == 1
-            gui.results.diff = int8(data2plot) - (int8(image2plot));
-            gui.results.diff(gui.results.diff~=0) = 1;
+            %gui.results.diff = int8(data2plot) - (int8(image2plot));
+            gui.results.diff = (double(data2plot) + (double(image2plot)))/255;
+            gui.results.diff(gui.results.diff==1) = -1; %No Match
+            gui.results.diff(gui.results.diff==2) = 1; %SiC
+            gui.results.diff(gui.results.diff==0) = 0; % Ni
+            %gui.results.diff(gui.results.diff~=0) = 1;
             diff_error = (1-(sum(sum(abs(gui.results.diff)))/ ...
                 (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;
             data2plot_soft = (data2plot==0);
@@ -44,16 +48,25 @@ if property < 3
             image2plot_hard = (image2plot==255);
             gui.results.matchHard = ((data2plot_hard + image2plot_hard)==2);
             if property == 1
+                gui.results.diffE = gui.results.diff;
                 display(nanmean(dataE(gui.results.matchSoft==1)));
                 display(nanstd(dataE(gui.results.matchSoft==1)));
                 display(nanmean(dataE(gui.results.matchHard==1)));
                 display(nanstd(dataE(gui.results.matchHard==1)));
             elseif property == 2
+                gui.results.diffH = gui.results.diff;
                 display(nanmean(dataH(gui.results.matchSoft==1)));
                 display(nanstd(dataH(gui.results.matchSoft==1)));
                 display(nanmean(dataH(gui.results.matchHard==1)));
                 display(nanstd(dataH(gui.results.matchHard==1)));
             end
+            % Pixels ratios
+            SiCSum = sum(sum(gui.results.diff==1));
+            NiSum = sum(sum(gui.results.diff==0));
+            TotSum = NiSum + SiCSum;
+            display([SiCSum NiSum]);
+            display(SiCSum/TotSum);
+            display(NiSum/TotSum);
         elseif get(gui.handles.pixelList_GUI, 'Value') == 2
             for ii = 1:size(data2plot,1)
                 for jj = 1:size(data2plot,2)
@@ -103,6 +116,37 @@ if property < 3
                 gui.config.flipColor, gui.config.strUnit_Length);
             axis equal;
             axis tight;
+            hold on;
+            if property == 1
+                if get(gui.handles.cb_legend_GUI, 'Value')
+                    cmap = colormap;
+                    
+                    % Legend for E-micro and H-micro maps
+                    if get(gui.handles.cb_flipColormap_GUI, 'Value')
+                        hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
+                        hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',mean(cmap));
+                        hFig(4) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
+                    else
+                        hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
+                        hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',mean(cmap));
+                        hFig(4) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
+                    end
+                    %             gui.handles.hLeg2 = legend([hFig(2) hFig(3) hFig(4)],'No Match','Ni match', 'SiC match', ...
+                    %                 'Location','EastOutside');
+                    gui.handles.hLeg2 = legend([hFig(2) hFig(3) hFig(4)],'No Match','Soft match', 'Stiff/Hard match', ...
+                        'Location','EastOutside');
+                    pos = get(gui.handles.hLeg2,'position');
+                    set(gui.handles.hLeg2, 'position',[0.87 0.30 pos(3:4)]);
+                    legend boxoff ;
+                    title1 = uicontrol('Parent', gcf,...
+                        'Style','text',...
+                        'Units', 'normalized',...
+                        'String','(E or H) map - µ map legend',...
+                        'HorizontalAlignment', 'center',...
+                        'FontWeight', 'bold',...
+                        'Position',[0.86 0.40 0.12 0.02]);                  
+                end
+            end
         end
     else
         errordlg('Not the same size between property maps and microstructural image !');
@@ -160,15 +204,30 @@ else
             (gui.config.N_YStep_default-1)*gui.config.YStep_default, ...
             gui.config.flipColor, gui.config.strUnit_Length);
         hold on;
+        
         if get(gui.handles.cb_legend_GUI, 'Value')
             cmap = colormap;
-            hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
-            hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
-            gui.handles.hLeg2 = legend([hFig(2) hFig(3)],'No Match','Match', ...
+            
+            % Legend for E-H diff map
+            if get(gui.handles.cb_flipColormap_GUI, 'Value')
+                hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
+                hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
+            else
+                hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
+                hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
+            end
+            gui.handles.hLeg3 = legend([hFig(2) hFig(3)],'No Match','Match', ...
                 'Location','EastOutside');
-            pos = get(gui.handles.hLeg2,'position');
-            set(gui.handles.hLeg2, 'position',[0.87 0.25 pos(3:4)]);
+            pos = get(gui.handles.hLeg3,'position');
+            set(gui.handles.hLeg3, 'position',[0.87 0.15 pos(3:4)]);
             legend boxoff ;
+            title2 = uicontrol('Parent', gcf,...
+                        'Style','text',...
+                        'Units', 'normalized',...
+                        'String','E map - H map legend',...
+                        'HorizontalAlignment', 'center',...
+                        'FontWeight', 'bold',...
+                        'Position',[0.86 0.25 0.12 0.02]);
         else
             try
                 delete(gui.handles.hLeg2)
