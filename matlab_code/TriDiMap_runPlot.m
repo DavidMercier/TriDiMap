@@ -202,19 +202,21 @@ elseif config.property == 3
     
 elseif config.property == 4 || config.property == 5
     % Histograms plot
+    numberVal = size(data2use,1)*size(data2use,2);
+    data2useHist = reshape(data2use, [1,numberVal]);
     binsize = gui.config.binSize;
-    minbin = min(min(data2use));
-    maxbin = max(min(data2use));
+    minbin = round(min(data2useHist));
+    maxbin = round(max(data2useHist));
     CatBin = minbin:binsize:maxbin;
-    n = size(data2use,1)*size(data2use,2);
-    Hist_i = histc(data2use,CatBin);
-    Prop_pdf = Hist_i/n;
+    Hist_i = histc(data2useHist,CatBin);
+    Prop_pdf = Hist_i/numberVal;
     Prop_pdf = Prop_pdf/binsize;
     SumProp_pdf = sum(Prop_pdf);
     SumTot = SumProp_pdf .* binsize;
     bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
         'LineWidth', 1.5);
     set(gcf, 'renderer', 'opengl');
+    xlim([0 maxbin]);
 end
 
 coordSyst(gui.handles.MainWindow);
