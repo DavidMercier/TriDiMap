@@ -67,7 +67,11 @@ if config.flag_data
         
         %% Results in Excel file
         if dataType == 1 % Excel file from MTS
-            [dataAll, txtAll] = xlsread(data2import, 'Results');
+            try
+                [dataAll, txtAll] = xlsread(data2import, 'Results');
+            catch
+                disp(['No Excel sheet named:', name, 'found in the Excel file !']);
+            end
         elseif dataType == 2 % Excel file from Hysitron
             try
                 [dataAll, txtAll] = xlsread(data2import, name);
