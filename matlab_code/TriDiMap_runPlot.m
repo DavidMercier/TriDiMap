@@ -201,25 +201,32 @@ elseif config.property == 3
     end
     
 elseif config.property == 4 || config.property == 5
-    % Histograms plot
-    numberVal = size(data2use,1)*size(data2use,2);
-    data2useHist = reshape(data2use, [1,numberVal]);
-    binsize = gui.config.binSize;
-    minbin = round(min(data2useHist));
-    maxbin = round(max(data2useHist));
-    CatBin = minbin:binsize:maxbin;
-    Hist_i = histc(data2useHist,CatBin);
-    Prop_pdf = Hist_i/numberVal;
-    Prop_pdf = Prop_pdf/binsize;
-    SumProp_pdf = sum(Prop_pdf);
-    SumTot = SumProp_pdf .* binsize;
-    bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
-        'LineWidth', 1.5);
-    set(gcf, 'renderer', 'opengl');
-    xlim([0 maxbin]);
+    
+    if config.flag_data
+        % Histograms plot
+        numberVal = size(data2use,1)*size(data2use,2);
+        data2useHist = reshape(data2use, [1,numberVal]);
+        binsize = gui.config.binSize;
+        minbin = gui.config.MinHistVal;
+        maxbin = gui.config.MaxHistVal;
+        CatBin = minbin:binsize:maxbin;
+        Hist_i = histc(data2useHist,CatBin);
+        Prop_pdf = Hist_i/numberVal;
+        Prop_pdf = Prop_pdf/binsize;
+        SumProp_pdf = sum(Prop_pdf);
+        SumTot = SumProp_pdf .* binsize;
+        bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
+            'LineWidth', 1.5);
+        set(gcf, 'renderer', 'opengl');
+        xlim([0 maxbin]);
+    else
+        errordlg(['First set indentation grid parameters and load an Excel file '...
+            'to plot a property map !']);
+    end
 end
-
-coordSyst(gui.handles.MainWindow);
+if config.flag_data
+    coordSyst(gui.handles.MainWindow);
+end
 gui = guidata(gcf);
 guidata(gcf, gui);
 end

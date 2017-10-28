@@ -25,14 +25,9 @@ gui.config.flipColor = get(h.cb_flipColormap_GUI, 'Value');
 if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     gui.config.property = get(h.property_GUI, 'Value');
     if gui.config.property > 3
-        set([h.title_MinValHist_GUI, ...
-            h.value_MinValHist_GUI, ...
-            h.unit_MinValHist_GUI], 'Visible', 'on');
-        gui.config.binSize = str2num(get(h.value_MinValHist_GUI, 'String'));
-    else
-        set([h.title_MinValHist_GUI, ...
-            h.value_MinValHist_GUI, ...
-            h.unit_MinValHist_GUI], 'Visible', 'off');
+        gui.config.binSize = str2num(get(h.value_BinSizeHist_GUI, 'String'));
+        gui.config.MinHistVal = str2num(get(h.value_MinValHist_GUI, 'String'));
+        gui.config.MaxHistVal = str2num(get(h.value_MaxValHist_GUI, 'String'));
     end
     gui.config.rawData = get(h.cb_pixData_GUI, 'Value');
     if gui.config.rawData
