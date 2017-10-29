@@ -188,11 +188,28 @@ elseif config.property == 3
     else
         plot(data2use_H, data2use_E, 'k+', 'Linewidth', 1.5);
     end
+    hold on;
     hXLabel = xlabel(strcat({'Hardness ('},gui.config.strUnit_Property, ')'));
     hYLabel = ylabel(strcat({'Elastic modulus ('},gui.config.strUnit_Property, ')'));
     set([hXLabel, hYLabel], ...
         'Color', [0,0,0], 'FontSize', gui.config.FontSizeVal, ...
         'Interpreter', 'Latex');
+    
+    if gui.config.plotThresLines
+        xData_HThres = ones(1,2001) * gui.config.HVal_ThresLines;
+        yData_HThres = 0:1:2000;
+        xData_EThres = 0:1:200;
+        yData_EThres = ones(1,201) * gui.config.EVal_ThresLines;
+        plot(xData_HThres, yData_HThres, '-.k', 'Linewidth', 1.5);
+        hold on;
+        plot(xData_EThres, yData_EThres, '--r', 'Linewidth', 1.5);
+        hold on;
+        %         ellipse(gui.config.HVal_ThresLines, gui.config.EVal_ThresLines, ...
+        %             0,0,0);
+    end
+    
+    xlim([0 max(max(data2use_H))]);
+    ylim([0 max(max(data2use_E))]);
     
     if gui.config.grid
         grid on;
@@ -201,11 +218,15 @@ elseif config.property == 3
     end
     
 elseif config.property == 4 || config.property == 5
+    strUnit_Property = ...
+        get_value_popupmenu(gui.handles.unitProp_GUI, listUnitProperty);
     
     if config.flag_data
         % Histograms plot
         numberVal = size(data2use,1)*size(data2use,2);
         data2useHist = reshape(data2use, [1,numberVal]);
+        indNaN = find(isnan(data2useHist));
+        data2useHist(indNaN) = [];
         binsize = gui.config.binSize;
         minbin = gui.config.MinHistVal;
         maxbin = gui.config.MaxHistVal;
@@ -215,10 +236,27 @@ elseif config.property == 4 || config.property == 5
         Prop_pdf = Prop_pdf/binsize;
         SumProp_pdf = sum(Prop_pdf);
         SumTot = SumProp_pdf .* binsize;
-        bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
-            'LineWidth', 1.5);
-        set(gcf, 'renderer', 'opengl');
-        xlim([0 maxbin]);
+        if ~get(gui.handles.cb_deconvolutionHist_GUI, 'Value')
+            bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
+                'LineWidth', 1.5);
+            set(gcf, 'renderer', 'opengl');
+            xlim([0 maxbin]);
+            if config.property == 4
+                xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+            elseif config.property == 5
+                xlabel(strcat('Hardness (',strUnit_Property, ')'));
+            end
+            ylabel('Frequency density');
+        else
+            E = data2useHist';
+            exphist = [CatBin' Prop_pdf'];
+            M = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
+            maxiter = str2num(get(gui.handles.value_IterMaxHist_GUI, 'String'));
+            limit = str2num(get(gui.handles.value_PrecHist_GUI, 'String'));
+            TriDiMap_runDeconvolution(E, exphist, M, maxiter, limit, ...
+                config.property, strUnit_Property);
+        end
+        hold on;
     else
         errordlg(['First set indentation grid parameters and load an Excel file '...
             'to plot a property map !']);

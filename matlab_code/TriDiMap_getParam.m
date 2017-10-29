@@ -24,7 +24,14 @@ gui.config.flipColor = get(h.cb_flipColormap_GUI, 'Value');
 
 if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     gui.config.property = get(h.property_GUI, 'Value');
-    if gui.config.property > 3
+    
+    if gui.config.property == 3
+        gui.config.HVal_ThresLines = ...
+            str2num(get(h.value_Hth_ValEH_GUI, 'String'));
+        gui.config.EVal_ThresLines = ...
+            str2num(get(h.value_Eth_ValEH_GUI, 'String'));
+        gui.config.plotThresLines = get(h.cb_thresPlot_GUI, 'Value');
+    elseif gui.config.property  > 3
         gui.config.binSize = str2num(get(h.value_BinSizeHist_GUI, 'String'));
         gui.config.MinHistVal = str2num(get(h.value_MinValHist_GUI, 'String'));
         gui.config.MaxHistVal = str2num(get(h.value_MaxValHist_GUI, 'String'));
