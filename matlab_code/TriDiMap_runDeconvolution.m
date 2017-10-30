@@ -2,7 +2,7 @@
 function TriDiMap_runDeconvolution(E, exphist, M, maxiter, limit, property, ...
     strUnit_Property)
 %% Function to run the deconvolution
-%See Decon M-file for decon.fig of J N?me?ek
+% See Decon M-file for decon.fig of J N?me?ek
 
 % E: load property, e.g. E[GPa], save to vector E
 % exphist: load experimental probability density function
@@ -10,148 +10,134 @@ function TriDiMap_runDeconvolution(E, exphist, M, maxiter, limit, property, ...
 % maxiter: max number of iterations
 % limit: precision
 
-%----------------
-%---Deconvolution algorithm
-%-----------------
-norma2=1;
-minnorma=1;
-%minmeze=1;
-%minprumer=1;
-%minstddev=1;
-%minf=1;
+norma2 = 1;
+minnorma = 1;
 iter=0;
 
-maxE=max(E); %maximum value in E vector
-N=length(E); %dimension of E vector
+maxE = max(E);
+N = length(E);
 
-while( (norma2>limit) && (iter<=maxiter))
-    r=rand(M-1,1); %nahodny vektor M-1 cisel 0,1
-    r=sort(r); %vzestupne serazeny vektor r
-    meze(1)=0;  %prvni mez je na nule
-    pom= maxE .* r; % generace M-1 mezi z nahodneho vektoru
-    for i=1:M-1;
-        meze(i+1)=pom(i);  % generace M-1 mezi
+while((norma2>limit) && (iter<=maxiter))
+    r = rand(M-1,1);
+    r = sort(r);
+    Lim = zeros(1,M+1);
+    Lim(1) = 0;
+    pom = maxE .* r;
+    for ii = 1:M-1;
+        Lim(ii+1) = pom(ii);
     end
-    meze(M+1)=maxE; %posledni mez
+    Lim(M+1) = maxE;
     
-    sE=sort(E); %vzestupne serazeny vektor E
-    
-    for i=1:M+1
-        index_meze(i)=N; %naplni vektor indexu maximalni hodnotou
+    sE = sort(E);
+    index_Lim = zeros(1,ii);
+    for ii = 1:M+1
+        index_Lim(ii) = N;
     end
-    index_meze(1)=0; %index pred prvni mezi je nula
+    index_Lim(1)=0;
     
-    j=2; %zacinam od druhe meze (prvni je nula)
-    mez=meze(j);
+    jj = 2;
+    mez = Lim(jj);
     
-    for i=1:N %cyklus pres vsechny hodnoty
-        if (sE(i) > mez)
-            index_meze(j)=i-1; %ulozi index hodnoty, ktera lezi pod mezi
-            j=j+1;
-            mez=meze(j);
+    for ii = 1:N
+        if (sE(ii) > mez)
+            index_Lim(jj) = ii-1;
+            jj = jj+1;
+            mez = Lim(jj);
         end
     end
     
-    x=exphist(1,1); %prvni kategorie
-    for i=1:M %cyklus pres faze
-        vektor=sE(index_meze(i)+1:index_meze(i+1));
-        if (length(vektor)>1)
-            prumer(i) = mean(vektor);
-            stddev(i) = std(vektor);
+    x = exphist(1,1);
+    meanVec = zeros(1,M);
+    stddev = zeros(1,M);
+    for ii = 1:M
+        Vect = sE(index_Lim(ii)+1:index_Lim(ii+1));
+        if (length(Vect) > 1)
+            meanVec(ii) = mean(Vect);
+            stddev(ii) = std(Vect);
         else
-            prumer(i) = 0;
-            stddev(i) = 0;
+            meanVec(ii) = 0;
+            stddev(ii) = 0;
         end
-        f(i)=length(vektor)/N; %fraction
+        f(ii)=length(Vect)/N;
     end
     
-    for j=1:M %cyklus pres faze
-        x=exphist(1,1);
-        if (prumer(j)~=0)
-            %p(1,j)=cdf('normal',x,prumer(j), stddev(j)); %cdf pro prvni kategorii
-            p2(1,j)=pdf('normal',x,prumer(j), stddev(j)); %pdf
+    for jj = 1:M
+        x = exphist(1,1);
+        if (meanVec(jj) ~= 0)
+            %p(1,jj) = cdf('normal',x,prumer(j), stddev(j)); %cdf
+            p2(1,jj) = pdf('normal',x,meanVec(jj), stddev(jj)); %pdf
         else
-            %p(1,j)=0;
-            p2(1,j)=0;
+            %p(1,jj) = 0;
+            p2(1,jj) = 0;
         end
         
-        for i = 2 : length(exphist)  %cyklus pres vsechny kategorie
-            x_prev=exphist(i-1,1);
-            x=exphist(i,1);
-            if (prumer(j)~=0)
-                p2(i,j)=pdf('normal',x,prumer(j), stddev(j))*f(j);
+        for ii = 2 : length(exphist)
+            x_prev = exphist(ii-1,1);
+            x = exphist(ii,1);
+            if (meanVec(jj)~=0)
+                p2(ii,jj) = pdf('normal',x,meanVec(jj),stddev(jj))*f(jj);
             else
-                p2(i,j)=0;
+                p2(ii,jj) = 0;
             end
         end
         
     end
     
-    norma2=0;
-    for i = 1 : length(exphist)
-        p_all2(i)=0;
-        for j=1:M %cyklus pres faze
-            p_all2(i)=p_all2(i)+p2(i,j);
+    norma2 = 0;
+    p_all2 = zeros(1,length(exphist));
+    for ii = 1 : length(exphist)
+        p_all2(ii) = 0;
+        for jj = 1:M
+            p_all2(ii) = p_all2(ii)+p2(ii,jj);
         end
-        norma2=norma2+(exphist(i,2)-p_all2(i))^2 * exphist(i,2)^2;
+        norma2 = norma2+(exphist(ii,2)-p_all2(ii))^2 * exphist(ii,2)^2;
     end
     
-    iter=iter+1;
+    iter = iter+1;
     
-    %onscreen output during iteration
-    
-    %Show text
-    %t=strcat('Iteration: ' , num2str(iter))
-    %set(handles.text25_iter,'String',num2str(iter-1) );
-    %set(handles.text28_norm,'String', num2str(norma2) );
+    maxXPos = 1.2*round(max(exphist(:,1))*10)/10;
+    maxYPos = 1.2*round(max(exphist(:,2))*10)/10;
+    t0 = sprintf('Iter. %i\nPrec. %f', iter - 1, norma2);
     drawnow;
     
-    if(norma2<minnorma)
-        % output if precision was reached
-        minnorma=norma2;
-        minmeze=meze;
-        minprumer=prumer;
-        minstddev=stddev;
+    if(norma2 < minnorma)
+        minnorma = norma2;
+        minLim = Lim;
+        minmeanVec = meanVec;
+        minstddev = stddev;
         minf=f;
-        %Show text output and graph
-        %axes(handles.graf_decon); %plots the x and y data
+        
         cla;
-        plot(exphist(:,1), exphist(:,2),'-ko');
-        hold on; %legend ('show');
+        text(0.025*maxXPos,maxYPos,char(t0));hold on;
+        h1 = plot(exphist(:,1), exphist(:,2),'-ko','LineWidth',2);
+        hold on;
         
-        %delete all lists
-        %         set(handles.dist1,'String', '-' );
-        %         set(handles.dist2,'String', '-' );
-        %         set(handles.dist3,'String', '-' );
-        %         set(handles.dist4,'String', '-' );
-        %         set(handles.dist5,'String', '-' );
-        %         set(handles.dist6,'String', '-' );
-        
-        for  j=1:M
-            t=sprintf('%8.3f\n%8.3f\n%8.3f\n', minprumer(j), minstddev(j), minf(j));
-            switch j
+        for jj = 1:M
+            t = sprintf('Phase %i\n%8.3f\n%8.3f\n%8.3f\n', jj, minmeanVec(jj), minstddev(jj), minf(jj));
+            switch jj
                 case 1
-                    %set(handles.dist1,'String', t );
-                    plot(exphist(:,1),p2(:,1),'b');
+                    text(0.15*maxXPos,maxYPos,char(t));hold on;
+                    h2 = plot(exphist(:,1),p2(:,1),'b','LineWidth',2);
                 case 2
-                    %set(handles.dist2,'String', t );
-                    plot(exphist(:,1),p2(:,2),'r');
+                    text(0.25*maxXPos,maxYPos,char(t));hold on;
+                    h3 = plot(exphist(:,1),p2(:,2),'r','LineWidth',2);
                 case 3
-                    %set(handles.dist3,'String', t );
-                    plot(exphist(:,1),p2(:,3),'g');
+                    text(0.35*maxXPos,maxYPos,char(t));hold on;
+                    h4 = plot(exphist(:,1),p2(:,3),'g','LineWidth',2);
                 case 4
-                    %set(handles.dist4,'String', t );
-                    plot(exphist(:,1),p2(:,4),'y');
+                    text(0.45*maxXPos,maxYPos,char(t));hold on;
+                    h5 = plot(exphist(:,1),p2(:,4),'y','LineWidth',2);
                 case 5
-                    %set(handles.dist5,'String', t );
-                    plot(exphist(:,1),p2(:,5),'m');
+                    text(0.55*maxXPos,maxYPos,char(t));hold on;
+                    h6 = plot(exphist(:,1),p2(:,5),'m','LineWidth',2);
                 case 6
-                    %set(handles.dist6,'String', t );
-                    plot(exphist(:,1),p2(:,6),'c');
+                    text(0.65*maxXPos,maxYPos,tchar(t));hold on;
+                    h7 = plot(exphist(:,1),p2(:,6),'c','LineWidth',2);
                 otherwise ;
             end
+            hold on;
         end
-        plot(exphist(:,1),p_all2,':');
+        h8 = plot(exphist(:,1),p_all2,':','LineWidth',2);
         hold on;
         switch M
             case 1
@@ -168,6 +154,7 @@ while( (norma2>limit) && (iter<=maxiter))
                 legend ('Experiment','#1','#2','#3','#4','#5','#6','Overall PDF');
             otherwise ;
         end
+        legend boxoff;
         
         if property == 4
             xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
@@ -176,5 +163,7 @@ while( (norma2>limit) && (iter<=maxiter))
         end
         ylabel('Frequency density');
     end
+    %ylim([0 1]);
 end
+msgbox('Deconvolution completed');
 end

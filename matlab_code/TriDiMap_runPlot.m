@@ -263,7 +263,15 @@ elseif config.property == 4 || config.property == 5
     end
 end
 if config.flag_data
-    coordSyst(gui.handles.MainWindow);
+    if config.property < 3
+        coordSyst(gui.handles.MainWindow);
+    else
+        set(0, 'currentfigure', gui.handles.MainWindow);
+        try
+            delete(findall(gcf,'Tag','annotation'));
+        catch
+        end
+    end
 end
 gui = guidata(gcf);
 guidata(gcf, gui);
