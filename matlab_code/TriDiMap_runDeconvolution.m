@@ -9,15 +9,18 @@ function TriDiMap_runDeconvolution(E, exphist, M, maxiter, limit, property, ...
 % M: Number of phases
 % maxiter: max number of iterations
 % limit: precision
+gui = guidata(gcf);
 
 norma2 = 1;
 minnorma = 1;
 iter=0;
 
+minE = min(exphist(:,1));
 maxE = max(E);
 N = length(E);
 
-while((norma2>limit) && (iter<=maxiter))
+while((norma2>limit) && (iter<=maxiter)) && ...
+        get(gui.handles.cb_deconvolutionHist_GUI, 'Value');
     r = rand(M-1,1);
     r = sort(r);
     Lim = zeros(1,M+1);
@@ -95,9 +98,9 @@ while((norma2>limit) && (iter<=maxiter))
     
     iter = iter+1;
     
-    maxXPos = 1.2*round(max(exphist(:,1))*10)/10;
-    maxYPos = 1.2*round(max(exphist(:,2))*10)/10;
-    t0 = sprintf('Iter. %i\nPrec. %f', iter - 1, norma2);
+    maxXPos = 1.2*round(max(exphist(:,1))*1000)/1000;
+    maxYPos = 1.2*round(max(exphist(:,2))*1000)/1000;
+    %t0 = sprintf('Iter. %i\nPrec. %f', iter - 1, norma2);
     drawnow;
     
     if(norma2 < minnorma)
@@ -107,8 +110,10 @@ while((norma2>limit) && (iter<=maxiter))
         minstddev = stddev;
         minf=f;
         
+        set(gui.handles.value_IterResHist_GUI, 'String', num2str(iter - 1));
+        set(gui.handles.value_PrecHistRes_GUI, 'String', num2str(norma2));
         cla;
-        text(0.025*maxXPos,maxYPos,char(t0));hold on;
+        %text(0.025*(maxXPos)+minE,maxYPos,char(t0));hold on;
         h1 = plot(exphist(:,1), exphist(:,2),'-ko','LineWidth',2);
         hold on;
         
@@ -116,22 +121,22 @@ while((norma2>limit) && (iter<=maxiter))
             t = sprintf('Phase %i\n%8.3f\n%8.3f\n%8.3f\n', jj, minmeanVec(jj), minstddev(jj), minf(jj));
             switch jj
                 case 1
-                    text(0.15*maxXPos,maxYPos,char(t));hold on;
+                    text(0.05*(maxXPos)+minE,maxYPos,char(t));hold on;
                     h2 = plot(exphist(:,1),p2(:,1),'b','LineWidth',2);
                 case 2
-                    text(0.25*maxXPos,maxYPos,char(t));hold on;
+                    text(0.15*(maxXPos)+minE,maxYPos,char(t));hold on;
                     h3 = plot(exphist(:,1),p2(:,2),'r','LineWidth',2);
                 case 3
-                    text(0.35*maxXPos,maxYPos,char(t));hold on;
+                    text(0.25*(maxXPos)+minE,maxYPos,char(t));hold on;
                     h4 = plot(exphist(:,1),p2(:,3),'g','LineWidth',2);
                 case 4
-                    text(0.45*maxXPos,maxYPos,char(t));hold on;
+                    text(0.35*(maxXPos)+minE,maxYPos,char(t));hold on;
                     h5 = plot(exphist(:,1),p2(:,4),'y','LineWidth',2);
                 case 5
-                    text(0.55*maxXPos,maxYPos,char(t));hold on;
+                    text(0.45*(maxXPos)+minE,maxYPos,char(t));hold on;
                     h6 = plot(exphist(:,1),p2(:,5),'m','LineWidth',2);
                 case 6
-                    text(0.65*maxXPos,maxYPos,tchar(t));hold on;
+                    text(0.55*(maxXPos)+minE,maxYPos,tchar(t));hold on;
                     h7 = plot(exphist(:,1),p2(:,6),'c','LineWidth',2);
                 otherwise ;
             end
@@ -163,7 +168,11 @@ while((norma2>limit) && (iter<=maxiter))
         end
         ylabel('Frequency density');
     end
-    %ylim([0 1]);
+    ylim([0 1.2*maxYPos]);
 end
-msgbox('Deconvolution completed');
+if get(gui.handles.cb_deconvolutionHist_GUI, 'Value');
+    msgbox('Deconvolution completed');
+else
+    msgbox('Deconvolution aborted');
+end
 end

@@ -5,15 +5,17 @@ reset(gca);
 TriDiMap_getParam;
 gui = guidata(gcf);
 config = gui.config;
+strUnit_Property = ...
+    get_value_popupmenu(gui.handles.unitProp_GUI, listUnitProperty);
 
 if config.flag_data
-    if config.property == 1 || config.property == 4
+    if config.property == 1 || config.property == 4 || config.property == 6
         if ~config.flagZplot
             data2use = gui.data.expValues_mat.YM;
         else
             data2use = gui.data3D.meanZVal_YM;
         end
-    elseif config.property == 2 || config.property == 5
+    elseif config.property == 2 || config.property == 5 || config.property == 7
         if ~config.flagZplot
             data2use = gui.data.expValues_mat.H;
         else
@@ -218,20 +220,17 @@ elseif config.property == 3
     end
     
 elseif config.property == 4 || config.property == 5
-    strUnit_Property = ...
-        get_value_popupmenu(gui.handles.unitProp_GUI, listUnitProperty);
-    
     if config.flag_data
         % Histograms plot
         numberVal = size(data2use,1)*size(data2use,2);
-        data2useHist = reshape(data2use, [1,numberVal]);
-        indNaN = find(isnan(data2useHist));
-        data2useHist(indNaN) = [];
+        data2useVect = reshape(data2use, [1,numberVal]);
+        indNaN = find(isnan(data2useVect));
+        data2useVect(indNaN) = [];
         binsize = gui.config.binSize;
         minbin = gui.config.MinHistVal;
         maxbin = gui.config.MaxHistVal;
         CatBin = minbin:binsize:maxbin;
-        Hist_i = histc(data2useHist,CatBin);
+        Hist_i = histc(data2useVect,CatBin);
         Prop_pdf = Hist_i/numberVal;
         Prop_pdf = Prop_pdf/binsize;
         SumProp_pdf = sum(Prop_pdf);
@@ -248,7 +247,7 @@ elseif config.property == 4 || config.property == 5
             end
             ylabel('Frequency density');
         else
-            E = data2useHist';
+            E = data2useVect';
             exphist = [CatBin' Prop_pdf'];
             M = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
             maxiter = str2num(get(gui.handles.value_IterMaxHist_GUI, 'String'));
@@ -261,6 +260,26 @@ elseif config.property == 4 || config.property == 5
         errordlg(['First set indentation grid parameters and load an Excel file '...
             'to plot a property map !']);
     end
+    
+elseif config.property > 5
+    numberVal = size(data2use,1)*size(data2use,2);
+    data2useVect = reshape(data2use, [1,numberVal]);
+    indNaN = find(isnan(data2useVect));
+    data2useVect(indNaN) = [];
+    h_CDF = cdfplot(data2useVect);
+    hold on
+%     x = round(min(data2useVect)*10)/10:0.1:round(max(data2useVect)*10)/10;
+%     f = evcdf(x,round(mean(data2useVect)*10)/10,20);
+%     plot(x,f,'-r', 'LineWidth', 1.5)
+    delete(findall(findall(gcf,'Type','axe'),'Type','text'));
+%     legend('Experimental','Theoretical','Location','NW');
+    if config.property == 6
+        xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+    elseif config.property == 7
+        xlabel(strcat('Hardness (',strUnit_Property, ')'));
+    end
+    ylabel('Cumulative density function');
+    set(h_CDF, 'LineStyle', '+', 'Color', 'k');
 end
 if config.flag_data
     if config.property < 3
