@@ -24,14 +24,22 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(h.bg_property_GUI_3, 'Visible', 'off');
         set(h.bg_property_GUI_4_5, 'Visible', 'off');
         set(h.bg_property_GUI_1_2, 'Visible', 'on');
+        set(h.bg_property_GUI_6_7, 'Visible', 'off');
     elseif get(h.property_GUI, 'Value') == 3
         set(h.bg_property_GUI_1_2, 'Visible', 'off');
         set(h.bg_property_GUI_4_5, 'Visible', 'off');
         set(h.bg_property_GUI_3, 'Visible', 'on');
-    elseif get(h.property_GUI, 'Value') > 3
+        set(h.bg_property_GUI_6_7, 'Visible', 'off');
+    elseif get(h.property_GUI, 'Value') > 3 && get(h.property_GUI, 'Value') < 6
         set(h.bg_property_GUI_1_2, 'Visible', 'off');
         set(h.bg_property_GUI_3, 'Visible', 'off');
         set(h.bg_property_GUI_4_5, 'Visible', 'on');
+        set(h.bg_property_GUI_6_7, 'Visible', 'off');
+    elseif get(h.property_GUI, 'Value') > 3
+        set(h.bg_property_GUI_1_2, 'Visible', 'off');
+        set(h.bg_property_GUI_3, 'Visible', 'off');
+        set(h.bg_property_GUI_4_5, 'Visible', 'off');
+        set(h.bg_property_GUI_6_7, 'Visible', 'on');
     end    
 else
     set([h.unit_criterionE_GUI, h.unit_criterionH_GUI,...

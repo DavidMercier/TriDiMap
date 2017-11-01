@@ -267,12 +267,16 @@ elseif config.property > 5
     indNaN = find(isnan(data2useVect));
     data2useVect(indNaN) = [];
     h_CDF = cdfplot(data2useVect);
+    xdataCDF = get(h_CDF,'XData');
+    xdataCDF(1) = 0;
+    xdataCDF(end) = xdataCDF(end-1);
+    ydataCDF = get(h_CDF,'YData');
     hold on
-%     x = round(min(data2useVect)*10)/10:0.1:round(max(data2useVect)*10)/10;
-%     f = evcdf(x,round(mean(data2useVect)*10)/10,20);
-%     plot(x,f,'-r', 'LineWidth', 1.5)
+    %     x = round(min(data2useVect)*10)/10:0.1:round(max(data2useVect)*10)/10;
+    %     f = evcdf(x,round(mean(data2useVect)*10)/10,20);
+    %     plot(x,f,'-r', 'LineWidth', 1.5)
     delete(findall(findall(gcf,'Type','axe'),'Type','text'));
-%     legend('Experimental','Theoretical','Location','NW');
+    %     legend('Experimental','Theoretical','Location','NW');
     if config.property == 6
         xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
     elseif config.property == 7
@@ -280,6 +284,13 @@ elseif config.property > 5
     end
     ylabel('Cumulative density function');
     set(h_CDF, 'LineStyle', '+', 'Color', 'k');
+    if get (gui.handles.cb_WeibullFit_GUI, 'Value')
+        % Fit Weibull
+        OPTIONS = algoMinimization;
+        gui.cumulativeFunction.ydata_cdf_Fit = ...
+            TriDiMap_Weibull_cdf(OPTIONS, xdataCDF, ydataCDF);
+        plot(xdataCDF, gui.cumulativeFunction.ydata_cdf_Fit, '-r', 'LineWidth', 1.5);
+    end
 end
 if config.flag_data
     if config.property < 3

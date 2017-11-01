@@ -19,14 +19,24 @@ v = ver;
 gui.config.MatlabRelease = v(1).Release;
 
 %% Check License of Statistics Toolbox
-license_msg = ['Sorry, no license found for the Matlab ', ...
+license_msg_1 = ['Sorry, no license found for the Matlab ', ...
     'Statistics Toolbox!'];
 if  license('checkout', 'Statistics_Toolbox') == 0
-    warning(license_msg);
+    warning(license_msg_1);
     gui.config.licenceStat_Flag = 0;
 else
     gui.config.licenceStat_Flag = 1;
 end
+
+license_msg_2 = ['Sorry, no license found for the Matlab ', ...
+    'Optimization Toolbox™ !'];
+if  license('checkout', 'Optimization_Toolbox') == 0
+    warning(license_msg_2);
+    gui.config.licenceOpt_Flag = 0;
+else
+    gui.config.licenceOpt_Flag = 1;
+end
+
 
 %% Paths Management
 % Don't move before definition of 'gui' as a struct()
