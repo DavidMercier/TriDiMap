@@ -35,6 +35,8 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         gui.config.binSize = str2num(get(h.value_BinSizeHist_GUI, 'String'));
         gui.config.MinHistVal = str2num(get(h.value_MinValHist_GUI, 'String'));
         gui.config.MaxHistVal = str2num(get(h.value_MaxValHist_GUI, 'String'));
+        gui.config.MinCDFVal = str2num(get(h.value_MinValCDF_GUI, 'String'));
+        gui.config.MaxCDFVal = str2num(get(h.value_MaxValCDF_GUI, 'String'));
     end
     gui.config.rawData = get(h.cb_pixData_GUI, 'Value');
     if gui.config.rawData

@@ -291,6 +291,8 @@ elseif config.property > 5
             TriDiMap_Weibull_cdf(OPTIONS, xdataCDF, ydataCDF);
         plot(xdataCDF, gui.cumulativeFunction.ydata_cdf_Fit, '-r', 'LineWidth', 1.5);
     end
+    gui.results.xdataCDF = xdataCDF;
+    gui.results.ydataCDF = ydataCDF;
 end
 if config.flag_data
     if config.property < 3
@@ -303,6 +305,5 @@ if config.flag_data
         end
     end
 end
-gui = guidata(gcf);
 guidata(gcf, gui);
 end
