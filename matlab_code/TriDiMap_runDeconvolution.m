@@ -1,13 +1,13 @@
 %% Copyright 2014 MERCIER David
-function TriDiMap_runDeconvolution(E, exphist, M, maxiter, limit, property, ...
+function TriDiMap_runDeconvolution(propVal, exphist, M, maxIter, limit, property, ...
     strUnit_Property)
 %% Function to run the deconvolution
-% See Decon M-file for decon.fig of J N?me?ek
+% See decon M-file for decon.fig of J. Nemecek
 
-% E: load property, e.g. E[GPa], save to vector E
+% propVal: load property, e.g. E[GPa], save to vector propVal
 % exphist: load experimental probability density function
 % M: Number of phases
-% maxiter: max number of iterations
+% maxIter: max number of iterations
 % limit: precision
 gui = guidata(gcf);
 
@@ -16,10 +16,10 @@ minnorma = 1;
 iter=0;
 
 minE = min(exphist(:,1));
-maxE = max(E);
-N = length(E);
+maxE = max(propVal);
+N = length(propVal);
 
-while((norma2>limit) && (iter<=maxiter)) && ...
+while((norma2>limit) && (iter<=maxIter)) && ...
         get(gui.handles.cb_deconvolutionHist_GUI, 'Value');
     r = rand(M-1,1);
     r = sort(r);
@@ -31,7 +31,7 @@ while((norma2>limit) && (iter<=maxiter)) && ...
     end
     Lim(M+1) = maxE;
     
-    sE = sort(E);
+    sE = sort(propVal);
     index_Lim = zeros(1,ii);
     for ii = 1:M+1
         index_Lim(ii) = N;
@@ -67,10 +67,9 @@ while((norma2>limit) && (iter<=maxiter)) && ...
     for jj = 1:M
         x = exphist(1,1);
         if (meanVec(jj) ~= 0)
-            %p(1,jj) = cdf('normal',x,prumer(j), stddev(j)); %cdf
-            p2(1,jj) = pdf('normal',x,meanVec(jj), stddev(jj)); %pdf
+            %p2(1,jj) = cdf('normal',x,meanVec(jj),stddev(jj));
+            p2(1,jj) = pdf('normal',x,meanVec(jj),stddev(jj));
         else
-            %p(1,jj) = 0;
             p2(1,jj) = 0;
         end
         

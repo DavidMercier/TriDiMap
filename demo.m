@@ -16,7 +16,11 @@ gui.config.numerics = struct();
 
 %% Check Matlab version
 v = ver;
-gui.config.MatlabRelease = v(1).Release;
+try
+    gui.config.MatlabRelease = v.Release;
+catch
+    gui.config.MatlabRelease = 'empty';
+end
 
 %% Check License of Statistics Toolbox
 license_msg_1 = ['Sorry, no license found for the Matlab ', ...

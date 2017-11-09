@@ -247,12 +247,11 @@ elseif config.property == 4 || config.property == 5
             end
             ylabel('Frequency density');
         else
-            E = data2useVect';
             exphist = [CatBin' Prop_pdf'];
             M = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
             maxiter = str2num(get(gui.handles.value_IterMaxHist_GUI, 'String'));
             limit = str2num(get(gui.handles.value_PrecHist_GUI, 'String'));
-            TriDiMap_runDeconvolution(E, exphist, M, maxiter, limit, ...
+            TriDiMap_runDeconvolution(data2useVect', exphist, M, maxiter, limit, ...
                 config.property, strUnit_Property);
         end
         hold on;
