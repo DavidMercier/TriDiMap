@@ -136,7 +136,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     gui.config.grid = get(h.cb_grid_plot_GUI, 'Value');
     gui.config.Markers = get(h.cb_markers_GUI, 'Value');
     gui.config.MinMax = get(h.cb_MinMax_plot_GUI, 'Value');
-    if ~strcmp(g.config.MatlabRelease, '(R2014b)')
+    if ~strcmp(gui.config.MatlabRelease, '(R2014b)')
         gui.config.minorTicks = get(h.cb_tickColorBar_GUI, 'Value');
     else
         gui.config.minorTicks = 0;
