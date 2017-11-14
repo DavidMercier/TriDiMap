@@ -135,7 +135,7 @@ while((norma2>limit) && (iter<=maxIter)) && ...
                     text(0.45*(maxXPos)+minE,maxYPos,char(t));hold on;
                     h6 = plot(exphist(:,1),p2(:,5),'m','LineWidth',2);
                 case 6
-                    text(0.55*(maxXPos)+minE,maxYPos,tchar(t));hold on;
+                    text(0.55*(maxXPos)+minE,maxYPos,char(t));hold on;
                     h7 = plot(exphist(:,1),p2(:,6),'c','LineWidth',2);
                 otherwise ;
             end

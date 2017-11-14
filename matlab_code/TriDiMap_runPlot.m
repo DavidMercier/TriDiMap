@@ -305,4 +305,7 @@ if config.flag_data
     end
 end
 guidata(gcf, gui);
+if ~gui.config.saveFlag
+    TriDiMap_updateUnit;
+end
 end

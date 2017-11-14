@@ -2,10 +2,6 @@
 function TriDiMap_getParam
 %% Function to get parameters from the GUI
 gui = guidata(gcf);
-if ~gui.config.saveFlag
-    TriDiMap_updateUnit;
-end
-gui = guidata(gcf);
 h = gui.handles;
 
 gui.config.dataType = get(h.pm_set_file, 'Value');
@@ -37,6 +33,15 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         gui.config.MaxHistVal = str2num(get(h.value_MaxValHist_GUI, 'String'));
         gui.config.MinCDFVal = str2num(get(h.value_MinValCDF_GUI, 'String'));
         gui.config.MaxCDFVal = str2num(get(h.value_MaxValCDF_GUI, 'String'));
+    end
+    if gui.config.property < 3
+        set(gui.handles.title_z_values_prop_GUI, 'Visible', 'on');
+        set(gui.handles.value_z_values_GUI, 'Visible', 'on');
+        set(gui.handles.unit_z_values_GUI, 'Visible', 'on');
+    else
+        set(gui.handles.title_z_values_prop_GUI, 'Visible', 'off');
+        set(gui.handles.value_z_values_GUI, 'Visible', 'off');
+        set(gui.handles.unit_z_values_GUI, 'Visible', 'off');
     end
     gui.config.rawData = get(h.cb_pixData_GUI, 'Value');
     if gui.config.rawData
