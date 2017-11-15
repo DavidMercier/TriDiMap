@@ -2,6 +2,10 @@
 function TriDiMap_runPlot
 %% Function to run the mapping
 reset(gca);
+gui = guidata(gcf);
+if ~gui.config.saveFlag
+    TriDiMap_updateUnit;
+end
 TriDiMap_getParam;
 gui = guidata(gcf);
 config = gui.config;

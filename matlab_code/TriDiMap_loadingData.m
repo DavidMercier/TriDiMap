@@ -240,7 +240,11 @@ if config.flag_data
                     if dataType ~= 3
                         data.expValues.YM = dataAll(:,ind_YM-1);
                     else
-                        data.expValues.YM = str2num(char(raw(3:end,ind_YM)));
+                        try
+                            data.expValues.YM = str2num(char(raw(3:end,ind_YM)));
+                        catch
+                            data.expValues.YM = dataAll(:,ind_YM);
+                        end
                     end
                 end
             else
@@ -256,7 +260,11 @@ if config.flag_data
                     if dataType ~= 3
                         data.expValues.H = dataAll(:,ind_H-1);
                     else
-                        data.expValues.H = str2num(char(raw(3:end,ind_H)));
+                        try
+                            data.expValues.H = str2num(char(raw(3:end,ind_H)));
+                        catch
+                            data.expValues.H = dataAll(:,ind_H);
+                        end
                     end
                 end
             else
