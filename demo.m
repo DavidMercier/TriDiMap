@@ -41,7 +41,6 @@ else
     gui.config.licenceOpt_Flag = 1;
 end
 
-
 %% Paths Management
 % Don't move before definition of 'gui' as a struct()
 try

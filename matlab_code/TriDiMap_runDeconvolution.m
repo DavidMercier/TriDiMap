@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function TriDiMap_runDeconvolution(propVal, exphist, M, maxIter, limit, property, ...
+function p_all2 = TriDiMap_runDeconvolution(propVal, exphist, M, maxIter, limit, property, ...
     strUnit_Property)
 %% Function to run the deconvolution
 % See decon M-file for decon.fig of J. Nemecek

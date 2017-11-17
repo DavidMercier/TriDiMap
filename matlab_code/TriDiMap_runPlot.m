@@ -4,7 +4,7 @@ function TriDiMap_runPlot
 reset(gca);
 gui = guidata(gcf);
 if ~gui.config.saveFlag
-    TriDiMap_updateUnit;
+    TriDiMap_updateUnit_and_GUI;
 end
 TriDiMap_getParam;
 gui = guidata(gcf);
@@ -239,26 +239,47 @@ elseif config.property == 4 || config.property == 5
         Prop_pdf = Prop_pdf/binsize;
         SumProp_pdf = sum(Prop_pdf);
         SumTot = SumProp_pdf .* binsize;
-        if ~get(gui.handles.cb_deconvolutionHist_GUI, 'Value')
-            bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
-                'LineWidth', 1.5);
-            set(gcf, 'renderer', 'opengl');
-            xlim([0 maxbin]);
-            if config.property == 4
-                xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
-            elseif config.property == 5
-                xlabel(strcat('Hardness (',strUnit_Property, ')'));
+        if ~get(gui.handles.cb_plotErrorPDF_GUI, 'Value')
+            if ~get(gui.handles.cb_deconvolutionHist_GUI, 'Value')
+                bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
+                    'LineWidth', 1.5);
+                set(gcf, 'renderer', 'opengl');
+                xlim([0 maxbin]);
+                if config.property == 4
+                    xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+                elseif config.property == 5
+                    xlabel(strcat('Hardness (',strUnit_Property, ')'));
+                end
+                ylabel('Frequency density');
+                gui.config.flag_fit = 0;
+            else
+                exphist = [CatBin' Prop_pdf'];
+                M = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
+                maxiter = str2num(get(gui.handles.value_IterMaxHist_GUI, 'String'));
+                limit = str2num(get(gui.handles.value_PrecHist_GUI, 'String'));
+                gui.results.GaussianFit = TriDiMap_runDeconvolution(data2useVect', exphist, M, maxiter, limit, ...
+                    config.property, strUnit_Property);
+                gui.config.flag_fit = 1;
             end
-            ylabel('Frequency density');
+            hold on;
         else
-            exphist = [CatBin' Prop_pdf'];
-            M = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
-            maxiter = str2num(get(gui.handles.value_IterMaxHist_GUI, 'String'));
-            limit = str2num(get(gui.handles.value_PrecHist_GUI, 'String'));
-            TriDiMap_runDeconvolution(data2useVect', exphist, M, maxiter, limit, ...
-                config.property, strUnit_Property);
+            if gui.config.flag_fit
+                gui.results.errorFit = (Prop_pdf' - gui.results.GaussianFit')./Prop_pdf';
+                gui.results.errorFit(gui.results.errorFit==-Inf) = 0;
+                gui.results.errorFit(gui.results.errorFit==+Inf) = 0;
+                plot(gui.results.errorFit, '+r','LineWidth',2);
+                xlim([0 maxbin]);
+                ylim([-max(abs(gui.results.errorFit)) max(abs(gui.results.errorFit))]);
+                if config.property == 4
+                    xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+                elseif config.property == 5
+                    xlabel(strcat('Hardness (',strUnit_Property, ')'));
+                end
+                ylabel('Error (%)');
+            else
+                errordlg('First run deconvolution process!');
+            end
         end
-        hold on;
     else
         errordlg(['First set indentation grid parameters and load an Excel file '...
             'to plot a property map !']);
@@ -310,6 +331,6 @@ if config.flag_data
 end
 guidata(gcf, gui);
 if ~gui.config.saveFlag
-    TriDiMap_updateUnit;
+    TriDiMap_updateUnit_and_GUI;
 end
 end
