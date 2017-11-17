@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function TriDiMap_updateUnit
+function TriDiMap_updateUnit_and_GUI
 %% Function to get units from the GUI and set automatically in the plot
 gui = guidata(gcf);
 h = gui.handles;
@@ -29,25 +29,41 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         h.unit_Hth_ValEH_GUI, h.unit_Eth_ValEH_GUI], ...
         'string', strUnit_Property);
     if get(h.property_GUI, 'Value') < 3
-        set(h.bg_property_GUI_3, 'Visible', 'off');
-        set(h.bg_property_GUI_4_5, 'Visible', 'off');
-        set(h.bg_property_GUI_1_2, 'Visible', 'on');
-        set(h.bg_property_GUI_6_7, 'Visible', 'off');
+        set([h.bg_property_GUI_1_2, h.bg2_property_GUI_1_2],...
+            'Visible', 'on');
+        set([h.bg_property_GUI_3, h.bg2_property_GUI_3],...
+            'Visible', 'off');
+        set([h.bg_property_GUI_4_5, h.bg2_property_GUI_4_5],...
+            'Visible', 'off');
+        set([h.bg_property_GUI_6_7, h.bg2_property_GUI_6_7],...
+            'Visible', 'off');
     elseif get(h.property_GUI, 'Value') == 3
-        set(h.bg_property_GUI_1_2, 'Visible', 'off');
-        set(h.bg_property_GUI_4_5, 'Visible', 'off');
-        set(h.bg_property_GUI_3, 'Visible', 'on');
-        set(h.bg_property_GUI_6_7, 'Visible', 'off');
+        set([h.bg_property_GUI_1_2, h.bg2_property_GUI_1_2],...
+            'Visible', 'off');
+        set([h.bg_property_GUI_3, h.bg2_property_GUI_3],...
+            'Visible', 'on');
+        set([h.bg_property_GUI_4_5, h.bg2_property_GUI_4_5],...
+            'Visible', 'off');
+        set([h.bg_property_GUI_6_7, h.bg2_property_GUI_6_7],...
+            'Visible', 'off');
     elseif get(h.property_GUI, 'Value') > 3 && get(h.property_GUI, 'Value') < 6
-        set(h.bg_property_GUI_1_2, 'Visible', 'off');
-        set(h.bg_property_GUI_3, 'Visible', 'off');
-        set(h.bg_property_GUI_4_5, 'Visible', 'on');
-        set(h.bg_property_GUI_6_7, 'Visible', 'off');
+        set([h.bg_property_GUI_1_2, h.bg2_property_GUI_1_2],...
+            'Visible', 'off');
+        set([h.bg_property_GUI_3, h.bg2_property_GUI_3],...
+            'Visible', 'off');
+        set([h.bg_property_GUI_4_5, h.bg2_property_GUI_4_5],...
+            'Visible', 'on');
+        set([h.bg_property_GUI_6_7, h.bg2_property_GUI_6_7],...
+            'Visible', 'off');
     elseif get(h.property_GUI, 'Value') > 3
-        set(h.bg_property_GUI_1_2, 'Visible', 'off');
-        set(h.bg_property_GUI_3, 'Visible', 'off');
-        set(h.bg_property_GUI_4_5, 'Visible', 'off');
-        set(h.bg_property_GUI_6_7, 'Visible', 'on');
+        set([h.bg_property_GUI_1_2, h.bg2_property_GUI_1_2],...
+            'Visible', 'off');
+        set([h.bg_property_GUI_3, h.bg2_property_GUI_3],...
+            'Visible', 'off');
+        set([h.bg_property_GUI_4_5, h.bg2_property_GUI_4_5],...
+            'Visible', 'off');
+        set([h.bg_property_GUI_6_7, h.bg2_property_GUI_6_7],...
+            'Visible', 'on');
     end
 else
     set([h.unit_criterionE_GUI, h.unit_criterionH_GUI,...
