@@ -277,6 +277,8 @@ elseif config.property == 4 || config.property == 5
                 end
                 ylabel('Error (%)');
             else
+                set(gui.handles.cb_plotErrorPDF_GUI,'Value',0);
+                TriDiMap_runPlot;
                 errordlg('First run deconvolution process!');
             end
         end
