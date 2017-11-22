@@ -1,9 +1,10 @@
 %% Copyright 2014 MERCIER David
-function dataCleaned = TriDiMap_cleaningData(data)
+function [dataCleaned, ratioNan] = TriDiMap_cleaningData(data)
 %% Function to replace NaN values to avoid blank pixels
 
 data(data == 0) = NaN;
 [row, col] = find(isnan(data));
+ratioNan = 100*length(row)/(size(data,1)*size(data,2));
 
 for ii = 1:length(row)
     if row(ii) > 1 && col(ii) > 1 && ...

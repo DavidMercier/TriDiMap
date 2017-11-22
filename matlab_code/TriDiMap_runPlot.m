@@ -47,8 +47,10 @@ end
 if config.property < 3
     %% Clean data
     if config.flag_data
+        [dataCleaned, ratioNan] = TriDiMap_cleaningData(data2use);
+        set(gui.handles.value_NaNratio_GUI, 'String', num2str(ratioNan));
         if config.noNan
-            data2use = TriDiMap_cleaningData(data2use);
+            data2use = dataCleaned;
         end
         
         %% Normalization of dataset
@@ -239,86 +241,102 @@ elseif config.property == 4 || config.property == 5
         Prop_pdf = Prop_pdf/binsize;
         SumProp_pdf = sum(Prop_pdf);
         SumTot = SumProp_pdf .* binsize;
-        if ~get(gui.handles.cb_plotErrorPDF_GUI, 'Value')
-            if ~get(gui.handles.cb_deconvolutionHist_GUI, 'Value')
-                bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
-                    'LineWidth', 1.5);
-                set(gcf, 'renderer', 'opengl');
-                xlim([0 maxbin]);
-                if config.property == 4
-                    xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
-                elseif config.property == 5
-                    xlabel(strcat('Hardness (',strUnit_Property, ')'));
+        if  gui.config.licenceStat_Flag
+            if ~get(gui.handles.cb_plotErrorPDF_GUI, 'Value')
+                if ~get(gui.handles.cb_deconvolutionHist_GUI, 'Value')
+                    bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
+                        'LineWidth', 1.5);
+                    set(gcf, 'renderer', 'opengl');
+                    xlim([0 maxbin]);
+                    if config.property == 4
+                        xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+                    elseif config.property == 5
+                        xlabel(strcat('Hardness (',strUnit_Property, ')'));
+                    end
+                    ylabel('Frequency density');
+                    gui.config.flag_fit = 0;
+                else
+                    exphist = [CatBin' Prop_pdf'];
+                    M = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
+                    maxiter = str2num(get(gui.handles.value_IterMaxHist_GUI, 'String'));
+                    limit = str2num(get(gui.handles.value_PrecHist_GUI, 'String'));
+                    gui.results.GaussianFit = ...
+                        TriDiMap_runDeconvolution(data2useVect', exphist, M, ...
+                        maxiter, limit, config.property, strUnit_Property);
+                    gui.config.flag_fit = 1;
                 end
-                ylabel('Frequency density');
-                gui.config.flag_fit = 0;
+                hold on;
             else
-                exphist = [CatBin' Prop_pdf'];
-                M = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
-                maxiter = str2num(get(gui.handles.value_IterMaxHist_GUI, 'String'));
-                limit = str2num(get(gui.handles.value_PrecHist_GUI, 'String'));
-                gui.results.GaussianFit = TriDiMap_runDeconvolution(data2useVect', exphist, M, maxiter, limit, ...
-                    config.property, strUnit_Property);
-                gui.config.flag_fit = 1;
+                if gui.config.flag_fit
+                    gui.results.errorFit = ...
+                        (Prop_pdf' - gui.results.GaussianFit')./Prop_pdf';
+                    gui.results.errorFit(gui.results.errorFit==-Inf) = 0;
+                    gui.results.errorFit(gui.results.errorFit==+Inf) = 0;
+                    plot(gui.results.errorFit, '+r','LineWidth',2);
+                    xlim([0 maxbin]);
+                    ylim([-max(abs(gui.results.errorFit)) ...
+                        max(abs(gui.results.errorFit))]);
+                    if config.property == 4
+                        xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+                    elseif config.property == 5
+                        xlabel(strcat('Hardness (',strUnit_Property, ')'));
+                    end
+                    ylabel('Error (%)');
+                else
+                    set(gui.handles.cb_plotErrorPDF_GUI,'Value',0);
+                    TriDiMap_runPlot;
+                    errordlg('First run deconvolution process!');
+                end
             end
-            hold on;
         else
-            if gui.config.flag_fit
-                gui.results.errorFit = (Prop_pdf' - gui.results.GaussianFit')./Prop_pdf';
-                gui.results.errorFit(gui.results.errorFit==-Inf) = 0;
-                gui.results.errorFit(gui.results.errorFit==+Inf) = 0;
-                plot(gui.results.errorFit, '+r','LineWidth',2);
-                xlim([0 maxbin]);
-                ylim([-max(abs(gui.results.errorFit)) max(abs(gui.results.errorFit))]);
-                if config.property == 4
-                    xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
-                elseif config.property == 5
-                    xlabel(strcat('Hardness (',strUnit_Property, ')'));
-                end
-                ylabel('Error (%)');
-            else
-                set(gui.handles.cb_plotErrorPDF_GUI,'Value',0);
-                TriDiMap_runPlot;
-                errordlg('First run deconvolution process!');
-            end
+            set(gui.handles.cb_deconvolutionHist_GUI,'Value',0);
+            cla;
+            errordlg('No licence for the Statistics_Toolbox!');
         end
     else
-        errordlg(['First set indentation grid parameters and load an Excel file '...
-            'to plot a property map !']);
+        errordlg(['First set indentation grid parameters and '...
+            'load an Excel file to plot a property map !']);
     end
     
 elseif config.property > 5
-    numberVal = size(data2use,1)*size(data2use,2);
-    data2useVect = reshape(data2use, [1,numberVal]);
-    indNaN = find(isnan(data2useVect));
-    data2useVect(indNaN) = [];
-    h_CDF = cdfplot(data2useVect);
-    xdataCDF = get(h_CDF,'XData');
-    xdataCDF(1) = 0;
-    xdataCDF(end) = xdataCDF(end-1);
-    ydataCDF = get(h_CDF,'YData');
-    hold on
-    %     x = round(min(data2useVect)*10)/10:0.1:round(max(data2useVect)*10)/10;
-    %     f = evcdf(x,round(mean(data2useVect)*10)/10,20);
-    %     plot(x,f,'-r', 'LineWidth', 1.5)
-    delete(findall(findall(gcf,'Type','axe'),'Type','text'));
-    %     legend('Experimental','Theoretical','Location','NW');
-    if config.property == 6
-        xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
-    elseif config.property == 7
-        xlabel(strcat('Hardness (',strUnit_Property, ')'));
+    if gui.config.licenceStat_Flag
+        numberVal = size(data2use,1)*size(data2use,2);
+        data2useVect = reshape(data2use, [1,numberVal]);
+        indNaN = find(isnan(data2useVect));
+        data2useVect(indNaN) = [];
+        h_CDF = cdfplot(data2useVect);
+        xdataCDF = get(h_CDF,'XData');
+        xdataCDF(1) = 0;
+        xdataCDF(end) = xdataCDF(end-1);
+        ydataCDF = get(h_CDF,'YData');
+        hold on
+        %     x = round(min(data2useVect)*10)/10:0.1:round(max(data2useVect)*10)/10;
+        %     f = evcdf(x,round(mean(data2useVect)*10)/10,20);
+        %     plot(x,f,'-r', 'LineWidth', 1.5)
+        delete(findall(findall(gcf,'Type','axe'),'Type','text'));
+        %     legend('Experimental','Theoretical','Location','NW');
+        if config.property == 6
+            xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+        elseif config.property == 7
+            xlabel(strcat('Hardness (',strUnit_Property, ')'));
+        end
+        ylabel('Cumulative density function');
+        set(h_CDF, 'LineStyle', '+', 'Color', 'k');
+        if get (gui.handles.cb_WeibullFit_GUI, 'Value')
+            % Fit Weibull
+            OPTIONS = algoMinimization;
+            gui.cumulativeFunction.ydata_cdf_Fit = ...
+                TriDiMap_Weibull_cdf(OPTIONS, xdataCDF, ydataCDF);
+            plot(xdataCDF, gui.cumulativeFunction.ydata_cdf_Fit, '-r', ...
+                'LineWidth', 1.5);
+        end
+        gui.results.xdataCDF = xdataCDF;
+        gui.results.ydataCDF = ydataCDF;
+    else
+        set(gui.handles.cb_deconvolutionHist_GUI,'Value',0);
+        cla;
+        errordlg('No licence for the Statistics_Toolbox!');
     end
-    ylabel('Cumulative density function');
-    set(h_CDF, 'LineStyle', '+', 'Color', 'k');
-    if get (gui.handles.cb_WeibullFit_GUI, 'Value')
-        % Fit Weibull
-        OPTIONS = algoMinimization;
-        gui.cumulativeFunction.ydata_cdf_Fit = ...
-            TriDiMap_Weibull_cdf(OPTIONS, xdataCDF, ydataCDF);
-        plot(xdataCDF, gui.cumulativeFunction.ydata_cdf_Fit, '-r', 'LineWidth', 1.5);
-    end
-    gui.results.xdataCDF = xdataCDF;
-    gui.results.ydataCDF = ydataCDF;
 end
 if config.flag_data
     if config.property < 3
