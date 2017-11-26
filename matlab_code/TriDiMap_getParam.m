@@ -44,12 +44,20 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(gui.handles.unit_z_values_GUI, 'Visible', 'off');
     end
     gui.config.rawData = get(h.cb_pixData_GUI, 'Value');
-    if gui.config.rawData
+    gui.config.shadingData = get(h.pm_surfShading_GUI, 'Value');
+    gui.config.zAxisRatioVal = str2num(get(h.value_zAxisRatio_GUI, 'String'));
+    if ~gui.config.rawData
         gui.config.contourPlot = 0;
         set(h.cb_contourPlotMap_GUI, 'Visible', 'off');
         display('Contour plot not active, when pixelized data is plotted !');
+        set(h.pm_surfShading_GUI, 'Visible', 'off');
+        set(h.title_zAxisRatio_GUI, 'Visible', 'off');
+        set(h.value_zAxisRatio_GUI, 'Visible', 'off');
     else
         set(h.cb_contourPlotMap_GUI, 'Visible', 'on');
+        set(h.pm_surfShading_GUI, 'Visible', 'on');
+        set(h.title_zAxisRatio_GUI, 'Visible', 'on');
+        set(h.value_zAxisRatio_GUI, 'Visible', 'on');
     end
     
     gui.config.noNan = get(h.cb_pixNaN_GUI, 'Value');

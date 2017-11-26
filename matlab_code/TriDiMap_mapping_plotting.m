@@ -33,23 +33,6 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     end
     
     if ~rawData
-        if ~contourPlot
-            hFig = surf(xData_interp, yData_interp, data2plot',...
-                'FaceColor','interp',...
-                'EdgeColor','none',...
-                'FaceLighting','gouraud');
-            % 'Marker', '+'
-            shading interp;
-        else
-            if logZ
-                contourf(xData_interp, yData_interp, log(data2plot'),...
-                    intervalScaleBar);
-            else
-                contourf(xData_interp, yData_interp, data2plot',...
-                    intervalScaleBar);
-            end
-        end
-    else
         if logZ
             hFig = imagesc(real(log(data2plot')),...
                 'XData',xData_interp,'YData',yData_interp);
@@ -61,6 +44,30 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         set(gca,'YDir','normal');
         set(hFig,'alphadata',~isnan(data2plot'));
+        %view(2);
+    else
+        if ~contourPlot
+            hFig = surf(xData_interp, yData_interp, data2plot',...
+                'FaceColor','interp',...
+                'EdgeColor','none',...
+                'FaceLighting','gouraud');
+            if gui.config.shadingData == 1
+                shading flat;
+            elseif gui.config.shadingData == 2
+                shading interp;
+            elseif gui.config.shadingData == 3
+                shading faceted;
+            end
+            %view(3);
+        else
+            if logZ
+                contourf(xData_interp, yData_interp, log(data2plot'),...
+                    intervalScaleBar);
+            else
+                contourf(xData_interp, yData_interp, data2plot',...
+                    intervalScaleBar);
+            end
+        end
     end
     
     hold on;
@@ -70,14 +77,17 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     if length(xData_interp) > 5*length(yData_interp) || length(yData_interp) > 5*length(xData_interp)
         axis normal;
     end
-    view(0,90);
+    if ~rawData
+        view(2); % or view(0,90);
+    end
     %zlim([0 2]);
     zlim auto;
+    daspect([1 1 gui.config.zAxisRatioVal]);
     if logZ && ~contourPlot
         set(gca, 'zsc', 'log');
         %set(hFig, 'cdata', real(log10(get(hFig, 'cdata'))));
     end
-    if logZ && rawData
+    if logZ && ~rawData
         set(gca, 'zsc', 'linear');
     end
     hold on;
@@ -106,7 +116,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     
     % Set number of intervals to 0 for a continuous scalebar.
     if intervalScaleBar > 0
-        if ~rawData
+        if rawData
             if ~contourPlot
                 cmap = [cMap, '(',num2str(intervalScaleBar),')'];
             else
@@ -154,7 +164,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         if logZ && contourPlot
             caxis(log([cmin, cmax]));
-        elseif logZ && rawData
+        elseif logZ && ~rawData
             caxis(log([cmin, cmax]));
         else
             caxis([cmin, cmax]);
@@ -175,7 +185,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     Contours = cmin:(cmax-cmin)/intervalScaleBar:cmax;
     if logZ && contourPlot
         hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
-    elseif logZ && rawData
+    elseif logZ && ~rawData
         hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
     else
         hcb1 = colorbar;

@@ -113,16 +113,6 @@ if config.property < 3
         end
         
         if config.rawData
-            gui.data.xData_interp = gui.data.xData;
-            gui.data.yData_interp = gui.data.yData;
-            if get(gui.handles.cb_errorMap_GUI, 'Value')
-                [xData_interp,  yData_interp] = ...
-                    meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
-                    0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
-                gui.data.xData_interp = xData_interp./(2^(config.interpFact));
-                gui.data.yData_interp = yData_interp./(2^(config.interpFact));
-            end
-        elseif ~config.rawData
             [xData_interp,  yData_interp] = ...
                 meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
                 0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
@@ -133,6 +123,16 @@ if config.property < 3
                 gui.data.xData_interp = xData_interp;
                 gui.data.yData_interp = yData_interp;
             end
+        elseif ~config.rawData
+            gui.data.xData_interp = gui.data.xData;
+            gui.data.yData_interp = gui.data.yData;
+            if get(gui.handles.cb_errorMap_GUI, 'Value')
+                [xData_interp,  yData_interp] = ...
+                    meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
+                    0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
+                gui.data.xData_interp = xData_interp./(2^(config.interpFact));
+                gui.data.yData_interp = yData_interp./(2^(config.interpFact));
+            end 
         end
     end
     

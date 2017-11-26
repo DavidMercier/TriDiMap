@@ -1,0 +1,9 @@
+%% Copyright 2014 MERCIER David
+function listSurfVal = listSurf
+
+listSurfVal = {...
+    'Flat'; ...
+    'Interp'; ...
+    'Faceted'};
+
+end
