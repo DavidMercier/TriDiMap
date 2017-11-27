@@ -60,7 +60,9 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         display('Contour plot not active, when pixelized data is plotted !');
         set(h.cb_textContourPlotMap_GUI, 'Visible', 'off');
     end
-    if gui.config.rawData == 2 || gui.config.rawData == 7
+    if gui.config.rawData == 2
+        set(h.pm_surfShading_GUI, 'Visible', 'on');
+    elseif gui.config.rawData == 7
         set(h.pm_surfShading_GUI, 'Visible', 'on');
     else
         set(h.pm_surfShading_GUI, 'Visible', 'off');
