@@ -17,7 +17,8 @@ gui.config.numerics = struct();
 %% Check Matlab version
 v = ver;
 try
-    gui.config.MatlabRelease = v.Release;
+    Release = v.Release;
+    gui.config.MatlabRelease = Release;
 catch
     gui.config.MatlabRelease = 'empty';
 end

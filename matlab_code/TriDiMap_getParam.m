@@ -43,23 +43,39 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(gui.handles.value_z_values_GUI, 'Visible', 'off');
         set(gui.handles.unit_z_values_GUI, 'Visible', 'off');
     end
-    gui.config.rawData = get(h.cb_pixData_GUI, 'Value');
+    gui.config.rawData = get(h.pm_pixData_GUI, 'Value');
     gui.config.shadingData = get(h.pm_surfShading_GUI, 'Value');
     gui.config.zAxisRatioVal = str2num(get(h.value_zAxisRatio_GUI, 'String'));
-    if ~gui.config.rawData
+    if gui.config.rawData == 2
+        gui.config.contourPlot = get(h.pm_contourPlotMap_GUI, 'Value');
+        set(h.pm_contourPlotMap_GUI, 'Visible', 'on');
+        if gui.config.contourPlot > 1
+            set(h.cb_textContourPlotMap_GUI, 'Visible', 'on');
+        else
+            set(h.cb_textContourPlotMap_GUI, 'Visible', 'off');
+        end
+    else
         gui.config.contourPlot = 0;
-        set(h.cb_contourPlotMap_GUI, 'Visible', 'off');
+        set(h.pm_contourPlotMap_GUI, 'Visible', 'off');
         display('Contour plot not active, when pixelized data is plotted !');
+        set(h.cb_textContourPlotMap_GUI, 'Visible', 'off');
+    end
+    if gui.config.rawData == 2 || gui.config.rawData == 7
+        set(h.pm_surfShading_GUI, 'Visible', 'on');
+    else
         set(h.pm_surfShading_GUI, 'Visible', 'off');
+    end
+    if gui.config.rawData == 7
+        listSurfVal = listSurf;
+        set(h.pm_surfShading_GUI, 'String', listSurfVal(1:2,:));
+    end
+    if gui.config.rawData == 1
         set(h.title_zAxisRatio_GUI, 'Visible', 'off');
         set(h.value_zAxisRatio_GUI, 'Visible', 'off');
     else
-        set(h.cb_contourPlotMap_GUI, 'Visible', 'on');
-        set(h.pm_surfShading_GUI, 'Visible', 'on');
         set(h.title_zAxisRatio_GUI, 'Visible', 'on');
         set(h.value_zAxisRatio_GUI, 'Visible', 'on');
     end
-    
     gui.config.noNan = get(h.cb_pixNaN_GUI, 'Value');
     if ~gui.config.noNan
         set(h.cb_interpMap_GUI, 'Value', 0);
@@ -139,8 +155,6 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     else
         set(h.pm_normMap_GUI, 'Visible', 'off');
     end
-    
-    gui.config.contourPlot = get(h.cb_contourPlotMap_GUI, 'Value');
     gui.config.scaleAxis = get(h.cb_autoColorbar_GUI, 'Value');
     gui.config.cmin = str2num(get(h.value_colorMin_GUI, 'String'));
     gui.config.cmax = str2num(get(h.value_colorMax_GUI, 'String'));

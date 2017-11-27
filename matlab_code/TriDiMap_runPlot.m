@@ -112,7 +112,17 @@ if config.property < 3
                 meshgrid(gui.data.xData, gui.data.yData);
         end
         
-        if config.rawData
+        if config.rawData == 1
+            gui.data.xData_interp = gui.data.xData;
+            gui.data.yData_interp = gui.data.yData;
+            if get(gui.handles.cb_errorMap_GUI, 'Value')
+                [xData_interp,  yData_interp] = ...
+                    meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
+                    0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
+                gui.data.xData_interp = xData_interp./(2^(config.interpFact));
+                gui.data.yData_interp = yData_interp./(2^(config.interpFact));
+            end
+        else
             [xData_interp,  yData_interp] = ...
                 meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
                 0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
@@ -123,16 +133,6 @@ if config.property < 3
                 gui.data.xData_interp = xData_interp;
                 gui.data.yData_interp = yData_interp;
             end
-        elseif ~config.rawData
-            gui.data.xData_interp = gui.data.xData;
-            gui.data.yData_interp = gui.data.yData;
-            if get(gui.handles.cb_errorMap_GUI, 'Value')
-                [xData_interp,  yData_interp] = ...
-                    meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
-                    0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
-                gui.data.xData_interp = xData_interp./(2^(config.interpFact));
-                gui.data.yData_interp = yData_interp./(2^(config.interpFact));
-            end 
         end
     end
     
@@ -202,65 +202,65 @@ elseif config.property == 3
         color3 = 'go'; colorT3 = 'Green';
         color4 = 'bx'; colorT4 = 'Blue';
     end
-        if gui.config.logZ
-            loglog(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
-                data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
-                color1, 'Linewidth', 1.5);
-            hold on;
-            loglog(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
-                data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
-                color2, 'Linewidth', 1.5);
-            hold on;
-            loglog(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
-                data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
-                color3, 'Linewidth', 1.5);
-            hold on;
-            loglog(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
-                data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
-                color4, 'Linewidth', 1.5);
-        else
-            plot(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
-                data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
-                color1, 'Linewidth', 1.5);
-            hold on;
-            plot(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
-                data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
-                color2, 'Linewidth', 1.5);
-            hold on;
-            plot(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
-                data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
-                color3, 'Linewidth', 1.5);
-            hold on;
-            plot(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
-                data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
-                color4, 'Linewidth', 1.5);
-        end
-        if get(gui.handles.cb_sectMVPlot_GUI, 'Value')
-            meanH = round(10*mean(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
-            meanE = round(10*mean(data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
-            x = 0.7*gui.config.HVal_ThresLines;
-            y = gui.config.EVal_ThresLines;
-            text(x,0.10*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT1);
-            text(x,0.05*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT1);
-            meanH = round(10*mean(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
-            meanE = round(10*mean(data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
-            x = 0.7*gui.config.HVal_ThresLines;
-            y = max(max(data2use_E));
-            text(x,0.95*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT2);
-            text(x,0.90*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT2);
-            meanH = round(10*mean(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
-            meanE = round(10*mean(data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
-            x = 1.1*gui.config.HVal_ThresLines;
-            y = gui.config.EVal_ThresLines;
-            text(x,0.10*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT3);
-            text(x,0.05*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT3);
-            meanH = round(10*mean(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
-            meanE = round(10*mean(data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
-            x = 1.1*gui.config.HVal_ThresLines;
-            y = max(max(data2use_E));
-            text(x,0.95*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT4);
-            text(x,0.90*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT4);
-        end
+    if gui.config.logZ
+        loglog(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
+            data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
+            color1, 'Linewidth', 1.5);
+        hold on;
+        loglog(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
+            data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
+            color2, 'Linewidth', 1.5);
+        hold on;
+        loglog(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
+            data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
+            color3, 'Linewidth', 1.5);
+        hold on;
+        loglog(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
+            data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
+            color4, 'Linewidth', 1.5);
+    else
+        plot(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
+            data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
+            color1, 'Linewidth', 1.5);
+        hold on;
+        plot(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
+            data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
+            color2, 'Linewidth', 1.5);
+        hold on;
+        plot(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
+            data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
+            color3, 'Linewidth', 1.5);
+        hold on;
+        plot(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
+            data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines), ...
+            color4, 'Linewidth', 1.5);
+    end
+    if get(gui.handles.cb_sectMVPlot_GUI, 'Value')
+        meanH = round(10*mean(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
+        meanE = round(10*mean(data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
+        x = 0.7*gui.config.HVal_ThresLines;
+        y = gui.config.EVal_ThresLines;
+        text(x,0.10*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT1);
+        text(x,0.05*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT1);
+        meanH = round(10*mean(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
+        meanE = round(10*mean(data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
+        x = 0.7*gui.config.HVal_ThresLines;
+        y = max(max(data2use_E));
+        text(x,0.95*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT2);
+        text(x,0.90*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT2);
+        meanH = round(10*mean(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
+        meanE = round(10*mean(data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
+        x = 1.1*gui.config.HVal_ThresLines;
+        y = gui.config.EVal_ThresLines;
+        text(x,0.10*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT3);
+        text(x,0.05*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT3);
+        meanH = round(10*mean(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
+        meanE = round(10*mean(data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
+        x = 1.1*gui.config.HVal_ThresLines;
+        y = max(max(data2use_E));
+        text(x,0.95*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT4);
+        text(x,0.90*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT4);
+    end
     hold on;
     hXLabel = xlabel(strcat({'Hardness ('},gui.config.strUnit_Property, ')'));
     hYLabel = ylabel(strcat({'Elastic modulus ('},gui.config.strUnit_Property, ')'));

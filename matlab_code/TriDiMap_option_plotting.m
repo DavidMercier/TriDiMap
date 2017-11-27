@@ -21,7 +21,7 @@ if gui.config.MinMax
     [rowMax, colMax] = find(data2plot==max(data2plot(:)));
     strmin = num2str(min(data2plot(:)));
     strmax = num2str(max(data2plot(:)));
-    if ~get(gui.handles.cb_pixData_GUI, 'Value')
+    if get(gui.handles.pm_pixData_GUI, 'Value') > 1
         zVal = max(data2plot(:));
     else
         zVal = 0;
@@ -49,12 +49,12 @@ xData_markers = gui.data.xData_markers;
 yData_markers = gui.data.yData_markers;
 maxVal = max(max(data2plot));
 
-% Set z positions of markers
-if ~gui.config.contourPlot;
-    markersVal = ones(size(xData_markers,1),size(xData_markers,2)) * maxVal;
-else
+%% Set and plot z positions of markers
+% if ~gui.config.contourPlot;
+%     markersVal = ones(size(xData_markers,1),size(xData_markers,2)) * maxVal;
+% else
     markersVal = ones(size(xData_markers,1),size(xData_markers,2));
-end
+%end
 
 hold on;
 

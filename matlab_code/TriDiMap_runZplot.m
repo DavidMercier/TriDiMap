@@ -30,7 +30,7 @@ if ~isempty(answer) && str2num(answer{:}) > 1
             gui.data3D.meanZVal_H(:,ii) = nanmean(csVal(ii).data.expValues_mat.H);
         end
         
-        % set(gui.handles.cb_pixData_GUI, 'Value', 0);
+        % set(gui.handles.pm_pixData_GUI, 'Value', 1);
         % TriDiMap_runPlot;
         % daspect([1 1 100]);
         % view([20 20]);

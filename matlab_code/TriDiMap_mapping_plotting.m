@@ -32,7 +32,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
     end
     
-    if ~rawData
+    if rawData == 1
         if logZ
             hFig = imagesc(real(log(data2plot')),...
                 'XData',xData_interp,'YData',yData_interp);
@@ -44,9 +44,8 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         set(gca,'YDir','normal');
         set(hFig,'alphadata',~isnan(data2plot'));
-        %view(2);
-    else
-        if ~contourPlot
+    elseif rawData == 2
+        if contourPlot < 2
             hFig = surf(xData_interp, yData_interp, data2plot',...
                 'FaceColor','interp',...
                 'EdgeColor','none',...
@@ -58,15 +57,69 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
             elseif gui.config.shadingData == 3
                 shading faceted;
             end
-            %view(3);
-        else
-            if logZ
-                contourf(xData_interp, yData_interp, log(data2plot'),...
-                    intervalScaleBar);
-            else
-                contourf(xData_interp, yData_interp, data2plot',...
-                    intervalScaleBar);
+        elseif contourPlot == 2
+            if ~get(gui.handles.cb_textContourPlotMap_GUI, 'Value')
+                if logZ
+                    contour(xData_interp, yData_interp, log(data2plot'),...
+                        intervalScaleBar);
+                else
+                    contour(xData_interp, yData_interp, data2plot',...
+                        intervalScaleBar);
+                end
+            elseif get(gui.handles.cb_textContourPlotMap_GUI, 'Value')
+                if logZ
+                    contour(xData_interp, yData_interp, log(data2plot'),...
+                        intervalScaleBar,'ShowText','on');
+                else
+                    contour(xData_interp, yData_interp, data2plot',...
+                        intervalScaleBar,'ShowText','on');
+                end
             end
+        elseif contourPlot == 3
+            if ~get(gui.handles.cb_textContourPlotMap_GUI, 'Value')
+                if logZ
+                    contourf(xData_interp, yData_interp, log(data2plot'),...
+                        intervalScaleBar);
+                else
+                    contourf(xData_interp, yData_interp, data2plot',...
+                        intervalScaleBar);
+                end
+            elseif get(gui.handles.cb_textContourPlotMap_GUI, 'Value')
+                if logZ
+                    contourf(xData_interp, yData_interp, log(data2plot'),...
+                        intervalScaleBar,'ShowText','on');
+                else
+                    contourf(xData_interp, yData_interp, data2plot',...
+                        intervalScaleBar,'ShowText','on');
+                end
+            end
+        end
+    elseif rawData == 3
+        hFig = surfc(xData_interp, yData_interp, data2plot');
+    elseif rawData == 4
+        hFig = waterfall(xData_interp, yData_interp, data2plot');
+    elseif rawData == 5
+        hFig = contour3(xData_interp, yData_interp, data2plot', ...
+            intervalScaleBar);
+    elseif rawData == 6
+        hFig = meshz(xData_interp, yData_interp, data2plot');
+    elseif rawData == 7
+        hFig = bar3(data2plot');
+        stringSurf = get_value_popupmenu(gui.handles.pm_surfShading_GUI, listSurf);
+        [Match, noMatch] = regexp(gui.config.MatlabRelease,'20..','match','split');
+        if str2num(char(cellstr(Match))) > 2014 || ...
+                (str2num(char(cellstr(Match))) == 2014 && strcmp(char(noMatch(2)),'b)'))
+            for ii = 1:length(hFig)
+                zdata = hFig(ii).ZData;
+                hFig(ii).CData = zdata;
+                hFig(ii).FaceColor = stringSurf;
+            end
+        else
+            for ii = 1:length(hFig)
+                zdata = get(hFig(ii),'Zdata');
+                set(hFig(ii),'Cdata',zdata,'FaceColor',char(stringSurf));
+            end
+            
         end
     end
     
@@ -77,8 +130,10 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     if length(xData_interp) > 5*length(yData_interp) || length(yData_interp) > 5*length(xData_interp)
         axis normal;
     end
-    if ~rawData
+    if rawData == 1
         view(2); % or view(0,90);
+    else
+        view(3);
     end
     %zlim([0 2]);
     zlim auto;
@@ -87,7 +142,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         set(gca, 'zsc', 'log');
         %set(hFig, 'cdata', real(log10(get(hFig, 'cdata'))));
     end
-    if logZ && ~rawData
+    if logZ && rawData ==1
         set(gca, 'zsc', 'linear');
     end
     hold on;
@@ -116,7 +171,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     
     % Set number of intervals to 0 for a continuous scalebar.
     if intervalScaleBar > 0
-        if rawData
+        if rawData == 2
             if ~contourPlot
                 cmap = [cMap, '(',num2str(intervalScaleBar),')'];
             else
@@ -164,7 +219,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         if logZ && contourPlot
             caxis(log([cmin, cmax]));
-        elseif logZ && ~rawData
+        elseif logZ && rawData == 1
             caxis(log([cmin, cmax]));
         else
             caxis([cmin, cmax]);
@@ -185,7 +240,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     Contours = cmin:(cmax-cmin)/intervalScaleBar:cmax;
     if logZ && contourPlot
         hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
-    elseif logZ && ~rawData
+    elseif logZ && rawData == 1
         hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
     else
         hcb1 = colorbar;
