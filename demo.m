@@ -57,17 +57,15 @@ end
 %% Set Toolbox version and help paths
 gui.config.name_toolbox = 'TriDiMap';
 gui.config.version_toolbox = '3.0';
-% gui.config.url_help = 'http://nims.readthedocs.org/en/latest/';
-% gui.config.pdf_help = 'https://media.readthedocs.org/pdf/nims/latest/nims.pdf';
+% gui.config.url_help = 'http://tridimap.readthedocs.org/en/latest/';
+% gui.config.pdf_help = 'https://media.readthedocs.org/pdf/tridimap/latest/tridimap.pdf';
 gui.config.data.data_path = '.\data_indentation';
 gui.config.data.data_pathNew = '.\data_indentation';
 gui.config.image.image_path = '.\data_image';
 gui.config.image.image_pathNew = '.\data_image';
 
-%gui.config.image.imageRaw_path = '.\data_image';
-%gui.config.image.imageScaled_path = '.\data_image';
-
 %% Variables initialization
+gui.config.data_path = 0;
 gui.config.saveFlag = 0;
 gui.config.saveFlagBin = 0;
 gui.config.sizeCheck = 0;

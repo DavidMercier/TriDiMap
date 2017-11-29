@@ -19,7 +19,11 @@ function [expValuesInterp, expValuesSmoothed, expValuesInterpSmoothed] = ...
 if ~interpolBool
     interpolFac = 0;
 end
-expValuesInterp = interp2(expValues,interpolFac);
+if size(expValues,1) == 1
+    expValuesInterp = interpn(expValues',interpolFac,'linear');
+else
+    expValuesInterp = interp2(expValues,interpolFac);
+end
 maxValInterpol = max(max(expValuesInterp));
 minValInterpol = min(min(expValuesInterp));
 meanValInterpol = mean(mean(expValuesInterp));
@@ -40,51 +44,51 @@ criterion = meanValexpValuesInterpSmoothed;
 for ii=1:size(expValuesInterp,1)
     for jj=1:size(expValuesInterp,2)
         %if binarizedGrid == 0
-            if smoothBool
-                if expValuesInterp(ii,jj) < criterion
-                    expValuesInterpSmoothed(ii,jj) = ...
-                        expValuesSmoothed(ii,jj) - ...
-                        ((expValuesSmoothed(ii,jj) - expValuesInterp(ii,jj)) / ...
-                        (expValuesInterp(ii,jj)/minValInterpol));
-                    
-                elseif expValuesInterp(ii,jj) > criterion
-                    expValuesInterpSmoothed(ii,jj) = ...
-                        expValuesSmoothed(ii,jj) + ...
-                        ((expValuesInterp(ii,jj) - expValuesSmoothed(ii,jj)) * ...
-                        (expValuesInterp(ii,jj)/maxValInterpol));
-                else
-                    expValuesInterpSmoothed(ii,jj) = expValuesSmoothed(ii,jj);
-                end
+        if smoothBool
+            if expValuesInterp(ii,jj) < criterion
+                expValuesInterpSmoothed(ii,jj) = ...
+                    expValuesSmoothed(ii,jj) - ...
+                    ((expValuesSmoothed(ii,jj) - expValuesInterp(ii,jj)) / ...
+                    (expValuesInterp(ii,jj)/minValInterpol));
+                
+            elseif expValuesInterp(ii,jj) > criterion
+                expValuesInterpSmoothed(ii,jj) = ...
+                    expValuesSmoothed(ii,jj) + ...
+                    ((expValuesInterp(ii,jj) - expValuesSmoothed(ii,jj)) * ...
+                    (expValuesInterp(ii,jj)/maxValInterpol));
             else
-                expValuesInterpSmoothed(ii,jj) = expValuesInterp(ii,jj);
+                expValuesInterpSmoothed(ii,jj) = expValuesSmoothed(ii,jj);
             end
-            
-%         elseif binarizedGrid == 1
-%             if expValuesInterp(ii,jj) < criterion
-%                 expValuesInterpSmoothed(ii,jj) = ...
-%                     expValuesSmoothed(ii,jj) + deltaMin;
-%                 
-%                 %                 expValuesInterpSmoothed(ii,jj) = ...
-%                 %                      expValuesSmoothed(ii,jj) + ...
-%                 %                     (expValuesInterp(ii,jj) - expValuesSmoothed(ii,jj));
-%                 % ==> Residual map equals zero
-%                 
-%             elseif expValuesInterp(ii,jj) > criterion
-%                 expValuesInterpSmoothed(ii,jj) = ...
-%                     expValuesSmoothed(ii,jj) + deltaMax;
-%                 
-%             else
-%                 expValuesInterpSmoothed(ii,jj) = expValuesSmoothed(ii,jj);
-%             end
-%             
-%         elseif binarizedGrid == 2
-%             if expValuesInterp(ii,jj) < criterion
-%                 expValuesInterpSmoothed(ii,jj) = minValInterpol;
-%                 
-%             elseif expValuesInterp(ii,jj) >= criterion
-%                 expValuesInterpSmoothed(ii,jj) = maxValInterpol;
-%             end
-%         end
+        else
+            expValuesInterpSmoothed(ii,jj) = expValuesInterp(ii,jj);
+        end
+        
+        %         elseif binarizedGrid == 1
+        %             if expValuesInterp(ii,jj) < criterion
+        %                 expValuesInterpSmoothed(ii,jj) = ...
+        %                     expValuesSmoothed(ii,jj) + deltaMin;
+        %
+        %                 %                 expValuesInterpSmoothed(ii,jj) = ...
+        %                 %                      expValuesSmoothed(ii,jj) + ...
+        %                 %                     (expValuesInterp(ii,jj) - expValuesSmoothed(ii,jj));
+        %                 % ==> Residual map equals zero
+        %
+        %             elseif expValuesInterp(ii,jj) > criterion
+        %                 expValuesInterpSmoothed(ii,jj) = ...
+        %                     expValuesSmoothed(ii,jj) + deltaMax;
+        %
+        %             else
+        %                 expValuesInterpSmoothed(ii,jj) = expValuesSmoothed(ii,jj);
+        %             end
+        %
+        %         elseif binarizedGrid == 2
+        %             if expValuesInterp(ii,jj) < criterion
+        %                 expValuesInterpSmoothed(ii,jj) = minValInterpol;
+        %
+        %             elseif expValuesInterp(ii,jj) >= criterion
+        %                 expValuesInterpSmoothed(ii,jj) = maxValInterpol;
+        %             end
+        %         end
     end
 end
 

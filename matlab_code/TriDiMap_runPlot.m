@@ -29,6 +29,13 @@ if config.flag_data
         data2use_E = gui.data.expValues_mat.YM;
         data2use_H = gui.data.expValues_mat.H;
     end
+    if config.property < 3
+        [dataCleaned, ratioNan] = TriDiMap_cleaningData(data2use);
+        set(gui.handles.value_NaNratio_GUI, 'String', num2str(ratioNan));
+        if config.noNan
+            data2use = dataCleaned;
+        end
+    end
     if config.property ~= 3
         %% Crop data
         [data2use, config.flagCrop] = TriDiMap_cropping(data2use);
@@ -47,12 +54,6 @@ end
 if config.property < 3
     %% Clean data
     if config.flag_data
-        [dataCleaned, ratioNan] = TriDiMap_cleaningData(data2use);
-        set(gui.handles.value_NaNratio_GUI, 'String', num2str(ratioNan));
-        if config.noNan
-            data2use = dataCleaned;
-        end
-        
         %% Normalization of dataset
         if config.normalizationStep && ~config.translationStep
             if config.normalizationStepVal == 1
@@ -415,7 +416,7 @@ if config.flag_data
     end
 end
 guidata(gcf, gui);
-if ~gui.config.saveFlag
+if gui.config.saveFlag
     TriDiMap_updateUnit_and_GUI;
 end
 end
