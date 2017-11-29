@@ -17,33 +17,36 @@ if ~isempty(answer) && str2num(answer{:}) > 1
             % Get surface information
             TriDiMap_loadingData;
             csVal(ii) = guidata(gcf);
-            pwd = cd(gui.data.pathname_data);
-            %save(['cs_meanVal', num2str(ii)], 'csVal');
-            cd(pwd);
+            if csVal(ii).config.flag_data
+                pwd = cd(gui.data.pathname_data);
+                %save(['cs_meanVal', num2str(ii)], 'csVal');
+                cd(pwd);
+            end
         end
-        
-        cla;
-        
-        for ii = 1:str2num(answer{:})
-            %load(['cs_meanVal', num2str(ii), '.mat']);
-            gui.data3D.meanZVal_YM(:,ii) = nanmean(csVal(ii).data.expValues_mat.YM);
-            gui.data3D.meanZVal_H(:,ii) = nanmean(csVal(ii).data.expValues_mat.H);
+        if csVal(1).config.flag_data
+            cla;
+            
+            for ii = 1:str2num(answer{:})
+                %load(['cs_meanVal', num2str(ii), '.mat']);
+                gui.data3D.meanZVal_YM(:,ii) = nanmean(csVal(ii).data.expValues_mat.YM);
+                gui.data3D.meanZVal_H(:,ii) = nanmean(csVal(ii).data.expValues_mat.H);
+            end
+            
+            % set(gui.handles.pm_pixData_GUI, 'Value', 1);
+            % TriDiMap_runPlot;
+            % daspect([1 1 100]);
+            % view([20 20]);
+            
+            set(gui.handles.value_numXindents_GUI, 'String', num2str(length(gui.data3D.meanZVal_YM)));
+            set(gui.handles.value_numYindents_GUI, 'String', num2str(ii));
+            set(gui.handles.value_MaxXCrop_GUI, 'String', num2str(length(gui.data3D.meanZVal_YM)));
+            set(gui.handles.value_MaxYCrop_GUI, 'String', num2str(ii));
+            
+            gui.config.flagZplot = 1;
+            guidata(gcf, gui);
+            
+            TriDiMap_runPlot;
         end
-        
-        % set(gui.handles.pm_pixData_GUI, 'Value', 1);
-        % TriDiMap_runPlot;
-        % daspect([1 1 100]);
-        % view([20 20]);
-        
-        set(gui.handles.value_numXindents_GUI, 'String', num2str(length(gui.data3D.meanZVal_YM)));
-        set(gui.handles.value_numYindents_GUI, 'String', num2str(ii));
-        set(gui.handles.value_MaxXCrop_GUI, 'String', num2str(length(gui.data3D.meanZVal_YM)));
-        set(gui.handles.value_MaxYCrop_GUI, 'String', num2str(ii));
-        
-        gui.config.flagZplot = 1;
-        guidata(gcf, gui);
-        
-        TriDiMap_runPlot;
         
     else
         display('No 3D data loaded !');
@@ -52,4 +55,5 @@ elseif ~isempty(answer)
     if str2num(answer{:}) < 2
         errordlg('Load more than 1 file for Z plot !');
     end
+end
 end
