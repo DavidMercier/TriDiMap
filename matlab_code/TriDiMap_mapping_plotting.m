@@ -8,6 +8,7 @@ xData_interp = gui.data.xData_interp;
 yData_interp = gui.data.yData_interp;
 data2plot = gui.data.data2plot;
 cMap = gui.config.colorMap;
+flagPlot = 0;
 
 if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     zString = gui.config.legend;
@@ -32,6 +33,12 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
     end
     
+    if size(data2plot,1) == 1 || size(data2plot,2) == 1
+        flagSize = 0;
+    else
+        flagSize = 1;
+    end
+    
     if rawData == 1
         if logZ
             hFig = imagesc(real(log(data2plot')),...
@@ -44,7 +51,8 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         set(gca,'YDir','normal');
         set(hFig,'alphadata',~isnan(data2plot'));
-    elseif rawData == 2
+        flagPlot = 1;
+    elseif rawData == 2 && flagSize
         if contourPlot < 2
             hFig = surf(xData_interp, yData_interp, data2plot',...
                 'FaceColor','interp',...
@@ -94,16 +102,21 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
                 end
             end
         end
-    elseif rawData == 3
+        flagPlot = 1;
+    elseif rawData == 3 && flagSize
         hFig = surfc(xData_interp, yData_interp, data2plot');
-    elseif rawData == 4
+        flagPlot = 1;
+    elseif rawData == 4 && flagSize
         hFig = waterfall(xData_interp, yData_interp, data2plot');
-    elseif rawData == 5
+        flagPlot = 1;
+    elseif rawData == 5 && flagSize
         hFig = contour3(xData_interp, yData_interp, data2plot', ...
             intervalScaleBar);
-    elseif rawData == 6
+        flagPlot = 1;
+    elseif rawData == 6 && flagSize
         hFig = meshz(xData_interp, yData_interp, data2plot');
-    elseif rawData == 7
+        flagPlot = 1;
+    elseif rawData == 7 && flagSize
         hFig = bar3(data2plot');
         stringSurf = get_value_popupmenu(gui.handles.pm_surfShading_GUI, listSurf);
         [Match, noMatch] = regexp(gui.config.MatlabRelease,'20..','match','split');
@@ -121,59 +134,68 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
             end
             
         end
+        flagPlot = 1;
     end
     
-    hold on;
-    
-    axis equal;
-    axis tight;
-    if length(xData_interp) > 5*length(yData_interp) || length(yData_interp) > 5*length(xData_interp)
-        axis normal;
-    end
-    if rawData == 1
-        view(2); % or view(0,90);
-    else
-        view(3);
-    end
-    %zlim([0 2]);
-    zlim auto;
-    daspect([1 1 gui.config.zAxisRatioVal]);
-    if logZ && ~contourPlot
-        set(gca, 'zsc', 'log');
-        %set(hFig, 'cdata', real(log10(get(hFig, 'cdata'))));
-    end
-    if logZ && rawData ==1
-        set(gca, 'zsc', 'linear');
-    end
-    hold on;
-    
-    if strcmp(gui.config.strUnit_Length, 'µm')
-        gui.config.strUnit_Length_Latex = '$\mu$m';
-        hXLabel = xlabel(strcat({'X coordinates ('},gui.config.strUnit_Length_Latex, ')'));
-        if ~gui.config.flagZplot
-            hYLabel = ylabel(strcat({'Y coordinates ('},gui.config.strUnit_Length_Latex, ')'));
-        else
-            hYLabel = ylabel(strcat({'Z coordinates ('},gui.config.strUnit_Length_Latex, ')'));
+    if flagPlot
+        hold on;
+        
+        axis equal;
+        axis tight;
+        if length(xData_interp) > 5*length(yData_interp) || length(yData_interp) > 5*length(xData_interp)
+            axis normal;
         end
-    else
-        hXLabel = xlabel(strcat({'X coordinates ('},gui.config.strUnit_Length, ')'));
-        if ~gui.config.flagZplot
-            hYLabel = ylabel(strcat({'Y coordinates ('},gui.config.strUnit_Length, ')'));
+        if rawData == 1
+            view(2); % or view(0,90);
         else
-            hYLabel = ylabel(strcat({'Z coordinates ('},gui.config.strUnit_Length, ')'));
+            view(3);
         end
-    end
-    hZLabel = zlabel(zString);
-    hTitle(1) = title(strcat({'Mapping of '}, zString));
-    set([hXLabel, hYLabel, hZLabel, hTitle(1)], ...
-        'Color', [0,0,0], 'FontSize', FontSizeVal, ...
-        'Interpreter', 'Latex');
-    
-    % Set number of intervals to 0 for a continuous scalebar.
-    if intervalScaleBar > 0
-        if rawData == 2
-            if ~contourPlot
-                cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+        %zlim([0 2]);
+        zlim auto;
+        daspect([1 1 gui.config.zAxisRatioVal]);
+        if logZ && ~contourPlot
+            set(gca, 'zsc', 'log');
+            %set(hFig, 'cdata', real(log10(get(hFig, 'cdata'))));
+        end
+        if logZ && rawData ==1
+            set(gca, 'zsc', 'linear');
+        end
+        hold on;
+        
+        if strcmp(gui.config.strUnit_Length, 'µm')
+            gui.config.strUnit_Length_Latex = '$\mu$m';
+            hXLabel = xlabel(strcat({'X coordinates ('},gui.config.strUnit_Length_Latex, ')'));
+            if ~gui.config.flagZplot
+                hYLabel = ylabel(strcat({'Y coordinates ('},gui.config.strUnit_Length_Latex, ')'));
+            else
+                hYLabel = ylabel(strcat({'Z coordinates ('},gui.config.strUnit_Length_Latex, ')'));
+            end
+        else
+            hXLabel = xlabel(strcat({'X coordinates ('},gui.config.strUnit_Length, ')'));
+            if ~gui.config.flagZplot
+                hYLabel = ylabel(strcat({'Y coordinates ('},gui.config.strUnit_Length, ')'));
+            else
+                hYLabel = ylabel(strcat({'Z coordinates ('},gui.config.strUnit_Length, ')'));
+            end
+        end
+        hZLabel = zlabel(zString);
+        hTitle(1) = title(strcat({'Mapping of '}, zString));
+        set([hXLabel, hYLabel, hZLabel, hTitle(1)], ...
+            'Color', [0,0,0], 'FontSize', FontSizeVal, ...
+            'Interpreter', 'Latex');
+        
+        % Set number of intervals to 0 for a continuous scalebar.
+        if intervalScaleBar > 0
+            if rawData == 2
+                if ~contourPlot
+                    cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+                else
+                    if logZ
+                        cmap = cMap;
+                    else
+                        cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+                    end
+                end
             else
                 if logZ
                     cmap = cMap;
@@ -181,80 +203,75 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
                     cmap = [cMap, '(',num2str(intervalScaleBar),')'];
                 end
             end
-        else
-            if logZ
-                cmap = cMap;
+            cmap_Flip = colormap(cmap);
+            if ~gui.config.flipColor
+                colormap(cmap_Flip);
             else
-                cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+                colormap(flipud(cmap_Flip));
+            end
+        elseif intervalScaleBar == 0
+            cmap_Flip = colormap([cMap, '(',num2str(10000),')']);
+            if ~gui.config.flipColor
+                colormap(cmap_Flip);
+            else
+                colormap(flipud(cmap_Flip));
             end
         end
-        cmap_Flip = colormap(cmap);
-        if ~gui.config.flipColor
-            colormap(cmap_Flip);
+        if ~gui.config.scaleAxis
+            if cmin == round(min(data2plot(:)))
+                cmin = gui.config.cminOld;
+                set(gui.handles.value_colorMin_GUI, 'String', num2str(cmin));
+            end
+            if cmax == round(max(data2plot(:)))
+                cmax = gui.config.cmaxOld;
+                set(gui.handles.value_colorMax_GUI, 'String', num2str(cmax));
+            end
+            if cmin >= cmax
+                cmax = cmin*1.2;
+                warning('Minimum property value has to be lower than the maximum property value !');
+                gui.config.cmax = cmax;
+                set(gui.handles.value_colorMax_GUI, 'String', num2str(cmax));
+            end
+            if logZ && contourPlot
+                caxis(log([cmin, cmax]));
+            elseif logZ && rawData == 1
+                caxis(log([cmin, cmax]));
+            else
+                caxis([cmin, cmax]);
+            end
         else
-            colormap(flipud(cmap_Flip));
+            if cmin ~= round(min(data2plot(:)))
+                gui.config.cminOld = str2num(get(gui.handles.value_colorMin_GUI, 'String'));
+            end
+            if cmax ~= round(max(data2plot(:)))
+                gui.config.cmaxOld = str2num(get(gui.handles.value_colorMax_GUI, 'String'));
+            end
+            set(gui.handles.value_colorMin_GUI, 'String', num2str(round(min(data2plot(:)))));
+            set(gui.handles.value_colorMax_GUI, 'String', num2str(round(max(data2plot(:)))));
+            gui.config.cmin = num2str(round(min(data2plot(:))));
+            gui.config.cmax = num2str(round(max(data2plot(:))));
         end
-    elseif intervalScaleBar == 0
-        cmap_Flip = colormap([cMap, '(',num2str(10000),')']);
-        if ~gui.config.flipColor
-            colormap(cmap_Flip);
-        else
-            colormap(flipud(cmap_Flip));
-        end
-    end
-    if ~gui.config.scaleAxis
-        if cmin == round(min(data2plot(:)))
-            cmin = gui.config.cminOld;
-            set(gui.handles.value_colorMin_GUI, 'String', num2str(cmin));
-        end
-        if cmax == round(max(data2plot(:)))
-            cmax = gui.config.cmaxOld;
-            set(gui.handles.value_colorMax_GUI, 'String', num2str(cmax));
-        end
-        if cmin >= cmax
-            cmax = cmin*1.2;
-            warning('Minimum property value has to be lower than the maximum property value !');
-            gui.config.cmax = cmax;
-            set(gui.handles.value_colorMax_GUI, 'String', num2str(cmax));
-        end
+        
+        Contours = cmin:(cmax-cmin)/intervalScaleBar:cmax;
         if logZ && contourPlot
-            caxis(log([cmin, cmax]));
+            hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
         elseif logZ && rawData == 1
-            caxis(log([cmin, cmax]));
+            hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
         else
-            caxis([cmin, cmax]);
+            hcb1 = colorbar;
         end
+        
+        %if logScale
+        %hcb1 = colorbar('Yscale','log');
+        %end
+        ylabel(hcb1, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+        
+        gui.handle.hcb1 = hcb1;
+        set(gca, 'Fontsize', FontSizeVal);
+        hold off;
     else
-        if cmin ~= round(min(data2plot(:)))
-            gui.config.cminOld = str2num(get(gui.handles.value_colorMin_GUI, 'String'));
-        end
-        if cmax ~= round(max(data2plot(:)))
-            gui.config.cmaxOld = str2num(get(gui.handles.value_colorMax_GUI, 'String'));
-        end
-        set(gui.handles.value_colorMin_GUI, 'String', num2str(round(min(data2plot(:)))));
-        set(gui.handles.value_colorMax_GUI, 'String', num2str(round(max(data2plot(:)))));
-        gui.config.cmin = num2str(round(min(data2plot(:))));
-        gui.config.cmax = num2str(round(max(data2plot(:))));
+        errordlg('Wrong map size for 3D plot!');
     end
-    
-    Contours = cmin:(cmax-cmin)/intervalScaleBar:cmax;
-    if logZ && contourPlot
-        hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
-    elseif logZ && rawData == 1
-        hcb1 = colorbar('YTick',log(Contours),'YTickLabel',Contours);
-    else
-        hcb1 = colorbar;
-    end
-    
-    %if logScale
-    %hcb1 = colorbar('Yscale','log');
-    %end
-    ylabel(hcb1, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
-    
-    gui.handle.hcb1 = hcb1;
-    set(gca, 'Fontsize', FontSizeVal);
-    hold off;
-    
 else
     cMap = gui.config.colorMap;
     

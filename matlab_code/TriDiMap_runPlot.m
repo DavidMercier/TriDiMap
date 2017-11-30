@@ -57,11 +57,11 @@ if config.property < 3
         %% Normalization of dataset
         if config.normalizationStep && ~config.translationStep
             if config.normalizationStepVal == 1
-                data2use = data2use/min(min(data2use));
+                data2use = data2use/(min(min(data2use)));
             elseif config.normalizationStepVal == 2
-                data2use = data2use/mean(mean(data2use));
+                data2use = data2use/(nanmean(nanmean(data2use)));
             elseif config.normalizationStepVal == 3
-                data2use = data2use/max(max(data2use));
+                data2use = data2use/(max(max(data2use)));
             end
             display('Translation not possible because normalization is active.');
         end
@@ -141,9 +141,9 @@ if config.property < 3
     if config.flag_data
         gui.data.data2plot = gui.data.expValuesInterpSmoothed;
         
-        minVal = min(min(gui.data.data2plot));
-        meanVal = mean(mean(gui.data.data2plot));
-        maxVal = max(max(gui.data.data2plot));
+        minVal = round(100*(min(min(gui.data.data2plot))))/100;
+        meanVal = round(100*(nanmean(nanmean(gui.data.data2plot))))/100;
+        maxVal = round(100*(max(max(gui.data.data2plot))))/100;
         set(gui.handles.value_MinVal_GUI, 'String', num2str(minVal));
         set(gui.handles.value_MeanVal_GUI, 'String', num2str(meanVal));
         set(gui.handles.value_MaxVal_GUI, 'String', num2str(maxVal));
@@ -237,26 +237,26 @@ elseif config.property == 3
             color4, 'Linewidth', 1.5);
     end
     if get(gui.handles.cb_sectMVPlot_GUI, 'Value')
-        meanH = round(10*mean(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
-        meanE = round(10*mean(data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
+        meanH = round(10*nanmean(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
+        meanE = round(10*nanmean(data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
         x = 0.7*gui.config.HVal_ThresLines;
         y = gui.config.EVal_ThresLines;
         text(x,0.10*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT1);
         text(x,0.05*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT1);
-        meanH = round(10*mean(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
-        meanE = round(10*mean(data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
+        meanH = round(10*nanmean(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
+        meanE = round(10*nanmean(data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines)))/10;
         x = 0.7*gui.config.HVal_ThresLines;
         y = max(max(data2use_E));
         text(x,0.95*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT2);
         text(x,0.90*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT2);
-        meanH = round(10*mean(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
-        meanE = round(10*mean(data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
+        meanH = round(10*nanmean(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
+        meanE = round(10*nanmean(data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
         x = 1.1*gui.config.HVal_ThresLines;
         y = gui.config.EVal_ThresLines;
         text(x,0.10*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT3);
         text(x,0.05*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT3);
-        meanH = round(10*mean(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
-        meanE = round(10*mean(data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
+        meanH = round(10*nanmean(data2use_H(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
+        meanE = round(10*nanmean(data2use_E(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines)))/10;
         x = 1.1*gui.config.HVal_ThresLines;
         y = max(max(data2use_E));
         text(x,0.95*y,strcat('H = ',num2str(meanH), gui.config.strUnit_Property), 'Color', colorT4);

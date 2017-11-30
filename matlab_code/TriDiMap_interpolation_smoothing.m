@@ -19,20 +19,20 @@ function [expValuesInterp, expValuesSmoothed, expValuesInterpSmoothed] = ...
 if ~interpolBool
     interpolFac = 0;
 end
-if size(expValues,1) == 1
+if size(expValues,1) == 1 || size(expValues,2) == 1
     expValuesInterp = interpn(expValues',interpolFac,'linear');
 else
     expValuesInterp = interp2(expValues,interpolFac);
 end
 maxValInterpol = max(max(expValuesInterp));
 minValInterpol = min(min(expValuesInterp));
-meanValInterpol = mean(mean(expValuesInterp));
+meanValInterpol = nanmean(nanmean(expValuesInterp));
 
 %% Data smoothing
 expValuesSmoothed = smooth2a(expValuesInterp, smoothFact, smoothFact);
 maxValSmoothed = max(max(expValuesSmoothed));
 minValSmoothed = min(min(expValuesSmoothed));
-meanValSmoothed = mean(mean(expValuesSmoothed));
+meanValSmoothed = nanmean(nanmean(expValuesSmoothed));
 
 %% Correction of loss after smoothing step
 deltaMax = (maxValInterpol - maxValSmoothed);
