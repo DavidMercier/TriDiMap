@@ -116,7 +116,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     elseif rawData == 6 && flagSize
         hFig = meshz(xData_interp, yData_interp, data2plot');
         flagPlot = 1;
-    elseif rawData == 7 && flagSize
+    elseif rawData == 7
         hFig = bar3(data2plot');
         stringSurf = get_value_popupmenu(gui.handles.pm_surfShading_GUI, listSurf);
         [Match, noMatch] = regexp(gui.config.MatlabRelease,'20..','match','split');
