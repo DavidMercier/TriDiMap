@@ -185,10 +185,22 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
             'Interpreter', 'Latex');
         
         % Set number of intervals to 0 for a continuous scalebar.
+        [token, remain] = strtok(cMap);
         if intervalScaleBar > 0
-            if rawData == 2
-                if ~contourPlot
-                    cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+            if strcmp(token,'DivergingMap') == 1
+                [RGB1, RGB2] = listDivCmap(str2num(remain));
+                cmap = diverging_map(0:(1/(intervalScaleBar-1)):1,RGB1,RGB2);
+            else
+                if rawData == 2
+                    if ~contourPlot
+                        cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+                    else
+                        if logZ
+                            cmap = cMap;
+                        else
+                            cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+                        end
+                    end
                 else
                     if logZ
                         cmap = cMap;
@@ -196,26 +208,22 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
                         cmap = [cMap, '(',num2str(intervalScaleBar),')'];
                     end
                 end
-            else
-                if logZ
-                    cmap = cMap;
-                else
-                    cmap = [cMap, '(',num2str(intervalScaleBar),')'];
-                end
             end
             cmap_Flip = colormap(cmap);
-            if ~gui.config.flipColor
-                colormap(cmap_Flip);
-            else
-                colormap(flipud(cmap_Flip));
-            end
         elseif intervalScaleBar == 0
-            cmap_Flip = colormap([cMap, '(',num2str(10000),')']);
-            if ~gui.config.flipColor
-                colormap(cmap_Flip);
+            intervalScaleBar = 10000;
+            if strcmp(cMap,'Diverging map') == 1
+                [RGB1, RGB2] = listDivCmap(remain);
+                cmap_Flip = diverging_map(0:(1/(intervalScaleBar-1)):1,RGB1,RGB2);
             else
-                colormap(flipud(cmap_Flip));
+                cmap_Flip = colormap([cMap, '(',num2str(intervalScaleBar),')']);
+                
             end
+        end
+        if ~gui.config.flipColor
+            colormap(cmap_Flip);
+        else
+            colormap(flipud(cmap_Flip));
         end
         if ~gui.config.scaleAxis
             if cmin == round(min(data2plot(:)))

@@ -36,15 +36,24 @@ set([hXLabel, hYLabel, hZLabel, hTitle], ...
     'Color', [0,0,0], 'FontSize', gui.config.FontSizeVal, ...
     'Interpreter', 'Latex');
 
-if ~gui.config.flipColor
-    colormap(gui.config.colorMap);
+[token, remain] = strtok(gui.config.colorMap);
+if strcmp(token, 'DivergingMap');
+    [RGB1, RGB2] = listDivCmap(str2num(remain));
+    cmapStr = diverging_map(0:(1/10000):1,RGB1,RGB2);
 else
-    colormap(flipud(gui.config.colorMap));
+    cmapStr = gui.config.colorMap;
+end
+if ~gui.config.flipColor
+    colormap(cmapStr);
+else
+    colormap(flipud(cmapStr));
 end
 gui.handle.hcb1 = colorbar;
 ylabel(gui.handle.hcb1, strcat('Error map (', gui.config.strUnit_Property,')'), ...
     'Interpreter', 'Latex', ...
     'FontSize', gui.config.FontSizeVal);
+
+set(gca, 'Fontsize', gui.config.FontSizeVal);
 
 guidata(gcf, gui);
 
