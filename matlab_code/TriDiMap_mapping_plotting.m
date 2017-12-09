@@ -115,6 +115,11 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         flagPlot = 1;
     elseif rawData == 6 && flagSize
         hFig = meshz(xData_interp, yData_interp, data2plot');
+        if gui.config.meshHidden == 1
+            hidden on;
+        else
+            hidden off;
+        end
         flagPlot = 1;
     elseif rawData == 7
         hFig = bar3(data2plot');
