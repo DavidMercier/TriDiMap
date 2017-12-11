@@ -3,8 +3,9 @@ function TriDiMap_image_plotting
 %% Function to plot a microscopical image
 gui = guidata(gcf);
 cMap = gui.config.colorMap;
+flagFlipCM = get(gui.handles.cb_flipColormap_GUI, 'Value');
 
-hFig(1) = imagesc(flipud(gui.image.image2use), ...
+gui.handles.hAxis1 = imagesc(flipud(gui.image.image2use), ...
     'XData',gui.data.xData_interp,'YData',gui.data.yData_interp);
 axisMap(cMap, 'Binarized microscopical image', ...
     gui.config.FontSizeVal, ...
@@ -15,19 +16,8 @@ axis equal;
 axis tight;
 hold on;
 if get(gui.handles.cb_legend_GUI, 'Value')
-    cmap = colormap;
-    if get(gui.handles.cb_flipColormap_GUI, 'Value')
-        hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
-        hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
-    else
-        hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
-        hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
-    end
-    gui.handles.hLeg0 = legend([hFig(2) hFig(3)],'Soft phase','Stiff/Hard phase',...
-        'Location','EastOutside');
-    pos = get(gui.handles.hLeg0,'position');
-    set(gui.handles.hLeg0, 'position',[0.87 0.70 pos(3:4)]);
-    legend boxoff;
+    gui.handles.hLeg1 = legendMap(2, cMap, 'EastOutside', ...
+        {'Soft phase','Stiff/Hard phase'}, 12, flagFlipCM, [0.87 0.70]);
 else
     try
         delete(gui.handles.hLeg1)

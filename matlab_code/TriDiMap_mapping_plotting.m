@@ -286,7 +286,13 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         errordlg('Wrong map size for 3D plot!');
     end
 else
-    cMap = gui.config.colorMap;
+    [token, remain] = strtok(gui.config.colorMap);
+    if strcmp(token,'DivergingMap') == 1
+        [RGB1, RGB2] = listDivCmap(str2num(remain));
+        cmap = diverging_map(0:(1/(10-1)):1,RGB1,RGB2);
+    else
+        cMap = gui.config.colorMap;
+    end
     
     hFig = imagesc((data2plot'),...
         'XData',xData_interp,'YData',yData_interp);
@@ -299,8 +305,7 @@ else
         gui.config.flipColor, gui.config.strUnit_Length);
     axis equal;
     axis tight;
-end
-
-guidata(gcf, gui);
-
+    
+    guidata(gcf, gui);
+    
 end

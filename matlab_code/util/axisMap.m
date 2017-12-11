@@ -30,11 +30,16 @@ end
 if nargin < 1
     cmap = gray;
 end
-
 if ~isempty(cmap)
-    colormap(cmap);
+    [token, remain] = strtok(cmap);
+    if strcmp(token,'DivergingMap') == 1
+        [RGB1, RGB2] = listDivCmap(str2num(remain));
+        cmap = diverging_map(0:(1/(10-1)):1,RGB1,RGB2);
+    end
     if flipFlag
         colormap(flipud(colormap(cmap)));
+    else
+        colormap(cmap);
     end
 end
 set(gca,'YDir','normal');

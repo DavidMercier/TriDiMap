@@ -13,14 +13,13 @@ if g.config.data_path
     
     % New plot
     figure;
-    hFig = imagesc(flipud(diffEH), ...
+    hAxis = imagesc(flipud(diffEH), ...
         'XData',g.data.xData_interp,'YData',g.data.yData_interp);
     
     axisMap(cMap, strTitle, g.config.FontSizeVal, ...
         (g.config.N_XStep_default-1)*g.config.XStep_default, ...
         (g.config.N_YStep_default-1)*g.config.YStep_default, ...
         g.config.flipColor, g.config.strUnit_Length);
-    colormap(cMap);
     
     set(gca,'YDir','normal');
     axis equal;
@@ -31,22 +30,9 @@ if g.config.data_path
     % set(gca,'units','normalized','position',[0 0 1 1]);
     % export_fig('test', isolate_axes(gca));
     
-    cmap = colormap;
-    
     % Legend for E-micro and H-micro maps
-    if flagFlipCM
-        hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
-        hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',mean(cmap));
-        hFig(4) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
-    else
-        hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',min(cmap));
-        hFig(3) = plot(NaN,NaN,'sk','MarkerFaceColor',mean(cmap));
-        hFig(4) = plot(NaN,NaN,'sk','MarkerFaceColor',max(cmap));
-    end
-    hLeg = legend([hFig(2) hFig(3) hFig(4)], ...
-        'No Match','Soft match','Stiff/Hard match', ...
-        'Location','EastOutside');
-    legend boxoff;
+    gui.handles.hLeg4 = legendMap(3, cMap, 'EastOutside', ...
+        {'No Match','Soft match','Stiff/Hard match'}, 12, flagFlipCM, []);
 else
     errordlg(['First set indentation grid parameters and load an Excel file '...
         'to plot a property map !']);
