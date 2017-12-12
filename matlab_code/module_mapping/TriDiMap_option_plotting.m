@@ -7,7 +7,7 @@ data2plot = gui.data.data2plot;
 FontSizeVal = gui.config.FontSizeVal;
 
 if gui.config.minorTicks;
-    set(gui.handle.hcb1, 'YMinorTick', 'on');
+    set(gui.handles.hcb1, 'YMinorTick', 'on');
 end
 
 if gui.config.grid

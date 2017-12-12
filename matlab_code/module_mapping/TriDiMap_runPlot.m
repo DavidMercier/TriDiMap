@@ -387,7 +387,7 @@ elseif config.property > 5
             xlabel(strcat('Hardness (',strUnit_Property, ')'));
         end
         ylabel('Cumulative density function');
-        set(h_CDF, 'LineStyle', '+', 'Color', 'k');
+        set(h_CDF, 'LineStyle', '-', 'Color', 'k' , 'LineWidth', 2);
         if get (gui.handles.cb_WeibullFit_GUI, 'Value')
             % Fit Weibull
             OPTIONS = algoMinimization;

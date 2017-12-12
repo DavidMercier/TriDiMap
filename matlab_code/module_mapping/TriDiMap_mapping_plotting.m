@@ -122,7 +122,21 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         flagPlot = 1;
     elseif rawData == 7
-        hFig = bar3(data2plot');
+        hFig = bar3(yData_interp(:,1)',data2plot');
+        XdataVal = get(hFig,'XData');
+        YdataVal = get(hFig,'YData');
+        axis tight;
+        for ii = 1:length(XdataVal)
+            XdataVal{ii} = ...
+                XdataVal{ii}+(min(xData_interp(1,:))-1)*ones(size(XdataVal{ii}));
+            if gui.config.interpFactVal == 1
+                set(hFig(ii),'XData',XdataVal{ii}*gui.config.XStep);
+            else
+                set(hFig(ii),'XData',XdataVal{ii}/(2^(gui.config.interpFact-1)));
+            end
+        end
+        set(gca,'XDir','normal');
+        set(gca,'YDir','normal');
         stringSurf = get_value_popupmenu(gui.handles.pm_surfShading_GUI, listSurf);
         [Match, noMatch] = regexp(gui.config.MatlabRelease,'20..','match','split');
         if str2num(char(cellstr(Match))) > 2014 || ...
@@ -279,9 +293,10 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         %end
         ylabel(hcb1, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
         
-        gui.handle.hcb1 = hcb1;
+        gui.handles.hcb1 = hcb1;
         set(gca, 'Fontsize', FontSizeVal);
         hold off;
+        guidata(gcf, gui);
     else
         errordlg('Wrong map size for 3D plot!');
     end
