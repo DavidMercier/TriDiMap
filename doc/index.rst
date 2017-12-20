@@ -9,7 +9,7 @@ TriDiMap |matlab| toolbox
 =======================
 
 .. figure:: ./_pictures/icon_tridimap.png
-    :scale: 50 %
+    :scale: 40 %
     :align: right
 
 The TriDiMap toolbox has been developed to plot, to map and to analyze (nano)indentation
@@ -45,7 +45,7 @@ With this Matlab toolbox, it is possible:
 `Download the documentation as a pdf file <https://media.readthedocs.org/pdf/tridimap/latest/tridimap.pdf>`_.
    
 .. figure:: ./_pictures/MTS_example1_25x25_H_GUI.gif
-   :scale: 50 %
+   :scale: 80 %
    :align: center
    
    *Screenshot of the TriDiMap toolbox.*
@@ -75,9 +75,9 @@ Acknowledgements
 ==================
 
 The author is grateful to `Dr. Jiri Nemecek <http://ksm.fsv.cvut.cz/~nemecek/?page=resume&lang=en>`_ from (`Czech Technical University <https://www.cvut.cz/en>`_, Czech Republic (Prague))
-and to Dr. Nicholas Randall from (`Anton Paar <https://www.anton-paar.com>`), for discussions and many advices about nanoindentation mapping.
+and to Dr. Nicholas Randall from (`Anton Paar <https://www.anton-paar.com>`_), for discussions and many advices about nanoindentation mapping.
 
-The author is grateful to `Debora Rossell (`OCAS <http://www.ocas.be/>`_, Belgium (Zwijnaarde)), for providing example files.
+The author is grateful to Debora Rossell (`OCAS <http://www.ocas.be/>`_, Belgium (Zwijnaarde)), for providing example files.
 
 Keywords
 ==========
