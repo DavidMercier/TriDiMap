@@ -71,6 +71,11 @@ Contact
 
 [1] `CRM Group, Avenue du Bois Saint-Jean 21, B27 – Quartier Polytech 4, 4000 Liège, Belgium <http://www.crmgroup.be/>`_
 
+Contributors
+==================
+
+Pierre Huyghes (ULB, Bruxelles) and Jean-François Vanhumbeeck (CMR Group) contributed to the Matlab code. 
+
 Acknowledgements
 ==================
 
@@ -82,5 +87,5 @@ The author is grateful to Debora Rossell (`OCAS <http://www.ocas.be/>`_, Belgium
 Keywords
 ==========
 
-|matlab| toolbox ; nanoindentation ; mapping ; grid ; 2D ; 3D ; mechanical properties ;
-probability density function ; deconvolution ; multimodal Gaussian fit ; cumulative density function ; image correlation.
+|matlab| toolbox; nanoindentation; mapping; grid; 2D; 3D; mechanical properties;
+probability density function; deconvolution; multimodal Gaussian fit; cumulative density function; image correlation.

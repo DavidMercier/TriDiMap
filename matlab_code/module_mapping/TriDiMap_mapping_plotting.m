@@ -149,7 +149,10 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         else
             for ii = 1:length(hFig)
                 zdata = get(hFig(ii),'Zdata');
-                set(hFig(ii),'Cdata',zdata,'FaceColor',char(stringSurf));
+                try
+                    set(hFig(ii),'Cdata',zdata,'FaceColor',char(stringSurf));
+                catch
+                end
             end
             
         end

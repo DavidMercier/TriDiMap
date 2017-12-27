@@ -63,17 +63,17 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     end
     if gui.config.rawData == 2
         set(h.pm_surfShading_GUI, 'Visible', 'on');
-    elseif gui.config.rawData == 6
-        set(h.cb_meshOption_GUI, 'Visible', 'on');
     elseif gui.config.rawData == 7
         set(h.pm_surfShading_GUI, 'Visible', 'on');
-    else
-        set(h.pm_surfShading_GUI, 'Visible', 'off');
-        set(h.cb_meshOption_GUI, 'Visible', 'off');
-    end
-    if gui.config.rawData == 7
         listSurfVal = listSurf;
         set(h.pm_surfShading_GUI, 'String', listSurfVal(1:2,:));
+    else
+        set(h.pm_surfShading_GUI, 'Visible', 'off');
+    end
+    if gui.config.rawData == 6
+        set(h.cb_meshOption_GUI, 'Visible', 'on');
+    else
+        set(h.cb_meshOption_GUI, 'Visible', 'off');
     end
     if gui.config.rawData == 1
         set(h.title_zAxisRatio_GUI, 'Visible', 'off');

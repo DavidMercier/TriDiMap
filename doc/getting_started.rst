@@ -5,13 +5,8 @@
 
 First of all, download the source code of the |matlab| toolbox.
 
-`Source code is hosted at Github. <https://github.com/DavidMercier/NIMS>`_
+`Source code is hosted at Github. <https://github.com/DavidMercier/TriDiMap>`_
 
-To have more details about the use of the toolbox, please have a look to :
-
-.. code-block:: matlab
-
-   Getting_started.txt
   
 How to use the GUI for indentation data analysis ?
 ####################################################
