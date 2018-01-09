@@ -81,5 +81,8 @@ gui.config.property = 2;
 
 %% GUI generation
 TriDiMap_GUI(gui);
+
+%% Set logo of the GUI
+java_icon_tridimap;
     
 end
