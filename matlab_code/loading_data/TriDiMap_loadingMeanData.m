@@ -1,11 +1,12 @@
 %% Copyright 2014 MERCIER David
-function [config, data] = TriDiMap_loadingData
+function [config, data] = TriDiMap_loadingMeanData
 %% Function to load Excel data from indentation tests
 TriDiMap_getParam;
 
 g = guidata(gcf);
 config = g.config;
 h = g.handles;
+config.SliceFlagData = 0;
 
 %% Open window to select file
 title_importdata_Window = 'File Selector from';

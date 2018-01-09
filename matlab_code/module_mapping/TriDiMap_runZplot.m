@@ -15,7 +15,7 @@ if ~isempty(answer) && str2num(answer{:}) > 1
         gui = guidata(gcf);
         for ii = 1:str2num(answer{:})
             % Get surface information
-            TriDiMap_loadingData;
+            TriDiMap_loadingMeanData;
             csVal(ii) = guidata(gcf);
             if csVal(ii).config.flag_data
                 pwd = cd(gui.data.pathname_data);
