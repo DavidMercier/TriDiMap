@@ -8,6 +8,7 @@ listPlotVal = {...
     '3D Waterfall';
     '3D Contour';
     '3D Meshz';
-    '3D Bar'};
+    '3D Bar';
+    '3D Slice'};
 
 end

@@ -78,6 +78,7 @@ gui.config.XStep_default = 2;
 gui.config.YStep_default = 2;
 gui.config.flagZplot = 0;
 gui.config.property = 2;
+gui.config.legendSlice = '';
 
 %% GUI generation
 TriDiMap_GUI(gui);

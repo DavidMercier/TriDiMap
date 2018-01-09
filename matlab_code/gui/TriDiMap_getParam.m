@@ -82,6 +82,14 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(h.title_zAxisRatio_GUI, 'Visible', 'on');
         set(h.value_zAxisRatio_GUI, 'Visible', 'on');
     end
+    if gui.config.rawData == 8
+        set(h.title_sliceNum_GUI, 'Visible', 'on');
+        set(h.value_sliceNum_GUI, 'Visible', 'on');
+    else
+        set(h.title_sliceNum_GUI, 'Visible', 'off');
+        set(h.value_sliceNum_GUI, 'Visible', 'off');
+    end
+    gui.config.sliceNum = str2num(get(h.value_sliceNum_GUI, 'String'));
     gui.config.noNan = get(h.cb_pixNaN_GUI, 'Value');
     if ~gui.config.noNan
         set(h.cb_interpMap_GUI, 'Value', 0);

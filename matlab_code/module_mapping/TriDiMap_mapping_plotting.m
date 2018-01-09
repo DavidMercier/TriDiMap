@@ -4,18 +4,31 @@ function TriDiMap_mapping_plotting
 gui = guidata(gcf);
 
 FontSizeVal = gui.config.FontSizeVal;
-xData_interp = gui.data.xData_interp;
-yData_interp = gui.data.yData_interp;
-data2plot = gui.data.data2plot;
+rawData = gui.config.rawData;
+if rawData < 8
+    xData_interp = gui.data.xData_interp;
+    yData_interp = gui.data.yData_interp;
+    data2plot = gui.data.data2plot;
+else
+    xData_interp = gui.slice_data.xData_interp;
+    yData_interp = gui.slice_data.yData_interp;
+    zData_interp = gui.slice_data.zData_interp;
+    data2plot = gui.slice_data.slicePix_mat;
+end
 cMap = gui.config.colorMap;
 flagPlot = 0;
 
 if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
-    zString = gui.config.legend;
+    if ~rawData == 8
+        zString = gui.config.legend;
+        titleString = gui.config.legend;
+    else
+        zString = gui.config.legendSlice;
+        titleString = gui.config.legend;
+    end
     cmin = gui.config.cmin;
     cmax = gui.config.cmax;
     intervalScaleBar = gui.config.intervalScaleBar;
-    rawData = gui.config.rawData;
     contourPlot = gui.config.contourPlot;
     logZ = gui.config.logZ;
     
@@ -157,6 +170,32 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
             
         end
         flagPlot = 1;
+    elseif rawData == 8
+        %xslice = max(max(xData_interp(:,:,1)));
+        xslice = NaN;
+        %yslice = max(max(yData_interp(:,:,1)));
+        yslice = NaN;
+        minZ = min(zData_interp(1,1,:));
+        maxZ = max(zData_interp(1,1,:));
+        stepZ = (maxZ-minZ)/(gui.config.sliceNum-1);
+        zslice = zeros(gui.config.sliceNum,1);
+        zslice(1) = minZ;
+        for ii = 2:(gui.config.sliceNum-1)
+            zslice(ii) = minZ + stepZ*(ii-1);
+        end
+        zslice(gui.config.sliceNum) = maxZ;
+        hFig = slice(xData_interp,yData_interp,zData_interp,...
+            data2plot,xslice,yslice,zslice);
+%         set(hFig,'EdgeColor','none',...
+%             'FaceColor','interp',...
+%             'FaceAlpha','interp');
+%         alpha('color');
+%         alphamap('rampdown');
+%         alphamap('increase',0.1);
+        set(hFig, 'EdgeColor','none', 'FaceColor','interp');
+        alpha(.1);
+        set(gca,'ZDir','reverse');
+        flagPlot = 1;
     end
     
     if flagPlot
@@ -201,7 +240,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
             end
         end
         hZLabel = zlabel(zString);
-        hTitle(1) = title(strcat({'Mapping of '}, zString));
+        hTitle(1) = title(strcat({'Mapping of '}, titleString));
         set([hXLabel, hYLabel, hZLabel, hTitle(1)], ...
             'Color', [0,0,0], 'FontSize', FontSizeVal, ...
             'Interpreter', 'Latex');
