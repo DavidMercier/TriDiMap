@@ -6,7 +6,7 @@ gui.raw_data = struct();
 
 %% Open window to select file
 [filename_data, pathname_data, filterindex_data] = ...
-    uigetfile('*.xls;*xlsx', 'File Selector', gui.config.data_path);
+    uigetfile('*.xls;*.xlsx;*.mat', 'File Selector', gui.config.data_path);
 gui.data_xls.filename_data = filename_data;
 gui.data_xls.pathname_data = pathname_data;
 fullname_data = fullfile(pathname_data, filename_data);
@@ -146,11 +146,21 @@ elseif strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
         end
         gui.config.SliceFlagData = 1;
         
-        guidata(gcf, gui); % Don't move because of the following helpdlg !
-        
-        %% Message to the user
-        %helpdlg('Data imported !', 'Info');
+        guidata(gcf, gui);
         
     end
+    matData = gui.data;
+    currentFolder = pwd;
+    cd(pathname_data);
+    filename_Slice = [filename_data, '_3DSlice.mat'];
+    save(filename_Slice, 'matData');
+    cd(currentFolder);
+    
+elseif strcmp (ext, '.mat') == 1
+    
+    matFile = open(filename_data);
+    gui.data = matFile.matData;
+    gui.config.SliceFlagData = 1;
+    guidata(gcf, gui);
     
 end

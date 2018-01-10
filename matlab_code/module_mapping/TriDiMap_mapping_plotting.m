@@ -333,7 +333,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         %if logScale
         %hcb1 = colorbar('Yscale','log');
         %end
-        ylabel(hcb1, zString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
+        ylabel(hcb1, titleString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
         
         gui.handles.hcb1 = hcb1;
         set(gca, 'Fontsize', FontSizeVal);
