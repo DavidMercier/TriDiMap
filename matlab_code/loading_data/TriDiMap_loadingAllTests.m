@@ -7,14 +7,14 @@ gui.raw_data = struct();
 %% Open window to select file
 [filename_data, pathname_data, filterindex_data] = ...
     uigetfile('*.xls;*.xlsx;*.mat', 'File Selector', gui.config.data_path);
-gui.data_xls.filename_data = filename_data;
-gui.data_xls.pathname_data = pathname_data;
+gui.slice_data_xls.filename_data = filename_data;
+gui.slice_data_xls.pathname_data = pathname_data;
 fullname_data = fullfile(pathname_data, filename_data);
 
 % Get the number of sheets in the .xls file and the status of the .xls file
 [status_xls, sheets_xls] = xlsfinfo(fullname_data);
-gui.data_xls.status_xls = status_xls;
-gui.data_xls.sheets_xls = sheets_xls;
+gui.slice_data_xls.status_xls = status_xls;
+gui.slice_data_xls.sheets_xls = sheets_xls;
 
 %% Handle canceled file selection
 if filename_data == 0
@@ -118,38 +118,38 @@ elseif strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
     delete(gui.handles.h_waitbar);
     
     notEmpty_data(isnan(notEmpty_data)) = [];
-    gui.data_xls.sheets_xls_notEmpty = length(notEmpty_data);
+    gui.slice_data_xls.sheets_xls_notEmpty = length(notEmpty_data);
     
     % Preallocation and initialization
-    gui.data = struct();
+    gui.slice_data = struct();
     gui.results = struct();
     
     % Import data
-    for ii_sheet = 1:1:gui.data_xls.sheets_xls_notEmpty
+    for ii_sheet = 1:1:gui.slice_data_xls.sheets_xls_notEmpty
         
         ii_sheet2read = notEmpty_data(ii_sheet);
         
         if y_index(ii_sheet2read) ~= 0 && ~isempty(gui.raw_data(ii_sheet2read).data)
-            gui.data(ii_sheet).data_h = ...
+            gui.slice_data(ii_sheet).data_h = ...
                 gui.raw_data(ii_sheet2read).data(1:y_index(ii_sheet2read),1);
-            gui.data(ii_sheet).data_L = ...
+            gui.slice_data(ii_sheet).data_L = ...
                 gui.raw_data(ii_sheet2read).data(1:y_index(ii_sheet2read),2);
-            gui.data(ii_sheet).data_H = ...
+            gui.slice_data(ii_sheet).data_H = ...
                 gui.raw_data(ii_sheet2read).data(1:y_index(ii_sheet2read),5);
-            gui.data(ii_sheet).data_E = ...
+            gui.slice_data(ii_sheet).data_E = ...
                 gui.raw_data(ii_sheet2read).data(1:y_index(ii_sheet2read),6);
         else
-            gui.data(ii_sheet).data_h = NaN;
-            gui.data(ii_sheet).data_L = NaN;
-            gui.data(ii_sheet).data_H = NaN;
-            gui.data(ii_sheet).data_E = NaN;
+            gui.slice_data(ii_sheet).data_h = NaN;
+            gui.slice_data(ii_sheet).data_L = NaN;
+            gui.slice_data(ii_sheet).data_H = NaN;
+            gui.slice_data(ii_sheet).data_E = NaN;
         end
         gui.config.SliceFlagData = 1;
         
         guidata(gcf, gui);
         
     end
-    matData = gui.data;
+    matData = gui.slice_data;
     currentFolder = pwd;
     cd(pathname_data);
     filename_Slice = [filename_data, '_3DSlice.mat'];
@@ -158,8 +158,8 @@ elseif strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
     
 elseif strcmp (ext, '.mat') == 1
     
-    matFile = open(filename_data);
-    gui.data = matFile.matData;
+    matFile = open([pathname_data,filename_data]);
+    gui.slice_data = matFile.matData;
     gui.config.SliceFlagData = 1;
     guidata(gcf, gui);
     

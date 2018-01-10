@@ -18,51 +18,59 @@ if config.rawData == 8 % Code for 3D slices
     end
     gui = guidata(gcf);
     
-    max_h = zeros(length(gui.data),1);
-    for ii = 1:length(gui.data)
-        %gui.data(ii).data_h(isinf(gui.data(ii).data_h)) = NaN;
-        gui.data(ii).data_h(gui.data(ii).data_h > 1e6) = NaN;
-        gui.data(ii).data_L(gui.data(ii).data_L > 1e6) = NaN;
-        gui.data(ii).data_E(gui.data(ii).data_E > 1e6) = NaN;
-        gui.data(ii).data_H(gui.data(ii).data_H > 1e6) = NaN;
-        max_h(ii) = max(gui.data(ii).data_h);
+    max_h = zeros(length(gui.slice_data),1);
+    for ii = 1:length(gui.slice_data)
+        %gui.slice_data(ii).data_h(isinf(gui.slice_data(ii).data_h)) = NaN;
+        gui.slice_data(ii).data_h(gui.slice_data(ii).data_h > 1e6) = NaN;
+        gui.slice_data(ii).data_L(gui.slice_data(ii).data_L > 1e6) = NaN;
+        gui.slice_data(ii).data_E(gui.slice_data(ii).data_E > 1e6) = NaN;
+        gui.slice_data(ii).data_H(gui.slice_data(ii).data_H > 1e6) = NaN;
+        max_h(ii) = max(gui.slice_data(ii).data_h);
     end
-    max_z_min = nanmin(max_h);
-    min_z = 50;
-    if max_z_min < min_z
-        warning('Minimum final depth founded lower than minimum depth!');
-        max_z_min = 100;
+    max_z = gui.config.sliceDepthMax;
+    min_z = gui.config.sliceDepthMin;
+    if max_z < min_z
+        warning('Maximum final depth founded lower than minimum depth!');
+        max_z = nanmaxn(max_h);
+        if max_z < min_z
+            warning('Maximum final depth founded lower than minimum depth!');
+            max_z = nanmeann(max_h);
+            if max_z < min_z
+                warning('Mean final depth founded lower than minimum depth!');
+                max_z = nanmin(max_h);
+            end
+        end
     end
     sliceNum = gui.config.sliceNum;
     IndSlice = struct();
     
-    for ii = 1:length(gui.data)
-        %             IndSlice(1,ii).Val = find(gui.data(ii).data_h < (0.005*max_z_min) ...
-        %                 & gui.data(ii).data_h > 0);
-        IndSlice(1,ii).Val = find(gui.data(ii).data_h > 0.95*min_z ...
-            & gui.data(ii).data_h < 1.05*min_z);
+    for ii = 1:length(gui.slice_data)
+        %             IndSlice(1,ii).Val = find(gui.slice_data(ii).data_h < (0.005*max_z_min) ...
+        %                 & gui.slice_data(ii).data_h > 0);
+        IndSlice(1,ii).Val = find(gui.slice_data(ii).data_h > 0.95*min_z ...
+            & gui.slice_data(ii).data_h < 1.05*min_z);
         for jj = 2:sliceNum-1
-            IndSlice(jj,ii).Val = find(gui.data(ii).data_h > (0.95*((jj-1)/(sliceNum-1))*(max_z_min-min_z))+min_z ...
-                & gui.data(ii).data_h < (1.05*((jj-1)/(sliceNum-1))*(max_z_min-min_z))+min_z);
+            IndSlice(jj,ii).Val = find(gui.slice_data(ii).data_h > (0.95*((jj-1)/(sliceNum-1))*(max_z-min_z))+min_z ...
+                & gui.slice_data(ii).data_h < (1.05*((jj-1)/(sliceNum-1))*(max_z-min_z))+min_z);
         end
-        IndSlice(sliceNum,ii).Val = find(gui.data(ii).data_h > (0.95*max_z_min) ...
-            & gui.data(ii).data_h < 1.05*max_z_min);
+        IndSlice(sliceNum,ii).Val = find(gui.slice_data(ii).data_h > (0.95*max_z) ...
+            & gui.slice_data(ii).data_h < 1.05*max_z);
     end
     
-    slicePix = zeros(sliceNum,length(gui.data));
+    slicePix = zeros(sliceNum,length(gui.slice_data));
     if config.property == 1
         
-        for ii = 1:length(gui.data)
+        for ii = 1:length(gui.slice_data)
             for jj = 1:sliceNum
                 slicePix(jj,ii) = ...
-                    nanmean(gui.data(ii).data_E(IndSlice(jj,ii).Val));
+                    nanmean(gui.slice_data(ii).data_E(IndSlice(jj,ii).Val));
             end
         end
     elseif config.property == 2
-        for ii = 1:length(gui.data)
+        for ii = 1:length(gui.slice_data)
             for jj = 1:sliceNum
                 slicePix(jj,ii) = ...
-                    nanmean(gui.data(ii).data_H(IndSlice(jj,ii).Val));
+                    nanmean(gui.slice_data(ii).data_H(IndSlice(jj,ii).Val));
             end
         end
     end
@@ -91,26 +99,12 @@ if config.rawData == 8 % Code for 3D slices
         [slicePix_mat(:,:,ii), ratioNan] = ...
             TriDiMap_cleaningData(slicePix_mat(:,:,ii)); % Fill empty and NaN pixels
     end
-    gui.slice_data.slicePix_mat = slicePix_mat;
+    gui.slice_data_mat.slicePix_mat = slicePix_mat;
+    guidata(gcf, gui);
     
-    % Mesh definition
-    x_step = config.XStep;
-    y_step = config.YStep;
-    z_step = (1/(sliceNum-1))*(max_z_min-min_z);
-    
-    [xData_interp, yData_interp, zData_interp] = ...
-        meshgrid(0:x_step:(size(gui.slice_data.slicePix_mat,1)-1)*x_step, ...
-        0:y_step:(size(gui.slice_data.slicePix_mat,2)-1)*y_step, ...
-        min_z:z_step:max_z_min);
-    if get(gui.handles.cb_interpMap_GUI, 'Value')
-        gui.slice_data.xData_interp = xData_interp./(2^(config.interpFact));
-        gui.slice_data.yData_interp = yData_interp./(2^(config.interpFact));
-        gui.slice_data.zData_interp = zData_interp./(2^(config.interpFact));
-    else
-        gui.slice_data.xData_interp = xData_interp;
-        gui.slice_data.yData_interp = yData_interp;
-        gui.slice_data.zData_interp = zData_interp;
-    end
+    % Grid meshing
+    TriDiMap_meshingGrid
+    gui = guidata(gcf);
     
     gui.config.legendSlice = strcat('Indentation depth (',...
         gui.config.strUnit_Property, ')');
@@ -195,54 +189,11 @@ else
                 gui.data.expValuesSmoothed = data2use;
                 gui.data.expValuesInterpSmoothed = data2use;
             end
+            guidata(gcf, gui);
             
             %% Grid meshing
-            x_step = config.XStep;
-            y_step = config.YStep;
-            
-            if config.N_XStep_default == config.N_YStep_default
-                gui.data.xData = 0:x_step:(size(data2use,1)-1)*x_step;
-                gui.data.yData = 0:y_step:(size(data2use,2)-1)*y_step;
-            elseif config.N_XStep_default ~= config.N_YStep_default
-                gui.data.xData = 0:x_step:(size(data2use,1)-1)*x_step;
-                gui.data.yData = 0:y_step:(size(data2use,2)-1)*y_step;
-            end
-            if config.flagZplot
-                gui.data.yData = -gui.data.yData;
-            end
-            
-            if config.N_XStep ~= config.N_YStep
-                [gui.data.xData_markers, gui.data.yData_markers] = ...
-                    meshgrid(1:length(gui.data.xData),1:length(gui.data.yData));
-                gui.data.xData_markers = (gui.data.xData_markers-1)*x_step;
-                gui.data.yData_markers = (gui.data.yData_markers-1)*y_step;
-            else
-                [gui.data.xData_markers, gui.data.yData_markers] = ...
-                    meshgrid(gui.data.xData, gui.data.yData);
-            end
-            
-            if config.rawData == 1
-                gui.data.xData_interp = gui.data.xData;
-                gui.data.yData_interp = gui.data.yData;
-                if get(gui.handles.cb_errorMap_GUI, 'Value')
-                    [xData_interp, yData_interp] = ...
-                        meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
-                        0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
-                    gui.data.xData_interp = xData_interp./(2^(config.interpFact));
-                    gui.data.yData_interp = yData_interp./(2^(config.interpFact));
-                end
-            else
-                [xData_interp, yData_interp] = ...
-                    meshgrid(0:x_step:(size(gui.data.expValuesInterpSmoothed,1)-1)*x_step, ...
-                    0:y_step:(size(gui.data.expValuesInterpSmoothed,2)-1)*y_step);
-                if get(gui.handles.cb_interpMap_GUI, 'Value')
-                    gui.data.xData_interp = xData_interp./(2^(config.interpFact));
-                    gui.data.yData_interp = yData_interp./(2^(config.interpFact));
-                else
-                    gui.data.xData_interp = xData_interp;
-                    gui.data.yData_interp = yData_interp;
-                end
-            end
+            TriDiMap_meshingGrid(data2use);
+            gui = guidata(gcf);
         end
         
         %% Legend + Map

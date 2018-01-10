@@ -10,10 +10,11 @@ if rawData < 8
     yData_interp = gui.data.yData_interp;
     data2plot = gui.data.data2plot;
 else
-    xData_interp = gui.slice_data.xData_interp;
-    yData_interp = gui.slice_data.yData_interp;
-    zData_interp = gui.slice_data.zData_interp;
-    data2plot = gui.slice_data.slicePix_mat;
+    xData_interp = gui.slice_data_mat.xData_interp;
+    yData_interp = gui.slice_data_mat.yData_interp;
+    zData_interp = gui.slice_data_mat.zData_interp;
+    data2plot = reshape(gui.slice_data_mat.slicePix_mat, [gui.config.N_YStep, ...
+        gui.config.N_XStep, gui.config.sliceNum]);
 end
 cMap = gui.config.colorMap;
 flagPlot = 0;
@@ -185,14 +186,14 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         zslice(gui.config.sliceNum) = maxZ;
         hFig = slice(xData_interp,yData_interp,zData_interp,...
-            data2plot,xslice,yslice,zslice);
+            data2plot,xslice,yslice,zslice);%'linear', 'cubic', 'nearest'
 %         set(hFig,'EdgeColor','none',...
 %             'FaceColor','interp',...
 %             'FaceAlpha','interp');
 %         alpha('color');
 %         alphamap('rampdown');
 %         alphamap('increase',0.1);
-        set(hFig, 'EdgeColor','none', 'FaceColor','interp');
+        set(hFig, 'EdgeColor','none', 'FaceColor','flat'); %interp
         alpha(.1);
         set(gca,'ZDir','reverse');
         flagPlot = 1;
