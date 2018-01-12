@@ -46,13 +46,13 @@ elseif config.rawData == 8
     sliceNum = gui.config.sliceNum;
     z_step = (1/(sliceNum-1))*(max_z-min_z);
     [xData_interp, yData_interp, zData_interp] = ...
-        meshgrid(0:x_step:(size(gui.slice_data_mat.slicePix_mat,1)-1)*x_step, ...
-        0:y_step:(size(gui.slice_data_mat.slicePix_mat,2)-1)*y_step, ...
+        meshgrid(0:x_step:(size(gui.slice_data_mat.InterSmoothed,1)-1)*x_step, ...
+        0:y_step:(size(gui.slice_data_mat.InterSmoothed,2)-1)*y_step, ...
         min_z:z_step:max_z);
     if get(gui.handles.cb_interpMap_GUI, 'Value')
         gui.slice_data_mat.xData_interp = xData_interp./(2^(config.interpFact));
         gui.slice_data_mat.yData_interp = yData_interp./(2^(config.interpFact));
-        gui.slice_data_mat.zData_interp = zData_interp./(2^(config.interpFact));
+        gui.slice_data_mat.zData_interp = zData_interp;
     else
         gui.slice_data_mat.xData_interp = xData_interp;
         gui.slice_data_mat.yData_interp = yData_interp;

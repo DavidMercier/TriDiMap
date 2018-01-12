@@ -89,6 +89,9 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(h.value_sliceDepthMin_GUI, 'Visible', 'on');
         set(h.title_sliceDepthMax_GUI, 'Visible', 'on');
         set(h.value_sliceDepthMax_GUI, 'Visible', 'on');
+        set(h.title_alphaMap_GUI, 'Visible', 'on');
+        set(h.value_alphaMap_GUI, 'Visible', 'on');
+        set(h.pb_gif_GUI, 'Visible', 'on');
     else
         set(h.title_sliceNum_GUI, 'Visible', 'off');
         set(h.value_sliceNum_GUI, 'Visible', 'off');
@@ -96,10 +99,14 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(h.value_sliceDepthMin_GUI, 'Visible', 'off');
         set(h.title_sliceDepthMax_GUI, 'Visible', 'off');
         set(h.value_sliceDepthMax_GUI, 'Visible', 'off');
+        set(h.title_alphaMap_GUI, 'Visible', 'off');
+        set(h.value_alphaMap_GUI, 'Visible', 'off');
+        set(h.pb_gif_GUI, 'Visible', 'off');
     end
     gui.config.sliceNum = str2num(get(h.value_sliceNum_GUI, 'String'));
     gui.config.sliceDepthMin = str2num(get(h.value_sliceDepthMin_GUI, 'String'));
     gui.config.sliceDepthMax = str2num(get(h.value_sliceDepthMax_GUI, 'String'));
+    gui.config.alpha = str2num(get(h.value_alphaMap_GUI, 'String'));
     gui.config.noNan = get(h.cb_pixNaN_GUI, 'Value');
     if ~gui.config.noNan
         set(h.cb_interpMap_GUI, 'Value', 0);

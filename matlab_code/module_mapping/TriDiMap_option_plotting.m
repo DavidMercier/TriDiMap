@@ -7,7 +7,7 @@ rawData = gui.config.rawData;
 if rawData < 8
     data2plot = gui.data.data2plot;
 else
-    data2plot = gui.slice_data_mat.slicePix_mat;
+    data2plot = gui.slice_data_mat.InterSmoothed;
 end
 FontSizeVal = gui.config.FontSizeVal;
 
