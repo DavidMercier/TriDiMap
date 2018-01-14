@@ -58,7 +58,6 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     else
         gui.config.contourPlot = 0;
         set(h.pm_contourPlotMap_GUI, 'Visible', 'off');
-        display('Contour plot not active, when pixelized data is plotted !');
         set(h.cb_textContourPlotMap_GUI, 'Visible', 'off');
     end
     if gui.config.rawData == 2

@@ -8,6 +8,16 @@ if isfield(gui.config,'property')
         property = 'E';
     elseif gui.config.property == 2
         property = 'H';
+    elseif gui.config.property == 3
+       property = 'EvsH';
+    elseif gui.config.property == 4
+       property = 'E_pdf';
+    elseif gui.config.property == 5
+       property = 'H_pdf';
+    elseif gui.config.property == 6
+       property = 'E_cdf';
+    elseif gui.config.property == 7
+       property = 'H_cdf';
     end
 end
 %% Definition of path and filenames
