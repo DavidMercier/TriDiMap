@@ -106,13 +106,13 @@ if config.flag_data
                 set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_1);
                 gui.legend = 'elastic modulus';
                 guidata(gcf, gui);
-                TriDiMap_mapping_plotting;
+                TriDiMap_plot;
             end
             if config.flag_data && iProp == 2
                 set(gcf,'CurrentAxes', gui.handles.AxisPlot_GUI_2);
                 gui.legend = 'hardness';
                 guidata(gcf, gui);
-                TriDiMap_mapping_plotting;
+                TriDiMap_plot;
             end
         end
     end
@@ -181,11 +181,11 @@ end
 if gui.config.saveFlagBin == 1
     gui.data.data2plot = gui.data.data2plot_E;
     guidata(gcf, gui);
-    TriDiMap_mapping_plotting;
+    TriDiMap_plot;
 elseif gui.config.saveFlagBin == 2
     gui.data.data2plot = gui.data.data2plot_H;
     guidata(gcf, gui);
-    TriDiMap_mapping_plotting;
+    TriDiMap_plot;
 elseif gui.config.saveFlagBin == 3
     TriDiMap_image_plotting;
 elseif gui.config.saveFlagBin == 4

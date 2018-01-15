@@ -1,6 +1,6 @@
 %% Copyright 2014 MERCIER David
-function TriDiMap_SliceCalc(gui)
-% Function for slices calculations
+function TriDiMap_sliceCalc(gui)
+%% Function for slices calculations
 
 config = gui.config;
 
@@ -39,8 +39,10 @@ for ii = 1:length(gui.slice_data)
     IndSlice(1,ii).Val = find(gui.slice_data(ii).data_h > 0.95*min_z ...
         & gui.slice_data(ii).data_h < 1.05*min_z);
     for jj = 2:sliceNum-1
-        IndSlice(jj,ii).Val = find(gui.slice_data(ii).data_h > (0.95*((jj-1)/(sliceNum-1))*(max_z-min_z))+min_z ...
-            & gui.slice_data(ii).data_h < (1.05*((jj-1)/(sliceNum-1))*(max_z-min_z))+min_z);
+        IndSlice(jj,ii).Val = find(gui.slice_data(ii).data_h > ...
+            (0.95*((jj-1)/(sliceNum-1))*(max_z-min_z))+min_z ...
+            & gui.slice_data(ii).data_h < ...
+            (1.05*((jj-1)/(sliceNum-1))*(max_z-min_z))+min_z);
     end
     IndSlice(sliceNum,ii).Val = find(gui.slice_data(ii).data_h > (0.95*max_z) ...
         & gui.slice_data(ii).data_h < 1.05*max_z);
@@ -108,7 +110,8 @@ if config.noNan
         [gui.slice_data_mat.Interp(:,:,ii), ...
             gui.slice_data_mat.Smoothed(:,:,ii), ...
             gui.slice_data_mat.InterSmoothed(:,:,ii)] = ...
-            TriDiMap_interpolation_smoothing(gui.slice_data_mat.Cropped(:,:,ii), ...
+            TriDiMap_interpolation_smoothing(...
+            gui.slice_data_mat.Cropped(:,:,ii), ...
             config.interpBool, config.interpFact, ...
             config.smoothBool, config.smoothFact);
     end
@@ -125,10 +128,9 @@ gui = guidata(gcf);
 gui.config.legendSlice = strcat('Indentation depth (nm)');
 gui.config.sliceNum = sliceNum;
 guidata(gcf, gui);
-TriDiMap_mapping_plotting;
+TriDiMap_plot;
 hold on;
 gui = guidata(gcf);
-TriDiMap_option_plotting;
 guidata(gcf, gui);
 
 end

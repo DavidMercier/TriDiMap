@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function TriDiMap_error_plotting
+function TriDiMap_plot_error
 %% Plot difference between interpolated data and smoothed data
 gui = guidata(gcf);
 
@@ -20,18 +20,28 @@ end
 axis equal;
 shading interp;
 view(0,90);
-
+if ~gui.config.FrenchLeg
+    xLab = 'X coordinates (';
+    yLab = 'Y coordinates (';
+else
+    xLab = 'Coordonnées X (';
+    yLab = 'Coordonnées Y (';
+end
 if strcmp(gui.config.strUnit_Length, 'µm')
     gui.config.strUnit_Length_Latex = '$\mu$m';
-    hXLabel = xlabel(strcat({'X coordinates ('},gui.config.strUnit_Length_Latex, ')'));
-    hYLabel = ylabel(strcat({'Y coordinates ('},gui.config.strUnit_Length_Latex, ')'));
+    hXLabel = xlabel(strcat({xLab},gui.config.strUnit_Length_Latex, ')'));
+    hYLabel = ylabel(strcat({yLab},gui.config.strUnit_Length_Latex, ')'));
 else
-    hXLabel = xlabel(strcat({'X coordinates ('},gui.config.strUnit_Length, ')'));
-    hYLabel = ylabel(strcat({'Y coordinates ('},gui.config.strUnit_Length, ')'));
+    hXLabel = xlabel(strcat({xLab},gui.config.strUnit_Length, ')'));
+    hYLabel = ylabel(strcat({yLab},gui.config.strUnit_Length, ')'));
 end
 hZLabel = zlabel(gui.config.legend);
-hTitle = title(['Mapping of difference', ...
-    ' between interpolated and smoothed data']);
+if ~gui.config.FrenchLeg
+    titLab = 'Mapping of difference between interpolated and smoothed data';
+else
+    titLab = 'Cartographie des différences entre les données interpolées et lissées';
+end
+hTitle = title(titLab);
 set([hXLabel, hYLabel, hZLabel, hTitle], ...
     'Color', [0,0,0], 'FontSize', gui.config.FontSizeVal, ...
     'Interpreter', 'Latex');
@@ -49,7 +59,12 @@ else
     colormap(flipud(cmapStr));
 end
 gui.handle.hcb1 = colorbar;
-ylabel(gui.handle.hcb1, strcat('Error map (', gui.config.strUnit_Property,')'), ...
+if ~gui.config.FrenchLeg
+    yTxt = 'Error map (';
+else
+    yTxt = 'Carte erreur (';
+end
+ylabel(gui.handle.hcb1, strcat(yTxt, gui.config.strUnit_Property,')'), ...
     'Interpreter', 'Latex', ...
     'FontSize', gui.config.FontSizeVal);
 

@@ -18,7 +18,7 @@ strUnit_Property = ...
     get_value_popupmenu(gui.handles.unitProp_GUI, listUnitProperty);
 guidata(gcf, gui);
 if config.rawData == 8 % Code for 3D slices
-    TriDiMap_SliceCalc(gui);
+    TriDiMap_sliceCalc(gui);
     gui = guidata(gcf);
 else
     if config.flag_data
@@ -116,46 +116,75 @@ else
             
             if ~config.normalizationStep
                 if config.property == 1
-                    config.legend = strcat({'Elastic modulus ('},config.strUnit_Property, ')');
-                    %config.legend = 'Module d''\''elasticit\''e (GPa)';
+                    if ~config.FrenchLeg
+                        config.legend = strcat({'Elastic modulus ('},config.strUnit_Property, ')');
+                    else
+                        config.legend = strcat({'Module d''\''elasticit\''e ('},config.strUnit_Property, ')');
+                    end
                 elseif config.property == 2
-                    config.legend = strcat({'Hardness ('},config.strUnit_Property, ')');
-                    %config.legend = 'Duret\''e (GPa)';
+                    if ~config.FrenchLeg
+                        config.legend = strcat({'Hardness ('},config.strUnit_Property, ')');
+                    else
+                        config.legend = strcat({'Duret\''e ('},config.strUnit_Property, ')');
+                    end
                 end
                 
             elseif config.normalizationStep > 0
                 if config.normalizationStepVal == 1
                     if config.property == 1
-                        config.legend = 'Normalized elastic modulus by minimum elastic modulus value';
+                        if ~config.FrenchLeg
+                            config.legend = 'Normalized elastic modulus by minimum elastic modulus value';
+                        else
+                            config.legend = 'Module d''\''elasticit\''e normalis\''e par la valeur minimum';
+                        end
                     elseif config.property == 2
-                        config.legend = 'Normalized hardness by minimum hardness value';
+                        if ~config.FrenchLeg
+                            config.legend = 'Normalized hardness by minimum hardness value';
+                        else
+                            config.legend = 'Duret\''e normalis\''ee par la valeur minimum';
+                        end
                     end
                 elseif config.normalizationStepVal == 2
                     if config.property == 1
-                        config.legend = 'Normalized elastic modulus by mean elastic modulus value';
+                        if ~config.FrenchLeg
+                            config.legend = 'Normalized elastic modulus by mean elastic modulus value';
+                        else
+                            config.legend = 'Module d''\''elasticit\''e normalis\''e par la valeur moyenne';
+                        end
                     elseif config.property == 2
-                        config.legend = 'Normalized hardness by mean hardness value';
+                        if ~config.FrenchLeg
+                            config.legend = 'Normalized hardness by mean hardness value';
+                        else
+                            config.legend = 'Module d''\''elasticit\''e normalis\''e par la valeur moyenne';
+                        end
                     end
                 elseif config.normalizationStepVal == 3
                     if config.property == 1
-                        config.legend = 'Normalized elastic modulus by maximum elastic modulus value';
+                        if ~config.FrenchLeg
+                            config.legend = 'Normalized elastic modulus by maximum elastic modulus value';
+                        else
+                            config.legend = 'Module d''\''elasticit\''e normalis\''e par la valeur maximum';
+                        end
                     elseif config.property == 2
-                        config.legend = 'Normalized hardness by maximum hardness value';
+                        if ~config.FrenchLeg
+                            config.legend = 'Normalized hardness by maximum hardness value';
+                        else
+                            config.legend = 'Module d''\''elasticit\''e normalis\''e par la valeur maximum';
+                        end
                     end
                 end
             end
             gui.config = config;
             guidata(gcf, gui);
             if get(gui.handles.cb_errorMap_GUI, 'Value')
-                TriDiMap_error_plotting;
+                TriDiMap_plot_error;
             else
-                TriDiMap_mapping_plotting;
+                TriDiMap_plot;
             end
-            TriDiMap_option_plotting;
             gui = guidata(gcf);
         else
-            errordlg(['First set indentation grid parameters and load an Excel file '...
-                'to plot a property map !']);
+            errordlg(['First set indentation grid parameters and load an '...
+                'Excel file to plot a property map !']);
         end
     elseif config.property == 3
         if ~get(gui.handles.cb_sectPlot_GUI, 'Value')
@@ -229,8 +258,13 @@ else
             text(x,0.90*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT4);
         end
         hold on;
-        hXLabel = xlabel(strcat({'Hardness ('},gui.config.strUnit_Property, ')'));
-        hYLabel = ylabel(strcat({'Elastic modulus ('},gui.config.strUnit_Property, ')'));
+        if ~config.FrenchLeg
+            hXLabel = xlabel(strcat({'Hardness ('},gui.config.strUnit_Property, ')'));
+            hYLabel = ylabel(strcat({'Elastic modulus ('},gui.config.strUnit_Property, ')'));
+        else
+            xlabel(strcat({'Duret''e ('},gui.config.strUnit_Property, ')'));
+            hYLabel = ylabel(strcat({'Module d''\''elasticit\''e ('},gui.config.strUnit_Property, ')'));
+        end
         set([hXLabel, hYLabel], ...
             'Color', [0,0,0], 'FontSize', gui.config.FontSizeVal, ...
             'Interpreter', 'Latex');
@@ -281,11 +315,23 @@ else
                         set(gcf, 'renderer', 'opengl');
                         xlim([0 maxbin]);
                         if config.property == 4
-                            xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+                            if ~config.FrenchLeg
+                                xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+                            else
+                                xlabel(strcat('Module d''\''elasticit\''e (',strUnit_Property, ')'));
+                            end
                         elseif config.property == 5
-                            xlabel(strcat('Hardness (',strUnit_Property, ')'));
+                            if ~config.FrenchLeg
+                                xlabel(strcat('Hardness (',strUnit_Property, ')'));
+                            else
+                                xlabel(strcat({'Duret\''e ('},config.strUnit_Property, ')'));
+                            end
                         end
-                        ylabel('Frequency density');
+                        if ~config.FrenchLeg
+                            ylabel('Frequency density');
+                        else
+                            ylabel('Densité de probabiilité');
+                        end
                         gui.config.flag_fit = 0;
                     else
                         exphist = [CatBin' Prop_pdf'];
@@ -309,9 +355,17 @@ else
                         ylim([-max(abs(gui.results.errorFit)) ...
                             max(abs(gui.results.errorFit))]);
                         if config.property == 4
-                            xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+                            if ~config.FrenchLeg
+                                xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+                            else
+                                xlabel(strcat('Module d''\''elasticit\''e (',strUnit_Property, ')'));
+                            end
                         elseif config.property == 5
-                            xlabel(strcat('Hardness (',strUnit_Property, ')'));
+                            if ~config.FrenchLeg
+                                xlabel(strcat('Hardness (',strUnit_Property, ')'));
+                            else
+                                xlabel(strcat({'Duret\''e ('},config.strUnit_Property, ')'));
+                            end
                         end
                         ylabel('Error (%)');
                     else
@@ -348,11 +402,23 @@ else
             delete(findall(findall(gcf,'Type','axe'),'Type','text'));
             %     legend('Experimental','Theoretical','Location','NW');
             if config.property == 6
-                xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+                if ~config.FrenchLeg
+                    xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+                else
+                    xlabel(strcat('Module d''\''elasticit\''e (',strUnit_Property, ')'));
+                end
             elseif config.property == 7
-                xlabel(strcat('Hardness (',strUnit_Property, ')'));
+                if ~config.FrenchLeg
+                    xlabel(strcat('Hardness (',strUnit_Property, ')'));
+                else
+                    xlabel(strcat({'Duret\''e ('},config.strUnit_Property, ')'));
+                end
             end
-            ylabel('Cumulative density function');
+            if ~config.FrenchLeg
+                ylabel('Cumulative density function');
+            else
+                ylabel('Fonction de distribution cumulative');
+            end
             set(h_CDF, 'LineStyle', '-', 'Color', 'k' , 'LineWidth', 2);
             if get (gui.handles.cb_WeibullFit_GUI, 'Value')
                 % Fit Weibull
@@ -381,6 +447,11 @@ else
             end
         end
     end
+end
+if gui.config.grid
+    grid on;
+else
+    grid off;
 end
 guidata(gcf, gui);
 if gui.config.saveFlag

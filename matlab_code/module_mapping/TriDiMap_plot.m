@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function TriDiMap_mapping_plotting
+function TriDiMap_plot
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
 gui = guidata(gcf);
 
@@ -73,36 +73,36 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         elseif contourPlot == 2
             if ~get(gui.handles.cb_textContourPlotMap_GUI, 'Value')
                 if logZ
-                    contour(xData_interp, yData_interp, log(data2plot'),...
+                    hFig = contour(xData_interp, yData_interp, log(data2plot'),...
                         intervalScaleBar);
                 else
-                    contour(xData_interp, yData_interp, data2plot',...
+                    hFig = contour(xData_interp, yData_interp, data2plot',...
                         intervalScaleBar);
                 end
             elseif get(gui.handles.cb_textContourPlotMap_GUI, 'Value')
                 if logZ
-                    contour(xData_interp, yData_interp, log(data2plot'),...
+                    hFig = contour(xData_interp, yData_interp, log(data2plot'),...
                         intervalScaleBar,'ShowText','on');
                 else
-                    contour(xData_interp, yData_interp, data2plot',...
+                    hFig = contour(xData_interp, yData_interp, data2plot',...
                         intervalScaleBar,'ShowText','on');
                 end
             end
         elseif contourPlot == 3
             if ~get(gui.handles.cb_textContourPlotMap_GUI, 'Value')
                 if logZ
-                    contourf(xData_interp, yData_interp, log(data2plot'),...
+                    hFig = contourf(xData_interp, yData_interp, log(data2plot'),...
                         intervalScaleBar);
                 else
-                    contourf(xData_interp, yData_interp, data2plot',...
+                    hFig = contourf(xData_interp, yData_interp, data2plot',...
                         intervalScaleBar);
                 end
             elseif get(gui.handles.cb_textContourPlotMap_GUI, 'Value')
                 if logZ
-                    contourf(xData_interp, yData_interp, log(data2plot'),...
+                    hFig = contourf(xData_interp, yData_interp, log(data2plot'),...
                         intervalScaleBar,'ShowText','on');
                 else
-                    contourf(xData_interp, yData_interp, data2plot',...
+                    hFig = contourf(xData_interp, yData_interp, data2plot',...
                         intervalScaleBar,'ShowText','on');
                 end
             end
@@ -190,7 +190,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
                 alpha(gui.config.alpha);
                 set(gca,'ZDir','reverse');
                 hold on;
-                TriDiMap_plotting(xData_interp, yData_interp, data2plot, 1);
+                %TriDiMap_plot_options(xData_interp, yData_interp, data2plot, 1);
                 hcb = colorbar;
                 pos = get(hcb, 'Position');
                 set(hcb, 'Position', [pos(1) pos(2) pos(3)*0.5 pos(4)*0.9]);
@@ -227,7 +227,8 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         guidata(gcf, gui);
         flagPlot = 1;
     end
-    TriDiMap_plotting(xData_interp, yData_interp, data2plot, flagPlot);
+    TriDiMap_plot_options(xData_interp, yData_interp, data2plot, flagPlot);
+    hold on;
     
 else
     [token, remain] = strtok(gui.config.colorMap);

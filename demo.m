@@ -23,7 +23,7 @@ catch
     gui.config.MatlabRelease = 'empty';
 end
 
-%% Check License of Statistics Toolbox
+%% Check Licenses
 license_msg_1 = ['Sorry, no license found for the Matlab ', ...
     'Statistics Toolbox!'];
 if  license('checkout', 'Statistics_Toolbox') == 0
@@ -80,6 +80,7 @@ gui.config.flagZplot = 0;
 gui.config.property = 2;
 gui.config.legendSlice = '';
 gui.config.gifFlag = 0;
+gui.config.FrenchLeg = 0;
 
 %% GUI generation
 TriDiMap_GUI(gui);

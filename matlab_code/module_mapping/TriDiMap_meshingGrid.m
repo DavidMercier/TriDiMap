@@ -18,16 +18,6 @@ if nargin > 0
     if config.flagZplot
         gui.data.yData = -gui.data.yData;
     end
-    
-    if config.N_XStep ~= config.N_YStep
-        [gui.data.xData_markers, gui.data.yData_markers] = ...
-            meshgrid(1:length(gui.data.xData),1:length(gui.data.yData));
-        gui.data.xData_markers = (gui.data.xData_markers-1)*x_step;
-        gui.data.yData_markers = (gui.data.yData_markers-1)*y_step;
-    else
-        [gui.data.xData_markers, gui.data.yData_markers] = ...
-            meshgrid(gui.data.xData, gui.data.yData);
-    end
 end
 
 if config.rawData == 1
@@ -69,6 +59,17 @@ else
         gui.data.xData_interp = xData_interp;
         gui.data.yData_interp = yData_interp;
     end
+end
+
+% Markers
+if config.N_XStep ~= config.N_YStep
+    [gui.data.xData_markers, gui.data.yData_markers] = ...
+        meshgrid(1:length(gui.data.xData),1:length(gui.data.yData));
+    gui.data.xData_markers = (gui.data.xData_markers-1)*x_step;
+    gui.data.yData_markers = (gui.data.yData_markers-1)*y_step;
+else
+    [gui.data.xData_markers, gui.data.yData_markers] = ...
+        meshgrid(gui.data.xData, gui.data.yData);
 end
 
 guidata(gcf, gui);
