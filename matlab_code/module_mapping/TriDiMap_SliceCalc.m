@@ -120,6 +120,7 @@ else
     gui.slice_data_mat.Smoothed = gui.slice_data_mat.Cropped;
     gui.slice_data_mat.InterSmoothed = gui.slice_data_mat.Cropped;
 end
+gui.data.data2plot = gui.slice_data_mat.InterSmoothed;
 guidata(gcf, gui);
 % Grid meshing
 TriDiMap_meshingGrid;

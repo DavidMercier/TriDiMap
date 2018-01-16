@@ -107,13 +107,6 @@ else
         if config.flag_data
             gui.data.data2plot = gui.data.expValuesInterpSmoothed;
             
-            minVal = round(100*(min(min(gui.data.data2plot))))/100;
-            meanVal = round(100*(nanmean(nanmean(gui.data.data2plot))))/100;
-            maxVal = round(100*(max(max(gui.data.data2plot))))/100;
-            set(gui.handles.value_MinVal_GUI, 'String', num2str(minVal));
-            set(gui.handles.value_MeanVal_GUI, 'String', num2str(meanVal));
-            set(gui.handles.value_MaxVal_GUI, 'String', num2str(maxVal));
-            
             if ~config.normalizationStep
                 if config.property == 1
                     if ~config.FrenchLeg
@@ -452,6 +445,14 @@ if gui.config.grid
     grid on;
 else
     grid off;
+end
+if isfield(gui.data, 'data2plot')
+    minVal = round(100*(min(min(gui.data.data2plot))))/100;
+    meanVal = round(100*(nanmean(nanmean(gui.data.data2plot))))/100;
+    maxVal = round(100*(max(max(gui.data.data2plot))))/100;
+    set(gui.handles.value_MinVal_GUI, 'String', num2str(min(minVal)));
+    set(gui.handles.value_MeanVal_GUI, 'String', num2str(mean(meanVal)));
+    set(gui.handles.value_MaxVal_GUI, 'String', num2str(max(maxVal)));
 end
 guidata(gcf, gui);
 if gui.config.saveFlag

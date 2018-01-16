@@ -81,6 +81,7 @@ gui.config.property = 2;
 gui.config.legendSlice = '';
 gui.config.gifFlag = 0;
 gui.config.FrenchLeg = 0;
+gui.data = struct();
 
 %% GUI generation
 TriDiMap_GUI(gui);

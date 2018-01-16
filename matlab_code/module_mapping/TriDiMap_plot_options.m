@@ -49,13 +49,7 @@ if flagPlot
     %zlim([0 2]);
     zlim auto;
     daspect([1 1 gui.config.zAxisRatioVal]);
-    if logZ && ~contourPlot
-        set(gca, 'zsc', 'log');
-        %set(hFig, 'cdata', real(log10(get(hFig, 'cdata'))));
-    end
-    if logZ && rawData ==1
-        set(gca, 'zsc', 'linear');
-    end
+    set(gca, 'zsc', 'linear');
     hold on;
     
     if strcmp(gui.config.strUnit_Length, 'µm')
@@ -145,7 +139,7 @@ if flagPlot
         if logZ && cminVal <= 0
             cminVal = eps;
         end
-        if logZ && contourPlot || logZ && rawData == 1
+        if logZ
             caxis(log([cminVal, cmaxVal]));
         else
             caxis([cminVal, cmaxVal]);
@@ -167,20 +161,16 @@ if flagPlot
     hold on;
     
     ContoursVal = cminVal:((cmaxVal-cminVal)/intervalScaleBar):cmaxVal;
-    if logZ && contourPlot || logZ && rawData == 1
-        %         if cminVal == 0
-        %             ContoursVal(1) = eps;
-        %         end
-        %         logCVal = log(ContoursVal);
-        %         logCVal(logCVal<0) = 0;
-        hcb1 = colorbar('YTick',ContoursVal,'YTickLabel',ContoursVal);
+    if logZ
+        logCVal = log(ContoursVal);
+        hcb1 = colorbar('YTick',logCVal,'YTickLabel',ContoursVal);
     else
         hcb1 = colorbar;
     end
     
-    %if logScale
-    %hcb1 = colorbar('Yscale','log');
-    %end
+%     if logScale
+%         hcb1 = colorbar('Yscale','log');
+%     end
     ylabel(hcb1, titleString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
     
     gui.handles.hcb1 = hcb1;
