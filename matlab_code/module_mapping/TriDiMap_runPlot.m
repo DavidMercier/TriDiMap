@@ -17,7 +17,7 @@ config = gui.config;
 strUnit_Property = ...
     get_value_popupmenu(gui.handles.unitProp_GUI, listUnitProperty);
 guidata(gcf, gui);
-if config.rawData == 8 % Code for 3D slices
+if config.rawData == 8 && gui.config.property  < 3% Code for 3D slices
     TriDiMap_sliceCalc(gui);
     gui = guidata(gcf);
 else

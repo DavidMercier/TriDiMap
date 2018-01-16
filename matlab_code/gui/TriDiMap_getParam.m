@@ -106,6 +106,11 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     gui.config.sliceDepthMin = str2num(get(h.value_sliceDepthMin_GUI, 'String'));
     gui.config.sliceDepthMax = str2num(get(h.value_sliceDepthMax_GUI, 'String'));
     gui.config.alpha = str2num(get(h.value_alphaMap_GUI, 'String'));
+    if gui.config.alpha > 1 || gui.config.alpha < 0
+        gui.config.alpha = 0.5;
+        warning('Alpha value can''t be less than 0 and higher than 1!');
+        set(h.value_alphaMap_GUI, 'String', num2str(gui.config.alpha));
+    end
     gui.config.noNan = get(h.cb_pixNaN_GUI, 'Value');
     if ~gui.config.noNan
         set(h.cb_interpMap_GUI, 'Value', 0);
