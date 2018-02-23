@@ -61,7 +61,7 @@ while((norma2>limit) && (iter<=maxIter)) && ...
             meanVec(ii) = 0;
             stddev(ii) = 0;
         end
-        f(ii)=length(Vect)/N;
+        f(ii) = length(Vect)/N;
     end
     
     for jj = 1:M
@@ -107,7 +107,7 @@ while((norma2>limit) && (iter<=maxIter)) && ...
         minLim = Lim;
         minmeanVec = meanVec;
         minstddev = stddev;
-        minf=f;
+        minf = f;
         
         set(gui.handles.value_IterResHist_GUI, 'String', num2str(iter - 1));
         set(gui.handles.value_PrecHistRes_GUI, 'String', num2str(norma2));
