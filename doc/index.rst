@@ -96,7 +96,7 @@ The author is grateful to Debora Rossell (`OCAS <http://www.ocas.be/>`_, Belgium
 
 Screenshots
 -------------
-.. figure:: doc/_pictures/gif1.gif
+.. figure:: _pictures/gif/25x25pixels_25slices.gif
    :scale: 50 %
    :align: center
    
