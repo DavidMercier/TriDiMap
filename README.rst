@@ -19,8 +19,8 @@ With this Matlab toolbox, it is possible:
     * to plot and to fit cumulative density functions;
     * to extract statistical values (mean, min, max with standard deviations) of mechanical properties and fractions for each phase;
     * to correct mechanical map from image correlation with microstructural map;
-	* to correlate/compare mechanical map with microstructural map;
-	* to plot 4D mechanical property map.
+    * to correlate/compare mechanical map with microstructural map;
+    * to plot 4D mechanical property map.
 
 Matlab version
 ------------------
