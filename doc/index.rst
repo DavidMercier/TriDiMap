@@ -96,12 +96,9 @@ The author is grateful to Debora Rossell (`OCAS <http://www.ocas.be/>`_, Belgium
 
 Screenshots
 -------------
-<<<<<<< HEAD
-.. figure:: _pictures/gif/25x25pixels_25slices.gif
-=======
-.. figure:: doc/_pictures/gif/gif1.gif
->>>>>>> origin/master
+
+.. figure:: ./_pictures/gif/25x25pixels_25slices.gif
    :scale: 50 %
    :align: center
    
-   *4D mapping of sample hardness obtained from indentation tests.*
+   *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices).*
