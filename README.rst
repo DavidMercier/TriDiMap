@@ -13,12 +13,14 @@ The TriDiMap toolbox has been developed to plot, to map and to analyze (nano)ind
 dataset.
 
 With this Matlab toolbox, it is possible:
-    * to map (in 2D or 3D), to interpolate and to smooth indentation grid;
+    * to map (in 2D or 3D), to interpolate and to smooth indentation map;
     * to plot elastic modulus vs hardness values;
     * to plot and to fit probability density functions;
     * to plot and to fit cumulative density functions;
     * to extract statistical values (mean, min, max with standard deviations) of mechanical properties and fractions for each phase;
-    * to correct mechanical map from image correlation with microstructural map.
+    * to correct mechanical map from image correlation with microstructural map;
+	* to correlate/compare mechanical map with microstructural map;
+	* to plot 4D mechanical property map.
 
 Matlab version
 ------------------
@@ -33,7 +35,8 @@ Written by D. Mercier [1] (david.mercier@crmgroup.be / david9684@gmail.com).
 Reference papers
 ------------------
 
-* `Mercier D. et al., "Mechanical characterization by nanoindentation of an electroplated nickel matrix composite coating" (2017). <http://dx.doi.org/10.1051/mattech/2017014>`_
+* `Mercier D. et al., "Mechanical characterization by nanoindentation of an electroplated nickel matrix composite coating" (2017). <https://dx.doi.org/10.1051/mattech/2017014>`_
+* `Mercier D. et al., "Microstrucutral and mechanical characterization of electroplated nickel matrix composite coatings" (2018). <https://doi.org/10.1080/02670844.2018.1433270>`_
 
 Keywords
 ---------
