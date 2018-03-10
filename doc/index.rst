@@ -60,6 +60,7 @@ Contents
    
    getting_started
    mapping
+   tomography
    pdf_cdf
    E_H
    image_correlation
