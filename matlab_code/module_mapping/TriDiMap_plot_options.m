@@ -163,6 +163,11 @@ if flagPlot
     ContoursVal = cminVal:((cmaxVal-cminVal)/intervalScaleBar):cmaxVal;
     if logZ
         logCVal = log(ContoursVal);
+        if max(ContoursVal) < 100
+            ContoursVal = round(ContoursVal*10)/10;
+        else
+            ContoursVal = round(ContoursVal);
+        end
         hcb1 = colorbar('YTick',logCVal,'YTickLabel',ContoursVal);
     else
         hcb1 = colorbar;
