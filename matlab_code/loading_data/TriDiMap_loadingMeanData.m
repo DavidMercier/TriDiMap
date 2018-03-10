@@ -283,22 +283,35 @@ if config.flag_data
         NX = config.N_XStep;
         NY = config.N_YStep;
         % Vector to matrix (last three columns are average values in 'Results' sheet
-        try
-            data.expValues_mat.YM = reshape(data.expValues.YM(1:end-endLines,1),[NX,NY]);
-            data.expValues_mat.H = reshape(data.expValues.H(1:end-endLines,1),[NX,NY]);
-            % Flip even columns to respect nanoindentation pattern
-            for evenIndex = 2:2:NY
-                data.expValues_mat.YM(:,evenIndex) = ...
-                    flipud(data.expValues_mat.YM(:,evenIndex));
-                data.expValues_mat.H(:,evenIndex) = ...
-                    flipud(data.expValues_mat.H(:,evenIndex));
+        if dataType == 1 || dataType == 3
+            try
+                data.expValues_mat.YM = reshape(data.expValues.YM(1:end-endLines,1),[NX,NY]);
+                data.expValues_mat.H = reshape(data.expValues.H(1:end-endLines,1),[NX,NY]);
+                % Flip even columns to respect nanoindentation pattern
+                for evenIndex = 2:2:NY
+                    data.expValues_mat.YM(:,evenIndex) = ...
+                        flipud(data.expValues_mat.YM(:,evenIndex));
+                    data.expValues_mat.H(:,evenIndex) = ...
+                        flipud(data.expValues_mat.H(:,evenIndex));
+                end
+                config.flagValid = 1;
+            catch
+                data.expValues_mat.YM = 0;
+                data.expValues_mat.H = 0;
+                errordlg('Wrong inputs for number of indents along X or/and Y axis !');
+                config.flagValid = 0;
             end
-            config.flagValid = 1;
-        catch
-            data.expValues_mat.YM = 0;
-            data.expValues_mat.H = 0;
-            errordlg('Wrong inputs for number of indents along X or/and Y axis !');
-            config.flagValid = 0;
+        elseif dataType == 2
+            try
+                data.expValues_mat.YM = reshape(data.expValues.YM(1:end-endLines,1),[NX,NY]);
+                data.expValues_mat.H = reshape(data.expValues.H(1:end-endLines,1),[NX,NY]);
+                config.flagValid = 1;
+            catch
+                data.expValues_mat.YM = 0;
+                data.expValues_mat.H = 0;
+                errordlg('Wrong inputs for number of indents along X or/and Y axis !');
+                config.flagValid = 0;
+            end
         end
     else
         config.flagValid = 0;
