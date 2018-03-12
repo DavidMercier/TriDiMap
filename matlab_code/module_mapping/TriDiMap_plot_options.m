@@ -108,12 +108,11 @@ if flagPlot
         cmap_Flip = colormap(cmap);
     elseif intervalScaleBar == 0
         intervalScaleBar = 10000;
-        if strcmp(cMap,'Diverging map') == 1
-            [RGB1, RGB2] = listDivCmap(remain);
+        if strcmp(token,'DivergingMap') == 1
+            [RGB1, RGB2] = listDivCmap(str2num(remain));
             cmap_Flip = diverging_map(0:(1/(intervalScaleBar-1)):1,RGB1,RGB2);
         else
             cmap_Flip = colormap([cMap, '(',num2str(intervalScaleBar),')']);
-            
         end
     end
     if ~gui.config.flipColor
@@ -173,9 +172,9 @@ if flagPlot
         hcb1 = colorbar;
     end
     
-%     if logScale
-%         hcb1 = colorbar('Yscale','log');
-%     end
+    %     if logScale
+    %         hcb1 = colorbar('Yscale','log');
+    %     end
     ylabel(hcb1, titleString, 'Interpreter', 'Latex', 'FontSize', FontSizeVal);
     
     gui.handles.hcb1 = hcb1;
@@ -184,7 +183,15 @@ if flagPlot
     guidata(gcf, gui);
     
     if gui.config.minorTicks;
-        set(gui.handles.hcb1, 'YMinorTick', 'on');
+        if sscanf(gui.config.MatlabRelease,'(R%i') > 2014
+            set(gui.handles.hcb1, 'YMinorTick', 'on');
+        else
+            try
+                set(gui.handles.hcb1, 'YMinorTick', 'on');
+            catch err
+                display(err);
+            end
+        end
     end
 else
     errordlg('Wrong plot! Try again...');

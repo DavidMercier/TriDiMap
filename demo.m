@@ -6,6 +6,7 @@ clear classes % not included in clear all
 close all
 commandwindow
 clc
+home
 delete(findobj(allchild(0), '-regexp', 'Tag', '^Msgbox_'))
 
 %% Define gui structure variable
