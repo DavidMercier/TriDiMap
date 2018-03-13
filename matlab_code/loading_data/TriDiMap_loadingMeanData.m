@@ -221,7 +221,6 @@ if config.flag_data
             if ~isempty(ind_Xstep)
                 config.XStep = deltaXX / cosd(config.angleRotation);
                 set(g.handles.value_deltaXindents_GUI, 'String', num2str(config.XStep));
-                set(g.handles.value_deltaYindents_GUI, 'String', num2str(config.YStep));
             else
                 config.XStep = config.XStep_default;
             end
@@ -229,6 +228,7 @@ if config.flag_data
             % Y step in microns
             if ~isempty(ind_Ystep)
                 config.YStep = deltaYY / cosd(config.angleRotation);
+                set(g.handles.value_deltaYindents_GUI, 'String', num2str(config.YStep));
             else
                 config.YStep = config.YStep_default;
             end
