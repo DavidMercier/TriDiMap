@@ -53,9 +53,11 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
                 'XData',xData_interp,'YData',yData_interp);
             %             zVal = zeros(length(xData_interp));
             %             hFig = scatter3(xData_interp, yData_interp, zVal);
+            %hFig = pcolor(xData_interp, xData_interp, (data2plot'));
         end
         set(gca,'YDir','normal');
-        set(hFig,'alphadata',~isnan(data2plot'));
+        % Following line to not plot NaN but doesn't work...
+        %set(hFig,'AlphaData',~isnan(data2plot')); 
         flagPlot = 1;
     elseif rawData == 2 && flagSize
         if contourPlot < 2

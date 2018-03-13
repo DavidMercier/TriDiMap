@@ -115,10 +115,15 @@ if flagPlot
             cmap_Flip = colormap([cMap, '(',num2str(intervalScaleBar),')']);
         end
     end
-    if ~gui.config.flipColor
-        colormap(cmap_Flip);
+    if ~gui.config.noNan
+        cMapNaN = [1 1 1 ; cmap_Flip];
     else
-        colormap(flipud(cmap_Flip));
+        cMapNaN = cmap_Flip;
+    end    
+    if ~gui.config.flipColor
+        colormap(cMapNaN);
+    else
+        colormap(flipud(cMapNaN));
     end
     if ~gui.config.scaleAxis
         if cminVal == round(min(data2plot(:)))
