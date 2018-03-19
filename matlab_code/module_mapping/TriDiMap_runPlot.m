@@ -331,10 +331,16 @@ else
                         M = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
                         maxiter = str2num(get(gui.handles.value_IterMaxHist_GUI, 'String'));
                         limit = str2num(get(gui.handles.value_PrecHist_GUI, 'String'));
-                        gui.results.GaussianFit = ...
+                        [gui.results.GaussianAllFit, gui.results.GaussianFit] = ...
                             TriDiMap_runDeconvolution(data2useVect', exphist, M, ...
                             maxiter, limit, config.property, strUnit_Property);
+                        gui.results.hist_val = data2useVect';
+                        gui.results.hist_xy = exphist;
+                        gui.results.M = M;
+                        gui.results.maxiter = maxiter;
+                        gui.results.limit = limit;
                         gui.config.flag_fit = 1;
+                        %save('Blabla.txt', 'variableName', '-ASCII','-append'); % No struct variable in the variable name...
                     end
                     hold on;
                 else
