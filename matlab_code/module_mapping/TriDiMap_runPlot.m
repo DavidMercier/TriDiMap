@@ -300,7 +300,7 @@ else
             Prop_pdf = Prop_pdf/binsize;
             SumProp_pdf = sum(Prop_pdf);
             SumTot = SumProp_pdf .* binsize;
-            if  gui.config.licenceStat_Flag
+            %if  gui.config.licenceStat_Flag
                 if ~get(gui.handles.cb_plotErrorPDF_GUI, 'Value')
                     if ~get(gui.handles.cb_deconvolutionHist_GUI, 'Value')
                         bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
@@ -333,7 +333,8 @@ else
                         limit = str2num(get(gui.handles.value_PrecHist_GUI, 'String'));
                         [gui.results.GaussianAllFit, gui.results.GaussianFit] = ...
                             TriDiMap_runDeconvolution(data2useVect', exphist, M, ...
-                            maxiter, limit, config.property, strUnit_Property);
+                            maxiter, limit, config.property, strUnit_Property, ...
+                            gui.config.licenceStat_Flag);
                         gui.results.hist_val = data2useVect';
                         gui.results.hist_xy = exphist;
                         gui.results.M = M;
@@ -373,11 +374,11 @@ else
                         errordlg('First run deconvolution process!');
                     end
                 end
-            else
-                set(gui.handles.cb_deconvolutionHist_GUI,'Value',0);
-                cla;
-                errordlg('No licence for the Statistics_Toolbox!');
-            end
+%             else
+%                 set(gui.handles.cb_deconvolutionHist_GUI,'Value',0);
+%                 cla;
+%                 errordlg('No licence for the Statistics_Toolbox!');
+%             end
         else
             errordlg(['First set indentation grid parameters and '...
                 'load an Excel file to plot a property map !']);

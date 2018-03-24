@@ -1,6 +1,6 @@
 %% Copyright 2014 MERCIER David
 function [p2, p_all2] = TriDiMap_runDeconvolution(propVal, exphist, M, maxIter, limit, property, ...
-    strUnit_Property)
+    strUnit_Property, flagStat)
 %% Function to run the deconvolution
 % See decon M-file for decon.fig of J. Nemecek
 
@@ -70,8 +70,11 @@ while((norma2>limit) && (iter<=maxIter)) && ...
         if (meanVec(jj) ~= 0)
             %p2(1,jj) = cdf('normal',x,meanVec(jj),stddev(jj));
             %p2(1,jj) = pdf('normal',x,meanVec(jj),stddev(jj));
-            %p2(ii,jj) = normpdf(x,meanVec(jj),stddev(jj));
-            p2(ii,jj) = normal_gaussian_pdf(x,meanVec(jj),stddev(jj));
+            if flagStat
+                p2(ii,jj) = normpdf(x,meanVec(jj),stddev(jj));
+            else
+                p2(ii,jj) = normal_gaussian_pdf(x,meanVec(jj),stddev(jj));
+            end
         else
             p2(1,jj) = 0;
         end
@@ -81,8 +84,11 @@ while((norma2>limit) && (iter<=maxIter)) && ...
             x = exphist(ii,1);
             if (meanVec(jj)~=0)
                 %p2(ii,jj) = pdf('normal',x,meanVec(jj),stddev(jj))*f(jj);
-                %p2(ii,jj) = normpdf(x,meanVec(jj),stddev(jj))*f(jj);
-                p2(ii,jj) = normal_gaussian_pdf(x,meanVec(jj),stddev(jj))*f(jj);
+                if flagStat
+                    p2(ii,jj) = normpdf(x,meanVec(jj),stddev(jj))*f(jj);
+                else
+                    p2(ii,jj) = normal_gaussian_pdf(x,meanVec(jj),stddev(jj))*f(jj);
+                end
             else
                 p2(ii,jj) = 0;
             end
