@@ -151,7 +151,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
             for ii = 1:length(hFig)
                 zdata = hFig(ii).ZData;
                 hFig(ii).CData = zdata;
-                hFig(ii).FaceColor = stringSurf;
+                hFig(ii).FaceColor = char(stringSurf);
             end
         else
             for ii = 1:length(hFig)
