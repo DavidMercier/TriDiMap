@@ -3,6 +3,10 @@ function [dataCleaned, ratioNan] = TriDiMap_cleaningData(data)
 %% Function to replace NaN values to avoid blank pixels
 
 data(data == 0) = NaN;
+% No physical meaning if hardness or elastic modulus values
+% are higher than 1000GPa or are negative
+data(data > 1000) = NaN;
+data(data < 0) = NaN;
 [row, col] = find(isnan(data));
 ratioNan = 100*length(row)/(size(data,1)*size(data,2));
 
