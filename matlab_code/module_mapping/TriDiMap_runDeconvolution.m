@@ -64,11 +64,14 @@ while((norma2>limit) && (iter<=maxIter)) && ...
         f(ii) = length(Vect)/N;
     end
     
+    %figure;
     for jj = 1:M
         x = exphist(1,1);
         if (meanVec(jj) ~= 0)
             %p2(1,jj) = cdf('normal',x,meanVec(jj),stddev(jj));
-            p2(1,jj) = pdf('normal',x,meanVec(jj),stddev(jj));
+            %p2(1,jj) = pdf('normal',x,meanVec(jj),stddev(jj));
+            %p2(ii,jj) = normpdf(x,meanVec(jj),stddev(jj));
+            p2(ii,jj) = normal_gaussian_pdf(x,meanVec(jj),stddev(jj));
         else
             p2(1,jj) = 0;
         end
@@ -77,7 +80,9 @@ while((norma2>limit) && (iter<=maxIter)) && ...
             x_prev = exphist(ii-1,1);
             x = exphist(ii,1);
             if (meanVec(jj)~=0)
-                p2(ii,jj) = pdf('normal',x,meanVec(jj),stddev(jj))*f(jj);
+                %p2(ii,jj) = pdf('normal',x,meanVec(jj),stddev(jj))*f(jj);
+                %p2(ii,jj) = normpdf(x,meanVec(jj),stddev(jj))*f(jj);
+                p2(ii,jj) = normal_gaussian_pdf(x,meanVec(jj),stddev(jj))*f(jj);
             else
                 p2(ii,jj) = 0;
             end
