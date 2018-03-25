@@ -13,47 +13,47 @@ gui = guidata(gcf);
 
 norma2 = 1;
 minnorma = 1;
-iter=0;
+iter = 0;
 
-minE = min(exphist(:,1));
-maxE = max(propVal);
+minVal = min(exphist(:,1));
+maxVal = max(propVal);
 N = length(propVal);
 
-while((norma2>limit) && (iter<=maxIter)) && ...
+while((norma2 > limit) && (iter <= maxIter)) && ...
         get(gui.handles.cb_deconvolutionHist_GUI, 'Value');
     r = rand(M-1,1);
     r = sort(r);
     Lim = zeros(1,M+1);
     Lim(1) = 0;
-    pom = maxE .* r;
+    pom = maxVal .* r;
     for ii = 1:M-1;
         Lim(ii+1) = pom(ii);
     end
-    Lim(M+1) = maxE;
+    Lim(M+1) = maxVal;
     
-    sE = sort(propVal);
+    sVal = sort(propVal);
     index_Lim = zeros(1,ii);
     for ii = 1:M+1
         index_Lim(ii) = N;
     end
-    index_Lim(1)=0;
+    index_Lim(1) = 0;
     
     jj = 2;
     mez = Lim(jj);
     
     for ii = 1:N
-        if (sE(ii) > mez)
+        if (sVal(ii) > mez)
             index_Lim(jj) = ii-1;
             jj = jj+1;
             mez = Lim(jj);
         end
     end
     
-    x = exphist(1,1);
     meanVec = zeros(1,M);
     stddev = zeros(1,M);
+    f = zeros(1,M);
     for ii = 1:M
-        Vect = sE(index_Lim(ii)+1:index_Lim(ii+1));
+        Vect = sVal(index_Lim(ii)+1:index_Lim(ii+1));
         if (length(Vect) > 1)
             meanVec(ii) = mean(Vect);
             stddev(ii) = std(Vect);
@@ -64,7 +64,7 @@ while((norma2>limit) && (iter<=maxIter)) && ...
         f(ii) = length(Vect)/N;
     end
     
-    %figure;
+    p2 = zeros(length(exphist),M);
     for jj = 1:M
         x = exphist(1,1);
         if (meanVec(jj) ~= 0)
@@ -76,11 +76,11 @@ while((norma2>limit) && (iter<=maxIter)) && ...
                 p2(ii,jj) = normal_gaussian_pdf(x,meanVec(jj),stddev(jj));
             end
         else
-            p2(1,jj) = 0;
+            p2(ii,jj) = 0;
         end
         
         for ii = 2 : length(exphist)
-            x_prev = exphist(ii-1,1);
+            %x_prev = exphist(ii-1,1);
             x = exphist(ii,1);
             if (meanVec(jj)~=0)
                 %p2(ii,jj) = pdf('normal',x,meanVec(jj),stddev(jj))*f(jj);
@@ -93,7 +93,6 @@ while((norma2>limit) && (iter<=maxIter)) && ...
                 p2(ii,jj) = 0;
             end
         end
-        
     end
     
     norma2 = 0;
@@ -115,7 +114,7 @@ while((norma2>limit) && (iter<=maxIter)) && ...
     
     if(norma2 < minnorma)
         minnorma = norma2;
-        minLim = Lim;
+        %minLim = Lim;
         minmeanVec = meanVec;
         minstddev = stddev;
         minf = f;
@@ -131,22 +130,22 @@ while((norma2>limit) && (iter<=maxIter)) && ...
             t = sprintf('Phase %i\n%8.3f\n%8.3f\n%8.3f\n', jj, minmeanVec(jj), minstddev(jj), minf(jj));
             switch jj
                 case 1
-                    text(0.05*(maxXPos)+minE,maxYPos,char(t));hold on;
+                    text(0.05*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h2 = plot(exphist(:,1),p2(:,1),'b','LineWidth',2);
                 case 2
-                    text(0.15*(maxXPos)+minE,maxYPos,char(t));hold on;
+                    text(0.15*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h3 = plot(exphist(:,1),p2(:,2),'r','LineWidth',2);
                 case 3
-                    text(0.25*(maxXPos)+minE,maxYPos,char(t));hold on;
+                    text(0.25*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h4 = plot(exphist(:,1),p2(:,3),'g','LineWidth',2);
                 case 4
-                    text(0.35*(maxXPos)+minE,maxYPos,char(t));hold on;
+                    text(0.35*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h5 = plot(exphist(:,1),p2(:,4),'y','LineWidth',2);
                 case 5
-                    text(0.45*(maxXPos)+minE,maxYPos,char(t));hold on;
+                    text(0.45*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h6 = plot(exphist(:,1),p2(:,5),'m','LineWidth',2);
                 case 6
-                    text(0.55*(maxXPos)+minE,maxYPos,char(t));hold on;
+                    text(0.55*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h7 = plot(exphist(:,1),p2(:,6),'c','LineWidth',2);
                 otherwise ;
             end
