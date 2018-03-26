@@ -45,7 +45,7 @@ probability density function; deconvolution; multimodal Gaussian fit; cumulative
 
 Contributors
 -------------
-- Pierre Huyghes (ULB, Bruxelles) contributed to the Matlab code.
+- Pierre Huyghes (ULB, Bruxelles) and Antoine Hillhorst (UCL) contributed to the Matlab code.
 
 Acknowledgements
 -----------------

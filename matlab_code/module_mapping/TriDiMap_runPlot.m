@@ -385,12 +385,21 @@ else
         end
         
     elseif config.property > 5
-        %if gui.config.licenceStat_Flag
         numberVal = size(data2use,1)*size(data2use,2);
         data2useVect = reshape(data2use, [1,numberVal]);
         indNaN = find(isnan(data2useVect));
         data2useVect(indNaN) = [];
-        h_CDF = cdfplot(data2useVect);
+        meanVect = mean(data2useVect);
+        stddevVect = std(data2useVect);
+        if gui.config.licenceStat_Flag
+            %h_CDF = cdf('normal',data2useVect, meanVect, stddevVect);
+            Yfit_CDF = normcdf(data2useVect, meanVect, stddevVect);
+            h_CDF = cdfplot(data2useVect);
+        else
+            Yfit_CDF = cdfGaussian(data2useVect, meanVect, stddevVect);
+            h_CDF = cdf_plot(data2useVect); % Third party code
+        end
+        %h_CDF_fit = plot(sort(data2useVect), sort(Yfit_CDF));
         xdataCDF = get(h_CDF,'XData');
         xdataCDF(1) = 0;
         xdataCDF(end) = xdataCDF(end-1);
@@ -430,11 +439,6 @@ else
         end
         gui.results.xdataCDF = xdataCDF;
         gui.results.ydataCDF = ydataCDF;
-        %         else
-        %             set(gui.handles.cb_deconvolutionHist_GUI,'Value',0);
-        %             cla;
-        %             errordlg('No licence for the Statistics_Toolbox!');
-        %         end
     end
     if config.flag_data
         if config.property < 3

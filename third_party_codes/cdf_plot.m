@@ -1,4 +1,4 @@
-function hp = cdfplot(X)
+function hp = cdf_plot(X)
 % cdfplot(X) 
 % displays a plot of the Empirical Cumulative Distribution Function 
 % (CDF) of the input array X in the current figure. The empirical 
