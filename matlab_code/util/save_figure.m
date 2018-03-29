@@ -1,6 +1,10 @@
 %% Copyright 2014 MERCIER David
 function save_figure
 %% Function to save figure from the GUI
+
+colorGUI_BG = get(gcf, 'color');
+set(gcf, 'Color', [1 1 1]); % Set background of the GUI in white
+
 gui = guidata(gcf);
 
 if isfield(gui.config,'property')
@@ -9,15 +13,15 @@ if isfield(gui.config,'property')
     elseif gui.config.property == 2
         property = 'H';
     elseif gui.config.property == 3
-       property = 'EvsH';
+        property = 'EvsH';
     elseif gui.config.property == 4
-       property = 'E_pdf';
+        property = 'E_pdf';
     elseif gui.config.property == 5
-       property = 'H_pdf';
+        property = 'H_pdf';
     elseif gui.config.property == 6
-       property = 'E_cdf';
+        property = 'E_cdf';
     elseif gui.config.property == 7
-       property = 'H_cdf';
+        property = 'H_cdf';
     end
 end
 %% Definition of path and filenames
@@ -58,10 +62,14 @@ if gui.config.data_path
         % Exportation of the figures in a .png format
         export_fig(isolated_figure_title1, gcf);
         display(strcat('Figure saved as: ', filename_sav_fig1));
-        export_fig(isolated_figure_title2, isolate_axes(gca));
-        display(strcat('Figure saved as: ', filename_sav_fig2));
+        % Notoption like 'isolate_axes' because colorbar is not saved
+        % correctly !!!
+        %         export_fig(isolated_figure_title2, isolate_axes(gca));
+        %         display(strcat('Figure saved as: ', filename_sav_fig2));
         
         hNewFig = figure;
+        colorGUI_BG = get(gcf, 'color');
+        set(gcf, 'Color', [1 1 1]); % Set background of the GUI in white
         %copyobj(gui.handles.AxisPlot_GUI,hNewFig);
         %     set(0, 'currentfigure', hNewFig);
         %     axis;
@@ -69,6 +77,9 @@ if gui.config.data_path
         gui.config.saveFlag = 1;
         guidata(gcf, gui);
         TriDiMap_runPlot;
+        pause(2);
+        export_fig(isolated_figure_title2, gcf);
+        display(strcat('Figure saved as: ', filename_sav_fig2));
         pause(2);
         delete(findall(findall(gcf,'Type','axe'),'Type','text'));
         axis off; box off;
@@ -103,5 +114,7 @@ else
     errordlg(['First set indentation grid parameters and load an Excel file '...
         'to plot a property map !']);
 end
+
+set(gcf, 'Color', colorGUI_BG);
 
 end
