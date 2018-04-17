@@ -72,6 +72,11 @@ if config.flag_data
                 [dataAll, txtAll] = xlsread(data2import, 'Results');
             catch
                 disp(['No Excel sheet named:', name, 'found in the Excel file !']);
+                try
+                    [dataAll, txtAll] = xlsread(data2import);
+                catch
+                    disp(['No Excel sheet named found in the Excel file !']);
+                end
             end
         elseif dataType == 2 % Excel file from Hysitron
             try
@@ -86,6 +91,11 @@ if config.flag_data
                         [dataAll, txtAll] = xlsread(data2import, 'Results');
                     catch
                         disp(['No Excel sheet named:', 'Results', 'found in the Excel file !']);
+                        try
+                            [dataAll, txtAll] = xlsread(data2import);
+                        catch
+                            disp(['No Excel sheet named found in the Excel file !']);
+                        end
                     end
                 end
             end
@@ -98,6 +108,11 @@ if config.flag_data
                     [dataAll, txtAll, raw] = xlsread(data2import, 'Feuil1');
                 catch
                     disp(['No Excel sheet named:', 'Feuil1', 'found in the Excel file !']);
+                    try
+                        [dataAll, txtAll, raw] = xlsread(data2import);
+                    catch
+                        disp(['No Excel sheet found in the Excel file !']);
+                    end
                 end
             end
         end
