@@ -338,6 +338,19 @@ set(h.value_MaxXCrop_GUI, 'String', num2str(get(h.value_numXindents_GUI, 'String
 set(h.value_MinYCrop_GUI, 'String', 1);
 set(h.value_MaxYCrop_GUI, 'String', num2str(get(h.value_numYindents_GUI, 'String')));
 
+minVal = round(100*(nanmin(nanmin(data.expValues_mat.H))))/100;
+if minVal < 0
+    minVal = 0;
+end
+set(h.value_MinVal_GUI, 'String', num2str(nanmin(minVal)));
+maxVal = round(100*(nanmax(nanmax(data.expValues_mat.H))))/100;
+if maxVal < 0
+    maxVal = 0;
+end
+set(h.value_MaxVal_GUI, 'String', num2str(nanmax(maxVal)));
+
+set(h.property_GUI, 'Value', 2);
+
 config.flagZplot = 0;
 
 g.data = data;

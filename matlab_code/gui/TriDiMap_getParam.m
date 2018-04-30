@@ -162,6 +162,17 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(h.pm_smoothMap_GUI, 'Visible', 'off');
     end
     
+    if isempty(get(h.value_MinVal_GUI, 'String'))
+        gui.config.minVal = NaN;
+    else
+        gui.config.minVal = str2num(get(h.value_MinVal_GUI, 'String'));
+    end
+    if isempty(get(h.value_MaxVal_GUI, 'String'))
+        gui.config.maxVal = NaN;
+    else
+        gui.config.maxVal = str2num(get(h.value_MaxVal_GUI, 'String'));
+    end
+    
     gui.config.normalizationStep = get(h.cb_normMap_GUI, 'Value');
     gui.config.normalizationStepVal = get(h.pm_normMap_GUI, 'Value');
     if gui.config.normalizationStep

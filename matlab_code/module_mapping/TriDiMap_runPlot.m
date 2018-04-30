@@ -38,6 +38,44 @@ else
             data2use_E = gui.data.expValues_mat.YM;
             data2use_H = gui.data.expValues_mat.H;
         end
+        
+        % Thresholding
+        if ~isnan(gui.config.minVal) && (gui.config.propertyOld == gui.config.property)
+            if config.property ~= 3
+                data2use(data2use < gui.config.minVal) = NaN;
+            else
+                data2use_E(data2use_E < gui.config.minVal) = NaN;
+                data2use_H(data2use_H < gui.config.minVal) = NaN;
+            end
+        else
+            gui.config.minVal = round(100*(nanmin(nanmin(data2use))))/100;
+        end
+        if gui.config.minVal < 0
+            gui.config.minVal = 0;
+        end
+        set(gui.handles.value_MinVal_GUI, 'String', num2str(nanmin(gui.config.minVal)));
+        if ~isnan(gui.config.maxVal) && (gui.config.propertyOld == gui.config.property)
+            if config.property ~= 3
+                data2use(data2use > gui.config.maxVal) = NaN;
+            else
+                data2use_E(data2use_E > gui.config.maxVal) = NaN;
+                data2use_H(data2use_H > gui.config.maxVal) = NaN;
+            end
+        else
+            gui.config.maxVal = round(100*(nanmax(nanmax(data2use))))/100;
+        end
+        if gui.config.maxVal < 0
+            gui.config.maxVal = 0;
+        end
+        set(gui.handles.value_MaxVal_GUI, 'String', num2str(nanmax(gui.config.maxVal)));
+            if config.property ~= 3
+                gui.config.meanVal = round(100*(nanmean(nanmean(data2use))))/100;
+            else
+                gui.config.meanVal = round(100*(nanmean(nanmean([data2use_E, data2use_H]))))/100;
+            end
+        set(gui.handles.value_MeanVal_GUI, 'String', num2str(nanmean(gui.config.meanVal)));
+        
+        % NaN values
         if config.property < 3
             [dataCleaned, ratioNan] = TriDiMap_cleaningData(data2use);
             set(gui.handles.value_NaNratio_GUI, 'String', num2str(ratioNan));
@@ -452,19 +490,13 @@ else
         end
     end
 end
+
 if gui.config.grid
     grid on;
 else
     grid off;
 end
-if isfield(gui.data, 'data2plot')
-    minVal = round(100*(min(min(gui.data.data2plot))))/100;
-    meanVal = round(100*(nanmean(nanmean(gui.data.data2plot))))/100;
-    maxVal = round(100*(max(max(gui.data.data2plot))))/100;
-    set(gui.handles.value_MinVal_GUI, 'String', num2str(min(minVal)));
-    set(gui.handles.value_MeanVal_GUI, 'String', num2str(mean(meanVal)));
-    set(gui.handles.value_MaxVal_GUI, 'String', num2str(max(maxVal)));
-end
+
 guidata(gcf, gui);
 if gui.config.saveFlag
     TriDiMap_updateUnit_and_GUI;

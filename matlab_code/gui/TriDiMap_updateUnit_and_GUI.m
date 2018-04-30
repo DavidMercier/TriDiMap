@@ -11,6 +11,8 @@ set(h.unit_deltaXindents_GUI, 'string', strUnit_Length);
 set(h.unit_deltaYindents_GUI, 'string', strUnit_Length);
 
 if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
+    gui.config.propertyOld = gui.config.property;
+    gui.config.property = get(h.property_GUI, 'Value');
     if gui.config.property == 1 || gui.config.property == 2
         set([h.unit_x_values_GUI, h.unit_y_values_GUI], ...
             'string', strUnit_Length);
