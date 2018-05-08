@@ -8,11 +8,19 @@ set(gcf, 'Color', [1 1 1]); % Set background of the GUI in white
 gui = guidata(gcf);
 
 if isfield(gui.config,'property')
-    if gui.config.property == 1
+    if gui.config.property == 1 && gui.config.logZ
+        property = 'E_log';
+    elseif gui.config.property == 1 && ~gui.config.logZ
         property = 'E';
-    elseif gui.config.property == 2
+    end
+    
+    if gui.config.property == 2 && gui.config.logZ
+        property = 'H_log';
+    elseif gui.config.property == 2 && ~gui.config.logZ
         property = 'H';
-    elseif gui.config.property == 3
+    end
+    
+    if gui.config.property == 3
         property = 'EvsH';
     elseif gui.config.property == 4
         property = 'E_pdf';
@@ -23,6 +31,7 @@ if isfield(gui.config,'property')
     elseif gui.config.property == 7
         property = 'H_cdf';
     end
+
 end
 %% Definition of path and filenames
 if gui.config.data_path
@@ -68,7 +77,6 @@ if gui.config.data_path
         %         display(strcat('Figure saved as: ', filename_sav_fig2));
         
         hNewFig = figure;
-        colorGUI_BG = get(gcf, 'color');
         set(gcf, 'Color', [1 1 1]); % Set background of the GUI in white
         %copyobj(gui.handles.AxisPlot_GUI,hNewFig);
         %     set(0, 'currentfigure', hNewFig);
