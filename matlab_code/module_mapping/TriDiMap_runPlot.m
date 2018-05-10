@@ -40,6 +40,14 @@ else
         end
         
         % Thresholding
+        if gui.config.minVal < 0
+            gui.config.minVal = 0;
+        end
+        if config.property == 3
+            if gui.config.minVal >= nanmax(data2use_H) | gui.config.minVal >= nanmax(data2use_E)
+                gui.config.minVal = 0;
+            end
+        end
         if ~isnan(gui.config.minVal) && (gui.config.propertyOld == gui.config.property)
             if config.property ~= 3
                 data2use(data2use < gui.config.minVal) = NaN;
@@ -48,12 +56,17 @@ else
                 data2use_H(data2use_H < gui.config.minVal) = NaN;
             end
         else
-            gui.config.minVal = round(100*(nanmin(nanmin(data2use))))/100;
-        end
-        if gui.config.minVal < 0
-            gui.config.minVal = 0;
+            if config.property ~= 3
+                gui.config.minVal = round(100*(nanmin(nanmin(data2use))))/100;
+            else
+                gui.config.minVal = round(100*(nanmin(nanmin([data2use_E, data2use_H]))))/100;
+            end
+            
         end
         set(gui.handles.value_MinVal_GUI, 'String', num2str(nanmin(gui.config.minVal)));
+        if gui.config.maxVal < 0 || gui.config.maxVal < gui.config.minVal
+            gui.config.maxVal = gui.config.minVal + 100;
+        end
         if ~isnan(gui.config.maxVal) && (gui.config.propertyOld == gui.config.property)
             if config.property ~= 3
                 data2use(data2use > gui.config.maxVal) = NaN;
@@ -62,17 +75,18 @@ else
                 data2use_H(data2use_H > gui.config.maxVal) = NaN;
             end
         else
-            gui.config.maxVal = round(100*(nanmax(nanmax(data2use))))/100;
-        end
-        if gui.config.maxVal < 0
-            gui.config.maxVal = 0;
+            if config.property ~= 3
+                gui.config.maxVal = round(100*(nanmax(nanmax(data2use))))/100;
+            else
+                gui.config.maxVal = round(100*(nanmax(nanmax([data2use_E, data2use_H]))))/100;
+            end
         end
         set(gui.handles.value_MaxVal_GUI, 'String', num2str(nanmax(gui.config.maxVal)));
-            if config.property ~= 3
-                gui.config.meanVal = round(100*(nanmean(nanmean(data2use))))/100;
-            else
-                gui.config.meanVal = round(100*(nanmean(nanmean([data2use_E, data2use_H]))))/100;
-            end
+        if config.property ~= 3
+            gui.config.meanVal = round(100*(nanmean(nanmean(data2use))))/100;
+        else
+            gui.config.meanVal = round(100*(nanmean(nanmean([data2use_E, data2use_H]))))/100;
+        end
         set(gui.handles.value_MeanVal_GUI, 'String', num2str(nanmean(gui.config.meanVal)));
         
         % NaN values
@@ -229,6 +243,14 @@ else
             color3 = 'go'; colorT3 = 'Green';
             color4 = 'bx'; colorT4 = 'Blue';
         end
+        if gui.config.HVal_ThresLines <= gui.config.minVal
+            gui.config.HVal_ThresLines = round(1.2*gui.config.minVal);
+            set(gui.handles.value_Hth_ValEH_GUI, 'String', gui.config.HVal_ThresLines);
+        end
+        if gui.config.EVal_ThresLines <= gui.config.minVal
+            gui.config.EVal_ThresLines = round(1.2*gui.config.minVal);
+            set(gui.handles.value_Hth_ValEH_GUI, 'String', gui.config.EVal_ThresLines);
+        end
         if gui.config.logZ
             loglog(data2use_H(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
                 data2use_E(data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines), ...
@@ -313,8 +335,8 @@ else
             %             0,0,0);
         end
         
-        xlim([0 max(max(data2use_H))]);
-        ylim([0 max(max(data2use_E))]);
+        xlim([0 nanmax(nanmax(data2use_H))]);
+        ylim([0 nanmax(nanmax(data2use_E))]);
         
         if gui.config.grid
             grid on;
@@ -470,13 +492,19 @@ else
         if get (gui.handles.cb_WeibullFit_GUI, 'Value')
             % Fit Weibull
             OPTIONS = algoMinimization;
-            gui.cumulativeFunction.ydata_cdf_Fit = ...
+            gui.cumulativeFunction = ...
                 TriDiMap_Weibull_cdf(OPTIONS, xdataCDF, ydataCDF);
             plot(xdataCDF, gui.cumulativeFunction.ydata_cdf_Fit, '-r', ...
                 'LineWidth', 1.5);
+            gui.results.xdataCDF = xdataCDF;
+            gui.results.ydataCDF = ydataCDF;
+            m_Weibull = gui.cumulativeFunction.coefEsts(1);
+            meanPAram = gui.cumulativeFunction.coefEsts(2);
+            str_title = ['Mean critical parameter = ', ...
+                num2str(meanPAram), ...
+                ' / Weibull modulus = ', num2str(m_Weibull)];
+            title(str_title);
         end
-        gui.results.xdataCDF = xdataCDF;
-        gui.results.ydataCDF = ydataCDF;
     end
     if config.flag_data
         if config.property < 3
@@ -496,6 +524,7 @@ if gui.config.grid
 else
     grid off;
 end
+hold off;
 
 guidata(gcf, gui);
 if gui.config.saveFlag
