@@ -61,9 +61,3 @@ Screenshots
    :align: center
    
    *3D mapping of sample hardness obtained from indentation tests.*
-
-.. figure:: ./_pictures/gif_4Dmap/25x25pixels_25slices.gif
-   :scale: 50 %
-   :align: center
-   
-   *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices).*

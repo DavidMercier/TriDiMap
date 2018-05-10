@@ -43,7 +43,7 @@ First of all a GUI is a Graphical User Interface.
 
 * It is possible to plot other maps, statistical distribution of mechanical properties (see 'Plot' menu).
 
-.. figure:: ./_pictures/GUI_hardness map.png
+.. figure:: ./_pictures/MTS_example1_25x25_H_GUI_00.png
    :scale: 40 %
    :align: center
    

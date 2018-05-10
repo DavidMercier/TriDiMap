@@ -122,7 +122,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
         set(gui.handles.value_PrecHistRes_GUI, 'String', num2str(norma2));
         cla;
         %text(0.025*(maxXPos)+minE,maxYPos,char(t0));hold on;
-        h1 = plot(exphist(:,1), exphist(:,2),'-ko','LineWidth',2);
+        %h1 = plot(exphist(:,1), exphist(:,2),'-ko','LineWidth',2);
+        h1 = bar(exphist(:,1), exphist(:,2),'FaceColor','none',...
+            'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
         hold on;
         
         for jj = 1:M
@@ -150,7 +152,7 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
             end
             hold on;
         end
-        h8 = plot(exphist(:,1),p_all2,':','LineWidth',2);
+        h8 = plot(exphist(:,1),p_all2,'k:','LineWidth',2);
         hold on;
         switch M
             case 1
