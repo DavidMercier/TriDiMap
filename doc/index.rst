@@ -11,9 +11,14 @@ TriDiMap |matlab| toolbox
 .. figure:: ./_pictures/icon_tridimap.png
     :scale: 40 %
     :align: right
+	
+Determination of the mechanical properties of each individual phase in
+the case of a multiphase, heterogeneous or composite material can be
+achieved using the grid nanoindentation technique [#Constantinides_2006]_,
+[#Němeček_2009]_ and [#Randall_2009]_.
 
-The TriDiMap toolbox has been developed to plot, to map and to analyze (nano)indentation
-dataset.
+The TriDiMap toolbox has been developed to plot, to map and to analyze
+(nano)indentation dataset.
 
 With this Matlab toolbox, it is possible:
     * to map (in 2D or 3D), to interpolate and to smooth indentation map;
@@ -86,7 +91,7 @@ probability density function; deconvolution; multimodal Gaussian fit; cumulative
 
 Contributors
 -------------
-- Pierre Huyghes (ULB, Bruxelles) contributed to the Matlab code.
+- Pierre Huyghes (ULB, Bruxelles) and Antoine Hillhorst (UCL) contributed to the Matlab code.
 
 Acknowledgements
 -----------------
@@ -98,8 +103,14 @@ The author is grateful to Debora Rossell (`OCAS <http://www.ocas.be/>`_, Belgium
 Screenshots
 -------------
 
-.. figure:: ./_pictures/gif/25x25pixels_25slices.gif
+.. figure:: ./_pictures/gif_4Dmap/25x25pixels_25slices.gif
    :scale: 50 %
    :align: center
    
    *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices).*
+
+References
+-------------
+.. [#Constantinides_2006] `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation." (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
+.. [#Němeček_2009] `Němeček J., "Nanoindentation of heterogeneous structural materials.", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
+.. [#Randall_2009] `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces." (2009). <https://doi.org/10.1557/jmr.2009.0149>`_

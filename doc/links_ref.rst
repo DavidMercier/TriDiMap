@@ -23,3 +23,7 @@ Links about (nano)indentation
 
 References
 ###########
+
+.. `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation." (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
+.. `Němeček J., "Nanoindentation of heterogeneous structural materials.", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
+.. `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces." (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
