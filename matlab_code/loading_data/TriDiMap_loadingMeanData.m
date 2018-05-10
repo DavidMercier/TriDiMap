@@ -342,15 +342,15 @@ minVal = round(100*(nanmin(nanmin(data.expValues_mat.H))))/100;
 if minVal < 0
     minVal = 0;
 end
-set(h.value_MinVal_GUI, 'String', num2str(nanmin(minVal)));
 maxVal = round(100*(nanmax(nanmax(data.expValues_mat.H))))/100;
 if maxVal < 0
     maxVal = 0;
 end
-set(h.value_MaxVal_GUI, 'String', num2str(nanmax(maxVal)));
-
-set(h.property_GUI, 'Value', 2);
-
+if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
+    set(h.value_MinVal_GUI, 'String', num2str(nanmin(minVal)));
+    set(h.value_MaxVal_GUI, 'String', num2str(nanmax(maxVal)));
+    set(h.property_GUI, 'Value', 2);
+end
 config.flagZplot = 0;
 
 g.data = data;
