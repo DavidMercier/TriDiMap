@@ -122,32 +122,142 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
         set(gui.handles.value_PrecHistRes_GUI, 'String', num2str(norma2));
         cla;
         %text(0.025*(maxXPos)+minE,maxYPos,char(t0));hold on;
-        %h1 = plot(exphist(:,1), exphist(:,2),'-ko','LineWidth',2);
-        h1 = bar(exphist(:,1), exphist(:,2),'FaceColor','none',...
-            'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
-        hold on;
+        if ~get(gui.handles.cb_colorHist_GUI, 'Value')
+            %h1 = plot(exphist(:,1), exphist(:,2),'-ko','LineWidth',2);
+            h1 = bar(exphist(:,1), exphist(:,2),'FaceColor','none',...
+                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5); %Unicolor barchart
+            hold on;
+        end
         
         for jj = 1:M
             t = sprintf('Phase %i\n%8.3f\n%8.3f\n%8.3f\n', jj, minmeanVec(jj), minstddev(jj), minf(jj));
             switch jj
                 case 1
+                    if get(gui.handles.cb_colorHist_GUI, 'Value')
+                        if M > 1
+                            if ~(sum(p2(:,jj+1))==0)
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj) & p2(:,jj+1)>p2(:,jj)),1));
+                            else
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj))));
+                            end
+                            indX(jj) = nanmin(find(exphist(:,1) >= X_intercepVec(jj)));
+                            h11 = bar(exphist(1:indX(jj),1), ...
+                                exphist(1:indX(jj),2), 'FaceColor','b',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        else
+                            h11 = bar(exphist(:,1), ...
+                                exphist(:,2), 'FaceColor','b',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        end
+                    end
+                    hold on;
                     text(0.05*(maxXPos)+minVal,maxYPos,char(t));hold on;
-                    h2 = plot(exphist(:,1),p2(:,1),'b','LineWidth',2);
+                    h2 = plot(exphist(:,1),p2(:,jj),'b','LineWidth',2);
                 case 2
+                    if get(gui.handles.cb_colorHist_GUI, 'Value')
+                        if M > 2
+                            if ~(sum(p2(:,jj+1))==0)
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj) & p2(:,jj+1)>p2(:,jj)),1));
+                            else
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj))));
+                            end
+                            indX(jj) = nanmin(find(exphist(:,1) >= X_intercepVec(jj)));
+                            h12 = bar(exphist(indX(jj-1):indX(jj),1), ...
+                                exphist(indX(jj-1):indX(jj),2), 'FaceColor','r',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        else
+                            h12 = bar(exphist(indX(jj-1):end,1), ...
+                                exphist(indX(jj-1):end,2), 'FaceColor','r',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        end
+                    end
+                    hold on;
                     text(0.15*(maxXPos)+minVal,maxYPos,char(t));hold on;
-                    h3 = plot(exphist(:,1),p2(:,2),'r','LineWidth',2);
+                    h3 = plot(exphist(:,1),p2(:,jj),'r','LineWidth',2);
                 case 3
+                    if get(gui.handles.cb_colorHist_GUI, 'Value')
+                        if M > 3
+                            if ~(sum(p2(:,jj+1))==0)
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj) & p2(:,jj+1)>p2(:,jj)),1));
+                            else
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj))));
+                            end
+                            indX(jj) = nanmin(find(exphist(:,1) >= X_intercepVec(jj)));
+                            h13 = bar(exphist(indX(jj-1):indX(jj),1), ...
+                                exphist(indX(jj-1):indX(jj),2), 'FaceColor','g',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        else
+                            h13 = bar(exphist(indX(jj-1):end,1), ...
+                                exphist(indX(jj-1):end,2), 'FaceColor','g',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        end
+                    end
+                    hold on;
                     text(0.25*(maxXPos)+minVal,maxYPos,char(t));hold on;
-                    h4 = plot(exphist(:,1),p2(:,3),'g','LineWidth',2);
+                    h4 = plot(exphist(:,1),p2(:,jj),'g','LineWidth',2);
                 case 4
+                    if get(gui.handles.cb_colorHist_GUI, 'Value')
+                        if M > 4
+                            if ~(sum(p2(:,jj+1))==0)
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj) & p2(:,jj+1)>p2(:,jj)),1));
+                            else
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj))));
+                            end
+                            indX(jj) = nanmin(find(exphist(:,1) >= X_intercepVec(jj)));
+                            h14 = bar(exphist(indX(jj-1):indX(jj),1), ...
+                                exphist(indX(jj-1):indX(jj),2), 'FaceColor','y',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        else
+                            h14 = bar(exphist(indX(jj-1):end,1), ...
+                                exphist(indX(jj-1):end,2), 'FaceColor','y',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        end
+                    end
+                    hold on;
                     text(0.35*(maxXPos)+minVal,maxYPos,char(t));hold on;
-                    h5 = plot(exphist(:,1),p2(:,4),'y','LineWidth',2);
+                    h5 = plot(exphist(:,1),p2(:,jj),'y','LineWidth',2);
                 case 5
+                    if get(gui.handles.cb_colorHist_GUI, 'Value')
+                        if M > 5
+                            if ~(sum(p2(:,jj+1))==0)
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj) & p2(:,jj+1)>p2(:,jj)),1));
+                            else
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj))));
+                            end
+                            indX(jj) = nanmin(find(exphist(:,1) >= X_intercepVec(jj)));
+                            h15 = bar(exphist(indX(jj-1):indX(jj),1), ...
+                                exphist(indX(jj-1):indX(jj),2), 'FaceColor','m',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        else
+                            h15 = bar(exphist(indX(jj-1):end,1), ...
+                                exphist(indX(jj-1):end,2), 'FaceColor','m',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        end
+                    end
+                    hold on;
                     text(0.45*(maxXPos)+minVal,maxYPos,char(t));hold on;
-                    h6 = plot(exphist(:,1),p2(:,5),'m','LineWidth',2);
+                    h6 = plot(exphist(:,1),p2(:,jj),'m','LineWidth',2);
                 case 6
+                    if get(gui.handles.cb_colorHist_GUI, 'Value')
+                        if M > 6
+                            if ~(sum(p2(:,jj+1))==0)
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj) & p2(:,jj+1)>p2(:,jj)),1));
+                            else
+                                X_intercepVec(jj) = nanmin(exphist((exphist(:,1) >= minmeanVec(jj))));
+                            end
+                            indX(jj) = nanmin(find(exphist(:,1) >= X_intercepVec(jj)));
+                            h16 = bar(exphist(indX(jj-1):indX(jj),1), ...
+                                exphist(indX(jj-1):indX(jj),2), 'FaceColor','c',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        else
+                            h16 = bar(exphist(indX(jj-1):end,1), ...
+                                exphist(indX(jj-1):end,2), 'FaceColor','c',...
+                                'EdgeColor',[0.5 0.5 0.5], 'LineWidth', 1.5);
+                        end
+                    end
+                    hold on;
                     text(0.55*(maxXPos)+minVal,maxYPos,char(t));hold on;
-                    h7 = plot(exphist(:,1),p2(:,6),'c','LineWidth',2);
+                    h7 = plot(exphist(:,1),p2(:,jj),'c','LineWidth',2);
                 otherwise ;
             end
             hold on;
@@ -156,17 +266,40 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
         hold on;
         switch M
             case 1
-                legend ('Experiment','#1','Overall PDF');
+                if get(gui.handles.cb_colorHist_GUI, 'Value')
+                    legend ('Experiment - P1','#1','Overall PDF');
+                else
+                end
             case 2
-                legend ('Experiment','#1','#2','Overall PDF');
+                if get(gui.handles.cb_colorHist_GUI, 'Value')
+                    legend ('Experiment - P1','#1','Experiment - P2','#2','Overall PDF');
+                else
+                    legend ('Experiment','#1','#2','Overall PDF');
+                end
             case 3
-                legend ('Experiment','#1','#2','#3','Overall PDF');
+                if get(gui.handles.cb_colorHist_GUI, 'Value')
+                    legend ('Experiment - P1','#1','Experiment - P2','#2','Experiment - P3','#3','Overall PDF');
+                else
+                    legend ('Experiment','#1','#2','#3','Overall PDF');
+                end
             case 4
-                legend ('Experiment','#1','#2','#3','#4','Overall PDF');
+                if get(gui.handles.cb_colorHist_GUI, 'Value')
+                    legend ('Experiment - P1','#1','Experiment - P2','#2','Experiment - P3','#3','Experiment - P4','#4','Overall PDF');
+                else
+                    legend ('Experiment','#1','#2','#3','#4','Overall PDF');
+                end
             case 5
-                legend ('Experiment','#1','#2','#3','#4','#5','Overall PDF');
+                if get(gui.handles.cb_colorHist_GUI, 'Value')
+                    legend ('Experiment - P1','#1','Experiment - P2','#2','Experiment - P3','#3','Experiment - P4','#4','Experiment - P5','#5','Overall PDF');
+                else
+                    legend ('Experiment','#1','#2','#3','#4','#5','Overall PDF');
+                end
             case 6
-                legend ('Experiment','#1','#2','#3','#4','#5','#6','Overall PDF');
+                if get(gui.handles.cb_colorHist_GUI, 'Value')
+                    legend ('Experiment - P1','#1','Experiment - P2','#2','Experiment - P3','#3','Experiment - P4','#4','Experiment - P5','#5','Experiment - P6','#6','Overall PDF');
+                else
+                    legend ('Experiment','#1','#2','#3','#4','#5','#6','Overall PDF');
+                end
             otherwise ;
         end
         legend boxoff;
@@ -186,4 +319,3 @@ else
     msgbox('Deconvolution aborted');
 end
 end
-
