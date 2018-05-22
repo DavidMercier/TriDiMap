@@ -7,10 +7,20 @@ gui = guidata(gcf);
 FontSizeVal = gui.config.FontSizeVal;
 rawData = gui.config.rawData;
 logZ = gui.config.logZ;
-cMap = gui.config.colorMap;
-cminVal = gui.config.cmin;
-cmaxVal = gui.config.cmax;
-intervalScaleBar = gui.config.intervalScaleBar;
+if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
+    cminVal = gui.config.cmin;
+    cmaxVal = gui.config.cmax;
+    intervalScaleBar = gui.config.intervalScaleBar;
+	cMap = gui.config.colorMap;
+else
+	cMap = [0 0 0
+		1 0 0
+		0 1 0
+        0 0 1];% k r g b
+    cminVal = 0;
+    cmaxVal = 4;
+    intervalScaleBar = 4;
+end
 contourPlot = gui.config.contourPlot;
 
 if nargin == 0
@@ -19,7 +29,11 @@ if nargin == 0
     if rawData < 8
         data2plot = gui.data.data2plot;
     else
-        data2plot = gui.slice_data_mat.InterSmoothed;
+        if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
+            data2plot = gui.slice_data_mat.InterSmoothed;
+        else
+            data2plot = gui.data.dataH_Sector;
+        end
     end
     flagPlot = 1;
 end
@@ -30,6 +44,10 @@ if ~rawData == 8
 else
     zString = gui.config.legendSlice;
     titleString = gui.config.legend;
+end
+
+if get(gui.handles.cb_plotSectMap_GUI, 'Value')
+    titleString = 'Phase';
 end
 
 if flagPlot
@@ -119,48 +137,50 @@ if flagPlot
         cMapNaN = [1 1 1 ; cmap_Flip];
     else
         cMapNaN = cmap_Flip;
-    end    
+    end
     if ~gui.config.flipColor
         colormap(cMapNaN);
     else
         colormap(flipud(cMapNaN));
     end
-    if ~gui.config.scaleAxis
-        if cminVal == round(min(data2plot(:)))
-            cminVal = gui.config.cminOld;
-            set(gui.handles.value_colorMin_GUI, 'String', num2str(cminVal));
-        end
-        if cmaxVal == round(max(data2plot(:)))
-            cmaxVal = gui.config.cmaxOld;
-            set(gui.handles.value_colorMax_GUI, 'String', num2str(cmaxVal));
-        end
-        if cminVal >= cmaxVal
-            cmaxVal = cminVal*1.2;
-            warning('Minimum property value has to be lower than the maximum property value !');
-            gui.config.cmaxVal = cmaxVal;
-            set(gui.handles.value_colorMax_GUI, 'String', num2str(cmaxVal));
-        end
-        if logZ && cminVal <= 0
-            cminVal = eps;
-        end
-        if logZ
-            caxis(log([cminVal, cmaxVal]));
+    if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
+        if ~gui.config.scaleAxis
+            if cminVal == round(min(data2plot(:)))
+                cminVal = gui.config.cminOld;
+                set(gui.handles.value_colorMin_GUI, 'String', num2str(cminVal));
+            end
+            if cmaxVal == round(max(data2plot(:)))
+                cmaxVal = gui.config.cmaxOld;
+                set(gui.handles.value_colorMax_GUI, 'String', num2str(cmaxVal));
+            end
+            if cminVal >= cmaxVal
+                cmaxVal = cminVal*1.2;
+                warning('Minimum property value has to be lower than the maximum property value !');
+                gui.config.cmaxVal = cmaxVal;
+                set(gui.handles.value_colorMax_GUI, 'String', num2str(cmaxVal));
+            end
+            if logZ && cminVal <= 0
+                cminVal = eps;
+            end
+            if logZ
+                caxis(log([cminVal, cmaxVal]));
+            else
+                caxis([cminVal, cmaxVal]);
+            end
         else
-            caxis([cminVal, cmaxVal]);
+            if cminVal ~= round(min(data2plot(:)))
+                gui.config.cminValOld = ...
+                    str2double(get(gui.handles.value_colorMin_GUI, 'String'));
+            end
+            if cmaxVal ~= round(max(data2plot(:)))
+                gui.config.cmaxValOld = ...
+                    str2double(get(gui.handles.value_colorMax_GUI, 'String'));
+            end
+            set(gui.handles.value_colorMin_GUI, 'String', num2str(round(min(data2plot(:)))));
+            set(gui.handles.value_colorMax_GUI, 'String', num2str(round(max(data2plot(:)))));
+            gui.config.cminVal = num2str(round(min(data2plot(:))));
+            gui.config.cmaxVal = num2str(round(max(data2plot(:))));
         end
-    else
-        if cminVal ~= round(min(data2plot(:)))
-            gui.config.cminValOld = ...
-                str2double(get(gui.handles.value_colorMin_GUI, 'String'));
-        end
-        if cmaxVal ~= round(max(data2plot(:)))
-            gui.config.cmaxValOld = ...
-                str2double(get(gui.handles.value_colorMax_GUI, 'String'));
-        end
-        set(gui.handles.value_colorMin_GUI, 'String', num2str(round(min(data2plot(:)))));
-        set(gui.handles.value_colorMax_GUI, 'String', num2str(round(max(data2plot(:)))));
-        gui.config.cminVal = num2str(round(min(data2plot(:))));
-        gui.config.cmaxVal = num2str(round(max(data2plot(:))));
     end
     hold on;
     
@@ -200,6 +220,9 @@ if flagPlot
     end
 else
     errordlg('Wrong plot! Try again...');
+end
+if get(gui.handles.cb_plotSectMap_GUI, 'Value')
+    colorbar off
 end
 
 if gui.config.grid

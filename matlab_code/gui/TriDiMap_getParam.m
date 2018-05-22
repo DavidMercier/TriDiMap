@@ -33,6 +33,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         gui.config.MaxHistVal = str2num(get(h.value_MaxValHist_GUI, 'String'));
         gui.config.MinCDFVal = str2num(get(h.value_MinValCDF_GUI, 'String'));
         gui.config.MaxCDFVal = str2num(get(h.value_MaxValCDF_GUI, 'String'));
+        set(gui.handles.cb_plotSectMap_GUI, 'Value', 0);
     end
     if gui.config.property < 3
         set(gui.handles.title_z_values_prop_GUI, 'Visible', 'on');

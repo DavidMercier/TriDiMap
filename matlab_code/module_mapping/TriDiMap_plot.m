@@ -8,12 +8,16 @@ if rawData < 8
     xData_interp = gui.data.xData_interp;
     yData_interp = gui.data.yData_interp;
     data2plot = gui.data.data2plot;
+    if get(gui.handles.cb_plotSectMap_GUI, 'Value')
+       data2plot = gui.data.dataH_Sector; 
+    end
 else
     xData_interp = gui.slice_data_mat.xData_interp;
     yData_interp = gui.slice_data_mat.yData_interp;
     zData_interp = gui.slice_data_mat.zData_interp;
     data2plot = fliplr(rot90(gui.slice_data_mat.InterSmoothed));
 end
+
 cMap = gui.config.colorMap;
 flagPlot = 0;
 
@@ -57,7 +61,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         set(gca,'YDir','normal');
         % Following line to not plot NaN but doesn't work...
-        %set(hFig,'AlphaData',~isnan(data2plot')); 
+        %set(hFig,'AlphaData',~isnan(data2plot'));
         flagPlot = 1;
     elseif rawData == 2 && flagSize
         if contourPlot < 2
@@ -215,7 +219,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
                 titleFig = fullfile(pathnameFig, [filenameFig ,'_',str_ii]);
                 export_fig(titleFig, isolate_axes(gca));
                 close(handleFig(jj));
-                jj = jj+1;                
+                jj = jj+1;
             end
         else
             hFig = slice(xData_interp,yData_interp,zData_interp,...
@@ -255,4 +259,5 @@ else
     
     guidata(gcf, gui);
     
+end
 end

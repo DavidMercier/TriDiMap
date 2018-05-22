@@ -133,6 +133,7 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
             t = sprintf('Phase %i\n%8.3f\n%8.3f\n%8.3f\n', jj, minmeanVec(jj), minstddev(jj), minf(jj));
             switch jj
                 case 1
+                    ht1 = text(0.05*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 1
                             if ~(sum(p2(:,jj+1))==0)
@@ -151,9 +152,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    text(0.05*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h2 = plot(exphist(:,1),p2(:,jj),'b','LineWidth',2);
                 case 2
+                    ht2 = text(0.15*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 2
                             if ~(sum(p2(:,jj+1))==0)
@@ -172,9 +173,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    text(0.15*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h3 = plot(exphist(:,1),p2(:,jj),'r','LineWidth',2);
                 case 3
+                    ht3 = text(0.25*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 3
                             if ~(sum(p2(:,jj+1))==0)
@@ -193,9 +194,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    text(0.25*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h4 = plot(exphist(:,1),p2(:,jj),'g','LineWidth',2);
                 case 4
+                    ht4 = text(0.35*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 4
                             if ~(sum(p2(:,jj+1))==0)
@@ -214,9 +215,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    text(0.35*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h5 = plot(exphist(:,1),p2(:,jj),'y','LineWidth',2);
                 case 5
+                    ht5 = text(0.45*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 5
                             if ~(sum(p2(:,jj+1))==0)
@@ -235,9 +236,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    text(0.45*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h6 = plot(exphist(:,1),p2(:,jj),'m','LineWidth',2);
                 case 6
+                    ht6 = text(0.55*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 6
                             if ~(sum(p2(:,jj+1))==0)
@@ -256,11 +257,69 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    text(0.55*(maxXPos)+minVal,maxYPos,char(t));hold on;
                     h7 = plot(exphist(:,1),p2(:,jj),'c','LineWidth',2);
                 otherwise ;
             end
             hold on;
+        end
+        if get(gui.handles.cb_colorHist_GUI, 'Value')
+            if M == 1
+                set(ht1, 'Color', 'b');
+            elseif M == 2
+                set(ht1, 'Color', 'b');
+                set(ht2, 'Color', 'r');
+            elseif M == 3
+                set(ht1, 'Color', 'b');
+                set(ht2, 'Color', 'r');
+                set(ht3, 'Color', 'g');
+            elseif M == 4
+                set(ht1, 'Color', 'b');
+                set(ht2, 'Color', 'r');
+                set(ht3, 'Color', 'g');
+                set(ht4, 'Color', 'y');
+            elseif M == 5
+                set(ht1, 'Color', 'b');
+                set(ht2, 'Color', 'r');
+                set(ht3, 'Color', 'g');
+                set(ht4, 'Color', 'y');
+                set(ht5, 'Color', 'm');
+            elseif M == 6
+                set(ht1, 'Color', 'b');
+                set(ht2, 'Color', 'r');
+                set(ht3, 'Color', 'g');
+                set(ht4, 'Color', 'y');
+                set(ht5, 'Color', 'm');
+                set(ht6, 'Color', 'c');
+            end
+        else
+            if M == 1
+                set(ht1, 'Color', 'k');
+            elseif M == 2
+                set(ht1, 'Color', 'k');
+                set(ht2, 'Color', 'k');
+            elseif M == 3
+                set(ht1, 'Color', 'k');
+                set(ht2, 'Color', 'k');
+                set(ht3, 'Color', 'k');
+            elseif M == 4
+                set(ht1, 'Color', 'k');
+                set(ht2, 'Color', 'k');
+                set(ht3, 'Color', 'k');
+                set(ht4, 'Color', 'k');
+            elseif M == 5
+                set(ht1, 'Color', 'k');
+                set(ht2, 'Color', 'k');
+                set(ht3, 'Color', 'k');
+                set(ht4, 'Color', 'k');
+                set(ht5, 'Color', 'k');
+            elseif M == 6
+                set(ht1, 'Color', 'k');
+                set(ht2, 'Color', 'k');
+                set(ht3, 'Color', 'k');
+                set(ht4, 'Color', 'k');
+                set(ht5, 'Color', 'k');
+                set(ht6, 'Color', 'k');
+            end
         end
         h8 = plot(exphist(:,1),p_all2,'k:','LineWidth',2);
         hold on;
