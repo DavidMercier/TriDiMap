@@ -13,10 +13,11 @@ if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
     intervalScaleBar = gui.config.intervalScaleBar;
 	cMap = gui.config.colorMap;
 else
-	cMap = [0 0 0
+	cMap = [1 1 1
+        0 0 0
 		1 0 0
 		0 1 0
-        0 0 1];% k r g b
+        0 0 1];% w r k b g
     cminVal = 0;
     cmaxVal = 4;
     intervalScaleBar = 4;
@@ -119,7 +120,11 @@ if flagPlot
                 if logZ
                     cmap = cMap;
                 else
-                    cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+                    if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
+                        cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+                    else
+                        cmap = cMap;
+                    end
                 end
             end
         end
