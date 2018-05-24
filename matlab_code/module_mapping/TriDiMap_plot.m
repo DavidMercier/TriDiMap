@@ -8,8 +8,10 @@ if rawData < 8
     xData_interp = gui.data.xData_interp;
     yData_interp = gui.data.yData_interp;
     data2plot = gui.data.data2plot;
-    if get(gui.handles.cb_plotSectMap_GUI, 'Value')
-       data2plot = gui.data.dataH_Sector; 
+    if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
+        if get(gui.handles.cb_plotSectMap_GUI, 'Value')
+            data2plot = gui.data.dataH_Sector;
+        end
     end
 else
     xData_interp = gui.slice_data_mat.xData_interp;

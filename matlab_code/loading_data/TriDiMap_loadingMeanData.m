@@ -7,7 +7,9 @@ g = guidata(gcf);
 config = g.config;
 h = g.handles;
 config.SliceFlagData = 0;
-set(h.cb_plotSectMap_GUI, 'Value', 0);
+if strcmp(get(g.handles.binarization_GUI, 'String'), 'BINARIZATION')
+    set(h.cb_plotSectMap_GUI, 'Value', 0);
+end
 
 %% Open window to select file
 title_importdata_Window = 'File Selector from';

@@ -17,7 +17,7 @@ else
         0 0 0
 		1 0 0
 		0 1 0
-        0 0 1];% w r k b g
+        0 0 1];% w k r g b
     cminVal = 0;
     cmaxVal = 4;
     intervalScaleBar = 4;
