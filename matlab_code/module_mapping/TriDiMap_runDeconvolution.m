@@ -373,8 +373,10 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
     ylim([0 1.2*maxYPos]);
 end
 if get(gui.handles.cb_deconvolutionHist_GUI, 'Value');
-    msgbox('Deconvolution completed');
+    %msgbox('Deconvolution completed');
+    title('Deconvolution process completed');
 else
-    msgbox('Deconvolution aborted');
+    %msgbox('Deconvolution aborted');
+    title('Deconvolution process aborted');
 end
 end

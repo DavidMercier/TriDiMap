@@ -334,7 +334,6 @@ if config.flag_data
     else
         config.flagValid = 0;
     end
-end
 
 set(h.value_MinXCrop_GUI, 'String', 1);
 set(h.value_MaxXCrop_GUI, 'String', num2str(get(h.value_numXindents_GUI, 'String')));
@@ -372,5 +371,6 @@ if config.flagValid
         guidata(gcf, g);
         TriDiMap_runBin;
     end
+end
 end
 end
