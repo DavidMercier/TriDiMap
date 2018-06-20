@@ -91,7 +91,7 @@ probability density function; deconvolution; multimodal Gaussian fit; cumulative
 
 Contributors
 -------------
-- Pierre Huyghes (ULB, Bruxelles) and Antoine Hillhorst (UCL) contributed to the Matlab code.
+- Pierre Huyghes (ULB, Bruxelles) and Antoine Hillhorst (UCL, Louvain-La-Neuve) contributed to the Matlab code.
 
 Acknowledgements
 -----------------
@@ -99,6 +99,8 @@ The author is grateful to `Dr. Jiri Nemecek <http://ksm.fsv.cvut.cz/~nemecek/?pa
 and to Dr. Nicholas Randall from `Anton Paar <https://www.anton-paar.com>`_, for discussions and many advices about nanoindentation mapping.
 
 The author is grateful to Debora Rossell (`OCAS <http://www.ocas.be/>`_, Belgium (Zwijnaarde)), for providing example files.
+
+The author is grateful to Jean-François Vanhumbeeck (`CRM Group <www.crmgroup.be>`_, Belgium (Liège)), for fruitful discussion and co-authoring of reference papers.
 
 Screenshots
 -------------
