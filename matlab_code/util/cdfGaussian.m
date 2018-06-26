@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function y = cdfGaussian(x,sigma,mu)
+function y = cdfGaussian(x,mu,sigma)
 %% Function to plot cdf written by A. Hillhorst
 
 y = zeros(length(mu),length(x));
