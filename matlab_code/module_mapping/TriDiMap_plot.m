@@ -224,12 +224,16 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
                 jj = jj+1;
             end
         else
-            hFig = slice(xData_interp,yData_interp,zData_interp,...
-                data2plot,xslice,yslice,zslice);%'linear', 'cubic', 'nearest'
-            set(hFig, 'EdgeColor','none', 'FaceColor','flat'); %interp
-            alpha(gui.config.alpha);
-            set(gca,'ZDir','reverse');
-            hold on;
+            try
+                hFig = slice(xData_interp,yData_interp,zData_interp,...
+                    data2plot,xslice,yslice,zslice);%'linear', 'cubic', 'nearest'
+                set(hFig, 'EdgeColor','none', 'FaceColor','flat'); %interp
+                alpha(gui.config.alpha);
+                set(gca,'ZDir','reverse');
+                hold on;
+            catch
+                errordlg('Wrong inputs! No CSM mode, but only 1 value at maximum load...');
+            end
         end
         gui.config.gifFlag = 0;
         guidata(gcf, gui);

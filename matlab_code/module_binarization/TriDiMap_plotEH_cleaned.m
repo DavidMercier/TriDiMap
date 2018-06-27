@@ -7,10 +7,22 @@ g = guidata(gcf);
 if g.config.data_path
     Hmat = rot90(g.data.expValues_mat.H);
     Emat = rot90(g.data.expValues_mat.YM);
-    H_HardPh_Ref = 3.9;
-    E_HardPh_Ref = 219.7;
-    H_SoftPh_Ref = 11.7;
-    E_SoftPh_Ref = 343.2;
+    
+    % Inputs for reference values
+    prompt = {'Enter hardness of the soft phase:',...
+        'Enter elastic modulus of the soft phase:', ...
+        'Enter hardness of the hard phase:', ...
+        'Enter elastic modulus of the hard phase:'};
+    title = 'Input';
+    dims = [1 35];
+    definput = {'4','200', '12', '350'};
+    answer = inputdlg(prompt,title,dims,definput);
+
+    H_HardPh_Ref = str2num(char(answer(1)));
+    E_HardPh_Ref = str2num(char(answer(2)));
+    H_SoftPh_Ref = str2num(char(answer(3)));
+    E_SoftPh_Ref = str2num(char(answer(4)));
+    
     xMax = max(max(Hmat));
     yMax = max(max(Emat));
     critH = g.config.criterionBinMap_H;
