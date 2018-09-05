@@ -56,4 +56,3 @@ Links
 
 * `Guidata on Matlab website. <http://www.mathworks.fr/fr/help/matlab/ref/guidata.html>`_   
 * `Matlab GUI. <http://www.mathworks.com/discovery/matlab-gui.html>`_
-* `Coding GUI behavior. <http://www.mathworks.fr/fr/help/matlab/code-to-run-the-gui.html?searchHighlight=gui>`_
