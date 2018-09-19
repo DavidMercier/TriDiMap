@@ -54,5 +54,4 @@ First of all a GUI is a Graphical User Interface.
 Links
 #######
 
-* `Guidata on Matlab website. <http://www.mathworks.fr/fr/help/matlab/ref/guidata.html>`_   
 * `Matlab GUI. <http://www.mathworks.com/discovery/matlab-gui.html>`_
