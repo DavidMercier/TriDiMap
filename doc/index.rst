@@ -74,9 +74,9 @@ Contents
    
 Author
 ----------
-Written by D. Mercier [1] (david9684@gmail.com).
+:Author: `David Mercier <david9684@gmail.com>`_ [1]
 
-[1] CRM Group, 4000 Liège, Belgium (`www.crmgroup.be <www.crmgroup.be>`_)
+[1] `CRM Group, Avenue du Bois Saint-Jean 21, B27 – Quartier Polytech 4, 4000 Liège, Belgium <http://www.crmgroup.be/>`_
 
 Reference papers
 ------------------
