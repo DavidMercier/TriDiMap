@@ -28,7 +28,9 @@ Developed with Matlab R2014a.
 
 Author
 ----------
-Written by D. Mercier (david9684@gmail.com).
+:Author: `David Mercier <david9684@gmail.com>`_ [1]
+
+[1] `CRM Group, Avenue du Bois Saint-Jean 21, B27 – Quartier Polytech 4, 4000 Liège, Belgium <http://www.crmgroup.be/>`_
 
 Reference papers
 ------------------
