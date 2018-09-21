@@ -11,12 +11,12 @@ if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
     cminVal = gui.config.cmin;
     cmaxVal = gui.config.cmax;
     intervalScaleBar = gui.config.intervalScaleBar;
-	cMap = gui.config.colorMap;
+    cMap = gui.config.colorMap;
 else
-	cMap = [1 1 1
+    cMap = [1 1 1
         0 0 0
-		1 0 0
-		0 1 0
+        1 0 0
+        0 1 0
         0 0 1];% w k r g b
     cminVal = 0;
     cmaxVal = 4;
@@ -212,15 +212,35 @@ if flagPlot
     hold off;
     guidata(gcf, gui);
     
-    if gui.config.minorTicks;
-        if sscanf(gui.config.MatlabRelease,'(R%i') > 2014
+    if gui.config.minorTicks
+        %         if sscanf(gui.config.MatlabRelease,'(R%i') > 2014
+        try
             set(gui.handles.hcb1, 'YMinorTick', 'on');
-        else
-            try
-                set(gui.handles.hcb1, 'YMinorTick', 'on');
-            catch err
-                display(err);
-            end
+        catch err
+            display(err.message);
+            gui.handles.ha = axes('position',gui.handles.hcb1.Position);
+            gui.handles.ha.YLim = gui.handles.hcb1.Limits;
+            gui.handles.ha.Color = 'none';
+            gui.handles.ha.XColor = 'none';
+            gui.handles.ha.YTickLabelRotation = 45.0;
+            gui.handles.ha.YTickLabel = [];
+            gui.handles.ha.XTickLabel = [];
+            gui.handles.ha.YTick = gui.handles.hcb1.Ticks;
+            gui.handles.ha.TickDir = gui.handles.hcb1.TickDirection;
+            gui.handles.ha.Box = 'on';
+            set(gui.handles.ha,'YMinorTick','on');
+        end
+        %         else
+        %             try
+        %                 set(gui.handles.hcb1, 'YMinorTick', 'on');
+        %             catch err
+        %                 display(err.message);
+        %             end
+        %         end
+    else
+        try
+            delete(gui.handles.ha);
+        catch
         end
     end
 else

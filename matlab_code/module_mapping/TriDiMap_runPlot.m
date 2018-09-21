@@ -6,6 +6,7 @@ if nargin < 1
 end
 reset(gca);
 gui = guidata(gcf);
+axes(gui.handles.AxisPlot_GUI);
 gui.config.gifFlag = gifFlag;
 guidata(gcf, gui); gui = guidata(gcf);
 if ~gui.config.saveFlag

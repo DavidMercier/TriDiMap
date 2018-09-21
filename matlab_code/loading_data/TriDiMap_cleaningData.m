@@ -8,7 +8,7 @@ data(data == 0) = NaN;
 data(data > 1000) = NaN;
 data(data < 0) = NaN;
 [row, col] = find(isnan(data));
-ratioNan = 100*length(row)/(size(data,1)*size(data,2));
+ratioNan = round(100*(100*length(row)/(size(data,1)*size(data,2))))/100;
 
 for ii = 1:length(row)
     if row(ii) > 1 && col(ii) > 1 && ...
