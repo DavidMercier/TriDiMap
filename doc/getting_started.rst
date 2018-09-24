@@ -8,7 +8,7 @@ First of all, download the source code of the |matlab| toolbox.
 `Source code is hosted at Github. <https://github.com/DavidMercier/TriDiMap>`_
 
   
-How to use the GUI for indentation data analysis ?
+How to use the GUI for indentation mapping?
 ####################################################
 
 First of all a GUI is a Graphical User Interface.
