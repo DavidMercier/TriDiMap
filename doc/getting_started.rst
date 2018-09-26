@@ -41,12 +41,12 @@ First of all a GUI is a Graphical User Interface.
 
 * Hardness map is plotted by default.
 
-* It is possible to modify (to crop, to smooth, to set other colorbar...) this map and to plot other 2D or 3D maps, and to obtain the statistical distribution of mechanical properties:
-- `2D map <https://tridimap.readthedocs.io/en/latest/mapping.html>`_
-- `3D map <https://tridimap.readthedocs.io/en/latest/tomography.html>`_
-- `Statistical analysis <https://tridimap.readthedocs.io/en/latest/pdf_cdf.html>`_
-- `Hardness vs Elastic modulus map <https://tridimap.readthedocs.io/en/latest/E_H.html>`_
-- `Image correlation <https://tridimap.readthedocs.io/en/latest/image_correlation.html>`_
+* It is possible to modify (to crop, to smooth, to set other colorbar...) this map and to plot other 2D or 3D maps, and to obtain the statistical distribution of mechanical properties
+  - `2D map <https://tridimap.readthedocs.io/en/latest/mapping.html>`_
+  - `3D map <https://tridimap.readthedocs.io/en/latest/tomography.html>`_
+  - `Statistical analysis <https://tridimap.readthedocs.io/en/latest/pdf_cdf.html>`_
+  - `Hardness vs Elastic modulus map <https://tridimap.readthedocs.io/en/latest/E_H.html>`_
+  - `Image correlation <https://tridimap.readthedocs.io/en/latest/image_correlation.html>`_
 
 Check the different file format possible to import in the TriDiMap toolbox: `File formats <https://tridimap.readthedocs.io/en/latest/examples.html>`_
 
