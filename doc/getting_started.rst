@@ -8,7 +8,7 @@ First of all, download the source code of the |matlab| toolbox.
 `Source code is hosted at Github. <https://github.com/DavidMercier/TriDiMap>`_
 
   
-How to use the GUI for indentation data analysis ?
+How to use the GUI for indentation mapping?
 ####################################################
 
 First of all a GUI is a Graphical User Interface.
@@ -41,7 +41,19 @@ First of all a GUI is a Graphical User Interface.
 
 * Hardness map is plotted by default.
 
-* It is possible to plot other maps, statistical distribution of mechanical properties (see 'Plot' menu).
+* It is possible to modify (to crop, to smooth, to set other colorbar...) this map and to plot other 2D or 3D maps, and to obtain the statistical distribution of mechanical properties:
+
+  - `2D map <https://tridimap.readthedocs.io/en/latest/mapping.html>`_
+  
+  - `3D map <https://tridimap.readthedocs.io/en/latest/tomography.html>`_
+  
+  - `Statistical analysis <https://tridimap.readthedocs.io/en/latest/pdf_cdf.html>`_
+  
+  - `Hardness vs Elastic modulus map <https://tridimap.readthedocs.io/en/latest/E_H.html>`_
+  
+  - `Image correlation <https://tridimap.readthedocs.io/en/latest/image_correlation.html>`_
+
+Check the different file format possible to import in the TriDiMap toolbox: `File formats <https://tridimap.readthedocs.io/en/latest/examples.html>`_
 
 .. figure:: ./_pictures/MTS_example1_25x25_H_GUI_00.png
    :scale: 40 %
@@ -49,9 +61,8 @@ First of all a GUI is a Graphical User Interface.
    
    *Plot of the hardness map after loading of data.*
 
-* It is possible to crop dataset, to set min/max values, to modify colorbar options...
-   
 Links
 #######
 
-* `Matlab GUI. <http://www.mathworks.com/discovery/matlab-gui.html>`_
+* `Matlab GUI <http://www.mathworks.com/discovery/matlab-gui.html>`_
+* `Other links and references <https://tridimap.readthedocs.io/en/latest/links_ref.html>`_
