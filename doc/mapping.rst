@@ -25,8 +25,8 @@ and a mechanical property value is attributed to the empty pixel, by doing a sim
    :align: center
    
    *Raw 2D hardness map obtained from a 25x25 indentation grid.*
-   
- .. figure:: ./_pictures/RemoveNaN.png
+
+.. figure:: ./_pictures/RemoveNaN.png
    :scale: 40 %
    :align: center
    
@@ -78,8 +78,7 @@ It is possible to plot similar other maps using different functions of Matlab, l
 --> Log / Grid / Indents positions
 
 ..  warning::
-    Indentation experiments are very sensitive to environmental effects and thermal drift.
-	Usually, performing such indentation maps can be time-consuming....   
+    Indentation experiments are very sensitive to environmental effects and thermal drift. Usually, performing such indentation maps can be time-consuming....   
 
 
 References

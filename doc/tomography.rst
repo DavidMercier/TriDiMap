@@ -11,7 +11,7 @@ gradients [#Tromas_2012]_ or tomograms [#Coy_2016]_ (i.e., volumetric informatio
 3D interpolation...
 
 .. figure:: ./_pictures/gif_4Dmap/25x25pixels_25slices.gif
-   :scale: 50 %
+   :scale: 100 %
    :align: center
    
    *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices).*
