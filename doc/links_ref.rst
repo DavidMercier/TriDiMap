@@ -14,9 +14,9 @@ Other interesting Matlab toolboxes about indentation
 * `STABiX <https://github.com/stabix/stabix>`_
 * `STABiX Documentation <https://stabix.readthedocs.io/en/latest/>`_
 * `NIMS <https://github.com/DavidMercier/NIMS>`_
-* `NIMS Documentation<https://nims.readthedocs.io/en/latest/>`_
+* `NIMS Documentation <https://nims.readthedocs.io/en/latest/>`_
 * `PopIn <https://github.com/DavidMercier/PopIn>`_
-* `PopIn Documentation<https://popin.readthedocs.io/en/latest/>`_
+* `PopIn Documentation <https://popin.readthedocs.io/en/latest/>`_
 
 Links about (nano)indentation
 ###############################
