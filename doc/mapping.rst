@@ -52,6 +52,7 @@ Interpolation step
 -----------------------
 
 The |matlab| function used to interpolate linearly the indentation maps is: `interp2.m <https://fr.mathworks.com/help/matlab/ref/interp2.html>`_
+
 The process of interpolation does not modify the raw data intensity values, but increase the number of pixels, by a given factor of x2, x4, x8 or x16 (default values, which can be modified).
 For example, a map of 25x25 linearly interpolated by a factor of x2, becomes a map of 49x49.
 
@@ -65,6 +66,7 @@ Smoothing step
 -----------------------
 
 The |matlab| third party code used to smooth the indentation maps is: `smooth2a.m <https://fr.mathworks.com/matlabcentral/fileexchange/23287-smooth2a>`_
+
 This smooth operation of a 2D matrix is based on a mean filter over a user-defined rectangle.
 The smoothing step is a solution to apply to smooth sharp peaks or sharp valleys on the mechanical topography.
 Sharpness can arises when there is a large difference in term of intensity between 1 pixel and its surrounding neighbors (e.g. surface effect, or hard particle on a soft matrix, etc...).
@@ -103,4 +105,4 @@ References
 .. [#Constantinides_2006] `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation" (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
 .. [#Němeček_2009] `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
 .. [#Randall_2009] `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces" (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
-.. [#Buckle_1973] `Buckle H., in: J.W. Westbrook, H. Conrad (Eds.), The Science of Hardness Testing and Its Applications, American Society for Metals, Metal Park OH, 1973, pp. 453–459.`_
+.. [#Buckle_1973] Buckle H., in: J.W. Westbrook, H. Conrad (Eds.), The Science of Hardness Testing and Its Applications, American Society for Metals, Metal Park OH, 1973, pp. 453–459.

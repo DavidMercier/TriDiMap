@@ -11,7 +11,7 @@ By stacking each map or slice on each other, it is possible to generate a 3D rep
 In the literature, such maps are sometimes described as 4D map [#Coy_2016]_, with the first and the second dimensions as the indentation position,
 the 3rd dimension as the indentation depth and the 4th dimension as the mechanical property value.
 
-The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.mathworks.com/help/matlab/ref/slice.html`_
+The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.mathworks.com/help/matlab/ref/slice.html>`_
 
 ..  warning::
     It is not a 3D reconstruction, thus no need to align, to rotate or to distort the different slices. There is no misalignment or local disorientation,
@@ -22,11 +22,9 @@ The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.ma
    :align: center
    
    *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices).*
-   
 
 .. note::
-    To generate such 4D map, it is required the first time to load raw *.xls files.
-	Given the fact, that the imported data is saved as *.mat into the same folder, it is possible the next time to reload only this *.mat file to save some loading time...
+    To generate such 4D map, it is required the first time to load raw *.xls files. Given the fact, that the imported data is saved as *.mat into the same folder, it is possible the next time to reload only this *.mat file to save some loading time...
 
 References
 -------------
