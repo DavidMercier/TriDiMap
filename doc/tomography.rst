@@ -6,15 +6,27 @@
 
 Instrumented indentation technique provides usually contact stiffness, indenter displacement, and applied load as a function of position (horizontal and vertical), 
 within a volume of tested material by using the dynamic mode (i.e. continuous stiffness measurement or CSM). From such experiments, it is possible to obtain precise and accurate mechanical property 
-gradients [#Tromas_2012]_ or tomograms [#Coy_2016]_ (i.e., volumetric information).
+gradients [#Tromas_2012]_ or tomograms [#Coy_2016]_ (i.e., volumetric information). At each indentation depth, corresponds a mechanical property map (i.e. a slice).
+By stacking each map or slice on each other, it is possible to generate a 3D representation of the indentation experiment.
+In the literature, such maps are sometimes described as 4D map [#Coy_2016]_, with the first and the second dimensions as the indentation position,
+the 3rd dimension as the indentation depth and the 4th dimension as the mechanical property value.
 
-3D interpolation...
+The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.mathworks.com/help/matlab/ref/slice.html`_
+
+..  warning::
+    It is not a 3D reconstruction, thus no need to align, to rotate or to distort the different slices. There is no misalignment or local disorientation,
+	only if the indentatiom direction is not perpendicular to the sample surface.
 
 .. figure:: ./_pictures/gif_4Dmap/25x25pixels_25slices.gif
    :scale: 100 %
    :align: center
    
    *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices).*
+   
+
+.. note::
+    To generate such 4D map, it is required the first time to load raw *.xls files.
+	Given the fact, that the imported data is saved as *.mat into the same folder, it is possible the next time to reload only this *.mat file to save some loading time...
 
 References
 -------------

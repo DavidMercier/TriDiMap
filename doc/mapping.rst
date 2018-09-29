@@ -12,11 +12,16 @@ but also in the following references [#Němeček_2009]_ and [#Randall_2009]_.
 
 Position of each (nano-)indentation test or distance between indents has to be known or recorded,
 in order to plot a consistent mechanical property map representative of the experiment.
+
+An indentation map is represented mathematically using a matrix of N columns by M rows. If positions of indentation tests are not known,
+it is required to know the pattern of indentation tests (line by line, snake shape, diagonals...).
+
 An example of 2D generated hardness map is given below. By default, a pixelized map is plotted.
 Each pixel represents an indentation test and the color of a pixel corresponds to the the intensity of the calculated mechanical property.
 In the given following screenshot, the white pixels corresponds to tests, which failed (NaN = Not a numeric).
 Indentation failure corresponds to traditional artifacts of indentation testing (error on surface detection beceause of contamination/roughness/topography effects, error with the thermal drift correction, etc...) 
-A ratio of failed tests over total number of indentation tests is given on the left part of the GUI.
+A ratio of failed tests over total number of indentation tests is given on the left part of the GUI, to estimate the experimental validity of the indentation tests.
+For example, more than 20% of failed tests start to be problematic for the results analysis... But, this is an empirical statement, which depends on the NaN pixels distribution over the map.
 To remove these empty pixels, it is possible to tick a checkbox into the settings on the GUI,
 and a mechanical property value is attributed to the empty pixel, by doing a simple averaging of the surrounding pixels (8 in total).
 
@@ -30,7 +35,7 @@ and a mechanical property value is attributed to the empty pixel, by doing a sim
    :scale: 40 %
    :align: center
    
-   *2D hardness map obtained from a 25x25 indentation grid without failed indentation.*  
+   *2D hardness map obtained from a 25x25 indentation grid with (left) and without (right) failed indentation.*  
    
 Indentation length scales
 ---------------------------
@@ -46,6 +51,10 @@ According to Constantinides et al. [#Constantinides_2006]_, the indentation dept
 Interpolation step
 -----------------------
 
+The |matlab| function used to interpolate linearly the indentation maps is: `interp2.m <https://fr.mathworks.com/help/matlab/ref/interp2.html>`_
+The process of interpolation does not modify the raw data intensity values, but increase the number of pixels, by a given factor of x2, x4, x8 or x16 (default values, which can be modified).
+For example, a map of 25x25 linearly interpolated by a factor of x2, becomes a map of 49x49.
+
 .. figure:: ./_pictures/InterpolationStep.png
    :scale: 40 %
    :align: center
@@ -54,6 +63,12 @@ Interpolation step
 
 Smoothing step
 -----------------------
+
+The |matlab| third party code used to smooth the indentation maps is: `smooth2a.m <https://fr.mathworks.com/matlabcentral/fileexchange/23287-smooth2a>`_
+This smooth operation of a 2D matrix is based on a mean filter over a user-defined rectangle.
+The smoothing step is a solution to apply to smooth sharp peaks or sharp valleys on the mechanical topography.
+Sharpness can arises when there is a large difference in term of intensity between 1 pixel and its surrounding neighbors (e.g. surface effect, or hard particle on a soft matrix, etc...).
+
 
 .. figure:: ./_pictures/SmoothingStep.png
    :scale: 40 %
@@ -68,6 +83,8 @@ Smoothing step
    :align: center
    
    *Process to obtain error map after smoothing step.*  
+
+The |matlab| function used to interpolate and to smooth the indentation maps using TriDiMap is: `TriDiMap_interpolation_smoothing.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/module_mapping/TriDiMap_interpolation_smoothing.m>`_
 
 Vizualization of maps
 -----------------------
