@@ -65,6 +65,7 @@ Contents
    
    getting_started
    mapping
+   map_options
    tomography
    pdf_cdf
    E_H

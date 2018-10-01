@@ -78,7 +78,8 @@ Sharpness can arises when there is a large difference in term of intensity betwe
    
    *Process of smoothing step.*
    
---> Vizualization of the error map
+Smoothing process is a modification of the raw values and an error map can be generated, by calculating
+the difference between the non smoothed map (raw map) and the smoothed map.
 
 .. figure:: ./_pictures/SmoothingStepError.png
    :scale: 40 %
@@ -98,6 +99,8 @@ It is possible to plot similar other maps using different functions of Matlab, l
 
 ..  warning::
     Indentation experiments are very sensitive to environmental effects and thermal drift. Usually, performing such indentation maps can be time-consuming....   
+
+
 
 
 References
