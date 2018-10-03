@@ -3,6 +3,8 @@
 
 .. include:: includes.rst
 
+4D map
+-------------
 
 Instrumented indentation technique provides usually contact stiffness, indenter displacement, and applied load as a function of position (horizontal and vertical), 
 within a volume of tested material by using the dynamic mode (i.e. continuous stiffness measurement or CSM). From such experiments, it is possible to obtain precise and accurate mechanical property 

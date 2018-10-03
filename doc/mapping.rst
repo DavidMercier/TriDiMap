@@ -102,10 +102,13 @@ The |matlab| function used to interpolate and to smooth the indentation maps usi
 Vizualization of maps
 -----------------------
 
-It is possible to plot similar other maps using different functions of Matlab, like 2D, 3D
-
---> Type of 2D maps
-
+It is possible to plot similar 2D or 3D other maps using different functions of Matlab:
+    * `surf.m <https://fr.mathworks.com/help/matlab/ref/surf.html>`_
+    * `surfc.m <https://fr.mathworks.com/help/matlab/ref/surfc.html>`_
+    * `waterfall.m <https://fr.mathworks.com/help/matlab/ref/waterfall.html>`_
+    * `contour.m <https://fr.mathworks.com/help/matlab/ref/contour.html>`_
+    * `meshz.m <https://fr.mathworks.com/help/matlab/ref/meshz.html>`_
+    * `bar.m <https://fr.mathworks.com/help/matlab/ref/bar.html>`_
 
 ..  warning::
     Indentation experiments are very sensitive to environmental effects and thermal drift. Usually, performing such indentation maps can be time-consuming....   

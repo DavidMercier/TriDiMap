@@ -150,14 +150,14 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         set(gca,'XDir','normal');
         set(gca,'YDir','normal');
-        stringSurf = get_value_popupmenu(gui.handles.pm_surfShading_GUI, listSurf);
+        stringSurf = 'Flat';   
         [Match, noMatch] = regexp(gui.config.MatlabRelease,'20..','match','split');
         if str2num(char(cellstr(Match))) > 2014 || ...
                 (str2num(char(cellstr(Match))) == 2014 && strcmp(char(noMatch(2)),'b)'))
             for ii = 1:length(hFig)
                 zdata = hFig(ii).ZData;
                 hFig(ii).CData = zdata;
-                hFig(ii).FaceColor = char(stringSurf);
+                hFig(ii).FaceColor = 'Flat'%char(stringSurf);
             end
         else
             for ii = 1:length(hFig)
