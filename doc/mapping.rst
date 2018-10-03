@@ -19,9 +19,12 @@ it is required to know the pattern of indentation tests (line by line, snake sha
 An example of 2D generated hardness map is given below. By default, a pixelized map is plotted.
 Each pixel represents an indentation test and the color of a pixel corresponds to the the intensity of the calculated mechanical property.
 In the given following screenshot, the white pixels corresponds to tests, which failed (NaN = Not a numeric).
-Indentation failure corresponds to traditional artifacts of indentation testing (error on surface detection beceause of contamination/roughness/topography effects, error with the thermal drift correction, etc...) 
-A ratio of failed tests over total number of indentation tests is given on the left part of the GUI, to estimate the experimental validity of the indentation tests.
-For example, more than 20% of failed tests start to be problematic for the results analysis... But, this is an empirical statement, which depends on the NaN pixels distribution over the map.
+Indentation failure corresponds to traditional artifacts of indentation testing (error on surface detection
+beceause of contamination/roughness/topography effects, error with the thermal drift correction, etc...) 
+A ratio of failed tests over total number of indentation tests is given on the left part of the GUI,
+to estimate the experimental validity of the indentation tests.
+For example, more than 20% of failed tests start to be problematic for the results analysis...
+But, this is an empirical statement, which depends on the NaN pixels distribution over the map.
 To remove these empty pixels, it is possible to tick a checkbox into the settings on the GUI,
 and a mechanical property value is attributed to the empty pixel, by doing a simple averaging of the surrounding pixels (8 in total).
 
@@ -40,7 +43,13 @@ and a mechanical property value is attributed to the empty pixel, by doing a sim
 Indentation length scales
 ---------------------------
 
-According to Constantinides et al. [#Constantinides_2006]_, the indentation depth :math:`h` should be at most 1/10 of the characteristic size of the microstructure :math:`D` (e.g.: particle size in a matrix, grain or void diameter...), in order to apply continuum indentation analysis to heterogeneous systems and  to  access  phase  properties.  This rule refers to the well-known 10% rule of thumb proposed by Buckle [#Buckle_1973]_, which is a rough first estimatio. In cases where the contrast between the mechanical properties of the two phases becomes significant (e.g.: ratio between the elastic modulii lower than 0.2 or higher than 5), the method is not really reliable anymore and special care should be taken in the interpretation of the indentation results.
+According to Constantinides et al. [#Constantinides_2006]_, the indentation depth :math:`h` should be at most 1/10
+of the characteristic size of the microstructure :math:`D` (e.g.: particle size in a matrix, grain or void diameter...),
+in order to apply continuum indentation analysis to heterogeneous systems and  to  access  phase  properties.
+This rule refers to the well-known 10% rule of thumb proposed by Buckle [#Buckle_1973]_, which is a rough first estimation. 
+In cases where the contrast between the mechanical properties of the two phases becomes significant
+(e.g.: ratio between the elastic modulii lower than 0.2 or higher than 5), the method is not really reliable anymore
+and special care should be taken in the interpretation of the indentation results.
 
 .. figure:: ./_pictures/grid_indentation_length_scale.png
    :scale: 40 %
@@ -53,7 +62,8 @@ Interpolation step
 
 The |matlab| function used to interpolate linearly the indentation maps is: `interp2.m <https://fr.mathworks.com/help/matlab/ref/interp2.html>`_
 
-The process of interpolation does not modify the raw data intensity values, but increase the number of pixels, by a given factor of x2, x4, x8 or x16 (default values, which can be modified).
+The process of interpolation does not modify the raw data intensity values, but increase the number of pixels,
+by a given factor of x2, x4, x8 or x16 (default values, which can be modified).
 For example, a map of 25x25 linearly interpolated by a factor of x2, becomes a map of 49x49.
 
 .. figure:: ./_pictures/InterpolationStep.png
@@ -71,7 +81,6 @@ This smooth operation of a 2D matrix is based on a mean filter over a user-defin
 The smoothing step is a solution to apply to smooth sharp peaks or sharp valleys on the mechanical topography.
 Sharpness can arises when there is a large difference in term of intensity between 1 pixel and its surrounding neighbors (e.g. surface effect, or hard particle on a soft matrix, etc...).
 
-
 .. figure:: ./_pictures/SmoothingStep.png
    :scale: 40 %
    :align: center
@@ -82,26 +91,24 @@ Smoothing process is a modification of the raw values and an error map can be ge
 the difference between the non smoothed map (raw map) and the smoothed map.
 
 .. figure:: ./_pictures/SmoothingStepError.png
-   :scale: 40 %
+   :scale: 30 %
    :align: center
    
    *Process to obtain error map after smoothing step.*  
 
-The |matlab| function used to interpolate and to smooth the indentation maps using TriDiMap is: `TriDiMap_interpolation_smoothing.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/module_mapping/TriDiMap_interpolation_smoothing.m>`_
+The |matlab| function used to interpolate and to smooth the indentation maps using TriDiMap is:
+`TriDiMap_interpolation_smoothing.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/module_mapping/TriDiMap_interpolation_smoothing.m>`_
 
 Vizualization of maps
 -----------------------
 
 It is possible to plot similar other maps using different functions of Matlab, like 2D, 3D
+
 --> Type of 2D maps
---> Colorbar / Normalization / Translation
---> Log / Grid / Indents positions
+
 
 ..  warning::
     Indentation experiments are very sensitive to environmental effects and thermal drift. Usually, performing such indentation maps can be time-consuming....   
-
-
-
 
 References
 -------------
