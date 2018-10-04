@@ -3,4 +3,5 @@
 
 .. include:: includes.rst
 
-Blabla
+..  warning::
+    Only square or rectangular indentation grids can be loaded into the Matlab toolbox.

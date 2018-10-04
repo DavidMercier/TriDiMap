@@ -62,6 +62,9 @@ Check the different file format possible to import in the TriDiMap toolbox: `Fil
    :align: center
    
    *Plot of the hardness map after loading of data.*
+   
+..  warning::
+    Only square or rectangular indentation grids can be loaded into the Matlab toolbox.
 
 Links
 #######
