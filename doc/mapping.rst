@@ -62,7 +62,7 @@ To avoid overlap of indents, the distance :math:`d` between 2 indents has to be 
 Usually, the plastic radius in metals is between 3 and 6 times the contact radius :math:`a_\text{c}`, between the indenter and the sample surface.
 And finally, the contact radius is roughly estimated to be 3.5 times the indentation depth :math:`h` in the case of Berkovich indentation and 0.7 times the indentation depth in case of cube-corner indentation.
 
-Thus, indentation step :math:`d` can be defined the following rule of thumb in case of Berkovich indentation:
+Thus, indentation step :math:`d` can be defined by the following rule of thumb in case of Berkovich indentation:
 
     .. math:: d > R_\text{p} = 10.5\text{x to } 21\text{x }h
             :label: berkovich_indent_dist
@@ -100,7 +100,7 @@ The |matlab| third party code used to smooth the indentation maps is: `smooth2a.
 
 This smooth operation of a 2D matrix is based on a mean filter over a user-defined rectangle.
 The smoothing step is a solution to apply to smooth sharp peaks or sharp valleys on the mechanical topography.
-Sharpness can arises when there is a large difference in term of intensity between 1 pixel and its surrounding neighbors (e.g. surface effect, or hard particle on a soft matrix, etc...).
+Sharpness can arises when there is a large difference in term of intensity between 1 pixel and its surrounding neighbors (e.g. surface effects, or hard particle on a soft matrix, etc...).
 
 .. figure:: ./_pictures/SmoothingStep.png
    :scale: 40 %
