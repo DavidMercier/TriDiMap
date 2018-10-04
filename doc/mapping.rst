@@ -44,33 +44,33 @@ Indentation length scales
 ---------------------------
 
 According to Constantinides et al. [#Constantinides_2006]_, the indentation depth :math:`h` should be at most 1/10
-of the characteristic size of the microstructure :math:`D` (e.g.: particle size in a matrix, grain or void diameter...),
+of the characteristic size of the microstructure :math:`\overline{D}` (e.g.: particle size in a matrix, grain or void diameter...),
 in order to apply continuum indentation analysis to heterogeneous systems and  to  access  phase  properties.
 This rule refers to the well-known 10% rule of thumb proposed by Buckle [#Buckle_1973]_, which is a rough first estimation. 
 In cases where the contrast between the mechanical properties of the two phases becomes significant
 (e.g.: ratio between the elastic modulii lower than 0.2 or higher than 5), the method is not really reliable anymore
 and special care should be taken in the interpretation of the indentation results.
 
-Once the maximum indentation depth is defined following this first rule, it is required to well define the distance between each indents.
-To avoid overlap of indents, the distance :math:`D` between 2 indents has to be higher than the plastic radius :math:`R_\text{p}` below 1 indent.
-Usually, the plastic radius in metals is between 3 and 6 times the contact radius :math:`a_\text{c}`, between the indenter and the sample surface.
-Finally, the contact radius is rougly estimated to be 3.5 times the indentation depth in the case of Berkovich indentation and 0.7 times the indentation depth in case of cube-corner indentation.
-
-Thus, indentation step :math:`D` can be defined the following rule of thumb in case of Berkovich indentation:
-
-    .. math:: D > R_\text{p} = 10.5\text{x to } 21\text{x} h
-            :label: berkovich_indent_dist
-			
-And in case of cube-corner indentation:
-            
-    .. math:: D > R_\text{p} = 2.1\text{x to } 4.2\text{x} h
-            :label: cubecorner_indent_dist
-			
 .. figure:: ./_pictures/grid_indentation_length_scale.png
    :scale: 40 %
    :align: center
    
    *Schematic of the principle of the grid indentation technique for heterogeneous materials.*
+
+Once the maximum indentation depth is defined following this first rule, it is required to well define the distance between each indents.
+To avoid overlap of indents, the distance :math:`d` between 2 indents has to be higher than the plastic radius :math:`R_\text{p}` below 1 indent.
+Usually, the plastic radius in metals is between 3 and 6 times the contact radius :math:`a_\text{c}`, between the indenter and the sample surface.
+And finally, the contact radius is roughly estimated to be 3.5 times the indentation depth :math:`h` in the case of Berkovich indentation and 0.7 times the indentation depth in case of cube-corner indentation.
+
+Thus, indentation step :math:`d` can be defined the following rule of thumb in case of Berkovich indentation:
+
+    .. math:: d > R_\text{p} = 10.5\text{x to } 21\text{x }h
+            :label: berkovich_indent_dist
+			
+And in case of cube-corner indentation:
+            
+    .. math:: d > R_\text{p} = 2.1\text{x to } 4.2\text{x }h
+            :label: cubecorner_indent_dist
 
 .. figure:: ./_pictures/grid_indentation_length_scale_cs.png
    :scale: 40 %
