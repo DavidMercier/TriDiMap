@@ -58,12 +58,12 @@ Finally, the contact radius is rougly estimated to be 3.5 times the indentation 
 
 Thus, indentation step :math:`D` can be defined the following rule of thumb in case of Berkovich indentation:
 
-    .. math:: D > R_\text{p} = 10.5x to 21x h
+    .. math:: D > R_\text{p} = 10.5_\text{x to } 21_\text{x} h
             :label: berkovich_indent_dist
 			
 And in case of cube-corner indentation:
             
-    .. math:: D > R_\text{p} = 2.1x to 4.2x h
+    .. math:: D > R_\text{p} = 2.1_\text{x to } 4.2_\text{x} h
             :label: cubecorner_indent_dist
 			
 .. figure:: ./_pictures/grid_indentation_length_scale.png

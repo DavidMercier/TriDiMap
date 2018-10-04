@@ -43,8 +43,7 @@ First of all a GUI is a Graphical User Interface.
 
 * Hardness map is plotted by default.
 
-* It is possible `to modify (to crop, to smooth, to set other colorbar...) <https://tridimap.readthedocs.io/en/latest/map_options.html>`_
-this map and to plot other 2D or 3D maps, and to obtain the statistical distribution of mechanical properties:
+* It is possible `to modify (to crop, to smooth, to set other colorbar...) <https://tridimap.readthedocs.io/en/latest/map_options.html>`_ this map and to plot other 2D or 3D maps, and to obtain the statistical distribution of mechanical properties:
 
   - `2D map <https://tridimap.readthedocs.io/en/latest/mapping.html>`_
   
