@@ -20,7 +20,7 @@ An example of 2D generated hardness map is given below. By default, a pixelized 
 Each pixel represents an indentation test and the color of a pixel corresponds to the the intensity of the calculated mechanical property.
 In the given following screenshot, the white pixels corresponds to tests, which failed (NaN = Not a numeric).
 Indentation failure corresponds to traditional artifacts of indentation testing (error on surface detection
-beceause of contamination/roughness/topography effects, error with the thermal drift correction, etc...) 
+because of contamination/roughness/topography effects, error with the thermal drift correction, etc...) 
 A ratio of failed tests over total number of indentation tests is given on the left part of the GUI,
 to estimate the experimental validity of the indentation tests.
 For example, more than 20% of failed tests start to be problematic for the results analysis...
@@ -51,11 +51,32 @@ In cases where the contrast between the mechanical properties of the two phases 
 (e.g.: ratio between the elastic modulii lower than 0.2 or higher than 5), the method is not really reliable anymore
 and special care should be taken in the interpretation of the indentation results.
 
+Once the maximum indentation depth is defined following this first rule, it is required to well define the distance between each indents.
+To avoid overlap of indents, the distance :math:`D` between 2 indents has to be higher than the plastic radius :math:`R_\text{p}` below 1 indent.
+Usually, the plastic radius in metals is between 3 and 6 times the contact radius :math:`a_\text{c}`, between the indenter and the sample surface.
+Finally, the contact radius is rougly estimated to be 3.5 times the indentation depth in the case of Berkovich indentation and 0.7 times the indentation depth in case of cube-corner indentation.
+
+Thus, indentation step :math:`D` can be defined the following rule of thumb in case of Berkovich indentation:
+
+    .. math:: D > R_\text{p} = 10.5x to 21x h
+            :label: berkovich_indent_dist
+			
+And in case of cube-corner indentation:
+            
+    .. math:: D > R_\text{p} = 2.1x to 4.2x h
+            :label: cubecorner_indent_dist
+			
 .. figure:: ./_pictures/grid_indentation_length_scale.png
    :scale: 40 %
    :align: center
    
    *Schematic of the principle of the grid indentation technique for heterogeneous materials.*
+
+.. figure:: ./_pictures/grid_indentation_length_scale_cs.png
+   :scale: 40 %
+   :align: center
+   
+   *Cross-sectional scheme of 2 indents, with the definition of geometrical parameters.*
    
 Interpolation step
 -----------------------
@@ -99,7 +120,7 @@ the difference between the non smoothed map (raw map) and the smoothed map.
 The |matlab| function used to interpolate and to smooth the indentation maps using TriDiMap is:
 `TriDiMap_interpolation_smoothing.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/module_mapping/TriDiMap_interpolation_smoothing.m>`_
 
-Vizualization of maps
+Visualization of maps
 -----------------------
 
 It is possible to plot similar 2D or 3D other maps using different functions of Matlab:

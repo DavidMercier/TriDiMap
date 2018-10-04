@@ -9,7 +9,7 @@ Colormap
 It is possible to set another colormap into the GUI.
 But Matlab's default 'Jet' colormap is not divergent and obscure real patterns.
 Thus, it is difficult to distinguish the default line color styles.
-Many authors proposed to use divergent colormaps instead of default Matlab colormaps [Eddins]_, [#Moreland]_, [#MyCarta]_.
+Many authors proposed to use divergent colormaps instead of default Matlab colormaps [#Eddins]_, [#Moreland]_, [#MyCarta]_.
 
 The |matlab| function used to generate a divergent colormap is:
 `diverging_map.m <https://github.com/DavidMercier/TriDiMap/blob/master/third_party_codes/colormapFunctions/diverging_map.m>`_

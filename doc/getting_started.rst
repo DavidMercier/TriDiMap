@@ -35,17 +35,20 @@ First of all a GUI is a Graphical User Interface.
 
 * Set your type of equipment and units for length and mechanical property.
 
+* Set the number of indents along the X and the Y directions.
+
 * Import your (nano)indentation results, by clicking on the button 'Select file'.
   `Click here to have more details about valid format of data.
   <http://tridimap.readthedocs.org/en/latest/examples.html>`_
 
 * Hardness map is plotted by default.
 
-* It is possible to modify (to crop, to smooth, to set other colorbar...) this map and to plot other 2D or 3D maps, and to obtain the statistical distribution of mechanical properties:
+* It is possible `to modify (to crop, to smooth, to set other colorbar...) <https://tridimap.readthedocs.io/en/latest/map_options.html>`_
+this map and to plot other 2D or 3D maps, and to obtain the statistical distribution of mechanical properties:
 
   - `2D map <https://tridimap.readthedocs.io/en/latest/mapping.html>`_
   
-  - `3D map <https://tridimap.readthedocs.io/en/latest/tomography.html>`_
+  - `3D / 4D map <https://tridimap.readthedocs.io/en/latest/tomography.html>`_
   
   - `Statistical analysis <https://tridimap.readthedocs.io/en/latest/pdf_cdf.html>`_
   
