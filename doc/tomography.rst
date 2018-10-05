@@ -16,8 +16,7 @@ the 3rd dimension as the indentation depth and the 4th dimension as the mechanic
 The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.mathworks.com/help/matlab/ref/slice.html>`_
 
 ..  warning::
-    It is not a 3D reconstruction, thus no need to align, to rotate or to distort the different slices. There is no misalignment or local disorientation,
-	only if the indentation direction is not perpendicular to the sample surface.
+    It is not a 3D reconstruction, thus no need to align, to rotate or to distort the different slices. There is no misalignment or local disorientation, only if the indentation direction is not perpendicular to the sample surface.
 
 .. figure:: ./_pictures/gif_4Dmap/25x25pixels_25slices.gif
    :scale: 100 %
