@@ -27,8 +27,7 @@ The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.ma
 .. note::
     To generate such 4D map, it is required the first time to load raw *.xls files. Given the fact, that the imported data is saved as *.mat into the same folder, it is possible the next time to reload only this *.mat file to save some loading time...
 
-Example of a .mat file:
-* `MTS_example1_25x25.xls_3DSlice.mat <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/MTS_example1_25x25.xls_3DSlice.mat>`_
+Example of a .mat file: `MTS_example1_25x25.xls_3DSlice.mat <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/MTS_example1_25x25.xls_3DSlice.mat>`_
 	
 References
 -------------
