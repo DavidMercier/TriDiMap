@@ -85,7 +85,7 @@ The |matlab| function used to interpolate linearly the indentation maps is: `int
 
 The process of interpolation does not modify the raw data intensity values, but increase the number of pixels,
 by a given factor of x2, x4, x8 or x16 (default values, which can be modified).
-For example, a map of 25x25 linearly interpolated by a factor of x2, becomes a map of 49x49.
+For example, a map of 25x25 linearly interpolated by a factor of x2, becomes a map of 49x49 pixels.
 
 .. figure:: ./_pictures/InterpolationStep.png
    :scale: 40 %
@@ -139,4 +139,4 @@ References
 .. [#Constantinides_2006] `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation" (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
 .. [#Němeček_2009] `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
 .. [#Randall_2009] `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces" (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
-.. [#Buckle_1973] Buckle H., in: J.W. Westbrook, H. Conrad (Eds.), The Science of Hardness Testing and Its Applications, American Society for Metals, Metal Park OH, 1973, pp. 453–459.
+.. [#Buckle_1973] Bückle H., in: J.W. Westbrook, H. Conrad (Eds.), The Science of Hardness Testing and Its Applications, American Society for Metals, Metal Park OH, 1973, pp. 453–459.

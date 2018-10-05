@@ -2,9 +2,7 @@
 ==========================
 
 .. include:: includes.rst
-
-
-   
+ 
 Probability density function (PDF)
 ############################################
 
