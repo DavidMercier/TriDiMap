@@ -35,8 +35,8 @@ Cumulative density function (CDF)
    :align: center
    
    *Cumulative distributions of hardness values with Weibull fit*  
-   
-Indentation maps in the litterature
+
+References
 ############################################
 
 .. `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
