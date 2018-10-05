@@ -26,7 +26,7 @@ With this Matlab toolbox, it is possible:
     * to plot and to fit probability density functions;
     * to plot and to fit cumulative density functions;
     * to extract statistical values (mean, min, max with standard deviations) of mechanical properties and fractions for each phase;
-    * to correct mechanical map from image correlation with microstructural map;
+    * to correct mechanical map using image correlation with microstructural map;
     * to correlate/compare mechanical map with microstructural map;
     * to plot 4D mechanical property map.
 
@@ -99,7 +99,7 @@ Acknowledgements
 The author is grateful to `Dr. Jiri Nemecek <http://ksm.fsv.cvut.cz/~nemecek/?page=resume&lang=en>`_ from `Czech Technical University <https://www.cvut.cz/en>`_, Czech Republic (Prague)
 and to Dr. Nicholas Randall from `Anton Paar <https://www.anton-paar.com>`_, for discussions and many advices about nanoindentation mapping.
 
-The author is grateful to Debora Rossell (`OCAS <http://www.ocas.be/>`_, Belgium (Zwijnaarde)), for providing example files.
+The author is grateful to Debora Rossell, Franck Nozaic and Mélanie Gauvin (`OCAS <http://www.ocas.be/>`_, Belgium (Zwijnaarde)), for providing example files and lots le fruitful feedbacks.
 
 The author is grateful to Jean-François Vanhumbeeck and Xavier Vanden Eynde (`CRM Group <www.crmgroup.be>`_, Belgium (Liège)), for fruitful discussion and co-authoring of reference papers.
 
