@@ -47,15 +47,6 @@ Markers / Grid
 Simple grid (corresponding to a regular pattern) or markers grid showing indent positions
 can be plotted on an indentation map, in order to help for the overlay of the mechanical map onto the microstructural map.
 
-.. note::
-    To perform an overlay, the best is to save the mechanical map, using the 'Save' button. An image of the map only is saved (no axis, no colorbar...) into the same folder, where data were loaded from. Then, using Powerpoint for example, it is possible to draw a rectangular shape onto the microstructural map and to fill this rectangular shape using the saved mechanical map. Then, transparency effect has to be applied (60% for example) in order to see both maps.
-
-.. figure:: ./_pictures/overlay.jpeg
-   :scale: 60 %
-   :align: center
-   
-   *Overlay  of  hardness  (on  the  left)  and  modulus  of  elasticity  (on  the  right)  maps  with  the  optical  microscopic  observation  of indentation  grid (with  70%  transparency).*
-   
 .. figure:: ./_pictures/markers.png
    :scale: 40 %
    :align: center

@@ -84,7 +84,7 @@ Such abnormal measurements may come from the presence of a defect (void, crack, 
    :scale: 40 %
    :align: center
    
-   *Scheme of different indentation tests (cross-sectional view) and mathematical criteria, for discrimination between correct measurements and artefacts in the correlation process during the ICTBI analysis.*
+   *Scheme of different indentation tests (cross-sectional view) and mathematical criteria, for discrimination between correct measurements and artefacts in the correlation process during the ICTBI analysis*
    
 References
 ############################################

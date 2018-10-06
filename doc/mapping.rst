@@ -137,6 +137,24 @@ It is possible to plot similar 2D or 3D other maps using different functions of 
 ..  warning::
     Indentation experiments are very sensitive to environmental effects and thermal drift. Usually, performing such indentation maps can be time-consuming....   
 
+Overlay
+-----------------------
+
+To perform an overlay, the best is to save the mechanical map, using the 'Save' button.
+An image of the map only is saved (no axis, no colorbar...) into the same folder, where data were loaded from.
+Then, using Powerpoint for example, it is possible to draw a rectangular shape onto the microstructural map
+and to fill this rectangular shape using the saved mechanical map.
+Then, transparency effect has to be applied (60%-70% for example) in order to see both maps.
+
+.. note::
+   It is better if micrographs are obtained before and after indentation experiments, respectively to have a nice overlay (without residual imprints) and to help for overlaying.
+   
+.. figure:: ./_pictures/overlay.jpeg
+   :scale: 60 %
+   :align: center
+   
+   *Overlay  of  hardness  (on  the  left)  and  modulus  of  elasticity  (on  the  right)  maps  with  the  optical  microscopic  observation  of indentation  grid (with  70%  transparency)*
+   
 References
 -------------
 .. [#Constantinides_2006] `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation" (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
