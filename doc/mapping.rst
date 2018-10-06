@@ -117,6 +117,9 @@ the difference between the non smoothed map (raw map) and the smoothed map.
    
    *Process to obtain error map after smoothing step.*  
 
+Linear interpolation and smoothing operations are sometimes applied on the raw dataset in order to lessen pixelization effect and noise from the measurement, 
+to get cleaner and more readable maps.
+
 The |matlab| function used to interpolate and to smooth the indentation maps using TriDiMap is:
 `TriDiMap_interpolation_smoothing.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/module_mapping/TriDiMap_interpolation_smoothing.m>`_
 
