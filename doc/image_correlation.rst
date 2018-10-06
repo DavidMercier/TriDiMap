@@ -75,7 +75,7 @@ Such abnormal measurements may come from the presence of a defect (void, crack, 
    *Principle of the ICBTI analysis, for a Ni-SiC sample*
    
 .. figure:: ./_pictures/icbti_flower.png
-   :scale: 40 %
+   :scale: 60 %
    :align: center
    
    *Principle of the ICBTI analysis, for a steel with carbides (flower) sample*

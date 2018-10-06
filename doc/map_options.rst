@@ -27,14 +27,20 @@ The colormap can be flipped for aesthetic reason.
    :scale: 40 %
    :align: center
    
-   *Map with non divergent colormap (on the left) and divergent colormap (on the right)*
+   *Maps with non divergent colormap (on the left) and with divergent colormap (on the right)*
 
 Colorbar
 ---------------------------
 
 The limits (minimum and maximum) and the number of steps of the colorbar can be defined automatically or can be set by hand.
-A logarithmic scale can be applied to emphasize gradient on a map wheh there is a large difference in term of mechanical property values between 2 phases.
+A logarithmic colorbar can be applied to emphasize gradient on a map when there is a large difference in term of mechanical property values between 2 phases.
 
+.. figure:: ./_pictures/log_colorbar.png
+   :scale: 40 %
+   :align: center
+   
+   *Maps without (on the left) and with (on the right) a logarithmic colorbar*
+   
 Markers / Grid
 ---------------------------
 
@@ -42,14 +48,19 @@ Simple grid (corresponding to a regular pattern) or markers grid showing indent 
 can be plotted on an indentation map, in order to help for the overlay of the mechanical map onto the microstructural map.
 
 .. note::
-    To perform an overlay, the best is to save the mechanical map, using the 'Save' button. An image of the map only is saved (no axis, no colorbar...) into the same folder, where data were loaded from. Then, using Powerpoint for example, it is possible to draw a rectangular shape onto the microstructural map and
-	to fill this rectangular shape using the saved mechanical map. Then, transparency effect has to be applied (60% for example) in order to see both maps.
+    To perform an overlay, the best is to save the mechanical map, using the 'Save' button. An image of the map only is saved (no axis, no colorbar...) into the same folder, where data were loaded from. Then, using Powerpoint for example, it is possible to draw a rectangular shape onto the microstructural map and to fill this rectangular shape using the saved mechanical map. Then, transparency effect has to be applied (60% for example) in order to see both maps.
 
 .. figure:: ./_pictures/overlay.jpeg
    :scale: 60 %
    :align: center
    
    *Overlay  of  hardness  (on  the  left)  and  modulus  of  elasticity  (on  the  right)  maps  with  the  optical  microscopic  observation  of indentation  grid (with  70%  transparency).*
+   
+.. figure:: ./_pictures/markers.png
+   :scale: 40 %
+   :align: center
+   
+   *Maps with markers for indent positionning (on the right)*
    
 References
 -------------
