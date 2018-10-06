@@ -17,20 +17,16 @@ The |matlab| function to modify to load specific indentation results file is: `T
 File examples from MTS/Agilent
 ####################################################
 
-For a 2D map:
-* `MTS_example1_25x25.xls <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/MTS_example1_25x25.xls>`_
+For a 2D map: `MTS_example1_25x25.xls <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/MTS_example1_25x25.xls>`_
 	
-For a 3D map:
-* `MTS_example3_5x5_testSlice.xlsx <https://github.com/DavidMercier/NIMS/blob/master/data_indentation/MTS_0film_Si_CSM-2nm_noSD.txt>`_
+For a 3D map: `MTS_example3_5x5_testSlice.xlsx <https://github.com/DavidMercier/NIMS/blob/master/data_indentation/MTS_0film_Si_CSM-2nm_noSD.txt>`_
 
 File example from Hysitron
 ####################################################
 
-For a 2D map:
-* `Hysitron_example_10x10.xlsx <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/Hysitron_example_10x10.xlsx>`_
+For a 2D map: `Hysitron_example_10x10.xlsx <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/Hysitron_example_10x10.xlsx>`_
 
 File example from ASMEC
 ####################################################
 
-For a 2D map:
-* `ASMEC_example_20x11.xlsx <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/ASMEC_example_20x11.xlsx>`_
+For a 2D map: `ASMEC_example_20x11.xlsx <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/ASMEC_example_20x11.xlsx>`_

@@ -27,10 +27,14 @@ The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.ma
 .. note::
     To generate such 4D map, it is required the first time to load raw *.xls files. Given the fact, that the imported data is saved as *.mat into the same folder, it is possible the next time to reload only this *.mat file to save some loading time...
 
-Example of a .mat file:
-* `MTS_example1_25x25.xls_3DSlice.mat <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/MTS_example1_25x25.xls_3DSlice.mat>`_
+Example of a .mat file: `MTS_example1_25x25.xls_3DSlice.mat <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/MTS_example1_25x25.xls_3DSlice.mat>`_
 	
 References
 -------------
+<<<<<<< HEAD
 .. [#Tromas_2012] `Tromas C. et al., "Hardness and elastic modulus gradients in plasma-nitrided 316L polycrystalline stainless steel investigated by nanoindentation tomography" (2012). <https://doi.org/10.1016/j.matdes.2016.09.030>`_
 .. [#Coy_2016] `Coy E. et al., "Topographic reconstruction and mechanical analysis of atomic layer deposited Al2O3/TiO2 nanolaminates by nanoindentation" (2016). <https://doi.org/10.1016/j.actamat.2011.12.012>`_
+=======
+.. [#Tromas_2012] `Tromas C et al., "Hardness and elastic modulus gradients in plasma-nitrided 316L polycrystalline stainless steel investigated by nanoindentation tomography" (2012). <https://doi.org/10.1016/j.matdes.2016.09.030>`_
+.. [#Coy_2016] `Coy E et al., "Topographic reconstruction and mechanical analysis of atomic layer deposited Al2O3/TiO2 nanolaminates by nanoindentation" (2016). <https://doi.org/10.1016/j.actamat.2011.12.012>`_
+>>>>>>> cfd3745bb3728e9ab7ba4ce20c1a69c03e4857de

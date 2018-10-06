@@ -35,11 +35,18 @@ Cumulative density function (CDF)
    :align: center
    
    *Cumulative distributions of hardness values with Weibull fit*  
+<<<<<<< HEAD
    
+=======
+
+>>>>>>> cfd3745bb3728e9ab7ba4ce20c1a69c03e4857de
 References
 ############################################
 
 .. `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
+<<<<<<< HEAD
 .. `Němeček J., "Probability density function 1.0" (2010). <http://ksm.fsv.cvut.cz/~nemecek/links/exp2pdf10/exp2pdf10.htm>`_
 .. `Němeček J., "Probability density function 2.1" (2010). <http://ksm.fsv.cvut.cz/~nemecek/links/exp2pdf21/exp2pdf21.htm>`_
 .. `Němeček J., "Deconvolution algorithm 3.0" (2010). <http://ksm.fsv.cvut.cz/~nemecek/links/decon30/decon.htm>`_
+=======
+>>>>>>> cfd3745bb3728e9ab7ba4ce20c1a69c03e4857de
