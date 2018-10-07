@@ -36,3 +36,15 @@ File example after crop and interpolation step
 ####################################################
 
 For a 2D map: `MTS_example1_25x25.xls_interp_81x81.xls <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/MTS_example1_25x25.xls_interp_81x81.xls>`_
+
+Indentation grid
+####################################################
+
+In case of other or new experimental results file, the most important is to know the pattern of the indentation grid.
+For example, the following figure shows the pattern of a typical indentation grid obtained using the software (e.g. Testworks...) of MTS/Agilent.
+	
+.. figure:: ./_pictures/MTS_indentationGrid.png
+   :scale: 50 %
+   :align: center
+   
+   *Example of indentation grid pattern using a MTS/Agilent nanoindenter.*	

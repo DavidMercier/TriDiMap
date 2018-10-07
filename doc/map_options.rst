@@ -15,7 +15,7 @@ Colormap
 ---------------------------
 
 It is possible to set another colormap into the GUI.
-But the default 'Jet' colormap from |matlab| is not divergent and obscure real patterns.
+But the default 'Jet' colormap from |matlab| is not divergent and obscures real patterns.
 Thus, it is difficult to distinguish the default line color styles.
 Many authors proposed to use divergent colormaps instead of default |matlab| colormaps [#Eddins]_, [#Moreland]_, [#MyCarta]_.
 

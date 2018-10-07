@@ -15,6 +15,7 @@ in order to plot a consistent mechanical property map representative of the expe
 
 An indentation map is represented mathematically using a matrix of N columns by M rows. If positions of indentation tests are not known,
 it is required to know the pattern of indentation tests (line by line, snake shape, diagonals...).
+An example of a pattern is given `here <https://tridimap.readthedocs.io/en/latest/examples.html#>`_
 
 An example of 2D generated hardness map is given below. By default, a pixelized map is plotted.
 Each pixel represents an indentation test and the color of a pixel corresponds to the the intensity of the calculated mechanical property.
