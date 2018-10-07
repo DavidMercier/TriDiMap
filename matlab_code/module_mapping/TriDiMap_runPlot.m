@@ -11,6 +11,8 @@ gui.config.gifFlag = gifFlag;
 guidata(gcf, gui); gui = guidata(gcf);
 if ~gui.config.saveFlag
     TriDiMap_updateUnit_and_GUI;
+else
+    figure(gui.config.hNewFig);
 end
 TriDiMap_getParam;
 gui = guidata(gcf);
@@ -261,7 +263,7 @@ else
         %---
         %1|3
         
-       gui.data.dataH_Sector = (data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines) + ...
+        gui.data.dataH_Sector = (data2use_H < gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines) + ...
             2*(data2use_H < gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines) + ...
             3*(data2use_H > gui.config.HVal_ThresLines & data2use_E < gui.config.EVal_ThresLines) + ...
             4*(data2use_H > gui.config.HVal_ThresLines & data2use_E > gui.config.EVal_ThresLines);
@@ -527,10 +529,12 @@ else
         if config.property < 3
             coordSyst(gui.handles.MainWindow);
         else
-            set(0, 'currentfigure', gui.handles.MainWindow);
-            try
-                delete(findall(gcf,'Tag','annotation'));
-            catch
+            if ~config.saveFlag
+                set(0, 'currentfigure', gui.handles.MainWindow);
+                try
+                    delete(findall(gcf,'Tag','annotation'));
+                catch
+                end
             end
         end
     end

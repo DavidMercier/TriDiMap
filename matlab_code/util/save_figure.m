@@ -31,7 +31,7 @@ if isfield(gui.config,'property')
     elseif gui.config.property == 7
         property = 'H_cdf';
     end
-
+    
 end
 %% Definition of path and filenames
 if gui.config.data_path
@@ -76,7 +76,9 @@ if gui.config.data_path
         %         export_fig(isolated_figure_title2, isolate_axes(gca));
         %         display(strcat('Figure saved as: ', filename_sav_fig2));
         
-        hNewFig = figure;
+        gui.config.hNewFig = figure;
+        hNewFig = gui.config.hNewFig;
+        figure(hNewFig);
         set(gcf, 'Color', [1 1 1]); % Set background of the GUI in white
         %copyobj(gui.handles.AxisPlot_GUI,hNewFig);
         %     set(0, 'currentfigure', hNewFig);
@@ -85,12 +87,12 @@ if gui.config.data_path
         gui.config.saveFlag = 1;
         guidata(gcf, gui);
         TriDiMap_runPlot;
-        pause(2);
+        figure(hNewFig);
         export_fig(isolated_figure_title2, gcf);
+        figure(hNewFig);
         display(strcat('Figure saved as: ', filename_sav_fig2));
-        pause(2);
         delete(findall(findall(gcf,'Type','axe'),'Type','text'));
-        axis off; box off;
+        axis off; box off; colorbar('off');
         set(gca,'units','normalized','position',[0 0 1 1]);
         export_fig(isolated_figure_title3, isolate_axes(gca));
         display(strcat('Figure saved as: ', filename_sav_fig3));
@@ -124,5 +126,6 @@ else
 end
 
 set(gcf, 'Color', colorGUI_BG);
-
+gui.config.saveFlag = 0;
+guidata(gcf, gui);
 end
