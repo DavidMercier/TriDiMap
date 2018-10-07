@@ -12,7 +12,7 @@ These thresholds can be modified or optimized later by comparing phase ratio det
 Afterwards, a binarized microstructural map has to be loaded, with the same resolution as the mechanical maps (e.g. 25x25 pixels in the following examples).
 A solution to avoid pixelized maps is to apply linear interpolation on the mechanical map and thus increasing the mechanical maps resolution.
 
-To obtain a pixelized microstructural map, a solution is to use the software ImageJ (or Fiji) [#ImageJ]_.
+To obtain a pixelized microstructural map, a solution is to use the software ImageJ (or Fiji) [#ImageJ_software]_.
 Once an image of the indentation grid is obtained by microscopy with enough quality (good contrast between phases, enough resolution...), load it in the image analysis software.
 Crop the image around the indentation grid and let the minimum of space around the matrix of imprints.
 Adjust the contrast/brightness of the image to emphasize the different phases in your sample.
@@ -90,7 +90,7 @@ or from the detection of an underlying or very small particle.
 References
 ############################################
 
-.. [#ImageJ] `ImageJ <https://imagej.nih.gov/ij/>`_
+.. [#ImageJ_software] `ImageJ <https://imagej.nih.gov/ij/>`_
 .. [#Mercier_2017] `Mercier D. et al., "Mechanical characterization by nanoindentation of an electroplated nickel matrix composite coating" (2017). <https://dx.doi.org/10.1051/mattech/2017014>`_
 .. [#Mercier1_2018] `Mercier D. et al., "Microstructural and mechanical characterization of electroplated nickel matrix composite coatings" (2018). <https://doi.org/10.1080/02670844.2018.1433270>`_
 .. [#Mercier2_2018] `Mercier D. et al., "Mechanical properties mapping of cast bimetallic work roll shell material by nanoindentation" (2018). <https://doi.org/10.13140/RG.2.2.35449.16482/1>`_
