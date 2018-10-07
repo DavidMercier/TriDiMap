@@ -32,7 +32,7 @@ Indentation maps in the literature
 * `Goldbaum D. et al., "Mechanical Property Mapping of Cold Sprayed Ti Splats and Coatings" (2010). <https://doi.org/10.1007/s11666-010-9546-4>`_
 * `Ulm F.J. et al., "Does microstructure matter for statistical nanoindentation techniques?" (2010). <https://doi.org/10.1016/j.cemconcomp.2009.08.007>`_
 * `Tromas C. et al., "Hardness and elastic modulus gradients in plasma-nitrided 316L polycrystalline stainless steel investigated by nanoindentation tomography" (2012). <https://doi.org/10.1016/j.matdes.2016.09.030>`_
-* `Němeček J., "Micromechanical analysis of heterogeneous structural materials" (2013). <https://doi.org/10.1016/j.cemconcomp.2012.06.015>`_
+* `Němeček J. et al., "Micromechanical analysis of heterogeneous structural materials" (2013). <https://doi.org/10.1016/j.cemconcomp.2012.06.015>`_
 * `Moser R.D. et al., "Characterization of Impact Damage in Ultra-High Performance Concrete Using Spatially Correlated Nanoindentation/SEM/EDX" (2013). <https://doi.org/10.1007/s11665-013-0668-y>`_
 * `Rettler E. et al., "Mapping the mechanical properties of biomaterials on different length scales: depth-sensing indentation and AFM based nanoindentation" (2013). <https://doi.org/10.1039/c3tb20120>`_
 * `Chen L. et al., "Analysis of In Situ Mechanical Properties of Phases in High-Alloyed White Iron Measured by Grid Nanoindentation" (2015). <https://doi.org/10.1007/s11665-015-1672-1>`_
