@@ -86,6 +86,7 @@ The |matlab| function used to interpolate linearly the indentation maps is: `int
 The process of interpolation does not modify the raw data intensity values, but increase the number of pixels,
 by a given factor of x2, x4, x8 or x16 (default values, which can be modified).
 For example, a map of 25x25 linearly interpolated by a factor of x2, becomes a map of 49x49 pixels.
+After interpolation, it is possible to create a new .xls file (with interpolated dataset), by pressing the XLS button at the bottom of the GUI.
 
 .. figure:: ./_pictures/InterpolationStep.png
    :scale: 40 %

@@ -9,14 +9,15 @@ Crop
 Maps can be cropped to remove some useless part of the map (e.g. bakelite around the specimen, oxidized or contaminated surface...)
 or to avoid some artifact of measurements (e.g. surface effects, roughness or slope on the surface...).
 This option is really useful, especially to clean dataset for further statistical analysis.
+After cropping, it is possible to create a new .xls file (with cropped dataset), by pressing the XLS button at the bottom of the GUI.
 
 Colormap
 ---------------------------
 
 It is possible to set another colormap into the GUI.
-But Matlab's default 'Jet' colormap is not divergent and obscure real patterns.
+But the default 'Jet' colormap from |matlab| is not divergent and obscure real patterns.
 Thus, it is difficult to distinguish the default line color styles.
-Many authors proposed to use divergent colormaps instead of default Matlab colormaps [#Eddins]_, [#Moreland]_, [#MyCarta]_.
+Many authors proposed to use divergent colormaps instead of default |matlab| colormaps [#Eddins]_, [#Moreland]_, [#MyCarta]_.
 
 The |matlab| function used to generate a divergent colormap is:
 `diverging_map.m <https://github.com/DavidMercier/TriDiMap/blob/master/third_party_codes/colormapFunctions/diverging_map.m>`_
