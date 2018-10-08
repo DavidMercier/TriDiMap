@@ -16,7 +16,7 @@ the 3rd dimension as the indentation depth and the 4th dimension as the mechanic
 Some options are available for the graphical rendering of the tomographic visualization.
 For example, it is possible to modify the "Z axis ratio" value, to increase or decrease the vertical over the horizontal scale ratio.
 Higher is this ratio and lower is the vertical expansion. Another interesting option is the transparency effect. It is possible to
-make the tomogram fully opaque or fully transparent.
+make the tomogram fully opaque (variable set to 1) or fully transparent (variable set to 0).
 
 The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.mathworks.com/help/matlab/ref/slice.html>`_
 
@@ -27,7 +27,13 @@ The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.ma
    :scale: 100 %
    :align: center
    
-   *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices).*
+   *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices)*
+   
+.. figure:: ./_pictures/gif_4Dmap/tomogram_setting.png
+   :scale: 100 %
+   :align: center
+   
+   *Different settings for the 4D indentation mapping vizualization*
 
 .. note::
     To generate such 4D map, it is required the first time to load raw *.xls files. Given the fact, that the imported data is saved as *.mat into the same folder, it is possible the next time to reload only this *.mat file to save some loading time...

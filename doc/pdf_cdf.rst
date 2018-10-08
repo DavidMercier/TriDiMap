@@ -20,10 +20,17 @@ the visualization point of view with a common pattern, like the bell–shaped cu
 Such a curve is known as the "normal distribution" or the "Gaussian distribution".
 For an homogeneous material, only 1 peak is expected and for an heterogeneous material,
 a peak per phase can be expected. In this last case, intermediate peaks between phase peaks can be observed
-when interfaces are not spatially negligible. The drawback of this plot is the user-dependence of the bin size and thus of the distribution shape (i.e. peak intensity).
+when interfaces are not spatially negligible. The drawback of this plot is the user-dependence
+of the bin size and thus of the distribution shape (i.e. peak intensity).
 Indeed, the shape of the distributions is bin size dependent, while this bin size (e.g. 0.5GPa or 3GPa) is defined arbitrary by the user.
 This issue is well known in the literature and is a little bit discussed in this presentation [#Mercier_2016]_ and this paper [#Hrbek_2017]_.
 
+.. figure:: ./_pictures/pdf_schemes.png
+   :scale: 50 %
+   :align: center
+   
+   *Example of different fitted histogram distribution schematized as a function of the specimen*
+   
 .. figure:: ./_pictures/binSizeEffect.png
    :scale: 50 %
    :align: center
