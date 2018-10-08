@@ -13,6 +13,11 @@ By stacking each map or slice on each other, it is possible to generate a 3D rep
 In the literature, such maps are sometimes described as 4D map [#Coy_2016]_, with the first and the second dimensions as the indentation position,
 the 3rd dimension as the indentation depth and the 4th dimension as the mechanical property value.
 
+Some options are available for the graphical rendering of the tomographic visualization.
+For example, it is possible to modify the "Z axis ratio" value, to increase or decrease the vertical over the horizontal scale ratio.
+Higher is this ratio and lower is the vertical expansion. Another interesting option is the transparency effect. It is possible to
+make the tomogram fully opaque or fully transparent.
+
 The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.mathworks.com/help/matlab/ref/slice.html>`_
 
 ..  warning::

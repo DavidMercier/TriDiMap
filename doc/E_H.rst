@@ -18,7 +18,7 @@ and a 4 color-coded map corresponding to this plot can be generated (see 2nd fig
    :scale: 50 %
    :align: center
    
-   *Example of sectorized elastic modulus vs hardness plot.*
+   *Example of sectorized elastic modulus vs hardness plot*
    
 .. figure:: ./_pictures/sectorMap.png
    :scale: 50 %

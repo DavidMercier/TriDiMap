@@ -37,6 +37,7 @@ Indentation maps in the literature
 * `Moser R.D. et al., "Characterization of Impact Damage in Ultra-High Performance Concrete Using Spatially Correlated Nanoindentation/SEM/EDX" (2013). <https://doi.org/10.1007/s11665-013-0668-y>`_
 * `Rettler E. et al., "Mapping the mechanical properties of biomaterials on different length scales: depth-sensing indentation and AFM based nanoindentation" (2013). <https://doi.org/10.1039/c3tb20120>`_
 * `Chen L. et al., "Analysis of In Situ Mechanical Properties of Phases in High-Alloyed White Iron Measured by Grid Nanoindentation" (2015). <https://doi.org/10.1007/s11665-015-1672-1>`_
+* `Morales-Rivas L. et al., "Nanomechanical characterization of nanostructured bainitic steel: Peak Force Microscopy and Nanoindentation with AFM" (2015). <https://doi.org/10.1038/srep17164>`_
 * `Coy E. et al., "Topographic reconstruction and mechanical analysis of atomic layer deposited Al2O3/TiO2 nanolaminates by nanoindentation" (2016). <https://doi.org/10.1016/j.actamat.2011.12.012>`_
 * `Hu C. et al., "Statistical nanoindentation technique in application to hardened cement pastes: Influences of material microstructure and analysis method" (2016). <https://doi.org/10.1016/j.conbuildmat.2016.03.064>`_
 * `Sebastiani M. et al., "High-resolution high-speed nanoindentation mapping of cement pastes: Unravelling the effect of microstructure on the mechanical properties of hydrated phases" (2016). <https://doi.org/10.1016/j.matdes.2016.02.087>`_
@@ -48,6 +49,8 @@ Indentation maps in the literature
 * `Mercier D. et al., "Microstructural and mechanical characterization of electroplated nickel matrix composite coatings" (2018). <https://doi.org/10.1080/02670844.2018.1433270>`_
 * `Mercier D. et al., "Mechanical properties mapping of cast bimetallic work roll shell material by nanoindentation" (2018). <https://doi.org/10.13140/RG.2.2.35449.16482/1>`_
 * `Huyghes P. et al., "On the Effect of Q&P Processing on the Stretch-flange-formability of 0.2C Ultra-high Strength Steel Sheets" (2018). <https://doi.org/10.2355/isijinternational.ISIJINT-2018-121>`_
+* `Bruker/Hysitron - XPM module <https://www.bruker.com/products/surface-and-dimensional-analysis/nanomechanical-test-instruments/nanomechanical-upgrade-options/xpm-upgrade.html>`_, "Application Note #1511, Hardness Mapping of a DP980 Steel Sample" (2018). <www.bruker.com/nanomechanical-testing>`_
+* `Hintsala E. D. et al., "High-Throughput Nanoindentation for Statistical and Spatial Property Determination" (2018). <https://doi.org/10.1007/s11837-018-2752-0>`_
 
 Colormap
 ############################################
@@ -61,3 +64,4 @@ Useful softwares / toolboxes for mapping
 * `Němeček J., "Probability density function 2.1" (2010). <http://ksm.fsv.cvut.cz/~nemecek/links/exp2pdf21/exp2pdf21.htm>`_
 * `Němeček J., "Deconvolution algorithm 3.0" (2010). <http://ksm.fsv.cvut.cz/~nemecek/links/decon30/decon.htm>`_
 * `ImageJ <https://imagej.nih.gov/ij/>`_
+* `Bruker/Hysitron - XPM module <https://www.bruker.com/products/surface-and-dimensional-analysis/nanomechanical-test-instruments/nanomechanical-upgrade-options/xpm-upgrade.html>`_

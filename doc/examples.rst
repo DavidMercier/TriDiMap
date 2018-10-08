@@ -47,4 +47,4 @@ For example, the following figure shows the pattern of a typical indentation gri
    :scale: 50 %
    :align: center
    
-   *Example of indentation grid pattern using a MTS/Agilent nanoindenter.*	
+   *Example of indentation grid pattern using a MTS/Agilent nanoindenter*	
