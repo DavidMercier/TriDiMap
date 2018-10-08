@@ -29,7 +29,7 @@ The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.ma
    
    *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices)*
    
-.. figure:: ./_pictures/gif_4Dmap/tomogram_setting.png
+.. figure:: ./_pictures/tomogram_setting.png
    :scale: 100 %
    :align: center
    
