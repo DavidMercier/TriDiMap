@@ -23,10 +23,10 @@ Links about (nano)indentation
 * `ISO 14577 - 3 , "Metallic materials -- Instrumented indentation test for hardness and materials parameters -- Part 3: Calibration of reference blocks", (2002). <http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=32193>`_
 * `ISO 14577 - 4 , "Metallic materials -- Instrumented indentation test for hardness and materials parameters -- Part 4: Test method for metallic and non-metallic coatings", (2007). <http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=39228>`_
 
-Indentation maps in the literature
-############################################
+Indentation maps and statistical analysis in the literature
+#############################################################
 * `Engqvist H. and Wiklund U., "Mapping of mechanical properties of WC–Co using nanoindentation" (2000). <https://doi.org/10.1023/A:1019143419984>`_
-* `Pelletier H. and Wiklund U., "Using depth-sensing techniques to characterize multiphases steels" (2000). <https://doi.org/10.1051/mattech/200088030041 >`_
+* `Pelletier H. and Wiklund U., "Using depth-sensing techniques to characterize multiphases steels" (2000). <https://doi.org/10.1051/mattech/200088030041>`_
 * `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation" (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
 * `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
 * `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces" (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
