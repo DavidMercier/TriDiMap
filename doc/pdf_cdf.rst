@@ -63,7 +63,18 @@ An example of fitting and deconvolution process is given in the following figure
    
 .. note::
    The choice of the bin size could be defined as an automatic calculation, based on the number of phases, the number of data and the minimum of peak intensity...
+
+When data are noisy due to experimental artefacts (e.g. surface contamination, interfaces effect or interesting phase inside the sample...) for example,
+with very high or very low mechanical property values, it is always possible to cut the signal, by setting manually (on the GUI) the extrema.
+This operation can be seen as an arbtrary cleaning, but careful with a fitting process,
+which gives different mean values, given peak shapes or peak number modification.
+
+.. figure:: ./_pictures/saturatedData.png
+   :scale: 50 %
+   :align: center
    
+   *Example of manually saturated indentation data, with a comparison between automatic maximum and a maximum set to 8GPa*
+
 Cumulative density function (CDF)
 ############################################
 
