@@ -33,7 +33,7 @@ and a mechanical property value is attributed to the empty pixel, by doing a sim
    :scale: 40 %
    :align: center
    
-   *Raw 2D hardness map obtained from a 25x25 indentation grid.*
+   *Raw 2D hardness map obtained from a 25x25 indentation grid*
 
 .. figure:: ./_pictures/RemoveNaN.png
    :scale: 40 %
@@ -47,7 +47,7 @@ Indentation length scales
 According to Constantinides et al. [#Constantinides_2006]_, the indentation depth :math:`h` should be at most 1/10
 of the characteristic size of the microstructure :math:`\overline{D}` (e.g.: particle size in a matrix, grain or void diameter...),
 in order to apply continuum indentation analysis to heterogeneous systems and  to  access  phase  properties.
-This rule refers to the well-known 10% rule of thumb proposed by Buckle [#Buckle_1973]_, which is a rough first estimation. 
+This rule refers to the well-known 10% rule of thumb proposed by Bückle [#Buckle_1973]_, which is a rough first estimation. 
 In cases where the contrast between the mechanical properties of the two phases becomes significant
 (e.g.: ratio between the elastic modulii lower than 0.2 or higher than 5), the method is not really reliable anymore
 and special care should be taken in the interpretation of the indentation results.
@@ -56,7 +56,7 @@ and special care should be taken in the interpretation of the indentation result
    :scale: 40 %
    :align: center
    
-   *Schematic of the principle of the grid indentation technique for heterogeneous materials.*
+   *Schematic of the grid indentation technique for heterogeneous materials*
 
 Once the maximum indentation depth is defined following this first rule, it is required to well define the distance between each indents.
 To avoid overlap of indents, the distance :math:`d` between 2 indents has to be higher than the plastic radius :math:`R_\text{p}` below 1 indent.
@@ -77,7 +77,7 @@ And in case of cube-corner indentation:
    :scale: 40 %
    :align: center
    
-   *Cross-sectional scheme of 2 indents, with the definition of geometrical parameters.*
+   *Cross-sectional scheme of 2 indents, with the definition of geometrical parameters*
    
 Interpolation step
 -----------------------
@@ -87,13 +87,13 @@ The |matlab| function used to interpolate linearly the indentation maps is: `int
 The process of interpolation does not modify the raw data intensity values, but increase the number of pixels,
 by a given factor of x2, x4, x8 or x16 (default values, which can be modified).
 For example, a map of 25x25 linearly interpolated by a factor of x2, becomes a map of 49x49 pixels.
-After interpolation, it is possible to create a new .xls file (with interpolated dataset), by pressing the XLS button at the bottom of the GUI.
+After interpolation, it is possible to create a new .xls file (with interpolated dataset), by pressing the 'XLS' button at the bottom of the GUI.
 
 .. figure:: ./_pictures/InterpolationStep.png
    :scale: 40 %
    :align: center
    
-   *Process of interpolation step.*
+   *Process of interpolation step*
 
 Smoothing step
 -----------------------
@@ -108,16 +108,15 @@ Sharpness can arises when there is a large difference in term of intensity betwe
    :scale: 40 %
    :align: center
    
-   *Process of smoothing step.*
+   *Process of smoothing step*
    
-Smoothing process is a modification of the raw values and an error map can be generated, by calculating
-the difference between the non smoothed map (raw map) and the smoothed map.
+Smoothing process is a modification (clipping of the signal) of the raw values and an error map can be generated, by simply calculating the difference between the non smoothed map (raw map) and the smoothed map.
 
 .. figure:: ./_pictures/SmoothingStepError.png
    :scale: 30 %
    :align: center
    
-   *Process to obtain error map after smoothing step.*  
+   *Process to obtain error map after smoothing step*  
 
 Linear interpolation and smoothing operations are sometimes applied on the raw dataset in order to lessen pixelization effect and noise from the measurement, 
 to get cleaner and more readable maps.
@@ -142,7 +141,7 @@ It is possible to plot similar 2D or 3D other maps using different functions of 
 Overlay
 -----------------------
 
-To perform an overlay, the best is to save the mechanical map, using the 'Save' button.
+To perform an overlay, the best is to save the mechanical map, using the 'SAVE' button (at the bottom of the GUI).
 An image of the map only is saved (no axis, no colorbar...) into the same folder, where data were loaded from.
 Then, using Powerpoint for example, it is possible to draw a rectangular shape onto the microstructural map
 and to fill this rectangular shape using the saved mechanical map.

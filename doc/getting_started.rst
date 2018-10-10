@@ -30,7 +30,7 @@ First of all a GUI is a Graphical User Interface.
    :scale: 40 %
    :align: center
    
-   *Screenshot of the main window of the TriDiMap toolbox.*
+   *Screenshot of the main window of the TriDiMap toolbox*
 
 * Set your type of equipment and units for length and mechanical property.
 
@@ -41,6 +41,8 @@ First of all a GUI is a Graphical User Interface.
   <http://tridimap.readthedocs.org/en/latest/examples.html>`_
 
 * Hardness map is plotted by default.
+
+* Distance between indents (along X and Y axis) should be automatically calculated, but it is sometimes wrong. In this case, the user has to set carefully (i.e. checking the length unit, it is in micron by default) by himself these 2 distances.
 
 * It is possible `to modify (to crop, to smooth, to set other colorbar...) <https://tridimap.readthedocs.io/en/latest/map_options.html>`_ this map and to plot other 2D or 3D maps, and to obtain the statistical distribution of mechanical properties:
 
@@ -60,8 +62,11 @@ Check the different file format possible to import in the TriDiMap toolbox: `Fil
    :scale: 40 %
    :align: center
    
-   *Plot of the hardness map after loading of data.*
+   *Plot of the hardness map after loading of data*
    
+..  note::
+    X-Y axis is given on the top right of the GUI as a reference, to indicate the user how maps are read and plotted...
+    
 ..  warning::
     Only square or rectangular indentation grids can be loaded into the Matlab toolbox.
 

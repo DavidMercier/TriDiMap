@@ -28,7 +28,7 @@ With this Matlab toolbox, it is possible:
     * to extract statistical values (mean, min, max with standard deviations) of mechanical properties and fractions for each phase;
     * to correct mechanical map using image correlation with microstructural map;
     * to correlate/compare mechanical map with microstructural map;
-    * to plot 4D mechanical property map.
+    * to plot 4D mechanical property map (indentation tomography).
 
 .. figure:: ./_pictures/download.png
    :scale: 20 %
@@ -55,7 +55,7 @@ With this Matlab toolbox, it is possible:
    :scale: 80 %
    :align: center
    
-   *Screenshot of the TriDiMap toolbox.*
+   *Screenshot of the TriDiMap toolbox*
 
 Contents
 ==========
@@ -103,7 +103,7 @@ and to Dr. Nicholas Randall from `Anton Paar <https://www.anton-paar.com>`_, for
 
 The author is grateful to Jean-François Vanhumbeeck and Xavier Vanden Eynde (`CRM Group <www.crmgroup.be>`_, Belgium (Liège)), for fruitful discussion and co-authoring of reference papers.
 
-The author is grateful to Debora Rossell, Franck Nozahic and Mélanie Gauvin (`OCAS <http://www.ocas.be/>`_, Belgium (Zwijnaarde)), for providing example files and lots le fruitful feedbacks.
+The author is grateful to Debora Rosseel, Franck Nozahic and Mélanie Gauvin (`OCAS <http://www.ocas.be/>`_, Belgium (Zwijnaarde)), for providing example files and lots le fruitful feedbacks.
 
 References
 -------------
