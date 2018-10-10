@@ -9,14 +9,14 @@ Crop
 Maps can be cropped to remove some useless part of the map (e.g. bakelite around the specimen, oxidized or contaminated surface...)
 or to avoid some artifact of measurements (e.g. surface effects, roughness or slope on the surface...).
 This option is really useful, especially to clean dataset for further statistical analysis.
-After cropping, it is possible to create a new .xls file (with cropped dataset), by pressing the XLS button at the bottom of the GUI.
+After cropping, it is possible to create a new .xls file (with cropped dataset), by pressing the 'XLS' button at the bottom of the GUI.
 
 Colormap
 ---------------------------
 
-It is possible to set another colormap into the GUI.
-But the default 'Jet' colormap from |matlab| is not divergent and obscures real patterns.
-Thus, it is difficult to distinguish the default line color styles.
+It is possible to set different colormap for the mapping into the GUI.
+The default 'Jet' colormap from |matlab| [#Matlab]_ is not divergent and obscures real patterns.
+Thus, it is sometimes difficult to distinguish the default line color styles.
 Many authors proposed to use divergent colormaps instead of default |matlab| colormaps [#Eddins]_, [#Moreland]_, [#MyCarta]_.
 
 The |matlab| function used to generate a divergent colormap is:
@@ -46,7 +46,7 @@ Markers / Grid
 ---------------------------
 
 Simple grid (corresponding to a regular pattern) or markers grid showing indent positions
-can be plotted on an indentation map, in order to help for the overlay of the mechanical map onto the microstructural map.
+can be plotted on an indentation map, in order to help for `the overlay of the mechanical map onto the microstructural map <https://tridimap.readthedocs.io/en/latest/mapping.html#overlay>`_.
 
 .. figure:: ./_pictures/markers.png
    :scale: 40 %
@@ -56,6 +56,7 @@ can be plotted on an indentation map, in order to help for the overlay of the me
    
 References
 -------------
+.. [#Matlab] `Matlab Colormap. <https://fr.mathworks.com/help/matlab/ref/colormap.html>`_
 .. [#Eddins] `Eddins S., "Divergent colormaps". <https://blogs.mathworks.com/steve/2015/01/20/divergent-colormaps/>`_
 .. [#Moreland] `Moreland K., "Diverging Color Maps for Scientific Visualization". <https://www.kennethmoreland.com/color-maps/>`_
 .. [#MyCarta] `MyCarta, "A good divergent color palette for Matlab". <https://mycarta.wordpress.com/2012/03/15/a-good-divergent-color-palette-for-matlab/>`_
