@@ -73,7 +73,7 @@ The following window opens for indentation mapping:
 Check the different file format possible to import in the TriDiMap toolbox: `File formats <https://tridimap.readthedocs.io/en/latest/examples.html>`_
 
 .. figure:: ./_pictures/MTS_example1_25x25_H_GUI_00.png
-   :scale: 40 %
+   :scale: 30 %
    :align: center
    
    *Plot of the hardness map after loading of data*
