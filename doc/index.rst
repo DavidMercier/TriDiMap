@@ -50,12 +50,23 @@ With this Matlab toolbox, it is possible:
    :target: https://media.readthedocs.org/pdf/tridimap/latest/tridimap.pdf
    
 `Download the documentation as a pdf file <https://media.readthedocs.org/pdf/tridimap/latest/tridimap.pdf>`_.
+
+
+.. only:: html
+
+    .. figure:: ./_pictures/MTS_example1_25x25_H_GUI.gif
+        :scale: 80 %
+        :align: center
+        
+        *Screenshot of the TriDiMap toolbox*
    
-.. figure:: ./_pictures/MTS_example1_25x25_H_GUI.gif
-   :scale: 80 %
-   :align: center
-   
-   *Screenshot of the TriDiMap toolbox*
+.. only:: latex
+
+    .. figure:: ./_pictures/MTS_example1_25x25_H_GUI_00.png
+        :scale: 80 %
+        :align: center
+        
+        *Screenshot of the TriDiMap toolbox*
 
 Contents
 ==========
