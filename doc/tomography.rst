@@ -23,17 +23,21 @@ The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.ma
 ..  warning::
     It is not a 3D reconstruction, thus no need to align, to rotate or to distort the different slices. There is no misalignment or local disorientation, only if the indentation direction is not perpendicular to the sample surface.
 
-.. figure:: ./_pictures/gif_4Dmap/25x25pixels_25slices.gif
-   :scale: 100 %
-   :align: center
+.. only:: html
+
+    .. figure:: ./_pictures/gif_4Dmap/25x25pixels_25slices.gif
+        :scale: 60 %
+        :align: center
+        
+        *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices)*
    
-   *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices)*
-   
-.. figure:: ./_pictures/tomogram_setting.png
-   :scale: 40 %
-   :align: center
-   
-   *Different settings for the 4D indentation mapping vizualization*
+.. only:: latex
+
+    .. figure:: ./_pictures/gif_4Dmap/MTS_example1_25x25.xls_3DSlice.mat_01.png
+        :scale: 100 %
+        :align: center
+        
+        *4D mapping of sample hardness obtained from indentation tests (25x25 pixels x25 slices)*
 
 .. note::
     To generate such 4D map, it is required the first time to load raw *.xls files. Given the fact, that the imported data is saved as *.mat into the same folder, it is possible the next time to reload only this *.mat file to save some loading time...
