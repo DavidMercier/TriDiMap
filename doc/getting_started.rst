@@ -63,8 +63,8 @@ The following window opens for indentation mapping:
   
 * 4) Plot options
     - Set the colormap
-	- Set the colorbar (number of steps, log scale, normalization...)
-	- Add markers, min/max values...
+    - Set the colorbar (number of steps, log scale, normalization...)
+    - Add markers, min/max values...
 
 * 5) Get values from the map by clicking on a pixel.
 	
