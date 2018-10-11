@@ -5,7 +5,7 @@ g = guidata(gcf);
 if g.config.data_path
     cMap = g.config.colorMap;
     flagFlipCM = get(g.handles.cb_flipColormap_GUI, 'Value');
-    strTitle = 'E-H difference map';
+    strTitle = 'E-H correlation map';
     
     diffEH = (g.results.diffE + g.results.diffH);
     diffEH(diffEH==2) = 1;
