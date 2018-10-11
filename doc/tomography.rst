@@ -50,8 +50,7 @@ Other 3D view
 Using the TriDiMap toolbox and 'Powerpoint',
 the following figure can be obtained by doing a combination of surface and in-depth indentation maps.
 
-
-    .. figure:: ./_pictures/gif_4Dmap/cs_map.png
+    .. figure:: ./_pictures/cs_map.png
         :scale: 100 %
         :align: center
         

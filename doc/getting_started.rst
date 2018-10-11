@@ -35,7 +35,7 @@ First of all a GUI is a Graphical User Interface.
 Main GUI for the indentation mapping
 ####################################################
 
-* The following window opens for indentation mapping:
+The following window opens for indentation mapping:
 
 .. figure:: ./_pictures/gui_index.png
    :scale: 40 %
@@ -87,7 +87,7 @@ Check the different file format possible to import in the TriDiMap toolbox: `Fil
 Second GUI for the maps correlation
 ####################################################
 
-* A second window opens for maps correlation, when user click on the 'BINARIZATION':
+A second window opens for maps correlation, when user click on the 'BINARIZATION':
 
 .. figure:: ./_pictures/GUI_Main_Window_2.png
    :scale: 30 %
@@ -95,7 +95,7 @@ Second GUI for the maps correlation
    
    *Screenshot of the second window of the TriDiMap toolbox*
 
-* It is always possible to go back to the main GUI, by clicking on the 'MAPPING' button.
+It is always possible to go back to the main GUI, by clicking on the 'MAPPING' button.
 
 .. figure:: ./_pictures/gui_index_2.png
    :scale: 30 %

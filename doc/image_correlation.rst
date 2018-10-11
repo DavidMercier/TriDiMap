@@ -95,7 +95,7 @@ in order to compare experimental data with reference data.
    *Scheme of different indentation tests (cross-sectional view) and mathematical criteria,for discrimination between correct measurements and artefacts in the correlation process during the ICTBI analysis*
    
 .. figure:: ./_pictures/cleanedE-H.png
-   :scale: 40 %
+   :scale: 60 %
    :align: center
    
    *Cleaned E-h plot*
