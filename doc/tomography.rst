@@ -43,7 +43,20 @@ The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.ma
     To generate such 4D map, it is required the first time to load raw *.xls files. Given the fact, that the imported data is saved as *.mat into the same folder, it is possible the next time to reload only this *.mat file to save some loading time...
 
 Example of a .mat file: `MTS_example1_25x25.xls_3DSlice.mat <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/MTS_example1_25x25.xls_3DSlice.mat>`_
-	
+
+Other 3D view
+-------------
+
+Using the TriDiMap toolbox and 'Powerpoint',
+the following figure can be obtained by doing a combination of surface and in-depth indentation maps.
+
+
+    .. figure:: ./_pictures/gif_4Dmap/cs_map.png
+        :scale: 100 %
+        :align: center
+        
+        *View of a combination of surface and in-depth indentation maps*
+		
 References
 -------------
 .. [#Tromas_2012] `Tromas C. et al., "Hardness and elastic modulus gradients in plasma-nitrided 316L polycrystalline stainless steel investigated by nanoindentation tomography" (2012). <https://doi.org/10.1016/j.matdes.2016.09.030>`_

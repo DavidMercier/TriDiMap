@@ -66,7 +66,9 @@ Main GUI for the indentation mapping
 	- Set the colorbar (number of steps, log scale, normalization...)
 	- Add markers, min/max values...
 
-* 5) Buttons to save data (screenshots, .xls file...), to open the 2nd GUI (maps correlation) or to quit...
+* 5) Get values from the map by clicking on a pixel.
+	
+* 6) Buttons to save data (screenshots, .xls file...), to open the 2nd GUI (maps correlation) or to quit...
 	
 Check the different file format possible to import in the TriDiMap toolbox: `File formats <https://tridimap.readthedocs.io/en/latest/examples.html>`_
 
