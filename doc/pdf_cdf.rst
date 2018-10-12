@@ -75,6 +75,9 @@ which gives different mean values, given peak shapes or peak number modification
    
    *Example of manually saturated indentation data, with a comparison between automatic maximum and a maximum set to 8GPa*
 
+.. note::
+   Sometimes the fit does not converge, just restart the fitting process... or change a little bit the bin size.
+   
 Cumulative density function (CDF)
 ############################################
 

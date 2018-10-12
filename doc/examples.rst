@@ -43,7 +43,9 @@ For example, the following figure shows the pattern of a typical indentation gri
 
 The |matlab| function to modify to load specific indentation results file is:
 `TriDiMap_loadingAllTests.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/loading_data/TriDiMap_loadingAllTests.m>`_
-	
+
+Contact `me <david9684@gmail.com>`, in case of special data file format.
+
 .. figure:: ./_pictures/MTS_indentationGrid.png
    :scale: 50 %
    :align: center
