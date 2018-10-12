@@ -26,18 +26,21 @@ Links about (nano)indentation
 Indentation maps and statistical analysis in the literature
 #############################################################
 * `Engqvist H. and Wiklund U., "Mapping of mechanical properties of WC–Co using nanoindentation" (2000). <https://doi.org/10.1023/A:1019143419984>`_
-* `Pelletier H. and Wiklund U., "Using depth-sensing techniques to characterize multiphases steels" (2000). <https://doi.org/10.1051/mattech/200088030041>`_
+* `Pelletier H. et al., "Using depth-sensing techniques to characterize multiphases steels" (2000). <https://doi.org/10.1051/mattech/200088030041>`_
 * `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation" (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
 * `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
 * `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces" (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
+* `Chen J.J. et al., "A Coupled Nanoindentation/SEM‐EDS Study on Low Water/Cement Ratio Portland Cement Paste: Evidence for C–S–H/Ca(OH)2 Nanocomposites" (2010). <https://doi.org/10.1111/j.1551-2916.2009.03599.x>`_
 * `Goldbaum D. et al., "Mechanical Property Mapping of Cold Sprayed Ti Splats and Coatings" (2010). <https://doi.org/10.1007/s11666-010-9546-4>`_
 * `Ulm F.J. et al., "Does microstructure matter for statistical nanoindentation techniques?" (2010). <https://doi.org/10.1016/j.cemconcomp.2009.08.007>`_
 * `Tromas C. et al., "Hardness and elastic modulus gradients in plasma-nitrided 316L polycrystalline stainless steel investigated by nanoindentation tomography" (2012). <https://doi.org/10.1016/j.matdes.2016.09.030>`_
 * `Nohava J. et al., "Comparison of Isolated Indentation and Grid Indentation Methods for HVOF Sprayed Cermets" (2012). <https://doi.org/10.1007/s11666-012-9733-6>`_
+* `Němeček J. et al., "Nanoindentation Based Analysis of Heterogeneous Structural Materials " (2012). <https://doi.org/10.5772/50968>`_
 * `Němeček J. et al., "Micromechanical analysis of heterogeneous structural materials" (2013). <https://doi.org/10.1016/j.cemconcomp.2012.06.015>`_
 * `Moser R.D. et al., "Characterization of Impact Damage in Ultra-High Performance Concrete Using Spatially Correlated Nanoindentation/SEM/EDX" (2013). <https://doi.org/10.1007/s11665-013-0668-y>`_
 * `Rettler E. et al., "Mapping the mechanical properties of biomaterials on different length scales: depth-sensing indentation and AFM based nanoindentation" (2013). <https://doi.org/10.1039/c3tb20120>`_
 * `Diego-Calderón I. de et al., "Deformation behavior of a high strength multiphase steel at macro- and micro-scales" (2014). <https://doi.org/10.1016/j.msea.2014.05.068>`_
+* `Amanieu H.Y. de et al., "Mechanical property measurements of heterogeneous materials by selective nanoindentation: Application to LiMn2O4 cathode" (2014). <https://doi.org/10.1016/j.msea.2013.11.04>`_
 * `Chen L. et al., "Analysis of In Situ Mechanical Properties of Phases in High-Alloyed White Iron Measured by Grid Nanoindentation" (2015). <https://doi.org/10.1007/s11665-015-1672-1>`_
 * Da Silva E.P., "Phase Transformation in Advanced High Strength Steels during Austenite Decomposition at Low Temperatures", PhD Thesis (2015). ISBN 978-90-8578-885-0
 * `Morales-Rivas L. et al., "Nanomechanical characterization of nanostructured bainitic steel: Peak Force Microscopy and Nanoindentation with AFM" (2015). <https://doi.org/10.1038/srep17164>`_
