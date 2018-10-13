@@ -38,15 +38,15 @@ This issue is well known in the literature and is a little bit discussed in this
    *Effect of the bin size definition on the distribution shape*
 
 The next step is to fit this distribution using a probability density function.
-Such mathematical approach is very well defined in the literature [#Nemecek_2009]_, [#Nemecek_2013]_and [#Hausild_2016]_.
+Such mathematical approach is very well defined in the literature [#Nemecek_2009]_, [#Nemecek_2013]_ and [#Hausild_2016]_.
 It is worth to note that the result obtain after deconvolution (average values and standard deviations for each peak) is dependent of the
 bin size. A solution to avoid user definition of the bin size is to use the Freedman–Diaconis rule of thumb, which gives an estimation of 
-the bin size after calculation the interquartile (IQR) range of the data.
+the bin size after calculation the interquartile (IQR) range of the data. To activate this option, check the box for 'Auto Bin Size' on the GUI.
 
-    .. math:: Bin size = \frac{2*IQR}{n^{\frac{1}{3}}}
+    .. math:: \text{Bin Size} = \frac{2*IQR}{n^{\frac{1}{3}}}
         :label: binSizeAuto
 
-With :math:`\n` is the number of observations in the sample.
+With :math:`n` is the number of observations in the sample.
 
 The |matlab| function used to calculate the interquartile range of the data is:
 `iqrVal.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/util/iqrVal.m>`_
