@@ -386,12 +386,12 @@ else
             Prop_pdf = Hist_i/numberVal; % length(data2useVect) without NaN can be used to have a total probability of 1
             % Problem sometimes when bin too small and not enough data
             Prop_pdf = Prop_pdf/binsize; % probability density function (property must be divided by the number of values and binsize)
-            %             indFactor = 10;
-            %             while max(Prop_pdf) > 1
-            %                 Prop_pdf = Prop_pdf/binsize;
-            %                 Prop_pdf = Prop_pdf/(indFactor*binsize);
-            %                 indFactor = indFactor * 2;
-            %             end
+			indFactor = 10;
+			while max(Prop_pdf) > 1
+				Prop_pdf = Prop_pdf/binsize;
+				Prop_pdf = Prop_pdf/(indFactor*binsize);
+				indFactor = indFactor * 2;
+			end
             SumProp_pdf = sum(Prop_pdf);
             SumTot = SumProp_pdf .* binsize;
             %if  gui.config.licenceStat_Flag

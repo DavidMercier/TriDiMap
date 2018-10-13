@@ -41,7 +41,8 @@ The next step is to fit this distribution using a probability density function.
 Such mathematical approach is very well defined in the literature [#Nemecek_2009]_, [#Nemecek_2013]_ and [#Hausild_2016]_.
 It is worth to note that the result obtain after deconvolution (average values and standard deviations for each peak) is dependent of the
 bin size. A solution to avoid user definition of the bin size is to use the Freedman–Diaconis rule of thumb, which gives an estimation of 
-the bin size after calculation the interquartile (IQR) range of the data. To activate this option, check the box for 'Auto Bin Size' on the GUI.
+the bin size after calculation the interquartile (IQR) range of the data [#FreedmanDaconis_1981]_.
+ activate this option, check the box for 'Auto Bin Size' on the GUI.
 
     .. math:: \text{Bin Size} = \frac{2*IQR}{n^{\frac{1}{3}}}
         :label: binSizeAuto
@@ -50,6 +51,8 @@ With :math:`n` is the number of observations in the sample.
 
 The |matlab| function used to calculate the interquartile range of the data is:
 `iqrVal.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/util/iqrVal.m>`_
+
+Another rule of thumb is to use between 6 and 20 bins in a histogram.
 
 The |matlab| function used to plot the distribution of mechanical property values using histogram is:
 `pdfGaussian.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/util/pdfGaussian.m>`_
@@ -115,6 +118,7 @@ The |matlab| function used to fit the cumulative distribution with a Weibull fun
 References
 ############################################
 
+.. [#FreedmanDaconis_1981] `Freedman D. and Daconis P., "On the histogram as a density estimator:L2 theory" (1981). <https://doi.org/10.1007/BF01025868>`_
 .. [#Nemecek_2009] `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
 .. [#Nemecek_2010_1] `Němeček J., "Probability density function 1.0" (2010). <http://ksm.fsv.cvut.cz/~nemecek/links/exp2pdf10/exp2pdf10.htm>`_
 .. [#Nemecek_2010_2] `Němeček J., "Probability density function 2.1" (2010). <http://ksm.fsv.cvut.cz/~nemecek/links/exp2pdf21/exp2pdf21.htm>`_
