@@ -20,13 +20,13 @@ maxVal = max(propVal);
 N = length(propVal);
 
 while((norma2 > limit) && (iter <= maxIter)) && ...
-        get(gui.handles.cb_deconvolutionHist_GUI, 'Value');
+        get(gui.handles.cb_deconvolutionHist_GUI, 'Value')
     r = rand(M-1,1);
     r = sort(r);
     Lim = zeros(1,M+1);
     Lim(1) = 0;
     pom = maxVal .* r;
-    for ii = 1:M-1;
+    for ii = 1:M-1
         Lim(ii+1) = pom(ii);
     end
     Lim(M+1) = maxVal;
@@ -359,7 +359,7 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                 else
                     legend ('Experiment','#1','#2','#3','#4','#5','#6','Overall PDF');
                 end
-            otherwise ;
+            otherwise
         end
         legend boxoff;
         
@@ -371,8 +371,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
         ylabel('Frequency density');
     end
     ylim([0 1.2*maxYPos]);
+    ylim([0 1.2]);
 end
-if get(gui.handles.cb_deconvolutionHist_GUI, 'Value');
+if get(gui.handles.cb_deconvolutionHist_GUI, 'Value')
     %msgbox('Deconvolution completed');
     title('Deconvolution process completed');
 else

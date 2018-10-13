@@ -29,6 +29,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         gui.config.plotThresLines = get(h.cb_thresPlot_GUI, 'Value');
     elseif gui.config.property  > 3
         gui.config.binSize = str2num(get(h.value_BinSizeHist_GUI, 'String'));
+        gui.config.autobinSize  = get(h.cb_autoBinSizeHist_GUI, 'Value');
         gui.config.MinHistVal = str2num(get(h.value_MinValHist_GUI, 'String'));
         gui.config.MaxHistVal = str2num(get(h.value_MaxValHist_GUI, 'String'));
         gui.config.MinCDFVal = str2num(get(h.value_MinValCDF_GUI, 'String'));
