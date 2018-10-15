@@ -43,13 +43,13 @@ The following window opens for indentation mapping:
    
    *Screenshot of the detailed main window of the TriDiMap toolbox*
    
-* 1) Initial settings and indentation data loading
+* 1) Initial settings and indentation data loading:
     - Set your type of equipment and units for length and mechanical property. Set 'Agilent' in case of .xls file generated using the TriDiMap GUI.
     - Set the number of indents along the X and the Y directions.
     - Import your (nano)indentation results, by clicking on the button 'Select file'. `Click here to have more details about valid format of data. <http://tridimap.readthedocs.org/en/latest/examples.html>`_
     - Distance between indents (along X and Y axis) should be automatically calculated, but it is sometimes wrong. In this case, the user has to set carefully (i.e. checking the length unit, it is in micron by default) by himself these 2 distances.
 
-* 2) Plot settings
+* 2) Plot settings:
     - Set your type of equipment and units for length and mechanical property. Set 'Agilent' in case of .xls file generated using the TriDiMap GUI.
     - Hardness map is plotted by default.
     - It is possible `to modify (to crop, to smooth, to set other colorbar...) <https://tridimap.readthedocs.io/en/latest/map_options.html>`_ this map and to plot other 2D or 3D maps, and to obtain the statistical distribution of mechanical properties:
@@ -59,9 +59,9 @@ The following window opens for indentation mapping:
 	  + `Hardness vs Elastic modulus map <https://tridimap.readthedocs.io/en/latest/E_H.html>`_
 	  + `Image correlation <https://tridimap.readthedocs.io/en/latest/image_correlation.html>`_
 
-* 3) Average, minimum and maximum values are calculated
+* 3) Average, minimum and maximum values are calculated.
   
-* 4) Plot options
+* 4) Plot options:
     - Set the colormap
     - Set the colorbar (number of steps, log scale, normalization...)
     - Add markers, min/max values...
@@ -82,9 +82,9 @@ Check the different file format possible to import in the TriDiMap toolbox: `Fil
     X-Y axis is given on the top right of the GUI as a reference, to indicate the user how maps are read and plotted...
     
 ..  warning::
-    Only square or rectangular indentation grids can be loaded into the Matlab toolbox.
+    Only square or rectangular indentation grids can be loaded into the |matlab| toolbox.
 
-Second GUI for the maps correlation
+Second GUI for the maps correlation (ICBTI)
 ####################################################
 
 A second window opens for maps correlation, when user click on the 'BINARIZATION':
@@ -103,19 +103,19 @@ It is always possible to go back to the main GUI, by clicking on the 'MAPPING' b
    
    *Screenshot of the detailed second window of the TriDiMap toolbox*
 
-* 1) Initial settings and indentation data loading (mechanical maps)
+* 1) Initial settings and indentation data loading (mechanical maps):
     - Set your type of equipment and units for length and mechanical property. Set 'Agilent' in case of .xls file generated using the TriDiMap GUI.
     - Set the number of indents along the X and the Y directions.
     - Import your (nano)indentation results, by clicking on the button 'Select file'. `Click here to have more details about valid format of data. <http://tridimap.readthedocs.org/en/latest/examples.html>`_
     - Distance between indents (along X and Y axis) should be automatically calculated, but it is sometimes wrong. In this case, the user has to set carefully (i.e. checking the length unit, it is in micron by default) by himself these 2 distances.
 
-* 2) Threshold definition to separate soft phase from hard/stiff phase
+* 2) Threshold definition to separate soft phase from hard/stiff phase.
 
-* 3) Microstructural map loading
+* 3) Microstructural map loading.
 
-* 4) Maps options (colormap...)
+* 4) Maps options (colormap...).
 
-* 5) Statistical calculations for each map (mean values, phases ratio...)
+* 5) Statistical calculations for each map (mean values, phases ratio...).
 
 * 6) Buttons to save data (screenshots, .xls file...), to open the 1st GUI (indentation mapping) or to quit...
 
