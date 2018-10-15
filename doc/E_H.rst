@@ -9,7 +9,7 @@ families of points and the definition of "sectors" or "bubbles",
 each one corresponding to a single phase (e.g. soft matrix vs hard and stiff particles).
 
 The correlation between elastic and plastic properties has been extensively studied in the literature
-[#Gent_1958]_, [#Bao_2004]_, [#Oyen_2006]_, [#Labonte_2017]_.
+[#Gent_1958]_, [#Bao_2004]_, [#Oyen_2006]_ and [#Labonte_2017]_.
 
 .. note::
     Elastic modulus is an intrinsic material property and hardness is an engineering property, which can be related to yield strength for some materials.
@@ -40,8 +40,8 @@ and a 4 color-coded map corresponding to this plot can be generated (see 2nd fig
 Ashby map
 ############################################
 
-Such plot could be seen as a conventional Ashby map, with materials families.
-An example of a typical Ashby map is given afterwards, using the CES Selector 2018 software [#CES Selector]_.
+Such plot could be seen as a conventional Ashby map [#Ashby_2005]_, with materials families.
+An example of a typical Ashby map is given afterwards, using the CES Selector 2018 software [#CES_Selector]_.
 At some point, it is possible to add material reference (bulk, homogeneous, monophasic, ...) values on the E-H map,
 in order to compare experimental data with data from the literature.
 
@@ -54,7 +54,8 @@ in order to compare experimental data with data from the literature.
 References
 ############################################
 
-.. [#CES Selector] `CES Selector 2018 <https://www.grantadesign.com/>`_
+.. [#Ashby_2005] Ashby M.F., "Materials Selection in Mechanical Design" (2005), ISBN 978-0-7506-6168-3.
+.. [#CES_Selector] `CES Selector 2018 <https://www.grantadesign.com/>`_
 .. [#Gent_1958] `Gent A.N., "On the Relation between Indentation Hardness and Young's Modulus." (1958). <https://doi.org/10.5254/1.3542351>`_
 .. [#Bao_2004] `Bao Y.W. et al., "Investigation of the relationship between elastic modulus and hardness based on depth-sensing indentation measurements" (2004). <https://doi.org/110.1016/j.actamat.2004.08.002>`_
 .. [#Oyen_2006] `Oyen M.L., "Nanoindentation hardness of mineralized tissues" (2006). <https://doi.org/10.1016/j.jbiomech.2005.09.011>`_
