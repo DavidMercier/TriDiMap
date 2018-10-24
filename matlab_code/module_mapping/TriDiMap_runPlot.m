@@ -328,16 +328,6 @@ else
                     text(x,0.90*y,strcat('E = ',num2str(meanE), gui.config.strUnit_Property), 'Color', colorT4);
                 end
                 hold on;
-                if ~config.FrenchLeg
-                    hXLabel = xlabel(strcat({'Hardness ('},gui.config.strUnit_Property, ')'));
-                    hYLabel = ylabel(strcat({'Elastic modulus ('},gui.config.strUnit_Property, ')'));
-                else
-                    xlabel(strcat({'Duret''e ('},gui.config.strUnit_Property, ')'));
-                    hYLabel = ylabel(strcat({'Module d''\''elasticit\''e ('},gui.config.strUnit_Property, ')'));
-                end
-                set([hXLabel, hYLabel], ...
-                    'Color', [0,0,0], 'FontSize', gui.config.FontSizeVal, ...
-                    'Interpreter', 'Latex');
                 
                 if gui.config.plotThresLines
                     xData_HThres = ones(1,2001) * gui.config.HVal_ThresLines;
@@ -432,7 +422,7 @@ else
                     end
                 end
                 if get(gui.handles.cb_plotEllipse_GUI, 'Value')
-                    legend(hPlot(:),legendInfo); 
+                    legend(hPlot(:),legendInfo);
                 end
             else
                 cla;
@@ -440,7 +430,18 @@ else
                 TriDiMap_plot;
             end
         end
-        
+        if ~gui.config.plotSectMap
+            if ~config.FrenchLeg
+                hXLabel = xlabel(strcat({'Hardness ('},gui.config.strUnit_Property, ')'));
+                hYLabel = ylabel(strcat({'Elastic modulus ('},gui.config.strUnit_Property, ')'));
+            else
+                xlabel(strcat({'Duret''e ('},gui.config.strUnit_Property, ')'));
+                hYLabel = ylabel(strcat({'Module d''\''elasticit\''e ('},gui.config.strUnit_Property, ')'));
+            end
+            set([hXLabel, hYLabel], ...
+                'Color', [0,0,0], 'FontSize', gui.config.FontSizeVal, ...
+                'Interpreter', 'Latex');
+        end
     elseif config.property == 4 || config.property == 5
         if config.flag_data
             % Histograms plot
