@@ -150,14 +150,14 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         set(gca,'XDir','normal');
         set(gca,'YDir','normal');
-        stringSurf = 'Flat';   
+        stringSurf = 'Flat';
         [Match, noMatch] = regexp(gui.config.MatlabRelease,'20..','match','split');
         if str2num(char(cellstr(Match))) > 2014 || ...
                 (str2num(char(cellstr(Match))) == 2014 && strcmp(char(noMatch(2)),'b)'))
             for ii = 1:length(hFig)
                 zdata = hFig(ii).ZData;
                 hFig(ii).CData = zdata;
-                hFig(ii).FaceColor = 'Flat'%char(stringSurf);
+                hFig(ii).FaceColor = 'Flat';%char(stringSurf);
             end
         else
             for ii = 1:length(hFig)
@@ -239,7 +239,10 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         guidata(gcf, gui);
         flagPlot = 1;
     end
-    TriDiMap_plot_options(xData_interp, yData_interp, data2plot, flagPlot);
+    try
+        TriDiMap_plot_options(xData_interp, yData_interp, data2plot, flagPlot);
+    catch
+    end
     hold on;
     
 else

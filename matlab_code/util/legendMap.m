@@ -31,7 +31,11 @@ if flagFlipCM
     cmap = flipud(cmap);
 end
 [token, remain] = strtok(cMap);
-szCM = size(colormap,1)/2;
+if mod(size(colormap,1),2) > 0
+    szCM = (size(colormap,1)/2)+0.5;
+else
+    szCM = (size(colormap,1)/2);
+end
 if flagFlipCM
     hFig(2) = plot(NaN,NaN,'sk','MarkerFaceColor',cmap(end,:));
     if numPh == 3

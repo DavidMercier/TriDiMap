@@ -352,6 +352,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     set(h.value_MinVal_GUI, 'String', num2str(nanmin(minVal)));
     set(h.value_MaxVal_GUI, 'String', num2str(nanmax(maxVal)));
     set(h.property_GUI, 'Value', 2);
+    config.flag_ClusterGauss = 0;
 end
 config.flagZplot = 0;
 

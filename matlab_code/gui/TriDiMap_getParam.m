@@ -26,7 +26,51 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
             str2num(get(h.value_Hth_ValEH_GUI, 'String'));
         gui.config.EVal_ThresLines = ...
             str2num(get(h.value_Eth_ValEH_GUI, 'String'));
-        gui.config.plotThresLines = get(h.cb_thresPlot_GUI, 'Value');
+        gui.config.plotClusters = get(h.pm_sectPlot_GUI, 'Value');
+        if gui.config.plotClusters == 1 || gui.config.plotClusters == 3
+            set(h.pm_pixData_GUI, 'Value', 3);
+            set(h.title_Hth_ValEH_GUI, 'Visible', 'off');
+            set(h.value_Hth_ValEH_GUI, 'Visible', 'off');
+            set(h.unit_Hth_ValEH_GUI, 'Visible', 'off');
+            set(h.title_Eth_ValEH_GUI, 'Visible', 'off');
+            set(h.value_Eth_ValEH_GUI, 'Visible', 'off');
+            set(h.unit_Eth_ValEH_GUI, 'Visible', 'off');
+            set(h.cb_thresPlot_GUI, 'Visible', 'off');
+            set(h.cb_sectMVPlot_GUI, 'Visible', 'off');
+            set(h.cb_plotSectMap_GUI, 'Visible', 'off');
+            set(h.title_K_GMM_GUI, 'Visible', 'off');
+            set(h.value_K_GMM_GUI, 'Visible', 'off');
+            set(h.cb_plotEllipse_GUI, 'Visible', 'off');
+            gui.config.plotThresLines = 0;
+            gui.config.plotSectMap = 0;
+            if gui.config.plotClusters == 3
+                gui.config.K_GMM_old = gui.config.K_GMM;
+                gui.config.K_GMM = str2num(get(h.value_K_GMM_GUI, 'String'));
+                if gui.config.K_GMM_old ~= gui.config.K_GMM
+                    gui.config.flag_ClusterGauss = 0;
+                end
+                set(h.title_K_GMM_GUI, 'Visible', 'on');
+                set(h.value_K_GMM_GUI, 'Visible', 'on');
+                set(h.cb_plotSectMap_GUI, 'Visible', 'on');
+                gui.config.plotSectMap = get(h.cb_plotSectMap_GUI, 'Value');
+                set(h.cb_plotEllipse_GUI, 'Visible', 'on');
+            end
+        elseif gui.config.plotClusters == 2
+            set(h.title_Hth_ValEH_GUI, 'Visible', 'on');
+            set(h.value_Hth_ValEH_GUI, 'Visible', 'on');
+            set(h.unit_Hth_ValEH_GUI, 'Visible', 'on');
+            set(h.title_Eth_ValEH_GUI, 'Visible', 'on');
+            set(h.value_Eth_ValEH_GUI, 'Visible', 'on');
+            set(h.unit_Eth_ValEH_GUI, 'Visible', 'on');
+            set(h.cb_thresPlot_GUI, 'Visible', 'on');
+            set(h.cb_sectMVPlot_GUI, 'Visible', 'on');
+            set(h.cb_plotSectMap_GUI, 'Visible', 'on');
+            set(h.title_K_GMM_GUI, 'Visible', 'off');
+            set(h.value_K_GMM_GUI, 'Visible', 'off');
+            set(h.cb_plotEllipse_GUI, 'Visible', 'off');
+            gui.config.plotThresLines = get(h.cb_thresPlot_GUI, 'Value');
+            gui.config.plotSectMap = get(h.cb_plotSectMap_GUI, 'Value');
+        end
     elseif gui.config.property  > 3
         gui.config.binSize = str2num(get(h.value_BinSizeHist_GUI, 'String'));
         gui.config.autobinSize  = get(h.cb_autoBinSizeHist_GUI, 'Value');
@@ -34,12 +78,17 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         gui.config.MaxHistVal = str2num(get(h.value_MaxValHist_GUI, 'String'));
         gui.config.MinCDFVal = str2num(get(h.value_MinValCDF_GUI, 'String'));
         gui.config.MaxCDFVal = str2num(get(h.value_MaxValCDF_GUI, 'String'));
-        set(gui.handles.cb_plotSectMap_GUI, 'Value', 0);
+        %set(h.pm_sectPlot_GUI, 'Value', 1);
+        set(h.cb_plotSectMap_GUI, 'Value', 0);
+        gui.config.plotSectMap = 0;
     end
     if gui.config.property < 3
         set(gui.handles.title_z_values_prop_GUI, 'Visible', 'on');
         set(gui.handles.value_z_values_GUI, 'Visible', 'on');
         set(gui.handles.unit_z_values_GUI, 'Visible', 'on');
+        %set(h.pm_sectPlot_GUI, 'Value', 1);
+        set(h.cb_plotSectMap_GUI, 'Value', 0);
+        gui.config.plotSectMap = 0;
     else
         set(gui.handles.title_z_values_prop_GUI, 'Visible', 'off');
         set(gui.handles.value_z_values_GUI, 'Visible', 'off');

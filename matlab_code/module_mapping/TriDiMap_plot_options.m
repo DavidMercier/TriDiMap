@@ -13,14 +13,29 @@ if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
     intervalScaleBar = gui.config.intervalScaleBar;
     cMap = gui.config.colorMap;
 else
-    cMap = [1 1 1
-        0 0 0
-        1 0 0
-        0 1 0
-        0 0 1];% w k r g b
-    cminVal = 0;
-    cmaxVal = 4;
-    intervalScaleBar = 4;
+    if gui.config.plotClusters == 2
+        cMap = [1 1 1
+            0 0 0
+            1 0 0
+            0 1 0
+            0 0 1];% w k r g b
+        cminVal = 0;
+        cmaxVal = 4;
+        intervalScaleBar = 4;
+    elseif gui.config.plotClusters == 3
+        if gui.config.K_GMM == 2
+            cMap = [1 0 0;0 0 1]; %b r
+            cminVal = 0;
+            cmaxVal = gui.config.K_GMM;
+            intervalScaleBar = gui.config.K_GMM;
+        elseif gui.config.K_GMM == 3
+            cMap = [0 0 1; 1 0 0; 0 1 0]; %b r g
+            cminVal = 0;
+            cmaxVal = gui.config.K_GMM;
+            intervalScaleBar = gui.config.K_GMM;
+            
+        end
+    end
 end
 contourPlot = gui.config.contourPlot;
 
@@ -60,7 +75,7 @@ if flagPlot
             length(yData_interp) > 5*length(xData_interp)
         axis normal;
     end
-    if rawData == 1
+    if rawData == 1 || gui.config.plotClusters > 1
         view(2); % or view(0,90);
     else
         view(3);
