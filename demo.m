@@ -82,7 +82,9 @@ gui.config.property = 2;
 gui.config.legendSlice = '';
 gui.config.gifFlag = 0;
 gui.config.FrenchLeg = 0;
+gui.config.flag_ClusterGauss = 0;
 gui.data = struct();
+gui.config.K_GMM = 2;
 
 %% GUI generation
 TriDiMap_GUI(gui);
