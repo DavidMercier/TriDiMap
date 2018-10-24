@@ -118,6 +118,13 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         flagPlot = 1;
     elseif rawData == 3 && flagSize
         hFig = surfc(xData_interp, yData_interp, data2plot');
+        if gui.config.shadingData == 1
+            shading flat;
+        elseif gui.config.shadingData == 2
+            shading interp;
+        elseif gui.config.shadingData == 3
+            shading faceted;
+        end
         flagPlot = 1;
     elseif rawData == 4 && flagSize
         hFig = waterfall(xData_interp, yData_interp, data2plot');

@@ -111,7 +111,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(h.pm_contourPlotMap_GUI, 'Visible', 'off');
         set(h.cb_textContourPlotMap_GUI, 'Visible', 'off');
     end
-    if gui.config.rawData == 2
+    if gui.config.rawData == 2 || gui.config.rawData == 3
         set(h.pm_surfShading_GUI, 'Visible', 'on');
     elseif gui.config.rawData == 7
         set(h.pm_surfShading_GUI, 'Visible', 'on');
