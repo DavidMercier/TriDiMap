@@ -89,6 +89,7 @@ if gui.config.data_path
         TriDiMap_runPlot;
         figure(hNewFig);
         export_fig(isolated_figure_title2, gcf);
+        savefig(gcf,[isolated_figure_title2,'.fig']);
         figure(hNewFig);
         display(strcat('Figure saved as: ', filename_sav_fig2));
         delete(findall(findall(gcf,'Type','axe'),'Type','text'));
