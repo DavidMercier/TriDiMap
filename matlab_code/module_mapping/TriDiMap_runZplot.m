@@ -49,7 +49,7 @@ if ~isempty(answer) && str2num(answer{:}) > 1
         end
         
     else
-        display('No 3D data loaded !');
+        disp('No 3D data loaded !');
     end
 elseif ~isempty(answer)
     if str2num(answer{:}) < 2

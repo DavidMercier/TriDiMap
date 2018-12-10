@@ -58,9 +58,9 @@ ind = find(data2use <= crit);
 fractionMin = length(ind)/(length(data2use)^2);
 fractionMax = 1 - fractionMin;
 if ~plotMatch
-    display(['Fraction of phase with lower ', str, ': ']);
+    disp(['Fraction of phase with lower ', str, ': ']);
     disp(fractionMin);
-    display(['Fraction of phase with higher ', str, ': ']);
+    disp(['Fraction of phase with higher ', str, ': ']);
     disp(fractionMax);
 end
 

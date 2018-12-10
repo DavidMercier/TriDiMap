@@ -93,9 +93,9 @@ if config.flag_data
         if ~plotMatch
             fracBW = sum(sum(data2plot))/(size(data2plot,1)*...
                 size(data2plot,2)*255);
-            display(['Fraction of matrix (', str, ' map) :']);
+            disp(['Fraction of matrix (', str, ' map) :']);
             disp(1-fracBW);
-            display(['Fraction of particles (', str, ' map) :']);
+            disp(['Fraction of particles (', str, ' map) :']);
             disp(fracBW);
         end
         guidata(gcf, gui);

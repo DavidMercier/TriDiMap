@@ -232,7 +232,7 @@ if flagPlot
         try
             set(gui.handles.hcb1, 'YMinorTick', 'on');
         catch err
-            display(err.message);
+            disp(err.message);
             gui.handles.ha = axes('position',gui.handles.hcb1.Position);
             gui.handles.ha.YLim = gui.handles.hcb1.Limits;
             gui.handles.ha.Color = 'none';
@@ -249,7 +249,7 @@ if flagPlot
         %             try
         %                 set(gui.handles.hcb1, 'YMinorTick', 'on');
         %             catch err
-        %                 display(err.message);
+        %                 disp(err.message);
         %             end
         %         end
     else

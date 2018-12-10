@@ -135,7 +135,7 @@ if gui.config.SliceFlagData
     gui = guidata(gcf);
     guidata(gcf, gui);
 else
-    display('No slice data loaded!');
+    disp('No slice data loaded!');
 end
 
 end

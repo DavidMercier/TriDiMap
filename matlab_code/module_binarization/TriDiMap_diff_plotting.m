@@ -50,24 +50,24 @@ if property < 3
             gui.results.matchHard = ((data2plot_hard + image2plot_hard)==2);
             if property == 1
                 gui.results.diffE = gui.results.diff;
-                display(nanmean(dataE(gui.results.matchSoft==1)));
-                display(nanstd(dataE(gui.results.matchSoft==1)));
-                display(nanmean(dataE(gui.results.matchHard==1)));
-                display(nanstd(dataE(gui.results.matchHard==1)));
+                disp(nanmean(dataE(gui.results.matchSoft==1)));
+                disp(nanstd(dataE(gui.results.matchSoft==1)));
+                disp(nanmean(dataE(gui.results.matchHard==1)));
+                disp(nanstd(dataE(gui.results.matchHard==1)));
             elseif property == 2
                 gui.results.diffH = gui.results.diff;
-                display(nanmean(dataH(gui.results.matchSoft==1)));
-                display(nanstd(dataH(gui.results.matchSoft==1)));
-                display(nanmean(dataH(gui.results.matchHard==1)));
-                display(nanstd(dataH(gui.results.matchHard==1)));
+                disp(nanmean(dataH(gui.results.matchSoft==1)));
+                disp(nanstd(dataH(gui.results.matchSoft==1)));
+                disp(nanmean(dataH(gui.results.matchHard==1)));
+                disp(nanstd(dataH(gui.results.matchHard==1)));
             end
             % Pixels ratios
             SiCSum = sum(sum(gui.results.diff==1));
             NiSum = sum(sum(gui.results.diff==0));
             TotSum = NiSum + SiCSum;
-            display([SiCSum NiSum]);
-            display(SiCSum/TotSum);
-            display(NiSum/TotSum);
+            disp([SiCSum NiSum]);
+            disp(SiCSum/TotSum);
+            disp(NiSum/TotSum);
         elseif get(gui.handles.pixelList_GUI, 'Value') == 2
             for ii = 1:size(data2plot,1)
                 for jj = 1:size(data2plot,2)
@@ -97,7 +97,7 @@ if property < 3
         end
         
         if ~plotMatch
-            display(diff_error);
+            disp(diff_error);
             if property == 1
                 set(gui.handles.value_diffValE_GUI, 'String', ...
                     num2str(round(diff_error*10)/10));
@@ -187,7 +187,7 @@ else
     end
     
     if ~plotMatch
-        display(diff_error);
+        disp(diff_error);
         set(gui.handles.value_diffValEH_GUI, 'String', ...
             num2str(round(diff_error*10)/10));
         

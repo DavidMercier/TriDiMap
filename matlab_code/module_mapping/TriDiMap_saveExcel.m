@@ -83,7 +83,7 @@ if g.config.data_path
             ['B', num2str((sZFac)+5)]);
         
         Message = 'Results were exported in .xls file !';
-        display(Message);
+        disp(Message);
         msgbox(Message);
         
         cd(pwd);

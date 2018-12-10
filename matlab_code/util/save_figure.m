@@ -70,11 +70,11 @@ if gui.config.data_path
     if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         % Exportation of the figures in a .png format
         export_fig(isolated_figure_title1, gcf);
-        display(strcat('Figure saved as: ', filename_sav_fig1));
+        disp(strcat('Figure saved as: ', filename_sav_fig1));
         % Notoption like 'isolate_axes' because colorbar is not saved
         % correctly !!!
         %         export_fig(isolated_figure_title2, isolate_axes(gca));
-        %         display(strcat('Figure saved as: ', filename_sav_fig2));
+        %         disp(strcat('Figure saved as: ', filename_sav_fig2));
         
         gui.config.hNewFig = figure;
         hNewFig = gui.config.hNewFig;
@@ -91,18 +91,18 @@ if gui.config.data_path
         export_fig(isolated_figure_title2, gcf);
         savefig(gcf,[isolated_figure_title2,'.fig']);
         figure(hNewFig);
-        display(strcat('Figure saved as: ', filename_sav_fig2));
+        disp(strcat('Figure saved as: ', filename_sav_fig2));
         delete(findall(findall(gcf,'Type','axe'),'Type','text'));
         axis off; box off; colorbar('off');
         set(gca,'units','normalized','position',[0 0 1 1]);
         export_fig(isolated_figure_title3, isolate_axes(gca));
-        display(strcat('Figure saved as: ', filename_sav_fig3));
+        disp(strcat('Figure saved as: ', filename_sav_fig3));
         close(hNewFig);
         
         %% Binarized images
     else
         export_fig(isolated_figure_title4, gcf);
-        display(strcat('Figure saved as: ', filename_sav_fig4));
+        disp(strcat('Figure saved as: ', filename_sav_fig4));
         
         for ii = 1:6
             hNewFig = figure;

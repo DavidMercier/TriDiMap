@@ -171,7 +171,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(h.cb_smoothMap_GUI, 'Visible', 'off');
         set(h.pm_smoothMap_GUI, 'Visible', 'off');
         gui.config.binarizedGrid = 0;
-        display('Interpolation and smoothing not active, because NaN values not removed/corrected !');
+        disp('Interpolation and smoothing not active, because NaN values not removed/corrected !');
     else
         set(h.cb_interpMap_GUI, 'Visible', 'on');
         set(h.pm_interpMap_GUI, 'Visible', 'on');

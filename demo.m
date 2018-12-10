@@ -25,19 +25,19 @@ catch
 end
 
 %% Check Licenses
-license_msg_1 = ['Sorry, no license found for the Matlab ', ...
+gui.config.license_msg_1 = ['Sorry, no license found for the Matlab ', ...
     'Statistics Toolbox!'];
 if  license('checkout', 'Statistics_Toolbox') == 0
-    warning(license_msg_1);
+    warning(gui.config.license_msg_1);
     gui.config.licenceStat_Flag = 0;
 else
     gui.config.licenceStat_Flag = 1;
 end
 
-license_msg_2 = ['Sorry, no license found for the Matlab ', ...
+gui.config.license_msg_2 = ['Sorry, no license found for the Matlab ', ...
     'Optimization Toolbox™ !'];
 if  license('checkout', 'Optimization_Toolbox') == 0
-    warning(license_msg_2);
+    warning(gui.config.license_msg_2);
     gui.config.licenceOpt_Flag = 0;
 else
     gui.config.licenceOpt_Flag = 1;

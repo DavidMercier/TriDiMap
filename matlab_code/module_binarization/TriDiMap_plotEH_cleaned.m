@@ -41,20 +41,20 @@ if g.config.data_path
     g.results.meandE_hardPh = nanstd(Emat(g.results.diffH==1 & g.results.diffE==1));
     
     clc;
-    display('Cleaned mean hardness and std deviation for the soft phase:');
-    display(strcat('(',num2str(g.results.meanH_softPh), '±', ...
+    disp('Cleaned mean hardness and std deviation for the soft phase:');
+    disp(strcat('(',num2str(g.results.meanH_softPh), '±', ...
         num2str(g.results.meandH_softPh),')', g.config.strUnit_Property));
     
-    display('Cleaned mean hardness and std deviation for the hard phase:');
-    display(strcat('(',num2str(g.results.meanH_hardPh), '±', ...
+    disp('Cleaned mean hardness and std deviation for the hard phase:');
+    disp(strcat('(',num2str(g.results.meanH_hardPh), '±', ...
         num2str(g.results.meandH_hardPh),')', g.config.strUnit_Property));
     
-    display('Cleaned mean elastic modulus and std deviation for the soft phase:');
-    display(strcat('(',num2str(g.results.meanE_softPh), '±', ...
+    disp('Cleaned mean elastic modulus and std deviation for the soft phase:');
+    disp(strcat('(',num2str(g.results.meanE_softPh), '±', ...
         num2str(g.results.meandE_softPh),')', g.config.strUnit_Property));
     
-    display('Cleaned mean elastic modulus and std deviation for the hard phase:');
-    display(strcat('(',num2str(g.results.meanE_hardPh), '±', ...
+    disp('Cleaned mean elastic modulus and std deviation for the hard phase:');
+    disp(strcat('(',num2str(g.results.meanE_hardPh), '±', ...
         num2str(g.results.meandE_hardPh),')', g.config.strUnit_Property));
     
     guidata(gcf, g);

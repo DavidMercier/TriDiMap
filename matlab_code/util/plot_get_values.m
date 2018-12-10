@@ -24,7 +24,7 @@ else
             ((round(abs(x_value)/gui.config.XStep)+1)*gui.config.interpFactVal)-(gui.config.interpFactVal-1), ...
             ((round(abs(y_value)/gui.config.YStep)+1)*gui.config.interpFactVal)-(gui.config.interpFactVal-1))));
     catch
-        display('No Z values!');
+        disp('No Z values!');
     end
 end
 

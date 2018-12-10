@@ -130,9 +130,14 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         hFig = waterfall(xData_interp, yData_interp, data2plot');
         flagPlot = 1;
     elseif rawData == 5 && flagSize
-        hFig = contour3(xData_interp, yData_interp, data2plot', ...
-            intervalScaleBar);
-        flagPlot = 1;
+        if gui.config.licenceStat_Flag
+            hFig = contour3(xData_interp, yData_interp, data2plot', ...
+                intervalScaleBar);
+            flagPlot = 1;
+        else
+            flagPlot = 0;
+            warning(gui.config.license_msg_1);
+        end
     elseif rawData == 6 && flagSize
         hFig = meshz(xData_interp, yData_interp, data2plot');
         if gui.config.meshHidden == 1

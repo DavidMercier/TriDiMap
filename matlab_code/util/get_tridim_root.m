@@ -7,7 +7,7 @@ tridim_root = getenv('TRIDIM_TBX_ROOT');
 if isempty(tridim_root)
     msg = 'Run the path_management.m script !';
     commandwindow;
-    display(msg);
+    disp(msg);
     %errordlg(msg, 'File Error');
     error(msg);
 end

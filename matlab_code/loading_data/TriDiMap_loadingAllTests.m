@@ -106,12 +106,12 @@ elseif strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
                 notEmpty_data(ii_sheet) = ii_sheet;
             else
                 notEmpty_data(ii_sheet) = [];
-                display(strcat('Missing segment for the sheet number_', ...
+                disp(strcat('Missing segment for the sheet number_', ...
                     num2str(ii_sheet)));
             end
             
         else
-            display('Empty Excel sheet !');
+            disp('Empty Excel sheet !');
             notEmpty_data(ii_sheet) = [];
         end
     end

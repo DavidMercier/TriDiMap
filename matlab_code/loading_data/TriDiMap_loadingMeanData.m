@@ -173,7 +173,7 @@ if config.flag_data
                     ind_YM = find(strncmp(txtAll(1,:), 'Er(GPa)', 10));
                     ind_H = find(strncmp(txtAll(1,:), 'H(GPa)', 10));
                 else
-                    display('No headerlines found !');
+                    disp('No headerlines found !');
                 end
             elseif dataType == 3
                 ind_Xstep = '';
@@ -225,7 +225,7 @@ if config.flag_data
                 if angleRotation_X == angleRotation_Y
                     config.angleRotation = angleRotation_X;
                 else
-                    display('Wrong calculations of rotationnal angle');
+                    disp('Wrong calculations of rotationnal angle');
                     config.angleRotation = 0;
                 end
             else
@@ -267,7 +267,7 @@ if config.flag_data
                     end
                 end
             else
-                display('No elastic modulus values found !');
+                disp('No elastic modulus values found !');
                 data.expValues.YM = NaN;
                 config.flag_data = 0;
             end
@@ -287,7 +287,7 @@ if config.flag_data
                     end
                 end
             else
-                display('No hardness values found !');
+                disp('No hardness values found !');
                 data.expValues.H = NaN;
                 config.flag_data = 0;
             end
