@@ -44,11 +44,7 @@ if config.flag_data
                     xlabel(strcat('Module d''\''elasticit\''e (',strUnit_Property, ')'));
                 end
             elseif config.property == 5
-                if ~config.FrenchLeg
-                    xlabel(strcat('Hardness (',strUnit_Property, ')'));
-                else
-                    xlabel(strcat({'Duret\''e ('},config.strUnit_Property, ')'));
-                end
+                xlabel(strcat('Hardness (',strUnit_Property, ')'));
             end
             if ~config.FrenchLeg
                 ylabel('Frequency density');

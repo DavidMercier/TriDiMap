@@ -25,13 +25,13 @@ hold on
 %     plot(x,f,'-r', 'LineWidth', LWval)
 delete(findall(findall(gcf,'Type','axe'),'Type','text'));
 %     legend('Experimental','Theoretical','Location','NW');
-if config.property == 6
+if config.property == 6 || config.property == 8
     if ~config.FrenchLeg
         xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
     else
         xlabel(strcat('Module d''\''elasticit\''e (',strUnit_Property, ')'));
     end
-elseif config.property == 7
+elseif config.property == 7 || config.property == 9
     if ~config.FrenchLeg
         xlabel(strcat('Hardness (',strUnit_Property, ')'));
     else
@@ -39,9 +39,17 @@ elseif config.property == 7
     end
 end
 if ~config.FrenchLeg
-    ylabel('Cumulative density function');
+    if config.property < 8
+        ylabel('Cumulative density function');
+    else
+        ylabel('Frequency density and Cumulative density function');
+    end
 else
-    ylabel('Fonction de distribution cumulative');
+    if config.property < 8
+        ylabel('Fonction de distribution cumulative');
+    else
+        ylabel('Densité de probabiilité et Fonction de distribution cumulative');
+    end
 end
 set(h_CDF, 'LineStyle', '-', 'Color', 'k' , 'LineWidth', 2);
 if get (gui.handles.cb_WeibullFit_GUI, 'Value')
