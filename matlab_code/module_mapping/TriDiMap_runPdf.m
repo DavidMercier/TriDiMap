@@ -6,28 +6,24 @@ if config.flag_data
     data2useVect = reshape(data2use, [1,numberVal]);
     indNaN = find(isnan(data2useVect));
     data2useVect(indNaN) = [];
-    if ~gui.config.autobinSize
-        binsize = gui.config.binSize;
-    else
+    if gui.config.autobinSize
         iqr_value = iqrVal(data2useVect);
-        binsize = round(2*iqr_value/(length(data2useVect))^(1/3)); %iqr(data2use)
+        gui.config.binSize = round(2*iqr_value/(length(data2useVect))^(1/3)); %iqr(data2use)
         set(gui.handles.value_BinSizeHist_GUI, ...
-            'String', num2str(round(100*binsize)/100));
-        gui.config.binSize = binsize;
+            'String', num2str(round(100*gui.config.binSize)/100));
     end
+    if gui.config.binSize == 0
+        gui.config.binSize = 0.01; % To avoir zero nonsense value
+        set(gui.handles.value_BinSizeHist_GUI, ...
+            'String', num2str(round(100*gui.config.binSize)/100));
+    end    
+    binsize = gui.config.binSize;
     minbin = gui.config.MinHistVal;
     maxbin = gui.config.MaxHistVal;
     CatBin = minbin:binsize:maxbin;
-    Hist_i = histc(data2useVect,CatBin);
+    Hist_i = histcounts(data2useVect,CatBin); % previously histc (not recommended)
+    CatBin(1)=[]; %Because size(CatBin) = size(Prop_pdf)+1;
     Prop_pdf = Hist_i/numberVal; % length(data2useVect) without NaN can be used to have a total probability of 1
-    % Problem sometimes when bin too small and not enough data
-    Prop_pdf = Prop_pdf/binsize; % probability density function (property must be divided by the number of values and binsize)
-    indFactor = 10;
-    while max(Prop_pdf) > 1
-        Prop_pdf = Prop_pdf/binsize;
-        Prop_pdf = Prop_pdf/(indFactor*binsize);
-        indFactor = indFactor * 2;
-    end
     SumProp_pdf = sum(Prop_pdf);
     SumTot = SumProp_pdf .* binsize;
     %if  gui.config.licenceStat_Flag

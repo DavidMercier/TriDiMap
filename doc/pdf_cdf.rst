@@ -24,6 +24,7 @@ when interfaces are not spatially negligible. The drawback of this plot is the u
 of the bin size and thus of the distribution shape (i.e. peak intensity).
 Indeed, the shape of the distributions is bin size dependent, while this bin size (e.g. 0.5GPa or 3GPa) is defined arbitrary by the user.
 This issue is well known in the literature and is a little bit discussed in this presentation [#Mercier_2016]_ and this paper [#Hrbek_2017]_.
+The shape of the distributions is also bin step dependent. In other words, if the the histogram starts from an odd or an even value, the distribution is different.
 
 .. figure:: ./_pictures/pdf_schemes.png
    :scale: 50 %
@@ -36,13 +37,19 @@ This issue is well known in the literature and is a little bit discussed in this
    :align: center
    
    *Effect of the bin size definition on the distribution shape*
+   
+.. figure:: ./_pictures/binStepEffect.png
+   :scale: 50 %
+   :align: center
+   
+   *Effect of the bin step on the distribution shape: the histogram start from 0GPa on the left and from 1GPa on the right, using the same bin size of 2GPa.*
 
 The next step is to fit this distribution using a probability density function.
 Such mathematical approach is very well defined in the literature [#Nemecek_2009]_, [#Nemecek_2013]_ and [#Hausild_2016]_.
 It is worth to note that the result obtain after deconvolution (average values and standard deviations for each peak) is dependent of the
 bin size. A solution to avoid user definition of the bin size is to use the Freedman–Diaconis rule of thumb, which gives an estimation of 
 the bin size after calculation the interquartile (IQR) range of the data [#FreedmanDaconis_1981]_.
- activate this option, check the box for 'Auto Bin Size' on the GUI.
+To activate this option, check the box for 'Auto Bin Size' on the GUI.
 
     .. math:: \text{Bin Size} = \frac{2*IQR}{n^{\frac{1}{3}}}
         :label: binSizeAuto
@@ -78,7 +85,7 @@ An example of fitting and deconvolution process is given in the following figure
 
 When data are noisy due to experimental artefacts (e.g. surface contamination, interfaces effect or interesting phase inside the sample...) for example,
 with very high or very low mechanical property values, it is always possible to cut the signal, by setting manually (on the GUI) the extrema.
-This operation can be seen as an arbtrary cleaning, but careful with a fitting process,
+This operation can be seen as an arbitrary cleaning, but careful with a fitting process,
 which gives different mean values, given peak shapes or peak number modification.
 
 .. figure:: ./_pictures/saturatedData.png

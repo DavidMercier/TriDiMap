@@ -30,6 +30,10 @@ if isfield(gui.config,'property')
         property = 'E_cdf';
     elseif gui.config.property == 7
         property = 'H_cdf';
+    elseif gui.config.property == 8
+        property = 'E_pdf_cdf';
+    elseif gui.config.property == 9
+        property = 'H_pdf_cdf';
     end
     
 end
