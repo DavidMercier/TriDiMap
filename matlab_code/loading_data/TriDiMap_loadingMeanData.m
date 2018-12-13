@@ -1,6 +1,10 @@
 %% Copyright 2014 MERCIER David
-function [config, data] = TriDiMap_loadingMeanData
+function [config, data] = TriDiMap_loadingMeanData(init, varargin)
 %% Function to load Excel data from indentation tests
+if nargin < 1
+    init = 0;
+end
+
 TriDiMap_getParam;
 
 g = guidata(gcf);
@@ -12,20 +16,25 @@ if strcmp(get(g.handles.binarization_GUI, 'String'), 'BINARIZATION')
 end
 
 %% Open window to select file
-title_importdata_Window = 'File Selector from';
-
-if ~isempty(config.data.data_pathNew)
-    data_path = config.data.data_pathNew;
+if ~init
+    title_importdata_Window = 'File Selector from';
+    
+    if ~isempty(config.data.data_pathNew)
+        data_path = config.data.data_pathNew;
+    else
+        data_path = config.data.data_path;
+    end
+    
+    [data.filename_data, data.pathname_data, filterindex_data] = ...
+        uigetfile('*.xls;*.xlsx', ...
+        char(title_importdata_Window), data_path);
+    
+    if data_path ~= 0
+        g.config.data.data_path = data_path;
+    end
 else
-    data_path = config.data.data_path;
-end
-
-[data.filename_data, data.pathname_data, filterindex_data] = ...
-    uigetfile('*.xls;*.xlsx', ...
-    char(title_importdata_Window), data_path);
-
-if data_path ~= 0
-    g.config.data.data_path = data_path;
+    data.pathname_data = fullfile('.\','data_indentation');
+    data.filename_data = fullfile('.\','MTS_example1_25x25.xls');
 end
 
 dataType = get(h.pm_set_file, 'Value');
@@ -334,44 +343,44 @@ if config.flag_data
     else
         config.flagValid = 0;
     end
-
-set(h.value_MinXCrop_GUI, 'String', 1);
-set(h.value_MaxXCrop_GUI, 'String', num2str(get(h.value_numXindents_GUI, 'String')));
-set(h.value_MinYCrop_GUI, 'String', 1);
-set(h.value_MaxYCrop_GUI, 'String', num2str(get(h.value_numYindents_GUI, 'String')));
-
-minVal = round(100*(nanmin(nanmin(data.expValues_mat.H))))/100;
-if minVal < 0
-    minVal = 0;
-end
-maxVal = round(100*(nanmax(nanmax(data.expValues_mat.H))))/100;
-if maxVal < 0
-    maxVal = 0;
-end
-if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
-    set(h.value_MinVal_GUI, 'String', num2str(nanmin(minVal)));
-    set(h.value_MaxVal_GUI, 'String', num2str(nanmax(maxVal)));
-    set(h.property_GUI, 'Value', 2);
-    config.flag_ClusterGauss = 0;
-end
-config.flagZplot = 0;
-
-g.data = data;
-g.config = config;
-g.handles = h;
-guidata(gcf, g);
-if config.flagValid
-    if strcmp(get(g.handles.binarization_GUI, 'String'), 'BINARIZATION')
-        TriDiMap_runPlot;
-    else
-        set(g.handles.value_criterionE_GUI, 'String', ...
-            num2str(round(nanmean(g.data.expValues.YM))));
-        set(g.handles.value_criterionH_GUI, 'String', ...
-            num2str(round(nanmean(g.data.expValues.H))));
-        g.config.flag_image = 0;
-        guidata(gcf, g);
-        TriDiMap_runBin;
+    
+    set(h.value_MinXCrop_GUI, 'String', 1);
+    set(h.value_MaxXCrop_GUI, 'String', num2str(get(h.value_numXindents_GUI, 'String')));
+    set(h.value_MinYCrop_GUI, 'String', 1);
+    set(h.value_MaxYCrop_GUI, 'String', num2str(get(h.value_numYindents_GUI, 'String')));
+    
+    minVal = round(100*(nanmin(nanmin(data.expValues_mat.H))))/100;
+    if minVal < 0
+        minVal = 0;
     end
-end
+    maxVal = round(100*(nanmax(nanmax(data.expValues_mat.H))))/100;
+    if maxVal < 0
+        maxVal = 0;
+    end
+    if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
+        set(h.value_MinVal_GUI, 'String', num2str(nanmin(minVal)));
+        set(h.value_MaxVal_GUI, 'String', num2str(nanmax(maxVal)));
+        set(h.property_GUI, 'Value', 2);
+        config.flag_ClusterGauss = 0;
+    end
+    config.flagZplot = 0;
+    
+    g.data = data;
+    g.config = config;
+    g.handles = h;
+    guidata(gcf, g);
+    if config.flagValid
+        if strcmp(get(g.handles.binarization_GUI, 'String'), 'BINARIZATION')
+            TriDiMap_runPlot;
+        else
+            set(g.handles.value_criterionE_GUI, 'String', ...
+                num2str(round(nanmean(g.data.expValues.YM))));
+            set(g.handles.value_criterionH_GUI, 'String', ...
+                num2str(round(nanmean(g.data.expValues.H))));
+            g.config.flag_image = 0;
+            guidata(gcf, g);
+            TriDiMap_runBin;
+        end
+    end
 end
 end

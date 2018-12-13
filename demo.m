@@ -60,10 +60,10 @@ gui.config.name_toolbox = 'TriDiMap';
 gui.config.version_toolbox = '3.0';
 % gui.config.url_help = 'http://tridimap.readthedocs.org/en/latest/';
 % gui.config.pdf_help = 'https://media.readthedocs.org/pdf/tridimap/latest/tridimap.pdf';
-gui.config.data.data_path = '.\data_indentation';
-gui.config.data.data_pathNew = '.\data_indentation';
-gui.config.image.image_path = '.\data_image';
-gui.config.image.image_pathNew = '.\data_image';
+gui.config.data.data_path = fullfile('./','data_indentation');
+gui.config.data.data_pathNew = fullfile('./','data_indentation');
+gui.config.image.image_path = fullfile('./','data_image');
+gui.config.image.image_pathNew = fullfile('./','data_image');
 
 %% Variables initialization
 gui.config.data_path = 0;
@@ -91,5 +91,8 @@ TriDiMap_GUI(gui);
 
 %% Set logo of the GUI
 java_icon_tridimap;
+
+%% Run default map
+TriDiMap_loadingMeanData(1);
     
 end
