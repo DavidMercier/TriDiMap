@@ -23,7 +23,9 @@ hold on
 %     x = round(min(data2useVect)*10)/10:0.1:round(max(data2useVect)*10)/10;
 %     f = evcdf(x,round(mean(data2useVect)*10)/10,20);
 %     plot(x,f,'-r', 'LineWidth', LWval)
-delete(findall(findall(gcf,'Type','axe'),'Type','text'));
+if config.property < 8
+    delete(findall(findall(gcf,'Type','axe'),'Type','text'));
+end
 %     legend('Experimental','Theoretical','Location','NW');
 if config.property == 6 || config.property == 8
     if ~config.FrenchLeg

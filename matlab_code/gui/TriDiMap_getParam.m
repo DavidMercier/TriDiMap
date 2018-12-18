@@ -54,6 +54,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
                 set(h.cb_plotSectMap_GUI, 'Visible', 'on');
                 gui.config.plotSectMap = get(h.cb_plotSectMap_GUI, 'Value');
                 set(h.cb_plotEllipse_GUI, 'Visible', 'on');
+                set(h.pb_diffEHmapCluster_GUI, 'Visible', 'on');
             end
         elseif gui.config.plotClusters == 2
             set(h.title_Hth_ValEH_GUI, 'Visible', 'on');
@@ -70,6 +71,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
             set(h.cb_plotEllipse_GUI, 'Visible', 'off');
             gui.config.plotThresLines = get(h.cb_thresPlot_GUI, 'Value');
             gui.config.plotSectMap = get(h.cb_plotSectMap_GUI, 'Value');
+            set(h.pb_diffEHmapCluster_GUI, 'Visible', 'off');
         end
     elseif gui.config.property  > 3
         gui.config.binSize = str2num(get(h.value_BinSizeHist_GUI, 'String'));

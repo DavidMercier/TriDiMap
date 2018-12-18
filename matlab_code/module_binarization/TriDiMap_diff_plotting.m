@@ -26,6 +26,7 @@ end
 if property < 3
     %% Difference between property map and image
     image2plot = gui.image.image2plot;
+    
     if size(data2plot) == size(image2plot)
         gui.config.sizeCheck = 1;
     else
@@ -36,9 +37,9 @@ if property < 3
         if get(gui.handles.pixelList_GUI, 'Value') == 1
             %gui.results.diff = int8(data2plot) - (int8(image2plot));
             gui.results.diff = (double(data2plot) + (double(image2plot)))/255;
-            gui.results.diff(gui.results.diff==1) = -1; %No Match
-            gui.results.diff(gui.results.diff==2) = 1; %SiC
-            gui.results.diff(gui.results.diff==0) = 0; % Ni
+            gui.results.diff(gui.results.diff==1) = -1; % No Match
+            gui.results.diff(gui.results.diff==2) = 1; % Hard phase
+            gui.results.diff(gui.results.diff==0) = 0; % Soft phase
             %gui.results.diff(gui.results.diff~=0) = 1;
             diff_error = (1-(sum(sum(abs(gui.results.diff)))/ ...
                 (gui.config.N_XStep_default * gui.config.N_YStep_default)))*100;

@@ -1,6 +1,10 @@
 %% Copyright 2014 MERCIER David
-function [config, image] = TriDiMap_loadingImage
+function [config, image] = TriDiMap_loadingImage(flagGUI, varargin)
 %% Function to load binarized microscopical image
+
+if nargin == 0
+    flagGUI = 1; % Flag set to 0 only in case of diff map calculated from E-H plot
+end
 
 g = guidata(gcf);
 config = g.config;
@@ -54,8 +58,9 @@ image2import = [image.pathname_image, image.filename_image];
 config.name = name;
 config.pathStr = image.pathname_image;
 config.image.image_pathNew = image.pathname_image;
-set(g.handles.openimage_str_GUI, 'String', image.pathname_image);
-
+if flagGUI
+    set(g.handles.openimage_str_GUI, 'String', image.pathname_image);
+end
 %% Check Image
 if config.flag_image
     image.image2use = imread([image.pathname_image, image.filename_image]);
@@ -66,7 +71,7 @@ if config.flag_image
     g.config = config;
     g.handles = h;
     guidata(gcf, g);
-    if config.flagImageValid
+    if config.flagImageValid && flagGUI
         TriDiMap_runBin;
     end
 end
