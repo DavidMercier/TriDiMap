@@ -58,6 +58,9 @@ Indentation maps and statistical analysis in the literature
 * `Huyghes P. et al., "On the Effect of Q&P Processing on the Stretch-flange-formability of 0.2C Ultra-high Strength Steel Sheets" (2018). <https://doi.org/10.2355/isijinternational.ISIJINT-2018-121>`_
 * `Bruker/Hysitron, "Application Note #1511, Hardness Mapping of a DP980 Steel Sample" (2018). <www.bruker.com/nanomechanical-testing>`_
 * `Hintsala E.D. et al., "High-Throughput Nanoindentation for Statistical and Spatial Property Determination" (2018). <https://doi.org/10.1007/s11837-018-2752-0>`_
+* `Kossman S. et al., "Mechanical characterization by multiscale instrumented indentation of highly heterogeneous materials for braking applications" (2018). <https://doi.org/10.1007/s10853-018-3158-7>`_
+* `Enrique-Jimenez P. et al., "Nanoindentation mapping of multiscale composites of graphene-reinforced polypropylene and carbon fibres" (2018). <https://doi.org/10.1016/j.compscitech.2018.11.009>`_
+* `Haušild P. et al., "Statistical treatment of grid indentation considering the effect of the interface and the microstructural length scale" (2019). <https://doi.org/10.1016/j.mechmat.2018.11.006>`_
 
 Colormap
 ############################################

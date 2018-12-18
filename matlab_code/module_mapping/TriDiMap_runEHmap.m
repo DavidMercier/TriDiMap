@@ -167,6 +167,7 @@ elseif gui.config.plotClusters == 3
             gui.data.dataH = fliplr(gui.data.dataH);
             gui.data.dataE = fliplr(gui.data.dataE);
         end
+        cla;
         for k = 1:gui.config.K_GMM
             hPlot(k) = plot(gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==k,1),...
                 gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==k,2),...
