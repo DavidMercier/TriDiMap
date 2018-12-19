@@ -130,8 +130,8 @@ elseif gui.config.plotClusters == 3
                 [data2use_HVec, data2use_EVec]);
             % Reverse labelling (1 for low values and 2 for high values)
             if K == 2
-                labels = labels + 1;
-                labels(labels==3) = 1;
+                labels = labels + 1; %label = 1 becomes 2 --> Hard phase
+                labels(labels==3) = 1; % label = 2 becomes 1 --> Soft phase
             elseif K ==3
                 labels(labels==1) = 4;
                 labels = labels - 1;

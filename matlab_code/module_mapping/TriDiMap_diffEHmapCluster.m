@@ -9,7 +9,7 @@ cMap = g.config.colorMap;
 strTitle = 'EvsH-Image difference map';
 flagFlipCM = 0;
 
-data2plot = g.data.dataH_SectorLabMat;
+data2plot = rot90(g.data.dataH_SectorLabMat);
 image2plot = g.image.image2use;
 
 g.results.diffEHmap = (data2plot-1) + (double(image2plot))/255;

@@ -1,13 +1,6 @@
 %% Copyright 2014 MERCIER David
 function demo
 %% Function to run the Matlab code for the 3D mapping of indentation data
-clear all
-clear classes % not included in clear all
-close all
-commandwindow
-clc
-home
-delete(findobj(allchild(0), '-regexp', 'Tag', '^Msgbox_'))
 
 %% Define gui structure variable
 gui = struct();
