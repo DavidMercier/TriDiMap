@@ -27,6 +27,7 @@ Indentation maps and statistical analysis in the literature
 #############################################################
 * `Engqvist H. and Wiklund U., "Mapping of mechanical properties of WC–Co using nanoindentation" (2000). <https://doi.org/10.1023/A:1019143419984>`_
 * `Pelletier H. et al., "Using depth-sensing techniques to characterize multiphases steels" (2000). <https://doi.org/10.1051/mattech/200088030041>`_
+* `Hu C. et al., "Nanoindentation as a tool to measure and map mechanical properties of hardened cement pastes" (2005). <https://doi.org/10.1557/mrc.2015.3>`_
 * `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation" (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
 * `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
 * `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces" (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
@@ -60,6 +61,8 @@ Indentation maps and statistical analysis in the literature
 * `Hintsala E.D. et al., "High-Throughput Nanoindentation for Statistical and Spatial Property Determination" (2018). <https://doi.org/10.1007/s11837-018-2752-0>`_
 * `Kossman S. et al., "Mechanical characterization by multiscale instrumented indentation of highly heterogeneous materials for braking applications" (2018). <https://doi.org/10.1007/s10853-018-3158-7>`_
 * `Enrique-Jimenez P. et al., "Nanoindentation mapping of multiscale composites of graphene-reinforced polypropylene and carbon fibres" (2018). <https://doi.org/10.1016/j.compscitech.2018.11.009>`_
+* `Wilson W. et al., "Automated coupling of NanoIndentation and Quantitative EnergyDispersive Spectroscopy (NI-QEDS): A comprehensive method to disclose the micro-chemo-mechanical properties of cement pastes" (2018). <https://doi.org/10.1016/j.cemconres.2017.08.016>`_
+* `Hillouin B. et al., "Coupling statistical indentation and microscopy to evaluate micromechanical properties of materials: Application to viscoelastic behavior of irradiated mortars" (2018). <https://dx.doi.org/10.1016/j.cemconcomp.2018.09.008>`_
 * `Haušild P. et al., "Statistical treatment of grid indentation considering the effect of the interface and the microstructural length scale" (2019). <https://doi.org/10.1016/j.mechmat.2018.11.006>`_
 
 Colormap

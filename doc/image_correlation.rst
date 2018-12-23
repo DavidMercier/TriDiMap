@@ -3,6 +3,8 @@
 
 .. include:: includes.rst
 
+Coupling statistical indentation and microscopy observation can be a good solution to evaluate micromechanical properties of materials [#Hilloulin_2018]_.
+
 Loading and analyzing/comparing binary maps
 ############################################
 
@@ -13,7 +15,8 @@ Afterwards, a binarized microstructural map has to be loaded, with the same reso
 A solution to avoid pixelized maps is to apply linear interpolation on the mechanical map and thus increasing the mechanical maps resolution.
 
 To obtain a pixelized microstructural map, a solution is to use the software ImageJ (or Fiji) [#ImageJ_software]_.
-Once an image of the indentation grid is obtained by microscopy with enough quality (good contrast between phases, enough resolution...), load it in the image analysis software.
+Once an image of the indentation grid is obtained by microscopy with enough quality 
+(good contrast between phases, enough resolution...), load it in the image analysis software.
 Crop the image around the indentation grid and let the minimum of space around the matrix of imprints.
 Adjust the contrast/brightness of the image to emphasize the different phases in your sample.
 Then, adjust the number of pixels horizontally and vertically, before to save it as a .png microstructural map.
@@ -49,7 +52,7 @@ Examples of microstructural maps:
    *Phase ratio optimized comparison between binarized microstructural map and mechanical maps*
    
 Image Correlation Based Targeted Indentation (ICBTI)
-############################################
+######################################################
 
 Phase fractions and mechanical property values can be extracted from grid nanoindentation experiments
 using innovative and quantitative statistical treatments of datasets,
@@ -103,6 +106,7 @@ in order to compare experimental data with reference data.
 References
 ############################################
 
+.. [#Hilloulin_2018] `Hillouin B. et al., "Coupling statistical indentation and microscopy to evaluate micromechanical properties of materials: Application to viscoelastic behavior of irradiated mortars" (2018). <https://dx.doi.org/10.1016/j.cemconcomp.2018.09.008>`_
 .. [#ImageJ_software] `ImageJ <https://imagej.nih.gov/ij/>`_
 .. [#Mercier_2017] `Mercier D. et al., "Mechanical characterization by nanoindentation of an electroplated nickel matrix composite coating" (2017). <https://dx.doi.org/10.1051/mattech/2017014>`_
 .. [#Mercier1_2018] `Mercier D. et al., "Microstructural and mechanical characterization of electroplated nickel matrix composite coatings" (2018). <https://doi.org/10.1080/02670844.2018.1433270>`_

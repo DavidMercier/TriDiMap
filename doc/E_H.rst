@@ -40,11 +40,12 @@ and a 4 color-coded map corresponding to this plot can be generated (see 2nd fig
 Clustering with Gaussian Mixture Models
 ############################################
 
-The Gaussian mixture Models (GMM) are often used for data clustering. This method is well described 
+The Gaussian mixture Models (GMM) are often used for data clustering [Wilson_2018]_. This method is well described 
 in the |matlab| documentation [#Matlab_GMM]_, [#Matlab_cluster]_ and [#Matlab_clustering]_ but also in the literature [#Fraley_1998]_.
 
 This method is powerful to separate contribution of 2 or 3 phases (especially in the case of a soft metallic matrix with hard ceramic particles) 
-in the cloud of experimental points. Average mechanical property values can also be extracted using this method and a 2 or 3 color map can be obtained too.
+in the cloud of experimental points [#Hu_2005]_.
+Average mechanical property values can also be extracted using this method and a 2 or 3 color map can be obtained too.
 
 The |matlab| third party code used to define clusters GMM is: `GMMClustering.m <https://github.com/DavidMercier/TriDiMap/third_party_codes/GMMClustering/GMMClustering.m>`_
 
@@ -76,8 +77,10 @@ References
 .. [#CES_Selector] `CES Selector 2018 <https://www.grantadesign.com/>`_
 .. [#Fraley_1998] `Fraley C. and Raftery A.E., "How Many Clusters? Which Clustering Method? Answers Via Model-Based Cluster Analysis" (1998). <https://doi.org/10.1093/comjnl/41.8.578>`_
 .. [#Gent_1958] `Gent A.N., "On the Relation between Indentation Hardness and Young's Modulus." (1958). <https://doi.org/10.5254/1.3542351>`_
+.. [#Hu_2005] `Hu C., "Nanoindentation as a tool to measure and map mechanical properties of hardened cement pastes" (2005). <https://doi.org/10.1557/mrc.2015.3>`_
 .. [#Labonte_2017] `Labonte D. et al., "On the relationship between indenation hardness and modulus, and the damage resistance of biological materials" (2017). <https://doi.org/10.1016/j.actbio.2017.05.034>`_
 .. [#Matlab_GMM] `Mathworks - Gaussian Mixture Models <https://fr.mathworks.com/help/stats/gaussian-mixture-models-1.html>`_
 .. [#Matlab_cluster] `Mathworks - Cluster <https://fr.mathworks.com/help/stats/gmdistribution.cluster.html>`_
 .. [#Matlab_clustering] `Mathworks - Cluster Using Gaussian Mixture Models <https://fr.mathworks.com/help/stats/clustering-using-gaussian-mixture-models.html>`_
 .. [#Oyen_2006] `Oyen M.L., "Nanoindentation hardness of mineralized tissues" (2006). <https://doi.org/10.1016/j.jbiomech.2005.09.011>`_
+.. [Wilson_2019] `Wilson W. et al., "Automated coupling of NanoIndentation and Quantitative EnergyDispersive Spectroscopy (NI-QEDS): A comprehensive method to disclose the micro-chemo-mechanical properties of cement pastes" (2018). <https://doi.org/10.1016/j.cemconres.2017.08.016>`_

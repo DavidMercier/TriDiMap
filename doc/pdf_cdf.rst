@@ -24,7 +24,8 @@ when interfaces are not spatially negligible. The drawback of this plot is the u
 of the bin size and thus of the distribution shape (i.e. peak intensity).
 Indeed, the shape of the distributions is bin size dependent, while this bin size (e.g. 0.5GPa or 3GPa) is defined arbitrary by the user.
 This issue is well known in the literature and is a little bit discussed in this presentation [#Mercier_2016]_ and this paper [#Hrbek_2017]_.
-The shape of the distributions is also bin step dependent. In other words, if the the histogram starts from an odd or an even value, the distribution is different.
+The shape of the distributions is also bin step dependent.
+In other words, if the the histogram starts from an odd or an even value, the distribution is different.
 
 .. figure:: ./_pictures/pdf_schemes.png
    :scale: 50 %
