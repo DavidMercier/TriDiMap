@@ -101,7 +101,7 @@ in order to compare experimental data with reference data.
    :scale: 60 %
    :align: center
    
-   *Cleaned E-h plot*
+   *Cleaned E-H plot*
    
 References
 ############################################
