@@ -106,7 +106,7 @@ if config.flag_data
         end
         
         try
-            if dataType == 1 || dataType == 4 % Excel file from MTS or other files
+            if dataType == 1 % Excel file from MTS
                 ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
                 ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
                 if isempty(ind_Xstep)
@@ -165,6 +165,13 @@ if config.flag_data
                 ind_Ystep = '';
                 ind_YM = find(strncmp(txtAll(1,:), 'E', 10));
                 ind_H = find(strncmp(txtAll(1,:), 'H', 10));
+                flagSKoss = 0;
+                endLines = 0;
+            else % Other files
+                ind_Xstep = '';
+                ind_Ystep = '';
+                ind_YM = find(strncmp(txtAll(1,:), 'AvgModulus', 10));
+                ind_H = find(strncmp(txtAll(1,:), 'AvgHardness', 10));
                 flagSKoss = 0;
                 endLines = 0;
             end
@@ -242,7 +249,11 @@ if config.flag_data
                     data.expValues.YM = dataAll(:,ind_YM);
                 else
                     if dataType ~= 3
-                        data.expValues.YM = dataAll(:,ind_YM-1);
+                        if dataType ~= 4
+                            data.expValues.YM = dataAll(:,ind_YM-1);
+                        else
+                            data.expValues.YM = dataAll(:,ind_YM);
+                        end
                     else
                         try
                             data.expValues.YM = str2num(char(raw(3:end,ind_YM)));
@@ -262,7 +273,12 @@ if config.flag_data
                     data.expValues.H = dataAll(:,ind_H);
                 else
                     if dataType ~= 3
-                        data.expValues.H = dataAll(:,ind_H-1);
+                        
+                        if dataType ~= 4
+                            data.expValues.H = dataAll(:,ind_H-1);
+                        else
+                            data.expValues.H = dataAll(:,ind_H);
+                        end
                     else
                         try
                             data.expValues.H = str2num(char(raw(3:end,ind_H)));
