@@ -79,58 +79,34 @@ if config.flag_data
     if strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
         
         %% Results in Excel file
-        if dataType == 1 % Excel file from MTS
+        try
+            [dataAll, txtAll, raw] = xlsread(data2import, 'Results');
+        catch
+            disp(['No Excel sheet named:', 'Sheet1', ' found in the Excel file !']);
             try
-                [dataAll, txtAll] = xlsread(data2import, 'Results');
+                [dataAll, txtAll, raw] = xlsread(data2import, 'Feuil1');
             catch
-                disp(['No Excel sheet named:', name, 'found in the Excel file !']);
+                disp(['No Excel sheet named:', 'Feuil1', ' found in the Excel file !']);
                 try
-                    [dataAll, txtAll] = xlsread(data2import);
+                    [dataAll, txtAll, raw] = xlsread(data2import, 'Sheet1');
                 catch
-                    disp(['No Excel sheet named found in the Excel file !']);
-                end
-            end
-        elseif dataType == 2 % Excel file from Hysitron
-            try
-                [dataAll, txtAll] = xlsread(data2import, name);
-            catch
-                disp(['No Excel sheet named:', name, 'found in the Excel file !']);
-                try
-                    [dataAll, txtAll] = xlsread(data2import, 'Feuil1');
-                catch
-                    disp(['No Excel sheet named:', 'Feuil1', 'found in the Excel file !']);
+                    disp(['No Excel sheet named:', 'Results', ' found in the Excel file !']);
                     try
-                        [dataAll, txtAll] = xlsread(data2import, 'Results');
+                        [dataAll, txtAll, raw] = xlsread(data2import, name);
                     catch
-                        disp(['No Excel sheet named:', 'Results', 'found in the Excel file !']);
+                        disp(['No Excel sheet named:', name, ' found in the Excel file !']);
                         try
-                            [dataAll, txtAll] = xlsread(data2import);
+                            [dataAll, txtAll, raw] = xlsread(data2import);
                         catch
-                            disp(['No Excel sheet named found in the Excel file !']);
+                            disp(['No Excel sheet found in the Excel file !']);
                         end
-                    end
-                end
-            end
-        elseif dataType == 3
-            try
-                [dataAll, txtAll, raw] = xlsread(data2import, 'Sheet1');
-            catch
-                disp(['No Excel sheet named:', 'Sheet1', 'found in the Excel file !']);
-                try
-                    [dataAll, txtAll, raw] = xlsread(data2import, 'Feuil1');
-                catch
-                    disp(['No Excel sheet named:', 'Feuil1', 'found in the Excel file !']);
-                    try
-                        [dataAll, txtAll, raw] = xlsread(data2import);
-                    catch
-                        disp(['No Excel sheet found in the Excel file !']);
                     end
                 end
             end
         end
         
         try
-            if dataType == 1
+            if dataType == 1 || dataType == 4 % Excel file from MTS or other files
                 ind_Xstep = find(strcmp(txtAll(1,:), 'X Test Position'));
                 ind_Ystep = find(strcmp(txtAll(1,:), 'Y Test Position'));
                 if isempty(ind_Xstep)
@@ -169,7 +145,7 @@ if config.flag_data
                     ind_H = find(strncmp(txtAll(1,:), 'AvgHardness', 10))-1;
                 end
                 endLines = 3;
-            elseif dataType == 2
+            elseif dataType == 2 % Excel file from Hysitron
                 ind_Xstep = find(strcmp(txtAll(3,:), 'X(mm)'));
                 ind_Ystep = find(strcmp(txtAll(3,:), 'Y(mm)'));
                 ind_YM = find(strncmp(txtAll(3,:), 'Er(GPa)', 10));
@@ -184,7 +160,7 @@ if config.flag_data
                 else
                     disp('No headerlines found !');
                 end
-            elseif dataType == 3
+            elseif dataType == 3 % Excel file from ASMEC
                 ind_Xstep = '';
                 ind_Ystep = '';
                 ind_YM = find(strncmp(txtAll(1,:), 'E', 10));
@@ -223,7 +199,7 @@ if config.flag_data
                     deltaXY = abs(config.Xcoord(config.N_YStep) - ...
                         config.Xcoord(1));
                     % config.N_YStep*2 ???
-                elseif dataType == 2
+                elseif dataType >= 2
                     deltaXX = config.XStep_default;
                     deltaYX = 0;
                     deltaYY = config.YStep_default;
@@ -310,7 +286,7 @@ if config.flag_data
         NX = config.N_XStep;
         NY = config.N_YStep;
         % Vector to matrix (last three columns are average values in 'Results' sheet
-        if dataType == 1 || dataType == 3
+        if dataType == 1 || dataType >= 3
             try
                 data.expValues_mat.YM = reshape(data.expValues.YM(1:end-endLines,1),[NX,NY]);
                 data.expValues_mat.H = reshape(data.expValues.H(1:end-endLines,1),[NX,NY]);
