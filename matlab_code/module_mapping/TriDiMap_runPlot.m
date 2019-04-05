@@ -55,10 +55,10 @@ else
         end
         if ~isnan(gui.config.minVal) && (gui.config.propertyOld == gui.config.property)
             if config.property ~= 3
-                data2use(data2use < (gui.config.minVal*0.9995)) = NaN;
+                data2use(data2use < (gui.config.minVal*0.9)) = NaN;
             else
-                data2use_E(data2use_E < (gui.config.minVal*0.9995)) = NaN;
-                data2use_H(data2use_H < (gui.config.minVal*0.9995)) = NaN;
+                data2use_E(data2use_E < (gui.config.minVal*0.9)) = NaN;
+                data2use_H(data2use_H < (gui.config.minVal*0.9)) = NaN;
             end
         else
             if config.property ~= 3
@@ -74,10 +74,10 @@ else
         end
         if ~isnan(gui.config.maxVal) && (gui.config.propertyOld == gui.config.property)
             if config.property ~= 3
-                data2use(data2use > (gui.config.maxVal*1.0005)) = NaN;
+                data2use(data2use > (gui.config.maxVal*1.1)) = NaN;
             else
-                data2use_E(data2use_E > (gui.config.maxVal*1.0005)) = NaN;
-                data2use_H(data2use_H > (gui.config.maxVal*1.0005)) = NaN;
+                data2use_E(data2use_E > (gui.config.maxVal*1.1)) = NaN;
+                data2use_H(data2use_H > (gui.config.maxVal*1.1)) = NaN;
             end
         else
             if config.property ~= 3
