@@ -341,17 +341,17 @@ if config.flag_data
     set(h.value_MinYCrop_GUI, 'String', 1);
     set(h.value_MaxYCrop_GUI, 'String', num2str(get(h.value_numYindents_GUI, 'String')));
     
-    minVal = round(100*(nanmin(nanmin(data.expValues_mat.H))))/100;
+    minVal = nanmin(nanmin(data.expValues_mat.H));
     if minVal < 0
         minVal = 0;
     end
-    maxVal = round(100*(nanmax(nanmax(data.expValues_mat.H))))/100;
+    maxVal = nanmax(nanmax(data.expValues_mat.H));
     if maxVal < 0
         maxVal = 0;
     end
     if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
-        set(h.value_MinVal_GUI, 'String', num2str(nanmin(minVal)));
-        set(h.value_MaxVal_GUI, 'String', num2str(nanmax(maxVal)));
+        set(h.value_MinVal_GUI, 'String', num2str((nanmin(minVal))));
+        set(h.value_MaxVal_GUI, 'String', num2str((nanmax(maxVal))));
         set(h.property_GUI, 'Value', 2);
         config.flag_ClusterGauss = 0;
     end

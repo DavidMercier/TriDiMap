@@ -70,11 +70,11 @@ x(isnan(x)) = 0;
 % Protect against a  all NaNs in one dimension
 i = find(count==0);
 
-if flag == 0
-	y = sqrt(sum(x.*x,dim)./max(count-1,1));
-else
+% if flag == 0
+% 	y = sqrt(sum(x.*x,dim)./max(count-1,1));
+% else
 	y = sqrt(sum(x.*x,dim)./max(count,1));
-end
+% end
 y(i) = i + NaN;
 
 % $Id: nanstd.m,v 1.1 2004/07/15 22:42:15 glaescher Exp glaescher $

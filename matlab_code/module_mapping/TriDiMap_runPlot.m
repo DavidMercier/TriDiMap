@@ -55,38 +55,38 @@ else
         end
         if ~isnan(gui.config.minVal) && (gui.config.propertyOld == gui.config.property)
             if config.property ~= 3
-                data2use(data2use < gui.config.minVal) = NaN;
+                data2use(data2use < (gui.config.minVal*0.9995)) = NaN;
             else
-                data2use_E(data2use_E < gui.config.minVal) = NaN;
-                data2use_H(data2use_H < gui.config.minVal) = NaN;
+                data2use_E(data2use_E < (gui.config.minVal*0.9995)) = NaN;
+                data2use_H(data2use_H < (gui.config.minVal*0.9995)) = NaN;
             end
         else
             if config.property ~= 3
-                gui.config.minVal = round(100*(nanmin(nanmin(data2use))))/100;
+                gui.config.minVal = nanmin(nanmin(data2use));
             else
-                gui.config.minVal = round(100*(nanmin(nanmin([data2use_E, data2use_H]))))/100;
+                gui.config.minVal = nanmin(nanmin([data2use_E, data2use_H]));
             end
             
         end
-        set(gui.handles.value_MinVal_GUI, 'String', num2str(nanmin(gui.config.minVal)));
+        set(gui.handles.value_MinVal_GUI, 'String', num2str(round(100*(nanmin(gui.config.minVal)))/100));
         if gui.config.maxVal < 0 || gui.config.maxVal < gui.config.minVal
             gui.config.maxVal = gui.config.minVal + 100;
         end
         if ~isnan(gui.config.maxVal) && (gui.config.propertyOld == gui.config.property)
             if config.property ~= 3
-                data2use(data2use > gui.config.maxVal) = NaN;
+                data2use(data2use > (gui.config.maxVal*1.0005)) = NaN;
             else
-                data2use_E(data2use_E > gui.config.maxVal) = NaN;
-                data2use_H(data2use_H > gui.config.maxVal) = NaN;
+                data2use_E(data2use_E > (gui.config.maxVal*1.0005)) = NaN;
+                data2use_H(data2use_H > (gui.config.maxVal*1.0005)) = NaN;
             end
         else
             if config.property ~= 3
-                gui.config.maxVal = round(100*(nanmax(nanmax(data2use))))/100;
+                gui.config.maxVal = nanmax(nanmax(data2use));
             else
-                gui.config.maxVal = round(100*(nanmax(nanmax([data2use_E, data2use_H]))))/100;
+                gui.config.maxVal = nanmax(nanmax([data2use_E, data2use_H]));
             end
         end
-        set(gui.handles.value_MaxVal_GUI, 'String', num2str(nanmax(gui.config.maxVal)));
+        set(gui.handles.value_MaxVal_GUI, 'String', num2str(round(100*(nanmax(gui.config.maxVal)))/100));
         if config.property ~= 3
             gui.config.meanVal = round(100*(nanmean(nanmean(data2use))))/100;
             gui.config.stdVal = round(100*(nanstd(nanstd(data2use))))/100;
