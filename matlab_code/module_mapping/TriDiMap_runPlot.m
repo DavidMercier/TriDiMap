@@ -89,10 +89,13 @@ else
         set(gui.handles.value_MaxVal_GUI, 'String', num2str(nanmax(gui.config.maxVal)));
         if config.property ~= 3
             gui.config.meanVal = round(100*(nanmean(nanmean(data2use))))/100;
+            gui.config.stdVal = round(100*(nanstd(nanstd(data2use))))/100;
         else
             gui.config.meanVal = round(100*(nanmean(nanmean([data2use_E, data2use_H]))))/100;
+            gui.config.stdVal = round(100*(nanstd(nanstd([data2use_E, data2use_H]))))/100;
         end
         set(gui.handles.value_MeanVal_GUI, 'String', num2str(nanmean(gui.config.meanVal)));
+        set(gui.handles.value_StdVal_GUI, 'String', num2str((gui.config.stdVal)));
         
         % NaN values
         if config.property < 3
