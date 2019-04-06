@@ -49,8 +49,10 @@ of the characteristic size of the microstructure :math:`\overline{D}` (e.g.: par
 in order to apply continuum indentation analysis to heterogeneous systems and  to  access  phase  properties.
 This rule refers to the well-known 10% rule of thumb proposed by Bückle [#Buckle_1973]_, which is a rough first estimation. 
 In cases where the contrast between the mechanical properties of the two phases becomes significant
-(e.g.: ratio between the elastic modulii lower than 0.2 or higher than 5), the method is not really reliable anymore
+(e.g.: ratio between the elastic moduli lower than 0.2 or higher than 5), the method is not really reliable anymore
 and special care should be taken in the interpretation of the indentation results.
+
+Moreover, the indentation depth should be at least 3 times the mean square deviation of surface roughness [#Michałek_2019]_.
 
 .. figure:: ./_pictures/grid_indentation_length_scale.png
    :scale: 40 %
@@ -159,6 +161,7 @@ Then, transparency effect has to be applied (60%-70% for example) in order to se
 References
 -------------
 .. [#Constantinides_2006] `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation" (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
+.. [#Michałek_2019] `Michałek J. et al., "Application of Nanoindentation and 2D and 3D Imaging to Characterise Selected Features of the Internal Microstructure of Spun Concrete" (2019). <https://doi.org/10.3390/ma12071016>`_
 .. [#Němeček_2009] `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
 .. [#Randall_2009] `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces" (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
 .. [#Buckle_1973] Bückle H., in: J.W. Westbrook, H. Conrad (Eds.), The Science of Hardness Testing and Its Applications, American Society for Metals, Metal Park OH, 1973, pp. 453–459.
