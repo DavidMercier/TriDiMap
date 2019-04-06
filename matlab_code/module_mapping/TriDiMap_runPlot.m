@@ -62,7 +62,7 @@ else
             end
         else
             if config.property ~= 3
-                gui.config.minVal = nanmin(nanmin(data2use));
+                gui.config.minVal = nanmin(data2use(:));
             else
                 gui.config.minVal = nanmin(nanmin([data2use_E, data2use_H]));
             end
@@ -81,18 +81,18 @@ else
             end
         else
             if config.property ~= 3
-                gui.config.maxVal = nanmax(nanmax(data2use));
+                gui.config.maxVal = nanmax(data2use(:));
             else
                 gui.config.maxVal = nanmax(nanmax([data2use_E, data2use_H]));
             end
         end
         set(gui.handles.value_MaxVal_GUI, 'String', num2str(round(100*(nanmax(gui.config.maxVal)))/100));
         if config.property ~= 3
-            gui.config.meanVal = round(100*(nanmean(nanmean(data2use))))/100;
-            gui.config.stdVal = round(100*(nanstd(nanstd(data2use))))/100;
+            gui.config.meanVal = round(100*(nanmean(data2use(:))))/100;
+            gui.config.stdVal = round(100*(nanstd(data2use(:))))/100; %std(A,'omitnan')
         else
             gui.config.meanVal = round(100*(nanmean(nanmean([data2use_E, data2use_H]))))/100;
-            gui.config.stdVal = round(100*(nanstd(nanstd([data2use_E, data2use_H]))))/100;
+            gui.config.stdVal = round(100*(nanstd(nanstd([data2use_E, data2use_H]))))/100; %std(A,'omitnan')
         end
         set(gui.handles.value_MeanVal_GUI, 'String', num2str(nanmean(gui.config.meanVal)));
         set(gui.handles.value_StdVal_GUI, 'String', num2str((gui.config.stdVal)));
