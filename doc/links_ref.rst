@@ -64,6 +64,7 @@ Indentation maps and statistical analysis in the literature
 * `Wilson W. et al., "Automated coupling of NanoIndentation and Quantitative EnergyDispersive Spectroscopy (NI-QEDS): A comprehensive method to disclose the micro-chemo-mechanical properties of cement pastes" (2018). <https://doi.org/10.1016/j.cemconres.2017.08.016>`_
 * `Hillouin B. et al., "Coupling statistical indentation and microscopy to evaluate micromechanical properties of materials: Application to viscoelastic behavior of irradiated mortars" (2018). <https://dx.doi.org/10.1016/j.cemconcomp.2018.09.008>`_
 * `Haušild P. et al., "Statistical treatment of grid indentation considering the effect of the interface and the microstructural length scale" (2019). <https://doi.org/10.1016/j.mechmat.2018.11.006>`_
+* `Bernachy-Barbe F., "A data analysis procedure for phase identiﬁcation in nanoindentation results of cementitious materials" (2019). <https://doi.org/10.1617/s11527-019-1397-y>`_
 
 Colormap
 ############################################
