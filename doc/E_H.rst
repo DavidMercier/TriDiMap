@@ -47,7 +47,7 @@ This method is powerful to separate contribution of 2 or 3 phases (especially in
 in the cloud of experimental points [#Hu_2005]_.
 Average mechanical property values can also be extracted using this method and a 2 or 3 color map can be obtained too.
 
-The |matlab| third party code used to define clusters GMM is: `GMMClustering.m <https://github.com/DavidMercier/TriDiMap/third_party_codes/GMMClustering/GMMClustering.m>`_
+The |matlab| third party code used to define clusters GMM is: `GMMClustering.m <https://github.com/DavidMercier/TriDiMap/blob/master/third_party_codes/GMMClustering/GMMClustering.m>`_
 
 .. figure:: ./_pictures/clusterMap.png
    :scale: 50 %
