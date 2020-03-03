@@ -80,7 +80,9 @@ And in case of cube-corner indentation:
    :align: center
    
    *Cross-sectional scheme of 2 indents, with the definition of geometrical parameters*
-   
+
+More recently, it has been demonstrated that a minimum indent spacing of 10 times the indentation depth was sufficient to obtain insignificant hardness deviation for different bulk materials and coatings tested with a Berkovich indenter. And this result has been generalized for other indenter geometries (spherical and Vickers tips), ans it was found that a minimum indent spacing of 1.5 times the indent contact lateral dimension is enough to get accurate results.
+
 Interpolation step
 -----------------------
 
