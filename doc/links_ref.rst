@@ -67,7 +67,8 @@ Indentation maps and statistical analysis in the literature
 * `Bernachy-Barbe F., "A data analysis procedure for phase identiﬁcation in nanoindentation results of cementitious materials" (2019). <https://doi.org/10.1617/s11527-019-1397-y>`_
 * `Kariem H., "The viscoelastic behaviour of material phases in ﬁred clay identiﬁed by means of grid nanoindentation" (2019). <https://doi.org/10.1016/j.conbuildmat.2019.117066>`_
 * `Koumoulos E. P. et al., "Constituents Phase Reconstruction through Applied Machine Learning in Nanoindentation Mapping Data of Mortar Surface" (2019). <https://doi.org/10.3390/jcs3030063>`_
-* `Gailard Y. and Amiot F., "Grid nano-indentation as full-field measurements" (2020). <https://doi.org/10.1016/j.compositesa.2020.105807>`_
+* `Sudharshan Phani P. and Oliver W. C., "A critical assessment of the effect of indentation spacing on the measurement of hardness and modulus using instrumented indentation testing" (2019). <https://doi.org/10.1016/j.matdes.2018.107563>`_
+* `Gaillard Y. and Amiot F., "Grid nano-indentation as full-field measurements" (2020). <https://doi.org/10.1016/j.compositesa.2020.105807>`_
 
 Colormap
 ############################################
