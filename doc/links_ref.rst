@@ -45,6 +45,7 @@ Indentation maps and statistical analysis in the literature
 * `Šavija B. et al., "Corrosion induced cover cracking studied by X-ray computed tomography, nanoindentation, and energy dispersive X-ray spectrometry (EDS)" (2014). <https://doi.org/10.1617/s11527-014-0292-9>`_
 * `Chen L. et al., "Analysis of In Situ Mechanical Properties of Phases in High-Alloyed White Iron Measured by Grid Nanoindentation" (2015). <https://doi.org/10.1007/s11665-015-1672-1>`_
 * Da Silva E.P., "Phase Transformation in Advanced High Strength Steels during Austenite Decomposition at Low Temperatures", PhD Thesis (2015). ISBN 978-90-8578-885-0
+* `Hu C., "Nanoindentation as a tool to measure and map mechanical properties of hardened cement pastes", MRS Communication (2015). <https://doi.org/10.1557/mrc.2015.3>`_
 * `Morales-Rivas L. et al., "Nanomechanical characterization of nanostructured bainitic steel: Peak Force Microscopy and Nanoindentation with AFM" (2015). <https://doi.org/10.1038/srep17164>`_
 * `Coy E. et al., "Topographic reconstruction and mechanical analysis of atomic layer deposited Al2O3/TiO2 nanolaminates by nanoindentation" (2016). <https://doi.org/10.1016/j.actamat.2011.12.012>`_
 * `Hu C. et al., "Statistical nanoindentation technique in application to hardened cement pastes: Influences of material microstructure and analysis method" (2016). <https://doi.org/10.1016/j.conbuildmat.2016.03.064>`_
