@@ -81,7 +81,7 @@ And in case of cube-corner indentation:
    
    *Cross-sectional scheme of 2 indents, with the definition of geometrical parameters*
 
-More recently, it has been demonstrated that a minimum indent spacing of 10 times the indentation depth was sufficient to obtain insignificant hardness deviation for different bulk materials and coatings tested with a Berkovich indenter. And this result has been generalized for other indenter geometries (spherical and Vickers tips), ans it was found that a minimum indent spacing of 1.5 times the indent contact lateral dimension is enough to get accurate results [#SudharshanPhani2019]_.
+More recently, it has been demonstrated that a minimum indent spacing of 10 times the indentation depth was sufficient to obtain insignificant hardness deviation for different bulk materials and coatings tested with a Berkovich indenter. And this result has been generalized for other indenter geometries (spherical and Vickers tips), ans it was found that a minimum indent spacing of 1.5 times the indent contact lateral dimension is enough to get accurate results [#SudharshanPhani_2019]_.
 
 Interpolation step
 -----------------------
@@ -167,4 +167,4 @@ References
 .. [#Němeček_2009] `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
 .. [#Randall_2009] `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces" (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
 .. [#Buckle_1973] Bückle H., in: J.W. Westbrook, H. Conrad (Eds.), The Science of Hardness Testing and Its Applications, American Society for Metals, Metal Park OH, 1973, pp. 453–459.
-.. [#SudharshanPhani2019] Sudharshan Phani P. and Oliver W. C., "A critical assessment of the effect of indentation spacing on the measurement of hardness and modulus using instrumented indentation testing" (2019). <https://doi.org/10.1016/j.matdes.2018.107563>
+.. [#SudharshanPhani_2019] `Sudharshan Phani P. and Oliver W. C., "A critical assessment of the effect of indentation spacing on the measurement of hardness and modulus using instrumented indentation testing" (2019). <https://doi.org/10.1016/j.matdes.2018.107563>`_
