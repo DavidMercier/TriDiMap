@@ -101,8 +101,8 @@ which gives different mean values, given peak shapes or peak number modification
 Cumulative density function (CDF)
 ############################################
 
-The cumulative distribution of mechanical property is much better than an histogram plot.
-But, it is much more difficult to decompose and in this toolbox, only a Weibull fitting is proposed,
+The cumulative distribution of mechanical property is much better than an histogram plot (no bin size dependency).
+But, it is much more difficult to decompose and in this toolbox, only Gaussian and Weibull fitting are proposed,
 which is only interesting for an homogeneous material. The Weibull function is from the PopIn toolbox [#popin]_.
 
 The |matlab| function used to plot the cumulative distribution of mechanical property values is:
@@ -110,18 +110,18 @@ The |matlab| function used to plot the cumulative distribution of mechanical pro
 
 The |matlab| function used to fit the cumulative distribution with a Weibull function is:
 `TriDiMap_Weibull_cdf.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/module_mapping/TriDiMap_Weibull_cdf.m>`_
-   
-.. figure:: ./_pictures/MTS_example1_25x25_H_GUI_15.png
+ 
+.. figure:: ./_pictures/MTS_example1_25x25_E_GUI_15.png
    :scale: 50 %
    :align: center
    
-   *Cumulative distribution of hardness values*
+   *Cumulative distribution of elastic modulus values with Gaussian and Weibull fitting*
    
-.. figure:: ./_pictures/MTS_example1_25x25_H_GUI_16.png
+.. figure:: ./_pictures/MTS_example1_25x25_E_GUI_16.png
    :scale: 50 %
    :align: center
    
-   *Cumulative distributions of hardness values with Weibull fit*  
+   *Cumulative distribution of elastic modulus values with cumulative distributions for each different phase*  
    
 References
 ############################################

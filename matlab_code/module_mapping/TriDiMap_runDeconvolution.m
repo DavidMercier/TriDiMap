@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function [p2, p_all2] = TriDiMap_runDeconvolution(propVal, exphist, M, maxIter, limit, property, ...
+function [p2, p_all2, minmeanVec, minstddev, minf, pos] = TriDiMap_runDeconvolution(propVal, exphist, M, maxIter, limit, property, ...
     strUnit_Property, flagStat)
 %% Function to run the deconvolution
 % See decon M-file for decon.fig of J. Nemecek
@@ -258,68 +258,36 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                     end
                     hold on;
                     h7 = plot(exphist(:,1),p2(:,jj),'c','LineWidth',2);
-                otherwise ;
+                otherwise
             end
             hold on;
         end
         if get(gui.handles.cb_colorHist_GUI, 'Value')
-            if M == 1
-                set(ht1, 'Color', 'b');
-            elseif M == 2
-                set(ht1, 'Color', 'b');
-                set(ht2, 'Color', 'r');
-            elseif M == 3
-                set(ht1, 'Color', 'b');
-                set(ht2, 'Color', 'r');
-                set(ht3, 'Color', 'g');
-            elseif M == 4
-                set(ht1, 'Color', 'b');
-                set(ht2, 'Color', 'r');
-                set(ht3, 'Color', 'g');
-                set(ht4, 'Color', 'y');
-            elseif M == 5
-                set(ht1, 'Color', 'b');
-                set(ht2, 'Color', 'r');
-                set(ht3, 'Color', 'g');
-                set(ht4, 'Color', 'y');
-                set(ht5, 'Color', 'm');
-            elseif M == 6
-                set(ht1, 'Color', 'b');
-                set(ht2, 'Color', 'r');
-                set(ht3, 'Color', 'g');
-                set(ht4, 'Color', 'y');
-                set(ht5, 'Color', 'm');
-                set(ht6, 'Color', 'c');
-            end
+            if M > 0
+                set(ht1, 'Color', 'b'); end
+            if M > 1
+                set(ht2, 'Color', 'r'); end
+            if M > 2
+                set(ht3, 'Color', 'g'); end
+            if M > 3
+                set(ht4, 'Color', 'y'); end
+            if M > 4
+                set(ht5, 'Color', 'm'); end
+            if M > 5
+                set(ht6, 'Color', 'c'); end
         else
-            if M == 1
-                set(ht1, 'Color', 'k');
-            elseif M == 2
-                set(ht1, 'Color', 'k');
-                set(ht2, 'Color', 'k');
-            elseif M == 3
-                set(ht1, 'Color', 'k');
-                set(ht2, 'Color', 'k');
-                set(ht3, 'Color', 'k');
-            elseif M == 4
-                set(ht1, 'Color', 'k');
-                set(ht2, 'Color', 'k');
-                set(ht3, 'Color', 'k');
-                set(ht4, 'Color', 'k');
-            elseif M == 5
-                set(ht1, 'Color', 'k');
-                set(ht2, 'Color', 'k');
-                set(ht3, 'Color', 'k');
-                set(ht4, 'Color', 'k');
-                set(ht5, 'Color', 'k');
-            elseif M == 6
-                set(ht1, 'Color', 'k');
-                set(ht2, 'Color', 'k');
-                set(ht3, 'Color', 'k');
-                set(ht4, 'Color', 'k');
-                set(ht5, 'Color', 'k');
-                set(ht6, 'Color', 'k');
-            end
+            if M > 0
+                set(ht1, 'Color', 'k'); end
+            if M > 1
+                set(ht2, 'Color', 'k'); end
+            if M > 2
+                set(ht3, 'Color', 'k'); end
+            if M > 3
+                set(ht4, 'Color', 'k'); end
+            if M > 4
+                set(ht5, 'Color', 'k'); end
+            if M > 5
+                set(ht6, 'Color', 'k'); end
         end
         h8 = plot(exphist(:,1),p_all2,'k:','LineWidth',2);
         hold on;
@@ -380,4 +348,5 @@ else
     %msgbox('Deconvolution aborted');
     title('Deconvolution process aborted');
 end
+pos = [minVal maxVal maxXPos maxYPos];
 end

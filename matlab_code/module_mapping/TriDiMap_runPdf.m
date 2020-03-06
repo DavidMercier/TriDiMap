@@ -16,7 +16,7 @@ if config.flag_data
         gui.config.binSize = 0.01; % To avoir zero nonsense value
         set(gui.handles.value_BinSizeHist_GUI, ...
             'String', num2str(round(100*gui.config.binSize)/100));
-    end    
+    end
     binsize = gui.config.binSize;
     minbin = gui.config.MinHistVal;
     maxbin = gui.config.MaxHistVal;
@@ -45,7 +45,7 @@ if config.flag_data
             if ~config.FrenchLeg
                 ylabel('Frequency density');
             else
-                ylabel('Densité de probabiilité');
+                ylabel('Densité de probabilité');
             end
             gui.config.flag_fit = 0;
         else
@@ -53,10 +53,18 @@ if config.flag_data
             M = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
             maxiter = str2num(get(gui.handles.value_IterMaxHist_GUI, 'String'));
             limit = str2num(get(gui.handles.value_PrecHist_GUI, 'String'));
-            [gui.results.GaussianAllFit, gui.results.GaussianFit] = ...
-                TriDiMap_runDeconvolution(data2useVect', exphist, M, ...
-                maxiter, limit, config.property, strUnit_Property, ...
-                gui.config.licenceStat_Flag);
+            try
+                [gui.results.GaussianAllFit, gui.results.GaussianFit, ...
+                    gui.results.pdfData.minmeanVec, ...
+                    gui.results.pdfData.minstddev, ...
+                    gui.results.pdfData.minf,...
+                    gui.results.position] = ...
+                    TriDiMap_runDeconvolution(data2useVect', exphist, M, ...
+                    maxiter, limit, config.property, strUnit_Property, ...
+                    gui.config.licenceStat_Flag);
+            catch
+                errordlg('Decomposition process crashed...');
+            end
             gui.results.hist_val = data2useVect';
             gui.results.hist_xy = exphist;
             gui.results.M = M;
