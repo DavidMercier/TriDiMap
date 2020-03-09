@@ -107,7 +107,9 @@ if get(gui.handles.cb_CdfFromPdf_GUI, 'Value')
                         set(ht(ii), 'Color', 'c');
                 end
             end
-            set(hp, 'LineWidth', 2);
+            hp_All = plot(sort(data2useVect), sum(sort(gui.results.pdfData.YdataFit.*...
+                    gui.results.pdfData.minf),2));
+            set(hp_All, 'Color', 'k', 'LineStyle', '--', 'LineWidth', LWval);
         else
             errordlg('Run first deconvolution process of the probability density function');
         end
@@ -152,4 +154,7 @@ elseif get(gui.handles.cb_WeibullFit_GUI, 'Value') && ~get(gui.handles.cb_Gaussi
     legend([h_CDF, h_Weibull], 'Experimental data', 'Weibull fit');
 elseif get(gui.handles.cb_GaussianFit_GUI, 'Value') && get(gui.handles.cb_WeibullFit_GUI, 'Value')
     legend([h_CDF, h_CDF_fit, h_Weibull], 'Experimental data', 'Gaussian fit', 'Weibull fit');
+elseif get(gui.handles.cb_CdfFromPdf_GUI, 'Value') && ...
+        (~get(gui.handles.cb_WeibullFit_GUI, 'Value') && ~get(gui.handles.cb_GaussianFit_GUI, 'Value'))
+    legend([h_CDF, hp_All], 'Experimental data', 'CDF fit from PDF fit');
 end
