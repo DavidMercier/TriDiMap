@@ -61,7 +61,7 @@ if config.flag_data
                 config.legend = strcat({'Duret\''e ('},config.strUnit_Property, ')');
             end
         elseif config.property == 3
-            config.legend = 'Phase number';
+                config.legend = 'Phase';
         end
         
     elseif config.normalizationStep > 0

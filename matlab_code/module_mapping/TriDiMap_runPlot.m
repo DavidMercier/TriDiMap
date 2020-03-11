@@ -129,9 +129,9 @@ else
     elseif config.property == 6 || config.property == 7
         TriDiMap_runCdf;
     elseif config.property == 8 || config.property == 9
-       TriDiMap_runPdf;
-       hold on;
-       TriDiMap_runCdf;
+        TriDiMap_runPdf;
+        hold on;
+        TriDiMap_runCdf;
     end
     if config.flag_data
         if config.property < 3
@@ -159,4 +159,5 @@ guidata(gcf, gui);
 if gui.config.saveFlag
     TriDiMap_updateUnit_and_GUI;
 end
+
 end

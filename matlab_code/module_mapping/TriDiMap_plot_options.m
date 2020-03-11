@@ -54,6 +54,10 @@ if nargin == 0
     flagPlot = 1;
 end
 
+if get(gui.handles.cb_PDFfitMap_GUI, 'Value') && str2num(get(gui.handles.value_PhNumHist_GUI, 'String'))>1
+    gui.config.legend = 'Phase';
+end
+
 if ~rawData == 8
     zString = gui.config.legend;
     titleString = gui.config.legend;
@@ -113,6 +117,13 @@ if flagPlot
     set([hXLabel, hYLabel, hZLabel, hTitle(1)], ...
         'Color', [0,0,0], 'FontSize', FontSizeVal, ...
         'Interpreter', 'Latex');
+    
+    % Set colorbar for phase map
+    if get(gui.handles.cb_PDFfitMap_GUI, 'Value')
+        set(gui.handles.value_colorMin_GUI, 'String', '0');
+        set(gui.handles.value_colorMax_GUI, 'String', ...
+            get(gui.handles.value_PhNumHist_GUI, 'String'));
+    end
     
     % Set number of intervals to 0 for a continuous scalebar.
     [token, remain] = strtok(cMap);

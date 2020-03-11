@@ -63,7 +63,7 @@ if config.flag_data
                     maxiter, limit, config.property, strUnit_Property, ...
                     gui.config.licenceStat_Flag);
             catch
-                errordlg('Decomposition process crashed...');
+                errordlg('Decomposition process crashed...Run it again and change inputs');
             end
             gui.results.hist_val = data2useVect';
             gui.results.hist_xy = exphist;
@@ -71,6 +71,8 @@ if config.flag_data
             gui.results.maxiter = maxiter;
             gui.results.limit = limit;
             gui.config.flag_fit = 1;
+            [gui.results.transitionVal, gui.results.yTransitionVal]...
+                = findIntersection(gui.results.pdfData);
             %save('Blabla.txt', 'variableName', '-ASCII','-append'); % No struct variable in the variable name...
         end
         hold on;

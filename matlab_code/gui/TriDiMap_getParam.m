@@ -78,6 +78,11 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         gui.config.autobinSize  = get(h.cb_autoBinSizeHist_GUI, 'Value');
         gui.config.MinHistVal = str2num(get(h.value_MinValHist_GUI, 'String'));
         gui.config.MaxHistVal = str2num(get(h.value_MaxValHist_GUI, 'String'));
+        if gui.config.MaxHistVal <= gui.config.MinHistVal
+            disp('Wrong inputs for min and max values!');
+            gui.config.MaxHistVal = 2*gui.config.MinHistVal;
+            set(h.value_MaxValHist_GUI, 'String', num2str(gui.config.MaxHistVal));
+        end
         gui.config.MinCDFVal = str2num(get(h.value_MinValCDF_GUI, 'String'));
         gui.config.MaxCDFVal = str2num(get(h.value_MaxValCDF_GUI, 'String'));
         %set(h.pm_sectPlot_GUI, 'Value', 1);
@@ -248,16 +253,17 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(h.unit_transMap_GUI, 'Visible', 'off');
         set(h.cb_normMap_GUI, 'Visible', 'on');
         set(h.pm_normMap_GUI, 'Visible', 'on');
+        set(h.cb_transMap_GUI, 'Value', 0);
     end
     if gui.config.normalizationStep
         set(h.pm_normMap_GUI, 'Visible', 'on');
     else
         set(h.pm_normMap_GUI, 'Visible', 'off');
+        set(h.cb_normMap_GUI, 'Value', 0);
     end
     gui.config.scaleAxis = get(h.cb_autoColorbar_GUI, 'Value');
     gui.config.cmin = str2num(get(h.value_colorMin_GUI, 'String'));
     gui.config.cmax = str2num(get(h.value_colorMax_GUI, 'String'));
-    gui.config.intervalScaleBar = str2num(get(h.value_colorNum_GUI, 'String'));
     gui.config.logZ = get(h.cb_log_plot_GUI, 'Value');
     gui.config.grid = get(h.cb_grid_plot_GUI, 'Value');
     gui.config.Markers = get(h.cb_markers_GUI, 'Value');
@@ -267,6 +273,20 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     else
         gui.config.minorTicks = 0;
     end
+    if get(h.cb_PDFfitMap_GUI, 'Value')
+        set(h.cb_normMap_GUI, 'Visible', 'off');
+        set(h.cb_normMap_GUI, 'Value', 0);
+        set(h.cb_transMap_GUI, 'Visible', 'off');
+        set(h.cb_transMap_GUI, 'Value', 0);
+        if isfield(gui, 'results')
+            set(h.value_colorNum_GUI, 'String', num2str(gui.results.M));
+            set(h.cb_autoColorbar_GUI, 'Value', 0);
+        end
+    else
+        set(h.cb_normMap_GUI, 'Visible', 'on');
+        set(h.cb_transMap_GUI, 'Visible', 'on');
+    end
+    gui.config.intervalScaleBar = str2num(get(h.value_colorNum_GUI, 'String'));
 else
     gui.config.rawData = 1;
     gui.config.noNan = 1;
