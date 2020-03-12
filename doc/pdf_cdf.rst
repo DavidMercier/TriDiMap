@@ -70,13 +70,20 @@ The |matlab| function used to fit using a probability density function and to pr
 
 This last function has been extensively inspired by the work of Němeček J. et al. [#Nemecek_2010_1]_, [#Nemecek_2010_2]_ and [#Nemecek_2010_3]_.
 
-An example of fitting and deconvolution process is given in the following figure.
+An example of fitting and deconvolution process is given in the following figure, 
+followed by another example of decomposition process leading to phase mapping and plot of corresponding cumulative distributions. 
    
 .. figure:: ./_pictures/MTS_example1_25x25_H_GUI_14.png
    :scale: 50 %
    :align: center
    
    *Histograms of hardness values with Gaussian PDF after fitting and deconvolution step*
+   
+.. figure:: ./_pictures/MTS_example1_25x25_H_GUI_15.png
+   :scale: 50 %
+   :align: center
+   
+   *Phase map and cumulative distributions of each phase resulting from decomposition step*
 
 .. note::
    Effect of the interphase can be considered and could be implemented in this toolbox [#Cech_2017]_.

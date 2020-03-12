@@ -234,7 +234,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     gui.config.normalizationStep = get(h.cb_normMap_GUI, 'Value');
     gui.config.normalizationStepVal = get(h.pm_normMap_GUI, 'Value');
     if gui.config.normalizationStep
-        set(h.cb_autoColorbar_GUI, 'Value', 1);
+        set(h.pm_autoColorbar_GUI, 'Value', 1);
         set(h.cb_transMap_GUI, 'Visible', 'off');
         set(h.value_transMap_GUI, 'Visible', 'off');
     else
@@ -261,7 +261,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(h.pm_normMap_GUI, 'Visible', 'off');
         set(h.cb_normMap_GUI, 'Value', 0);
     end
-    gui.config.scaleAxis = get(h.cb_autoColorbar_GUI, 'Value');
+    gui.config.scaleAxis = get(h.pm_autoColorbar_GUI, 'Value');
     gui.config.cmin = str2num(get(h.value_colorMin_GUI, 'String'));
     gui.config.cmax = str2num(get(h.value_colorMax_GUI, 'String'));
     gui.config.logZ = get(h.cb_log_plot_GUI, 'Value');
@@ -273,14 +273,19 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     else
         gui.config.minorTicks = 0;
     end
-    if get(h.cb_PDFfitMap_GUI, 'Value')
-        set(h.cb_normMap_GUI, 'Visible', 'off');
-        set(h.cb_normMap_GUI, 'Value', 0);
-        set(h.cb_transMap_GUI, 'Visible', 'off');
-        set(h.cb_transMap_GUI, 'Value', 0);
-        if isfield(gui, 'results')
-            set(h.value_colorNum_GUI, 'String', num2str(gui.results.M));
-            set(h.cb_autoColorbar_GUI, 'Value', 0);
+    if get(h.pm_autoColorbar_GUI, 'Value') == 3
+        if isfield(gui, 'resultsPDF') == 1
+            if gui.config.property == 1 && isfield(gui.resultsPDF, 'E')
+                set(h.value_colorNum_GUI, 'String', num2str(gui.resultsPDF.E.M));
+            elseif gui.config.property == 2 && isfield(gui.resultsPDF, 'H')
+                set(h.value_colorNum_GUI, 'String', num2str(gui.resultsPDF.H.M));
+            end
+            set(h.cb_normMap_GUI, 'Visible', 'off');
+            set(h.cb_normMap_GUI, 'Value', 0);
+            set(h.cb_transMap_GUI, 'Visible', 'off');
+            set(h.cb_transMap_GUI, 'Value', 0);
+        else
+            set(h.pm_autoColorbar_GUI, 'Value', 1);
         end
     else
         set(h.cb_normMap_GUI, 'Visible', 'on');

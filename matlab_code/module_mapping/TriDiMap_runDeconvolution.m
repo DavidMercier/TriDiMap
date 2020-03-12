@@ -263,18 +263,19 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
             hold on;
         end
         if get(gui.handles.cb_colorHist_GUI, 'Value')
+            udCMapList = UserDefinedCMap;
             if M > 0
-                set(ht1, 'Color', 'b'); end
+                set(ht1, 'Color', char(udCMapList(1))); end
             if M > 1
-                set(ht2, 'Color', 'r'); end
+                set(ht2, 'Color', char(udCMapList(2))); end
             if M > 2
-                set(ht3, 'Color', 'g'); end
+                set(ht3, 'Color', char(udCMapList(3))); end
             if M > 3
-                set(ht4, 'Color', 'y'); end
+                set(ht4, 'Color', char(udCMapList(4))); end
             if M > 4
-                set(ht5, 'Color', 'm'); end
+                set(ht5, 'Color', char(udCMapList(5))); end
             if M > 5
-                set(ht6, 'Color', 'c'); end
+                set(ht6, 'Color', char(udCMapList(6))); end
         else
             if M > 0
                 set(ht1, 'Color', 'k'); end

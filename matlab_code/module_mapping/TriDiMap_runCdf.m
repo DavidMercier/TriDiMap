@@ -51,8 +51,14 @@ if get(gui.handles.cb_WeibullFit_GUI, 'Value')
         TriDiMap_Weibull_cdf(OPTIONS, xdataCDF, ydataCDF);
     h_Weibull = plot(xdataCDF, gui.cumulativeFunction.ydata_cdf_Fit, '--k', ...
         'LineWidth', LWval);
-    gui.results.xdataCDF = xdataCDF;
-    gui.results.ydataCDF = ydataCDF;
+    if gui.config.property == 4
+        gui.resultsCDF.E.xdataCDF = xdataCDF;
+        gui.resultsCDF.E.ydataCDF = ydataCDF;
+    elseif gui.config.property == 5
+        gui.resultsCDF.H.xdataCDF = xdataCDF;
+        gui.resultsCDF.H.ydataCDF = ydataCDF;
+    end
+    
     m_Weibull = gui.cumulativeFunction.coefEsts(1);
     meanPAram = gui.cumulativeFunction.coefEsts(2);
     str_title = ['Mean critical parameter = ', ...
@@ -64,55 +70,62 @@ end
 
 %% Plot of all cdf components based on pdf fitting results
 if get(gui.handles.cb_CdfFromPdf_GUI, 'Value')
-    if isfield(gui, 'results')
-        minVal = gui.results.position(1);
-        maxVal = gui.results.position(2);
-        maxXPos = gui.results.position(3);
-        maxYPos = 0.9; %gui.results.position(4);
-        if isfield(gui.results, 'pdfData')
-            for ii = 1:length(gui.results.pdfData.minmeanVec)
-                if gui.config.licenceStat_Flag
-                    gui.results.pdfData.YdataFit(:,ii) = cdf('Normal',data2useVect,...
-                        gui.results.pdfData.minmeanVec(ii), gui.results.pdfData.minstddev(ii));
-                else
-                    gui.results.pdfData.YdataFit(:,ii) = cdfGaussian(data2useVect,...
-                        gui.results.pdfData.minmeanVec(ii), gui.results.pdfData.minstddev(ii));
-                end
-                hp(ii) = plot(sort(data2useVect), sort(gui.results.pdfData.YdataFit(:,ii)).*...
-                    gui.results.pdfData.minf(ii));
-                hold on;
-                t = sprintf('Phase %i\n%8.3f\n%8.3f\n%8.3f\n', ii, ...
-                    gui.results.pdfData.minmeanVec(ii), ...
-                    gui.results.pdfData.minstddev(ii), ...
-                    gui.results.pdfData.minf(ii));
-                ht(ii) = text(0.025*(maxXPos)*ii*3+minVal,maxYPos,char(t));hold on;
-                switch ii
-                    case 1
-                        set(hp(ii), 'Color', 'b', 'LineWidth', LWval);
-                        set(ht(ii), 'Color', 'b');                        
-                    case 2
-                        set(hp(ii), 'Color', 'r', 'LineWidth', LWval);
-                        set(ht(ii), 'Color', 'r');
-                    case 3
-                        set(hp(ii), 'Color', 'g', 'LineWidth', LWval);
-                        set(ht(ii), 'Color', 'g');
-                    case 4
-                        set(hp(ii), 'Color', 'y', 'LineWidth', LWval);
-                        set(ht(ii), 'Color', 'y');
-                    case 5
-                        set(hp(ii), 'Color', 'm', 'LineWidth', LWval);
-                        set(ht(ii), 'Color', 'm');
-                    case 6
-                        set(hp(ii), 'Color', 'c', 'LineWidth', LWval);
-                        set(ht(ii), 'Color', 'c');
-                end
-            end
-            hp_All = plot(sort(data2useVect), sum(sort(gui.results.pdfData.YdataFit.*...
-                    gui.results.pdfData.minf),2));
-            set(hp_All, 'Color', 'k', 'LineStyle', '--', 'LineWidth', LWval);
+    if isfield(gui, 'resultsPDF')
+        if gui.config.property == 6 && isfield(gui.resultsPDF, 'E')
+            resultsPDF = gui.resultsPDF.E;
+        elseif gui.config.property == 7 && isfield(gui.resultsPDF, 'H')
+            resultsPDF = gui.resultsPDF.H;
         else
-            errordlg('Run first deconvolution process of the probability density function');
+            resultsPDF.position= [0,0,0];
+            resultsPDF.pdfData.minmeanVec = 0;
+            resultsPDF.pdfData.minstddev = 0;
+            resultsPDF.pdfData.minf = 0;
+            disp('Run first deconvolution process of the probability density function');
         end
+        minVal = resultsPDF.position(1);
+        maxVal = resultsPDF.position(2);
+        maxXPos = resultsPDF.position(3);
+        maxYPos = 0.9; %gui.results.position(4);
+        for ii = 1:length(resultsPDF.pdfData.minmeanVec)
+            if gui.config.licenceStat_Flag
+                resultsPDF.pdfData.YdataFit(:,ii) = cdf('Normal',data2useVect,...
+                    resultsPDF.pdfData.minmeanVec(ii), resultsPDF.pdfData.minstddev(ii));
+            else
+                resultsPDF.pdfData.YdataFit(:,ii) = cdfGaussian(data2useVect,...
+                    resultsPDF.pdfData.minmeanVec(ii), resultsPDF.pdfData.minstddev(ii));
+            end
+            hp(ii) = plot(sort(data2useVect), sort(resultsPDF.pdfData.YdataFit(:,ii)).*...
+                resultsPDF.pdfData.minf(ii));
+            hold on;
+            t = sprintf('Phase %i\n%8.3f\n%8.3f\n%8.3f\n', ii, ...
+                resultsPDF.pdfData.minmeanVec(ii), ...
+                resultsPDF.pdfData.minstddev(ii), ...
+                resultsPDF.pdfData.minf(ii));
+            ht(ii) = text(0.025*(maxXPos)*ii*3+minVal,maxYPos,char(t));hold on;
+            switch ii
+                case 1
+                    set(hp(ii), 'Color', 'b', 'LineWidth', LWval);
+                    set(ht(ii), 'Color', 'b');
+                case 2
+                    set(hp(ii), 'Color', 'r', 'LineWidth', LWval);
+                    set(ht(ii), 'Color', 'r');
+                case 3
+                    set(hp(ii), 'Color', 'g', 'LineWidth', LWval);
+                    set(ht(ii), 'Color', 'g');
+                case 4
+                    set(hp(ii), 'Color', 'y', 'LineWidth', LWval);
+                    set(ht(ii), 'Color', 'y');
+                case 5
+                    set(hp(ii), 'Color', 'm', 'LineWidth', LWval);
+                    set(ht(ii), 'Color', 'm');
+                case 6
+                    set(hp(ii), 'Color', 'c', 'LineWidth', LWval);
+                    set(ht(ii), 'Color', 'c');
+            end
+        end
+        hp_All = plot(sort(data2useVect), sum(sort(resultsPDF.pdfData.YdataFit.*...
+            resultsPDF.pdfData.minf),2));
+        set(hp_All, 'Color', 'k', 'LineStyle', '--', 'LineWidth', LWval);
     else
         errordlg('Run first deconvolution process of the probability density function');
     end

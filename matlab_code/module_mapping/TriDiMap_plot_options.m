@@ -11,7 +11,16 @@ if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
     cminVal = gui.config.cmin;
     cmaxVal = gui.config.cmax;
     intervalScaleBar = gui.config.intervalScaleBar;
-    cMap = gui.config.colorMap;
+    if get(gui.handles.pm_autoColorbar_GUI, 'Value') == 3 && str2num(get(gui.handles.value_PhNumHist_GUI, 'String'))>1
+        cMap = [0 0 1; ...
+            1 0 0; ...
+            0 1 0; ...
+            1 1 0; ...
+            1 0 1; ...
+            0 1 1];
+    else
+        cMap = gui.config.colorMap;
+    end
 else
     if gui.config.plotClusters == 2
         cMap = [1 1 1
@@ -54,8 +63,11 @@ if nargin == 0
     flagPlot = 1;
 end
 
-if get(gui.handles.cb_PDFfitMap_GUI, 'Value') && str2num(get(gui.handles.value_PhNumHist_GUI, 'String'))>1
+if get(gui.handles.pm_autoColorbar_GUI, 'Value') == 3 && str2num(get(gui.handles.value_PhNumHist_GUI, 'String'))>1
     gui.config.legend = 'Phase';
+    set(gui.handles.value_colorMin_GUI, 'String', '0');
+    set(gui.handles.value_colorMax_GUI, 'String', ...
+        get(gui.handles.value_PhNumHist_GUI, 'String'));
 end
 
 if ~rawData == 8
@@ -118,13 +130,6 @@ if flagPlot
         'Color', [0,0,0], 'FontSize', FontSizeVal, ...
         'Interpreter', 'Latex');
     
-    % Set colorbar for phase map
-    if get(gui.handles.cb_PDFfitMap_GUI, 'Value')
-        set(gui.handles.value_colorMin_GUI, 'String', '0');
-        set(gui.handles.value_colorMax_GUI, 'String', ...
-            get(gui.handles.value_PhNumHist_GUI, 'String'));
-    end
-    
     % Set number of intervals to 0 for a continuous scalebar.
     [token, remain] = strtok(cMap);
     if intervalScaleBar > 0
@@ -147,7 +152,11 @@ if flagPlot
                     cmap = cMap;
                 else
                     if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
-                        cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+                        if get(gui.handles.pm_autoColorbar_GUI, 'Value') == 3 && str2num(get(gui.handles.value_PhNumHist_GUI, 'String'))>1
+                            cmap = cMap(1:intervalScaleBar,:);
+                        else
+                            cmap = [cMap, '(',num2str(intervalScaleBar),')'];
+                        end
                     else
                         cmap = cMap;
                     end
@@ -175,7 +184,7 @@ if flagPlot
         colormap(flipud(cMapNaN));
     end
     if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
-        if ~gui.config.scaleAxis
+        if gui.config.scaleAxis == 2
             if cminVal == round(min(data2plot(:)))
                 cminVal = gui.config.cminOld;
                 set(gui.handles.value_colorMin_GUI, 'String', num2str(cminVal));
@@ -198,7 +207,7 @@ if flagPlot
             else
                 caxis([cminVal, cmaxVal]);
             end
-        else
+        elseif gui.config.scaleAxis == 1
             if cminVal ~= round(min(data2plot(:)))
                 gui.config.cminValOld = ...
                     str2double(get(gui.handles.value_colorMin_GUI, 'String'));

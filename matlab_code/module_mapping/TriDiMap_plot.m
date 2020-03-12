@@ -8,14 +8,20 @@ if rawData < 8
     xData_interp = gui.data.xData_interp;
     yData_interp = gui.data.yData_interp;
     data2plot = gui.data.data2plot;
-    if get(gui.handles.cb_PDFfitMap_GUI, 'Value') && str2num(get(gui.handles.value_PhNumHist_GUI, 'String'))>1
-        if isfield(gui, 'results')
-            data2plot(data2plot < gui.results.transitionVal(1)) = 1;
-            for ii = 2:str2num(get(gui.handles.value_PhNumHist_GUI, 'String'))-1
-                data2plot(data2plot > gui.results.transitionVal(ii-1) & data2plot < gui.results.transitionVal(ii)) = ii;
-            end
-            data2plot(data2plot > gui.results.transitionVal(end)) = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
+    if get(gui.handles.pm_autoColorbar_GUI, 'Value') == 3 && str2num(get(gui.handles.value_PhNumHist_GUI, 'String'))>1
+        if gui.config.property == 1 && isfield(gui.resultsPDF, 'E')
+            resultsPDF = gui.resultsPDF.E;
+        elseif gui.config.property == 2 && isfield(gui.resultsPDF, 'H')
+            resultsPDF = gui.resultsPDF.H;
+        else
+            resultsPDF.transitionVal= 0;
+            disp('Run first deconvolution process of the probability density function');
         end
+        data2plot(data2plot < resultsPDF.transitionVal(1)) = 1;
+        for ii = 2:(resultsPDF.M)-1
+            data2plot(data2plot > resultsPDF.transitionVal(ii-1) & data2plot < resultsPDF.transitionVal(ii)) = ii;
+        end
+        data2plot(data2plot > resultsPDF.transitionVal(end)) = str2num(get(gui.handles.value_PhNumHist_GUI, 'String'));
     end
     if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         if get(gui.handles.cb_plotSectMap_GUI, 'Value')
@@ -260,10 +266,11 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         guidata(gcf, gui);
         flagPlot = 1;
     end
-    try
+    %try
         TriDiMap_plot_options(xData_interp, yData_interp, data2plot, flagPlot);
-    catch
-    end
+    %catch
+       % error('Error occurred')
+    %end
     hold on;
     
 else
