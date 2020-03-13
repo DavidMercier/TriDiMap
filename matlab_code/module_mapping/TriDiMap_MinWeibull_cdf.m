@@ -1,5 +1,5 @@
 %% Copyright 2014 MERCIER David
-function cumulativeFunction = TriDiMap_Weibull_cdf(OPTIONS, xdata_fit, ydata_fit)
+function cumulativeFunction = TriDiMap_MinWeibull_cdf(OPTIONS, xdata_fit, ydata_fit)
 %% Function giving the Weibull cumulative distribution function
 % See http://de.mathworks.com/help/stats/wblcdf.html
 % See Weibull W., “A statistical distribution function of wide applicability”, J. Appl. Mech.-Trans. ASME (1951), 18(3).
@@ -14,7 +14,7 @@ weibull_cdf_m = @(p,x) (1 - exp(-(x./p(2)).^p(1)));
 
 % Make a starting guess of coefficients p(1) and p(2)
 % p(1) = Weibull modulus --> 10 when good homogeneity in size defect distribution
-% p(2) = Mean critical value
+% p(2) = Mean value
 cumulativeFunction.p0 = [1; mean(xdata_fit)];
 
 if gui.config.licenceOpt_Flag

@@ -13,6 +13,11 @@ if config.property < 8
     delete(findall(findall(gcf,'Type','axe'),'Type','text'));
 end
 
+Gplot = get(gui.handles.cb_GaussianPlot_GUI, 'Value');
+Gfit = get(gui.handles.cb_GaussianFit_GUI, 'Value');
+Wfit = get(gui.handles.cb_WeibullFit_GUI, 'Value');
+AllCDF = get(gui.handles.cb_CdfFromPdf_GUI, 'Value');
+
 %% Plot of main experimental cdf
 if gui.config.licenceStat_Flag
     h_CDF = cdfplot(data2useVect);
@@ -22,8 +27,8 @@ end
 hold on;
 set(h_CDF, 'LineStyle', '-', 'Color', 'k' , 'LineWidth', LWval);
 
-%% Plot of Gaussian fit
-if get(gui.handles.cb_GaussianFit_GUI, 'Value')
+%% Plot of Gaussian CDF
+if get(gui.handles.cb_GaussianPlot_GUI, 'Value')
     if gui.config.licenceStat_Flag
         %Yfit_CDF = cdf('normal',data2useVect, meanVect, stddevVect);
         Yfit_CDF = normcdf(data2useVect, meanVect, stddevVect);
@@ -32,11 +37,13 @@ if get(gui.handles.cb_GaussianFit_GUI, 'Value')
     end
     h_CDF_fit = plot(sort(data2useVect), sort(Yfit_CDF));
     set(h_CDF_fit, 'LineStyle', '-.', 'Color', 'k', 'LineWidth', LWval);
+    hold on
 end
 hold on;
 
-%% Plot of Weibull fit
-if get(gui.handles.cb_WeibullFit_GUI, 'Value')
+%% Fitting process set up
+if get(gui.handles.cb_GaussianFit_GUI, 'Value') || ...
+        get(gui.handles.cb_WeibullFit_GUI, 'Value')
     xdataCDF = get(h_CDF,'XData');
     xdataCDF(1) = 0;
     xdataCDF(end) = xdataCDF(end-1);
@@ -45,28 +52,44 @@ if get(gui.handles.cb_WeibullFit_GUI, 'Value')
     %     f = evcdf(x,round(mean(data2useVect)*10)/10,20);
     %     plot(x,f,'-r', 'LineWidth', LWval)
     
-    % Fit Weibull
     OPTIONS = algoMinimization;
-    gui.cumulativeFunction = ...
-        TriDiMap_Weibull_cdf(OPTIONS, xdataCDF, ydataCDF);
-    h_Weibull = plot(xdataCDF, gui.cumulativeFunction.ydata_cdf_Fit, '--k', ...
-        'LineWidth', LWval);
-    if gui.config.property == 4
-        gui.resultsCDF.E.xdataCDF = xdataCDF;
-        gui.resultsCDF.E.ydataCDF = ydataCDF;
-    elseif gui.config.property == 5
-        gui.resultsCDF.H.xdataCDF = xdataCDF;
-        gui.resultsCDF.H.ydataCDF = ydataCDF;
-    end
-    
-    m_Weibull = gui.cumulativeFunction.coefEsts(1);
-    meanPAram = gui.cumulativeFunction.coefEsts(2);
-    str_title = ['Mean critical parameter = ', ...
-        num2str(meanPAram), ...
-        ' / Weibull modulus = ', num2str(m_Weibull)];
-    title(str_title);
-    hold on
 end
+
+%% Plot of Gaussian CDF fit
+if get(gui.handles.cb_GaussianFit_GUI, 'Value')
+    gui.resultsCDF.Gaussian = ...
+        TriDiMap_MinGaussian_cdf(OPTIONS, xdataCDF, ydataCDF);
+    h_Gfit = plot(xdataCDF, gui.resultsCDF.Gaussian.ydata_cdf_Fit, '-ok', ...
+        'LineWidth', LWval);
+    [H, pValue, KSstatistic] = kstest_2s_2d([xdataCDF', ydataCDF'], ...
+        [xdataCDF',gui.resultsCDF.Gaussian.ydata_cdf_Fit'])
+    if gui.config.property == 4
+        gui.resultsCDF.EGauss.xdataCDF = xdataCDF;
+        gui.resultsCDF.EGauss.ydataCDF = ydataCDF;
+    elseif gui.config.property == 5
+        gui.resultsCDF.HGauss.xdataCDF = xdataCDF;
+        gui.resultsCDF.HGauss.ydataCDF = ydataCDF;
+    end
+end
+hold on;
+
+%% Plot of Weibull fit
+if get(gui.handles.cb_WeibullFit_GUI, 'Value')
+    gui.resultsCDF.Weibull = ...
+        TriDiMap_MinWeibull_cdf(OPTIONS, xdataCDF, ydataCDF);
+    h_Wfit = plot(xdataCDF, gui.resultsCDF.Weibull.ydata_cdf_Fit, '--k', ...
+        'LineWidth', LWval);
+    [H, pValue, KSstatistic] = kstest_2s_2d([xdataCDF', ydataCDF'], ...
+        [xdataCDF',gui.resultsCDF.Gaussian.ydata_cdf_Fit'])
+    if gui.config.property == 4
+        gui.resultsCDF.EWeibull.xdataCDF = xdataCDF;
+        gui.resultsCDF.EWeibull.ydataCDF = ydataCDF;
+    elseif gui.config.property == 5
+        gui.resultsCDF.HWeibull.xdataCDF = xdataCDF;
+        gui.resultsCDF.HWeibull.ydataCDF = ydataCDF;
+    end
+end
+hold on
 
 %% Plot of all cdf components based on pdf fitting results
 if get(gui.handles.cb_CdfFromPdf_GUI, 'Value')
@@ -160,14 +183,27 @@ else
     end
 end
 
-%% Legend for basic fitting
-if get(gui.handles.cb_GaussianFit_GUI, 'Value') && ~get(gui.handles.cb_WeibullFit_GUI, 'Value')
-    legend([h_CDF, h_CDF_fit], 'Experimental data', 'Gaussian fit');
-elseif get(gui.handles.cb_WeibullFit_GUI, 'Value') && ~get(gui.handles.cb_GaussianFit_GUI, 'Value')
-    legend([h_CDF, h_Weibull], 'Experimental data', 'Weibull fit');
-elseif get(gui.handles.cb_GaussianFit_GUI, 'Value') && get(gui.handles.cb_WeibullFit_GUI, 'Value')
-    legend([h_CDF, h_CDF_fit, h_Weibull], 'Experimental data', 'Gaussian fit', 'Weibull fit');
-elseif get(gui.handles.cb_CdfFromPdf_GUI, 'Value') && ...
-        (~get(gui.handles.cb_WeibullFit_GUI, 'Value') && ~get(gui.handles.cb_GaussianFit_GUI, 'Value'))
+%% Title and Legend for basic fitting
+if Gplot && ~Gfit && ~Wfit
+    str_title = ['Mean Value = ', num2str(meanVect), ...
+        ' / Standard deviation = ', num2str(stddevVect)];
+elseif ~Gplot && Gfit && ~Wfit
+    str_title = ['Mean parameter = ', num2str(gui.resultsCDF.Gaussian.coefEsts(1)), ...
+        ' / Standard deviation = ', num2str(gui.resultsCDF.Gaussian.coefEsts(2))];
+elseif ~Gplot && ~Gfit && Wfit
+    str_title = ['Mean parameter = ', num2str(gui.resultsCDF.Weibull.coefEsts(2)), ...
+        ' / Weibull modulus = ', num2str(gui.resultsCDF.Weibull.coefEsts(1))];
+else
+    str_title = [];
+end
+title(str_title);
+
+if Gfit && ~Wfit
+    legend([h_CDF, h_Gfit], 'Experimental data', 'Gaussian fit');
+elseif ~Gfit && Wfit
+    legend([h_CDF, h_Wfit], 'Experimental data', 'Weibull fit');
+elseif Gfit && Wfit
+    legend([h_CDF, h_Gfit, h_Wfit], 'Experimental data', 'Gaussian fit', 'Weibull fit');
+elseif AllCDF && ~Gfit && ~Wfit
     legend([h_CDF, hp_All], 'Experimental data', 'CDF fit from PDF fit');
 end
