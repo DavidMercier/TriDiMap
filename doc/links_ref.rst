@@ -49,6 +49,7 @@ Indentation maps and statistical analysis in the literature
 * `Morales-Rivas L. et al., "Nanomechanical characterization of nanostructured bainitic steel: Peak Force Microscopy and Nanoindentation with AFM" (2015). <https://doi.org/10.1038/srep17164>`_
 * `Coy E. et al., "Topographic reconstruction and mechanical analysis of atomic layer deposited Al2O3/TiO2 nanolaminates by nanoindentation" (2016). <https://doi.org/10.1016/j.actamat.2011.12.012>`_
 * `Hu C. et al., "Statistical nanoindentation technique in application to hardened cement pastes: Influences of material microstructure and analysis method" (2016). <https://doi.org/10.1016/j.conbuildmat.2016.03.064>`_
+* `Gayle A.J. and Cook R.F., "Mapping viscoelastic and plastic properties of polymers and polymer-nanotube composites using instrumented indentation" (2016). <https://doi.org/10.1557/jmr.2016.207>`_
 * `Sebastiani M. et al., "High-resolution high-speed nanoindentation mapping of cement pastes: Unravelling the effect of microstructure on the mechanical properties of hydrated phases" (2016). <https://doi.org/10.1016/j.matdes.2016.02.087>`_
 * `Vasconcelos, L.S.D. et al., "Grid indentation analysis of mechanical properties of composite electrodes in Li-ion batteries" (2016). <https://doi.org/10.1016/j.eml.2016.03.002>`_
 * `Haušild P. et al., "Determination of the individual phase properties from the measured grid indentation data" (2016). <https://doi.org/10.1557/jmr.2016.375>`_
