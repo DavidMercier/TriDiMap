@@ -73,7 +73,9 @@ Indentation maps and statistical analysis in the literature
 * `Pöhl F., "Pop-in behavior and elastic-to-plastic transition of polycrystalline pure iron during sharp nanoindentation" (2019). <https://doi.org/10.1038/s41598-019-51644-5>`_
 * `Sudharshan Phani P. and Oliver W. C., "A critical assessment of the effect of indentation spacing on the measurement of hardness and modulus using instrumented indentation testing" (2019). <https://doi.org/10.1016/j.matdes.2018.107563>`_
 * `Gaillard Y. and Amiot F., "Grid nano-indentation as full-field measurements" (2020). <https://doi.org/10.1016/j.compositesa.2020.105807>`_
-* `Zeng F et al., "Micromechanical Characterization of Ce0.8Gd0.2O2‐δ–FeCo2O4 Dual Phase Oxygen Transport Membranes" (2020). <https://doi.org/10.1002/adem.201901558>`_
+* `Zeng F. et al., "Micromechanical Characterization of Ce0.8Gd0.2O2‐δ–FeCo2O4 Dual Phase Oxygen Transport Membranes" (2020). <https://doi.org/10.1002/adem.201901558>`_
+* `Sanchez-Camargo C.M. et al., "A robust method for mechanical characterization of heterogeneous materials by nanoindentation grid analysis" (2020). <https://doi.org/10.1016/j.matdes.2020.108908>`_
+* `Weng J. et al., "A machine learning based approach for determining the stress-strain relation of grey cast iron from nanoindentation" (2020). <https://doi.org/10.1016/j.mechmat.2020.103522>`_
 
 Colormap
 ############################################
