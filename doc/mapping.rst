@@ -52,7 +52,11 @@ In cases where the contrast between the mechanical properties of the two phases 
 (e.g.: ratio between the elastic moduli lower than 0.2 or higher than 5), the method is not really reliable anymore
 and special care should be taken in the interpretation of the indentation results.
 
-Moreover, the indentation depth should be at least 3 times the mean square deviation of surface roughness [#Michałek_2019]_.
+Moreover, the indentation depth should be at least 3 times the mean square deviation of surface roughness (:math:`R_\text{q} or R_\text{ms}`) [#Michałek_2019]_.
+
+We can summarize previous explanations in the 2 following rules to respect for the indentation depth defintion:
+    * 1st rule: :math:`h < 1/10 \overline{D}`
+    * 2nd rule: :math:`h > 3x R_\text{q}`
 
 .. figure:: ./_pictures/grid_indentation_length_scale.png
    :scale: 40 %
@@ -63,7 +67,8 @@ Moreover, the indentation depth should be at least 3 times the mean square devia
 Once the maximum indentation depth is defined following this first rule, it is required to well define the distance between each indents.
 To avoid overlap of indents, the distance :math:`d` between 2 indents has to be higher than the plastic radius :math:`R_\text{p}` below 1 indent.
 Usually, the plastic radius in metals is between 3 and 6 times the contact radius :math:`a_\text{c}`, between the indenter and the sample surface.
-And finally, the contact radius is roughly estimated to be 3.5 times the indentation depth :math:`h` in the case of Berkovich indentation and 0.7 times the indentation depth in case of cube-corner indentation.
+And finally, the contact radius is roughly estimated to be 3.5 times the indentation depth :math:`h` in the case of Berkovich indentation
+and 0.7 times the indentation depth in case of cube-corner indentation.
 
 Thus, indentation step :math:`d` can be defined by the following rule of thumb in case of Berkovich indentation:
 
@@ -79,11 +84,17 @@ And in case of cube-corner indentation:
    :scale: 40 %
    :align: center
    
-   *Cross-sectional scheme of 2 indents, with the definition of geometrical parameters*
+   *Cross-sectional scheme of 2 side-by-side indents, with the definition of geometrical parameters*
 
-More recently, it has been demonstrated that a minimum indent spacing of 10 times the indentation depth was sufficient to obtain insignificant hardness deviation for different bulk materials and coatings tested with a Berkovich indenter. And this result has been generalized for other indenter geometries (spherical and Vickers tips), ans it was found that a minimum indent spacing of 1.5 times the indent contact lateral dimension is enough to get accurate results [#SudharshanPhani_2019]_.
+More recently, it has been demonstrated that a minimum indent spacing of 10 times the indentation depth
+was sufficient to obtain insignificant hardness deviation for different bulk materials and coatings tested
+with a Berkovich indenter. And this result has been generalized for other indenter geometries (spherical and Vickers tips),
+and it was found that a minimum indent spacing of 1.5 times the indent contact lateral dimension is enough to get accurate results [#SudharshanPhani_2019]_.
 
-For example, let's have a sample of metallic matrix reinforced with ceramic particles, with a mean radius of 1 micron, and a with a surface sample RMS roughness estimated around 30nm. The best indentation depth should be around 90-100nm, which respects both rules (for the microstructure and the surface roughness). Then, the indentation step for the matrix grid can be set around 2-4 microns with a Berkovich indenter.
+For example, let's have a sample of metallic matrix reinforced with 1 micron radius ceramic particles,
+and a with a surface sample RMS roughness estimated around 30 :math:`\text{nm}`.
+The best indentation depth should be around 90-100 :math:`\text{nm}`, which respects both rules (for the microstructure and the surface roughness).
+Then, the indentation step for the matrix grid can be set around 2-4 :math:`\text{micron}` with a Berkovich indenter.
 
 Interpolation step
 -----------------------
