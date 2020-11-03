@@ -83,7 +83,7 @@ And in case of cube-corner indentation:
 
 More recently, it has been demonstrated that a minimum indent spacing of 10 times the indentation depth was sufficient to obtain insignificant hardness deviation for different bulk materials and coatings tested with a Berkovich indenter. And this result has been generalized for other indenter geometries (spherical and Vickers tips), ans it was found that a minimum indent spacing of 1.5 times the indent contact lateral dimension is enough to get accurate results [#SudharshanPhani_2019]_.
 
-For example, let's have a sample of metallic matrix reinforced with ceramic particles, with a mean radius of 1 micron, and a with a surface sample RMS roughness estimated around 30nm. The best indentation depth should be around 90-100nm, which respects both rules (for the microstructure and the surface roughness). Then, the indentation step for the matrix grid can be set around 2-4µm with a Berkovich indenter.
+For example, let's have a sample of metallic matrix reinforced with ceramic particles, with a mean radius of 1 micron, and a with a surface sample RMS roughness estimated around 30nm. The best indentation depth should be around 90-100nm, which respects both rules (for the microstructure and the surface roughness). Then, the indentation step for the matrix grid can be set around 2-4 microns with a Berkovich indenter.
 
 Interpolation step
 -----------------------
