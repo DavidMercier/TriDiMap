@@ -67,12 +67,12 @@ And finally, the contact radius is roughly estimated to be 3.5 times the indenta
 
 Thus, indentation step :math:`d` can be defined by the following rule of thumb in case of Berkovich indentation:
 
-    .. math:: d > R_\text{p} = 10.5\text{x to } 21\text{x }h
+    .. math:: d > 2*R_\text{p} = 10.5\text{x to } 21\text{x }h
             :label: berkovich_indent_dist
 			
 And in case of cube-corner indentation:
             
-    .. math:: d > R_\text{p} = 2.1\text{x to } 4.2\text{x }h
+    .. math:: d > 2*R_\text{p} = 2.1\text{x to } 4.2\text{x }h
             :label: cubecorner_indent_dist
 
 .. figure:: ./_pictures/grid_indentation_length_scale_cs.png
@@ -82,6 +82,8 @@ And in case of cube-corner indentation:
    *Cross-sectional scheme of 2 indents, with the definition of geometrical parameters*
 
 More recently, it has been demonstrated that a minimum indent spacing of 10 times the indentation depth was sufficient to obtain insignificant hardness deviation for different bulk materials and coatings tested with a Berkovich indenter. And this result has been generalized for other indenter geometries (spherical and Vickers tips), ans it was found that a minimum indent spacing of 1.5 times the indent contact lateral dimension is enough to get accurate results [#SudharshanPhani_2019]_.
+
+For example, let's have a sample of metallic matrix reinforced with ceramic particles, with a mean radius of 1 micron, and a with a surface sample RMS roughness estimated around 30nm. The best indentation depth should be around 90-100nm, which respects both rules (for the microstructure and the surface roughness). Then, the indentation step for the matrix grid can be set around 2-4µm with a Berkovich indenter.
 
 Interpolation step
 -----------------------
