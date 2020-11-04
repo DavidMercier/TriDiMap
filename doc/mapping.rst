@@ -58,14 +58,15 @@ We can summarize previous explanations in the 2 following rules to respect for t
     * 1st rule: :math:`h < 0.1 \times \overline{D}`
     * 2nd rule: :math:`h > 3 \times R_\text{q}`
 
+
 .. figure:: ./_pictures/grid_indentation_length_scale.png
    :scale: 40 %
    :align: center
    
    *Schematic of the grid indentation technique for heterogeneous materials*
 
-Once the maximum indentation depth is defined following this first rule, it is required to well define the distance between each indents.
-To avoid overlap of indents, the distance :math:`d` between 2 indents has to be higher than the plastic radius :math:`R_\text{p}` below 1 indent.
+Once the maximum indentation depth is defined following these first rules, it is required to well define the distance between each indents.
+To avoid overlap of adjacent indents, the distance :math:`d` between 2 indents has to be higher than the plastic radius :math:`R_\text{p}` below 1 indent.
 Usually, the plastic radius in metals is between 3 and 6 times the contact radius :math:`a_\text{c}`, between the indenter and the sample surface.
 And finally, the contact radius is roughly estimated to be 3.5 times the indentation depth :math:`h` in the case of Berkovich indentation
 and 0.7 times the indentation depth in case of cube-corner indentation.
@@ -103,6 +104,7 @@ The |matlab| function used to interpolate linearly the indentation maps is: `int
 
 The process of interpolation does not modify the raw data intensity values, but increase the number of pixels,
 by a given factor of x2, x4, x8 or x16 (default values, which can be modified).
+No need to have bigger interpolation factor creating heavy maps, which will increase calculation and vizualization time.
 For example, a map of 25x25 linearly interpolated by a factor of x2, becomes a map of 49x49 pixels.
 After interpolation, it is possible to create a new .xls file (with interpolated dataset), by pressing the 'XLS' button at the bottom of the GUI.
 
