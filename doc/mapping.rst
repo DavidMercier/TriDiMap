@@ -52,7 +52,7 @@ In cases where the contrast between the mechanical properties of the two phases 
 (e.g.: ratio between the elastic moduli lower than 0.2 or higher than 5), the method is not really reliable anymore
 and special care should be taken in the interpretation of the indentation results.
 
-Moreover, the indentation depth should be at least 3 times the mean square deviation of surface roughness (:math:`R_\text{q} or R_\text{ms}`) [#Michałek_2019]_.
+Moreover, the indentation depth should be at least 3 times the mean square deviation of surface roughness (:math:`R_\text{q}` or :math:`R_\text{ms}`) [#Michałek_2019]_.
 
 We can summarize previous explanations in the 2 following rules to respect for the indentation depth defintion:
     * 1st rule: :math:`h < 0.1 \times \overline{D}`
