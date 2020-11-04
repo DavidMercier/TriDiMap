@@ -55,8 +55,8 @@ and special care should be taken in the interpretation of the indentation result
 Moreover, the indentation depth should be at least 3 times the mean square deviation of surface roughness (:math:`R_\text{q} or R_\text{ms}`) [#Michałek_2019]_.
 
 We can summarize previous explanations in the 2 following rules to respect for the indentation depth defintion:
-    * 1st rule: :math:`h < 1/10 \overline{D}`
-    * 2nd rule: :math:`h > 3x R_\text{q}`
+    * 1st rule: :math:`h < 0.1 \times \overline{D}`
+    * 2nd rule: :math:`h > 3 \times R_\text{q}`
 
 .. figure:: ./_pictures/grid_indentation_length_scale.png
    :scale: 40 %
@@ -72,12 +72,12 @@ and 0.7 times the indentation depth in case of cube-corner indentation.
 
 Thus, indentation step :math:`d` can be defined by the following rule of thumb in case of Berkovich indentation:
 
-    .. math:: d > 2*R_\text{p} = 10.5\text{x to } 21\text{x }h
+    .. math:: d > 2 \times R_\text{p} = 10.5\text{x to } 21\text{x }h
             :label: berkovich_indent_dist
 			
 And in case of cube-corner indentation:
             
-    .. math:: d > 2*R_\text{p} = 2.1\text{x to } 4.2\text{x }h
+    .. math:: d > 2 \times R_\text{p} = 2.1\text{x to } 4.2\text{x }h
             :label: cubecorner_indent_dist
 
 .. figure:: ./_pictures/grid_indentation_length_scale_cs.png
@@ -91,7 +91,7 @@ was sufficient to obtain insignificant hardness deviation for different bulk mat
 with a Berkovich indenter. And this result has been generalized for other indenter geometries (spherical and Vickers tips),
 and it was found that a minimum indent spacing of 1.5 times the indent contact lateral dimension is enough to get accurate results [#SudharshanPhani_2019]_.
 
-For example, let's have a sample of metallic matrix reinforced with 1 micron radius ceramic particles,
+For example, let's have a sample of metallic matrix reinforced with 1 :math:`\text{micron}` radius ceramic particles,
 and a with a surface sample RMS roughness estimated around 30 :math:`\text{nm}`.
 The best indentation depth should be around 90-100 :math:`\text{nm}`, which respects both rules (for the microstructure and the surface roughness).
 Then, the indentation step for the matrix grid can be set around 2-4 :math:`\text{micron}` with a Berkovich indenter.
@@ -119,7 +119,8 @@ The |matlab| third party code used to smooth the indentation maps is: `smooth2a.
 
 This smooth operation of a 2D matrix is based on a mean filter over a user-defined rectangle.
 The smoothing step is a solution to apply to smooth sharp peaks or sharp valleys on the mechanical topography.
-Sharpness can arises when there is a large difference in term of intensity between 1 pixel and its surrounding neighbors (e.g. surface effects, or hard particle on a soft matrix, etc...).
+Sharpness can arises when there is a large difference in term of intensity between 1 pixel and its surrounding neighbors
+(e.g. surface effects, or hard particle on a soft matrix, etc...).
 
 .. figure:: ./_pictures/SmoothingStep.png
    :scale: 40 %
@@ -127,7 +128,8 @@ Sharpness can arises when there is a large difference in term of intensity betwe
    
    *Process of smoothing step*
    
-Smoothing process is a modification (clipping of the signal) of the raw values and an error map can be generated, by simply calculating the difference between the non smoothed map (raw map) and the smoothed map.
+Smoothing process is a modification (clipping of the signal) of the raw values and an error map can be generated,
+by simply calculating the difference between the non smoothed map (raw map) and the smoothed map.
 
 .. figure:: ./_pictures/SmoothingStepError.png
    :scale: 30 %
@@ -135,8 +137,8 @@ Smoothing process is a modification (clipping of the signal) of the raw values a
    
    *Process to obtain error map after smoothing step*  
 
-Linear interpolation and smoothing operations are sometimes applied on the raw dataset in order to lessen pixelization effect and noise from the measurement, 
-to get cleaner and more readable maps.
+Linear interpolation and smoothing operations are sometimes applied on the raw dataset
+in order to lessen pixelization effect and noise from the measurement, to get cleaner and more readable maps.
 
 The |matlab| function used to interpolate and to smooth the indentation maps using TriDiMap is:
 `TriDiMap_interpolation_smoothing.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/module_mapping/TriDiMap_interpolation_smoothing.m>`_
@@ -171,7 +173,7 @@ Then, transparency effect has to be applied (60%-70% for example) in order to se
    :scale: 60 %
    :align: center
    
-   *Overlay  of  hardness  (on  the  left)  and  modulus  of  elasticity  (on  the  right)  maps  with  the  optical  microscopic  observation  of indentation  grid (with  70%  transparency)*
+   *Overlay of hardness (on the left) and modulus of elasticity (on the right) maps with the optical microscopic observation of indentation grid (with 70% transparency)*
    
 References
 -------------
