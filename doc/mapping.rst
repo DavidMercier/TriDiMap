@@ -21,7 +21,7 @@ An example of 2D generated hardness map is given below. By default, a pixelized 
 Each pixel represents an indentation test and the color of a pixel corresponds to the the intensity of the calculated mechanical property.
 In the given following screenshot, the white pixels corresponds to tests, which failed (NaN = Not a numeric).
 Indentation failure corresponds to traditional artifacts of indentation testing (error on surface detection
-because of contamination/roughness/topography effects, error with the thermal drift correction, etc...) 
+because of contamination/roughness/topography effects, error with the thermal drift correction, etc...).
 A ratio of failed tests over total number of indentation tests is given on the left part of the GUI,
 to estimate the experimental validity of the indentation tests.
 For example, more than 20% of failed tests start to be problematic for the results analysis...
@@ -54,7 +54,7 @@ and special care should be taken in the interpretation of the indentation result
 
 Moreover, the indentation depth should be at least 3 times the mean square deviation of surface roughness (:math:`R_\text{q}` or :math:`R_\text{ms}`) [#Michałek_2019]_.
 
-We can summarize previous explanations in the 2 following rules to respect for the indentation depth defintion:
+We can summarize previous explanations in the 2 following rules to respect for the indentation depth definition:
     * 1st rule: :math:`h < 0.1 \times \overline{D}`
     * 2nd rule: :math:`h > 3 \times R_\text{q}`
 
