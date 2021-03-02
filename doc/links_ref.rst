@@ -78,6 +78,7 @@ Indentation maps and statistical analysis in the literature
 * `Weng J. et al., "A machine learning based approach for determining the stress-strain relation of grey cast iron from nanoindentation" (2020). <https://doi.org/10.1016/j.mechmat.2020.103522>`_
 * `Besharatloo H. et al., "Novel Mechanical Characterization of Austenite and Ferrite Phases within Duplex Stainless Steel" (2020). <https://doi.org/10.3390/met10101352>`_
 * `Al-Rubaye A.D.G. et al., "A method to measure and visualize strain distribution via nanoindentation measurements" (2020). <https://doi.org/10.1016/j.matpr.2020.09.747>`_
+* `Orozco-Caballero A. et al., "High-throughput nanoindentation mapping of cast IN718 nickel-based superalloys: influence of the Nb concentration" (2021). <https://arxiv.org/abs/2102.12785>`_
 
 Colormap
 ############################################
