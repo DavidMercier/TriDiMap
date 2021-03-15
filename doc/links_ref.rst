@@ -27,6 +27,7 @@ Indentation maps and statistical analysis in the literature
 #############################################################
 * `Engqvist H. and Wiklund U., "Mapping of mechanical properties of WC–Co using nanoindentation" (2000). <https://doi.org/10.1023/A:1019143419984>`_
 * `Pelletier H. et al., "Using depth-sensing techniques to characterize multiphases steels" (2000). <https://doi.org/10.1051/mattech/200088030041>`_
+* `Cuy J.L. et al., "Nanoindentation mapping of the mechanical properties of human molar tooth enamel" (2002). <https://doi.org/10.1016/s0003-9969(02)00006-7>`_
 * `Hu C. et al., "Nanoindentation as a tool to measure and map mechanical properties of hardened cement pastes" (2005). <https://doi.org/10.1557/mrc.2015.3>`_
 * `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation" (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
 * `Zhu W. et al., "Nanoindentation mapping of mechanical properties of cement paste and natural rocks" (2007). <https://doi.org/10.1016/j.matchar.2007.05.018>`_
