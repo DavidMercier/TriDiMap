@@ -29,6 +29,7 @@ Indentation maps and statistical analysis in the literature
 * `Pelletier H. et al., "Using depth-sensing techniques to characterize multiphases steels" (2000). <https://doi.org/10.1051/mattech/200088030041>`_
 * `Hu C. et al., "Nanoindentation as a tool to measure and map mechanical properties of hardened cement pastes" (2005). <https://doi.org/10.1557/mrc.2015.3>`_
 * `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation" (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
+* `Zhu W. et al., "Nanoindentation mapping of mechanical properties of cement paste and natural rocks" (2007). <https://doi.org/10.1016/j.matchar.2007.05.018>`_
 * `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
 * `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces" (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
 * `Chen J.J. et al., "A Coupled Nanoindentation/SEM‐EDS Study on Low Water/Cement Ratio Portland Cement Paste: Evidence for C–S–H/Ca(OH)2 Nanocomposites" (2010). <https://doi.org/10.1111/j.1551-2916.2009.03599.x>`_
