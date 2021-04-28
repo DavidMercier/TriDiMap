@@ -81,6 +81,7 @@ Indentation maps and statistical analysis in the literature
 * `Besharatloo H. et al., "Novel Mechanical Characterization of Austenite and Ferrite Phases within Duplex Stainless Steel" (2020). <https://doi.org/10.3390/met10101352>`_
 * `Al-Rubaye A.D.G. et al., "A method to measure and visualize strain distribution via nanoindentation measurements" (2020). <https://doi.org/10.1016/j.matpr.2020.09.747>`_
 * `Orozco-Caballero A. et al., "High-throughput nanoindentation mapping of cast IN718 nickel-based superalloys: influence of the Nb concentration" (2021). <https://arxiv.org/abs/2102.12785>`_
+* `Besharatloo H. and Wheeler J.M., "Influence of indentation size and spacing on statistical phase analysis via high‑speed nanoindentation mapping of metal alloys" (2021). <https://doi.org/10.1557/s43578-021-00214-5>`_
 
 Colormap
 ############################################
