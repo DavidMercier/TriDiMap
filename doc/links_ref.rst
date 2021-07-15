@@ -79,10 +79,12 @@ Indentation maps and statistical analysis in the literature
 * `Sanchez-Camargo C.M. et al., "A robust method for mechanical characterization of heterogeneous materials by nanoindentation grid analysis" (2020). <https://doi.org/10.1016/j.matdes.2020.108908>`_
 * `Weng J. et al., "A machine learning based approach for determining the stress-strain relation of grey cast iron from nanoindentation" (2020). <https://doi.org/10.1016/j.mechmat.2020.103522>`_
 * `Besharatloo H. et al., "Novel Mechanical Characterization of Austenite and Ferrite Phases within Duplex Stainless Steel" (2020). <https://doi.org/10.3390/met10101352>`_
+* `Kis V.K. et al., "Magnesium incorporation into primary dental enamel and its effect on mechanical properties" (2020). <https://doi.org/10.1016/j.actbio.2020.08.035>`_
 * `Al-Rubaye A.D.G. et al., "A method to measure and visualize strain distribution via nanoindentation measurements" (2020). <https://doi.org/10.1016/j.matpr.2020.09.747>`_
 * `Orozco-Caballero A. et al., "High-throughput nanoindentation mapping of cast IN718 nickel-based superalloys: influence of the Nb concentration" (2021). <https://arxiv.org/abs/2102.12785>`_
 * `Besharatloo H. and Wheeler J.M., "Influence of indentation size and spacing on statistical phase analysis via high‑speed nanoindentation mapping of metal alloys" (2021). <https://doi.org/10.1557/s43578-021-00214-5>`_
 * `Nozahic F. et al., "Quantitative mapping of nanoscale mechanical properties of Zn-Al and Zn-Al-Mg coatings on steel sheet by nanoindentation. (GALVATECH 2021)" (2021). <https://www.researchgate.net/publication/352658596_Quantitative_mapping_of_nanoscale_mechanical_properties_of_Zn-Al_and_Zn-Al-Mg_coatings_on_steel_sheet_by_nanoindentation_GALVATECH_2021>`_
+
 
 Colormap
 ############################################
