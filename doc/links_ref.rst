@@ -84,7 +84,7 @@ Indentation maps and statistical analysis in the literature
 * `Orozco-Caballero A. et al., "High-throughput nanoindentation mapping of cast IN718 nickel-based superalloys: influence of the Nb concentration" (2021). <https://arxiv.org/abs/2102.12785>`_
 * `Besharatloo H. and Wheeler J.M., "Influence of indentation size and spacing on statistical phase analysis via high‑speed nanoindentation mapping of metal alloys" (2021). <https://doi.org/10.1557/s43578-021-00214-5>`_
 * `Nozahic F. et al., "Quantitative mapping of nanoscale mechanical properties of Zn-Al and Zn-Al-Mg coatings on steel sheet by nanoindentation. (GALVATECH 2021)" (2021). <https://www.researchgate.net/publication/352658596_Quantitative_mapping_of_nanoscale_mechanical_properties_of_Zn-Al_and_Zn-Al-Mg_coatings_on_steel_sheet_by_nanoindentation_GALVATECH_2021>`_
-
+* `Königsberger M. et al., "Nanoindentation-probed Oliver-Pharr half-spaces in alkali-activated slag-fly ash pastes: Multimethod identification of microelasticity and hardness" (2021). <https://doi.org/10.1080/15376494.2021.1941450>`_
 
 Colormap
 ############################################
