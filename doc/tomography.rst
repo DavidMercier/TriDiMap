@@ -7,10 +7,9 @@
 -------------
 
 Instrumented indentation technique provides usually contact stiffness, indenter displacement, and applied load as a function of position (horizontal and vertical), 
-within a volume of tested material by using the dynamic mode (i.e. continuous stiffness measurement or CSM). From such experiments, it is possible to obtain precise and accurate mechanical property 
-gradients [#Tromas_2012]_ or tomograms [#Coy_2016]_ (i.e., volumetric information). At each indentation depth, corresponds a mechanical property map (i.e. a slice).
-By stacking each map or slice on each other, it is possible to generate a 3D representation of the indentation experiment.
-In the literature, such maps are sometimes described as 4D map [#Coy_2016]_, with the first and the second dimensions as the indentation position,
+within a volume of tested material by using the dynamic mode (i.e. continuous stiffness measurement or CSM). From such experiments, it is possible to obtain precise and accurate mechanical property gradients [#Tromas_2012]_ or tomograms [#Coy_2016]_ (i.e., volumetric information). At each indentation depth, corresponds a mechanical property map (i.e. a slice).
+
+By stacking each map or slice on each other, it is possible to generate a 3D representation of the indentation experiment.  Here an example in the literature of 3D map [#Wu_2021]_. In the literature, such maps are sometimes described as 4D map [#Coy_2016]_, with the first and the second dimensions as the indentation position,
 the 3rd dimension as the indentation depth and the 4th dimension as the mechanical property value.
 
 Some options are available for the graphical rendering of the tomographic visualization.
@@ -60,3 +59,5 @@ References
 -------------
 .. [#Tromas_2012] `Tromas C. et al., "Hardness and elastic modulus gradients in plasma-nitrided 316L polycrystalline stainless steel investigated by nanoindentation tomography" (2012). <https://doi.org/10.1016/j.actamat.2011.12.012>`_
 .. [#Coy_2016] `Coy E. et al., "Topographic reconstruction and mechanical analysis of atomic layer deposited Al2O3/TiO2 nanolaminates by nanoindentation" (2016). <https://doi.org/10.1016/j.matdes.2016.09.030>`_
+.. [#Wu_2021] `Wu Y. et al., "Understanding the effect of extractives on the mechanical properties of the waterborne coating on wood surface by nanoindentation 3D mapping" (2021). <https://doi.org/10.1007/s10853-020-05347-2>`_
+
