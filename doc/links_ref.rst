@@ -86,6 +86,7 @@ Indentation maps and statistical analysis in the literature
 * `Nozahic F. et al., "Quantitative mapping of nanoscale mechanical properties of Zn-Al and Zn-Al-Mg coatings on steel sheet by nanoindentation. (GALVATECH 2021)" (2021). <https://www.researchgate.net/publication/352658596_Quantitative_mapping_of_nanoscale_mechanical_properties_of_Zn-Al_and_Zn-Al-Mg_coatings_on_steel_sheet_by_nanoindentation_GALVATECH_2021>`_
 * `Königsberger M. et al., "Nanoindentation-probed Oliver-Pharr half-spaces in alkali-activated slag-fly ash pastes: Multimethod identification of microelasticity and hardness" (2021). <https://doi.org/10.1080/15376494.2021.1941450>`_
 * `Wu Y. et al., "Understanding the effect of extractives on the mechanical properties of the waterborne coating on wood surface by nanoindentation 3D mapping" (2021). <https://doi.org/10.1007/s10853-020-05347-2>`_
+* `Liu M. et al., "Characterization of microstructural damage evolution of freeze-thawed shotcrete by an integrative micro-CT and nanoindentation statistical approach" (2021). <https://doi.org/10.1016/j.cemconcomp.2020.103909>`_
 
 Colormap
 ############################################
