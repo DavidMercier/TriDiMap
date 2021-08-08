@@ -5,6 +5,7 @@ if gui.config.plotClusters == 1
     color2 = 'k+'; colorT2 = 'Black';
     color3 = 'k+'; colorT3 = 'Black';
     color4 = 'k+'; colorT4 = 'Black';
+    set(gui.handles.cb_sectMVPlot_GUI, 'Value',0);
 elseif gui.config.plotClusters == 2
     color1 = 'k+'; colorT1 = 'Black';
     color2 = 'r*'; colorT2 = 'Red';

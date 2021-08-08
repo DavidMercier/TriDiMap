@@ -132,7 +132,11 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         flagPlot = 1;
     elseif rawData == 3 && flagSize
-        hFig = surfc(xData_interp, yData_interp, data2plot');
+        try hFig = surfc(gui.data.xData, gui.data.yData, data2plot');
+        catch err
+            errordlg('Wrong inputs');
+        end
+        
         if gui.config.shadingData == 1
             shading flat;
         elseif gui.config.shadingData == 2
