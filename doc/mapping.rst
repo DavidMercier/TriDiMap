@@ -97,6 +97,21 @@ and a with a surface sample RMS roughness estimated around 30 :math:`\text{nm}`.
 The best indentation depth should be around 90-100 :math:`\text{nm}`, which respects both rules (for the microstructure and the surface roughness).
 Then, the indentation step for the matrix grid can be set around 2-4 :math:`\text{micron}` with a Berkovich indenter.
 
+Experimental artefacts
+-----------------------
+
+During indentation mapping, many different experimental artefacts can occur:
+- indenter wear / indenter blunting (especially with hard samples, e.g. Tungsten, Sapphire...) [#Nohava_2021]_
+- shift measurement (wrong calibration, temperature or vibration effects...)
+
+As it is not really easy to take into account and correct such artefacts in the post mortem mapping analysis, it is recommended to redo new indentation experiments with another set of parameters or by controlling external variables (temperature, vibration...).
+
+.. figure:: ./_pictures/ExperimentalShiftModulus.png
+   :scale: 40 %
+   :align: center
+   
+   *Problem of elastic modulus shift during indentation mapping on an homogeneous sample (maybe due to sample inclination)*
+
 Interpolation step
 -----------------------
 
@@ -184,4 +199,5 @@ References
 .. [#Němeček_2009] `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
 .. [#Randall_2009] `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces" (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
 .. [#Buckle_1973] Bückle H., in: J.W. Westbrook, H. Conrad (Eds.), The Science of Hardness Testing and Its Applications, American Society for Metals, Metal Park OH, 1973, pp. 453–459.
-.. [#SudharshanPhani_2019] `Sudharshan Phani P. and Oliver W. C., "A critical assessment of the effect of indentation spacing on the measurement of hardness and modulus using instrumented indentation testing" (2019). <https://doi.org/10.1016/j.matdes.2018.107563>`_
+.. [#SudharshanPhani_2019] `Sudharshan Phani P. and Oliver W.C., "A critical assessment of the effect of indentation spacing on the measurement of hardness and modulus using instrumented indentation testing" (2019). <https://doi.org/10.1016/j.matdes.2018.107563>`_
+.. [#Nohava_2021]_ `Nohava, J. et al., "Indenter wear study and proposal of a simple method for evaluation of indenter blunting" (2021). <https://doi.org/10.1557/s43578-021-00401-4>`_
