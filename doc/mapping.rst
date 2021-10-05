@@ -101,8 +101,8 @@ Experimental artefacts
 -----------------------
 
 During indentation mapping, many different experimental artefacts can occur:
-- indenter wear / indenter blunting (especially with hard samples, e.g. Tungsten, Sapphire...) [#Nohava_2021]_
-- shift measurement (wrong calibration, temperature or vibration effects...)
+    * indenter wear / indenter blunting (especially with hard samples, e.g. Tungsten, Sapphire...) [#Nohava_2021]_
+    * shift measurement (wrong calibration, temperature or vibration effects...)
 
 As it is not really easy to take into account and correct such artefacts in the post mortem mapping analysis, it is recommended to redo new indentation experiments with another set of parameters or by controlling external variables (temperature, vibration...).
 
@@ -200,4 +200,4 @@ References
 .. [#Randall_2009] `Randall N.X. et al., "Nanoindentation analysis as a two-dimensional tool for mapping the mechanical properties of complex surfaces" (2009). <https://doi.org/10.1557/jmr.2009.0149>`_
 .. [#Buckle_1973] Bückle H., in: J.W. Westbrook, H. Conrad (Eds.), The Science of Hardness Testing and Its Applications, American Society for Metals, Metal Park OH, 1973, pp. 453–459.
 .. [#SudharshanPhani_2019] `Sudharshan Phani P. and Oliver W.C., "A critical assessment of the effect of indentation spacing on the measurement of hardness and modulus using instrumented indentation testing" (2019). <https://doi.org/10.1016/j.matdes.2018.107563>`_
-.. [#Nohava_2021]_ `Nohava, J. et al., "Indenter wear study and proposal of a simple method for evaluation of indenter blunting" (2021). <https://doi.org/10.1557/s43578-021-00401-4>`_
+.. [#Nohava_2021] `Nohava, J. et al., "Indenter wear study and proposal of a simple method for evaluation of indenter blunting" (2021). <https://doi.org/10.1557/s43578-021-00401-4>`_
