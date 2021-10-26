@@ -89,6 +89,7 @@ Indentation maps and statistical analysis in the literature
 * `Liu M. et al., "Characterization of microstructural damage evolution of freeze-thawed shotcrete by an integrative micro-CT and nanoindentation statistical approach" (2021). <https://doi.org/10.1016/j.cemconcomp.2020.103909>`_
 * `Ying J. et al., "On Phase Identification of Hardened Cement Pastes by Combined Nanoindentation and Mercury Intrusion Method" (2021). <https://doi.org/10.3390/ma14123349>`_
 * `Vranjes-Wessely S. et al., "High-speed nanoindentation mapping of organic matter-rich rocks: A critical evaluation by correlative imaging and machine learning data analysis" (2021). <https://doi.org/10.1016/j.coal.2021.103847>`_
+* `Sheng M. et al., "Influence of formation in-situ stress on mechanical heterogeneity of shale through grid nanoindentation" (2021). <https://doi.org/10.1016/j.petsci.2021.10.006>`_
 
 Colormap
 ############################################
