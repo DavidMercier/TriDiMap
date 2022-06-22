@@ -39,6 +39,14 @@ New results file
 ####################################################
 
 In case of other or new experimental results file, the most important is to know the pattern of the indentation grid.
+Given below a list of potential indentation patterns: 
+
+.. figure:: ./_pictures/All_indentationGrid.png
+   :scale: 50 %
+   :align: center
+   
+   *Examples of existing indentation grid patterns*	
+
 For example, the following figure shows the pattern of a typical indentation grid obtained using the software (e.g. Testworks...) of MTS/Agilent.
 
 The |matlab| function to modify to load specific indentation results file is:
