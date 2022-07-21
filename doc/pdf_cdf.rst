@@ -4,7 +4,7 @@
 .. include:: includes.rst
 
 For statistical nanoindentation (SNI) results [#Tuinukuafe_2022]_ or for statistical analysis of the mechanical property values distribution, it is possible
-to use histograms or to use a cumulative distribution. According to Tuinukuafe et al., SNI may be ineffective for measuring the mechanical properties of individual phases in a microstructure if they are not prolific enough to exhibit a continuous indent response [#Tuinukuafe_2022]_.
+to use histograms or to use a cumulative distribution. According to Tuinukuafe et al., SNI may be ineffective for measuring the mechanical properties of individual phases in a microstructure if they are not prolific enough to exhibit a continuous indent response [#Tuinukuafe_2022]_. This conclusion can be directed linked to the question of the indentation length scales (see https://tridimap.readthedocs.io/en/latest/mapping.html#indentation-length-scales).
 
 Probability density function (PDF)
 ############################################
