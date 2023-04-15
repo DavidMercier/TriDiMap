@@ -99,6 +99,10 @@ Colormap
 * `Moreland K., "Diverging Color Maps for Scientific Visualization". <https://www.kennethmoreland.com/color-maps/>`_
 * `MyCarta, "A good divergent color palette for Matlab". <https://mycarta.wordpress.com/2012/03/15/a-good-divergent-color-palette-for-matlab/>`_
 
+Other initiatives
+############################################
+* `Nanomecommons - Harmonisation of EU-wide nanomechanics protocols and relevant data exchange procedures, across representative cases; standardisation, interoperability, data workflow <https://cordis.europa.eu/project/id/952869>`_
+
 Useful softwares / toolboxes for mapping
 ############################################
 * `Němeček J., "Probability density function 1.0" (2010). <http://ksm.fsv.cvut.cz/~nemecek/links/exp2pdf10/exp2pdf10.htm>`_
