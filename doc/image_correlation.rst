@@ -3,7 +3,7 @@
 
 .. include:: includes.rst
 
-Coupling statistical indentation and microscopy observation can be a good solution to evaluate micromechanical properties of materials [#Hilloulin_2018]_.
+Coupling statistical indentation and microscopy observation can be a good solution to evaluate micromechanical properties of materials [#Hilloulin_2018]_, [#Kalali_2023]_.
 
 Loading and analyzing/comparing binary maps
 ############################################
@@ -107,6 +107,7 @@ References
 ############################################
 
 .. [#Hilloulin_2018] `Hillouin B. et al., "Coupling statistical indentation and microscopy to evaluate micromechanical properties of materials: Application to viscoelastic behavior of irradiated mortars" (2018). <https://dx.doi.org/10.1016/j.cemconcomp.2018.09.008>`_
+.. [#Kalali_2023] `Kalali D.G. et al., "High speed nanoindentation aided correlative study between local mechanical properties and chemical segregation in equiatomic MoNb and MoNbTi alloys" (2023). <https://link.springer.com/article/10.1557/s43578-023-01007-8>`_
 .. [#ImageJ_software] `ImageJ <https://imagej.nih.gov/ij/>`_
 .. [#Mercier_2017] `Mercier D. et al., "Mechanical characterization by nanoindentation of an electroplated nickel matrix composite coating" (2017). <https://dx.doi.org/10.1051/mattech/2017014>`_
 .. [#Mercier1_2018] `Mercier D. et al., "Microstructural and mechanical characterization of electroplated nickel matrix composite coatings" (2018). <https://doi.org/10.1080/02670844.2018.1433270>`_
