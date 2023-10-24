@@ -87,10 +87,12 @@ And in case of cube-corner indentation:
    
    *Cross-sectional scheme of 2 side-by-side indents, with the definition of geometrical parameters*
 
-More recently, it has been demonstrated that a minimum indent spacing of 10 times the indentation depth
-was sufficient to obtain insignificant hardness deviation for different bulk materials and coatings tested
+More recently, it has been demonstrated numerically that a minimum indent spacing of 10 times the indentation depth
+was sufficient to obtain insignificant hardness deviation (less than 5% error) for different bulk materials and coatings tested
 with a Berkovich indenter. And this result has been generalized for other indenter geometries (spherical and Vickers tips),
 and it was found that a minimum indent spacing of 1.5 times the indent contact lateral dimension is enough to get accurate results [#SudharshanPhani_2019]_.
+This paper highlights as well the effect of indenter inclination and the minimum space to define between 2 indents. And of course, higher is the indenter angle,
+higher has to be the distance between 2 neighobooring indents.
 
 For example, let's have a sample of metallic matrix reinforced with 1 :math:`\text{micron}` radius ceramic particles,
 and a with a surface sample RMS roughness estimated around 30 :math:`\text{nm}`.
