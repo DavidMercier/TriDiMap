@@ -31,7 +31,6 @@ import shlex
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.doctest',
 ]
@@ -114,8 +113,8 @@ numfig_format = {'figure': 'Figure %s', 'table': 'Table %s', 'code-block': 'Code
 #html_theme = 'alabaster'
 #html_theme = 'agogo'
 #html_theme =  'traditional'
-#html_theme =  'pyramid'
-html_theme =  'sphinxdoc'
+html_theme =  'pyramid'
+#html_theme =  'sphinxdoc'
 #html_theme = 'nature' # no option !
 #html_theme_options{}
 #html_theme = 'bootstrap'
