@@ -108,12 +108,12 @@ numfig_format = {'figure': 'Figure %s', 'table': 'Table %s', 'code-block': 'Code
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 # See http://sphinx-doc.org/theming.html
-#html_theme = 'default'
+html_theme = 'default'
 #html_theme = 'classic'
 #html_theme = 'alabaster'
 #html_theme = 'agogo'
 #html_theme =  'traditional'
-html_theme =  'pyramid'
+#html_theme =  'pyramid'
 #html_theme =  'sphinxdoc'
 #html_theme = 'nature' # no option !
 #html_theme_options{}
