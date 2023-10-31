@@ -133,11 +133,11 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 #        app.add_stylesheet('theme_overrides.css')                                
 #else:                                                                            
     # Override default css to get a larger width for ReadTheDoc build            
-html_context = {                                                             
-	'css_files': [                                                              
-		'_static/theme_overrides.css',                                       
-	],                                                                       
-}
+# html_context = {                                                             
+	# 'css_files': [                                                              
+		# '_static/theme_overrides.css',                                       
+	# ],                                                                       
+# }
 		# 'https://media.readthedocs.org/css/sphinx_rtd_theme.css',            
 		# 'https://media.readthedocs.org/css/readthedocs-doc-embed.css',
 
