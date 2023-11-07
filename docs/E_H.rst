@@ -46,12 +46,13 @@ For example, K-Means and Gaussian Mixtures (GMs) are both popular cluster analys
 K-Means
 +++++++++++++++++++++++++++
 
-The K-Means are often used for nanoindentation data clustering [#Koumoulos_2019], [#Konstantopoulos_2020], [Alhamdani_2022]_ and [#Jentner_2023]_.
+The K-Means are often used for nanoindentation data clustering [#Koumoulos_2019]_, [#Konstantopoulos_2020]_, [Alhamdani_2022]_ and [#Jentner_2023]_.
 Like explains in [#Koumoulos_2019], "the K-Means algorithm aims to partition n observations into k clusters in which each observation belongs to the cluster
 with the nearest mean, serving as a prototype of the cluster. The number of clusters is known and each point can belong only in one cluster.
 At first, random k cluster center points are generated and each data point is assigned to the cluster with the nearest center point (smallest Euclidean distance).
 Then, the mean of each cluster is calculated and the k cluster centers are replaced by the corresponding cluster mean.
 Again, each point is assigned to the nearest cluster, measured in Euclidean distance."
+This method is as well described  in the |matlab| documentation [#Matlab_KM]_.
 
 A possible |matlab| third party code, which could be used to define clusters with K-Means model is: https://www.mathworks.com/matlabcentral/fileexchange/24616-kmeans-clustering?s_tid=mwa_osa_a
 
@@ -122,6 +123,7 @@ References
 .. [#Koumoulos_2019] `Koumoulous E.P. et al., "Constituents Phase Reconstruction through Applied Machine Learning in Nanoindentation Mapping Data of Mortar Surface" (2019). <https://doi.org/10.3390/jcs3030063>`_
 .. [#Labonte_2017] `Labonte D. et al., "On the relationship between indenation hardness and modulus, and the damage resistance of biological materials" (2017). <https://doi.org/10.1016/j.actbio.2017.05.034>`_
 .. [#Matlab_GMM] `Mathworks - Gaussian Mixture Models <https://fr.mathworks.com/help/stats/gaussian-mixture-models-1.html>`_
+.. [#Matlab_KM] `Mathworks - K-Means Models <https://www.mathworks.com/help/stats/kmeans.html>`_
 .. [#Matlab_cluster] `Mathworks - Cluster <https://fr.mathworks.com/help/stats/gmdistribution.cluster.html>`_
 .. [#Matlab_clustering] `Mathworks - Cluster Using Gaussian Mixture Models <https://fr.mathworks.com/help/stats/clustering-using-gaussian-mixture-models.html>`_
 .. [#Oyen_2006] `Oyen M.L., "Nanoindentation hardness of mineralized tissues" (2006). <https://doi.org/10.1016/j.jbiomech.2005.09.011>`_
