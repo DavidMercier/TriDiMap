@@ -46,7 +46,7 @@ For example, K-Means and Gaussian Mixtures (GMs) are both popular cluster analys
 K-Means
 +++++++++++++++++++++++++++
 
-The K-Means are often used for nanoindentation data clustering [#Koumoulos_2019]_, [#Konstantopoulos_2020]_, [Alhamdani_2022]_ and [#Jentner_2023]_.
+The K-Means are often used for nanoindentation data clustering [#Koumoulos_2019]_, [#Konstantopoulos_2020]_, [#Alhamdani_2022]_ and [#Jentner_2023]_.
 Like explains in [#Koumoulos_2019], "the K-Means algorithm aims to partition n observations into k clusters in which each observation belongs to the cluster
 with the nearest mean, serving as a prototype of the cluster. The number of clusters is known and each point can belong only in one cluster.
 At first, random k cluster center points are generated and each data point is assigned to the cluster with the nearest center point (smallest Euclidean distance).
@@ -109,7 +109,7 @@ in order to compare experimental data with data from the literature.
 References
 ############################################
 
-.. [Alhamdani_2022] Alhamdani S.G. et al., "Cluster-Based Colormap of Nanoindentation Using Machine Learning" (2022), IEOM Society International.
+.. [#Alhamdani_2022] Alhamdani S.G. et al., "Cluster-Based Colormap of Nanoindentation Using Machine Learning" (2022), IEOM Society International.
 .. [#Ashby_2005] Ashby M.F., "Materials Selection in Mechanical Design" (2005), ISBN 978-0-7506-6168-3.
 .. [#Bao_2004] `Bao Y.W. et al., "Investigation of the relationship between elastic modulus and hardness based on depth-sensing indentation measurements" (2004). <https://doi.org/110.1016/j.actamat.2004.08.002>`_
 .. [#Besharatloo_2021] `Besharatloo H. and Wheeler J.M., "Influence of indentation size and spacing on statistical phase analysis via high‑speed nanoindentation mapping of metal alloys" (2021). <https://doi.org/10.1557/s43578-021-00214-5>`_
