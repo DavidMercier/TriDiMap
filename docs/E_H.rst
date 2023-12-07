@@ -37,17 +37,17 @@ and a 4 color-coded map corresponding to this plot can be generated (see 2nd fig
    
    *Sectorized elastic modulus vs hardness plot with mean values and corresponding mechanical map*
 
-Automated cluster analysis (Gaussian Mixture Models, K-means,...)
+Automated cluster analysis (K-means, Gaussian Mixture, ...)
 ############################################
 
 Cluster analysis (or clustering) is an unsupervised machine learning task.
 For example, K-Means and Gaussian Mixtures (GMs) are both popular cluster analysis model for nanoindentation datasets.
 
-K-Means
+K-Means models
 +++++++++++++++++++++++++++
 
 The K-Means are often used for nanoindentation data clustering [#Koumoulos_2019]_, [#Konstantopoulos_2020]_, [#Alhamdani_2022]_ and [#Jentner_2023]_.
-Like explains in [#Koumoulos_2019], "the K-Means algorithm aims to partition n observations into k clusters in which each observation belongs to the cluster
+Like explains in [#Koumoulos_2019]_, "the K-Means algorithm aims to partition n observations into k clusters in which each observation belongs to the cluster
 with the nearest mean, serving as a prototype of the cluster. The number of clusters is known and each point can belong only in one cluster.
 At first, random k cluster center points are generated and each data point is assigned to the cluster with the nearest center point (smallest Euclidean distance).
 Then, the mean of each cluster is calculated and the k cluster centers are replaced by the corresponding cluster mean.
@@ -56,7 +56,7 @@ This method is as well described  in the |matlab| documentation [#Matlab_KM]_.
 
 A possible |matlab| third party code, which could be used to define clusters with K-Means model is: https://www.mathworks.com/matlabcentral/fileexchange/24616-kmeans-clustering?s_tid=mwa_osa_a
 
-Gaussian mixture Models
+Gaussian mixture models
 +++++++++++++++++++++++++++
 
 The GMs model are as well used for nanoindentation data clustering [#Wilson_2018]_ and [#Chen_2021]_.
@@ -81,7 +81,7 @@ Determination of the number of clusters
 
 The optimal number of clusters (k) can be determined using the elbow method.
 This method looks at the total within-cluster sum of square (WSS) as a function of the number of clusters.
-One should choose a number of clusters so that adding another cluster doesn’t improve much better the total WSS.
+One should choose a number of clusters so that adding another cluster doesn't improve much better the total WSS.
 
 This method can be defined as follow in 4 steps:
 1) Compute clustering algorithm (e.g., K-Means or GMs algorithms) for different values of k.
@@ -92,11 +92,15 @@ This method can be defined as follow in 4 steps:
 Note that, the elbow method is sometimes ambiguous.
 Alternatives are for example the average silhouette method or the gap statistic method...
 
-Ashby map
+Next steps: Ashby map or self-organized maps
 ############################################
 
-Such plot could be seen as a conventional Ashby map [#Ashby_2005]_, with materials families.
-An example of a typical Ashby map is given afterwards, using the CES Selector 2018 software [#CES_Selector]_.
+
+The next step after the different analytical, sectorization, clustering...  approaches, could be to use nanoindentation outputs 
+(phase mechanical properties in the case of a composite, an alloy...) for material selection, material design, material discovery....
+
+A common strategy for material selection is the usage of conventional Ashby map [#Ashby_2005]_.
+An example of a typical Ashby map is given afterwards with materials families (envelops around different materials), using the CES Selector 2018 software [#CES_Selector]_.
 At some point, it is possible to add material reference (bulk, homogeneous, monophasic, ...) values on the E-H map,
 in order to compare experimental data with data from the literature.
 
@@ -105,6 +109,9 @@ in order to compare experimental data with data from the literature.
    :align: center
    
    *Typical Ashby map of elastic modulus vs Vickers hardness, obtained using CES Selector software*
+   
+Regarding material design or material discovery, an option is the usage of self-organized maps (SOMs) 
+[#Qian_2019]_ in the framework of material informatics. Here an example for Atomic Force Microscopy (AFM) technique [#Weber_2023]_.
 	
 References
 ############################################
@@ -127,4 +134,6 @@ References
 .. [#Matlab_cluster] `Mathworks - Cluster <https://fr.mathworks.com/help/stats/gmdistribution.cluster.html>`_
 .. [#Matlab_clustering] `Mathworks - Cluster Using Gaussian Mixture Models <https://fr.mathworks.com/help/stats/clustering-using-gaussian-mixture-models.html>`_
 .. [#Oyen_2006] `Oyen M.L., "Nanoindentation hardness of mineralized tissues" (2006). <https://doi.org/10.1016/j.jbiomech.2005.09.011>`_
+.. [#Qian_2019] `Qian J., "Introducing self-organized maps (SOM) as a visualization tool for materials research and education" (2019). <https://doi.org/10.1016/j.rinma.2019.100020>`_
+.. [#Weber_2023] `Weber A., "Application of self-organizing maps to AFM-based viscoelastic characterization of breast cancer cell mechanics" (2023). <https://doi.org/10.1038/s41598-023-30156-3>`_
 .. [#Wilson_2018] `Wilson W. et al., "Automated coupling of NanoIndentation and Quantitative EnergyDispersive Spectroscopy (NI-QEDS): A comprehensive method to disclose the micro-chemo-mechanical properties of cement pastes" (2018). <https://doi.org/10.1016/j.cemconres.2017.08.016>`_
