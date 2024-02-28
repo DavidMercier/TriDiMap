@@ -4,6 +4,7 @@
 .. include:: includes.rst
 
 Coupling statistical indentation and microscopy observation can be a good solution to evaluate micromechanical properties of materials [#Hilloulin_2018]_, [#Kalali_2023]_.
+More recently correlation between structural and mechanical data, based on a ML approach, has been used for example to detail nanoscale multiphase metals [#Bruno_2024]_.
 
 Loading and analyzing/comparing binary maps
 ############################################
@@ -106,6 +107,7 @@ in order to compare experimental data with reference data.
 References
 ############################################
 
+.. [#Bruno_2024] `Bruno F. et al., "A novel machine learning method to exploit EBSD and nanoindentation for TRIP steels microstructures analysis" (2024). <https://doi.org/10.1016/j.matdes.2024.112774>`_
 .. [#Hilloulin_2018] `Hillouin B. et al., "Coupling statistical indentation and microscopy to evaluate micromechanical properties of materials: Application to viscoelastic behavior of irradiated mortars" (2018). <https://dx.doi.org/10.1016/j.cemconcomp.2018.09.008>`_
 .. [#Kalali_2023] `Kalali D.G. et al., "High speed nanoindentation aided correlative study between local mechanical properties and chemical segregation in equiatomic MoNb and MoNbTi alloys" (2023). <https://link.springer.com/article/10.1557/s43578-023-01007-8>`_
 .. [#ImageJ_software] `ImageJ <https://imagej.nih.gov/ij/>`_
