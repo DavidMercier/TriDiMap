@@ -105,6 +105,7 @@ Experimental artefacts
 During indentation mapping, many different experimental artefacts can occur:
     * indenter wear / indenter blunting (especially with hard samples, e.g. Tungsten, Sapphire...) [#Nohava_2021]_
     * shift measurement (wrong calibration, temperature or vibration effects...)
+    * indenter tilt...
 
 As it is not really easy to take into account and correct such artefacts in the post mortem mapping analysis, it is recommended to redo new indentation experiments with another set of parameters or by controlling external variables (temperature, vibration...).
 
@@ -113,6 +114,9 @@ As it is not really easy to take into account and correct such artefacts in the 
    :align: center
    
    *Problem of elastic modulus shift during indentation mapping on an homogeneous sample (maybe due to sample inclination)*
+
+..  warning::
+    Indentation experiments are very sensitive to environmental effects and thermal drift. Usually, performing such indentation maps can be time-consuming....   
 
 Interpolation step
 -----------------------
@@ -172,9 +176,6 @@ It is possible to plot similar 2D or 3D other maps using different functions of 
     * `contour.m <https://fr.mathworks.com/help/matlab/ref/contour.html>`_
     * `meshz.m <https://fr.mathworks.com/help/matlab/ref/meshz.html>`_
     * `bar.m <https://fr.mathworks.com/help/matlab/ref/bar.html>`_
-
-..  warning::
-    Indentation experiments are very sensitive to environmental effects and thermal drift. Usually, performing such indentation maps can be time-consuming....   
 
 Overlay
 -----------------------
