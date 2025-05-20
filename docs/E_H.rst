@@ -37,29 +37,23 @@ and a 4 color-coded map corresponding to this plot can be generated (see 2nd fig
    
    *Sectorized elastic modulus vs hardness plot with mean values and corresponding mechanical map*
 
-Automated cluster analysis (K-means, Gaussian Mixture, ...)
+Automated cluster analysis (K-Means, Gaussian Mixture, ...)
 ############################################
 
-Cluster analysis (or clustering) is an unsupervised machine learning task.
-For example, K-Means and Gaussian Mixtures (GMs) are both popular cluster analysis model for nanoindentation datasets.
+Cluster analysis, or clustering, is an unsupervised machine learning technique used to group similar data points based on inherent patterns or features. Common clustering algorithms include K-Means and Gaussian Mixture Models (GMMs), both of which are widely applied to nanoindentation datasets. For instance, a recent comparative study explores the performance of various clustering methods on nanoindentation mapping data [#Alizade_2025]_. These techniques are usually applied to E-H plots. But it is also possible to add a 3rd property (E/H or Kernel average mechanicl mismatch...) to help the clustering analysis [#Mercier_2025]_.
 
 K-Means models
 +++++++++++++++++++++++++++
+K-Means clustering is frequently used for the analysis of nanoindentation data [#Koumoulos_2019], [#Konstantopoulos_2020], [#Alhamdani_2022], [#Jentner_2023]. As explained in [#Koumoulos_2019]_, the K-Means algorithm aims to partition n observations into k clusters, where each observation belongs to the cluster with the nearest mean—this mean serving as a prototype of the cluster. The number of clusters k is predefined, and each point is assigned exclusively to one cluster.
 
-The K-Means are often used for nanoindentation data clustering [#Koumoulos_2019]_, [#Konstantopoulos_2020]_, [#Alhamdani_2022]_ and [#Jentner_2023]_.
-Like explains in [#Koumoulos_2019]_, "the K-Means algorithm aims to partition n observations into k clusters in which each observation belongs to the cluster
-with the nearest mean, serving as a prototype of the cluster. The number of clusters is known and each point can belong only in one cluster.
-At first, random k cluster center points are generated and each data point is assigned to the cluster with the nearest center point (smallest Euclidean distance).
-Then, the mean of each cluster is calculated and the k cluster centers are replaced by the corresponding cluster mean.
-Again, each point is assigned to the nearest cluster, measured in Euclidean distance."
-This method is as well described  in the |matlab| documentation [#Matlab_KM]_.
+Initially, k cluster centroids are randomly initialized. Each data point is then assigned to the cluster whose centroid is closest in terms of Euclidean distance. After all points are assigned, the algorithm recalculates the centroids as the mean of the points in each cluster. This process—assignment followed by centroid update—is repeated iteratively until convergence. A concise description of this method is also available in the |matlab| documentation [#Matlab_KM]_.
 
 A possible |matlab| third party code, which could be used to define clusters with K-Means model is: https://www.mathworks.com/matlabcentral/fileexchange/24616-kmeans-clustering?s_tid=mwa_osa_a
 
 Gaussian mixture models
 +++++++++++++++++++++++++++
 
-The GMs model are as well used for nanoindentation data clustering [#Wilson_2018]_ and [#Chen_2021]_.
+The GMMs model are as well used for nanoindentation data clustering [#Wilson_2018]_ and [#Chen_2021]_.
 This method is well described  in the |matlab| documentation [#Matlab_GMM]_, [#Matlab_cluster]_ and [#Matlab_clustering]_ but also in the literature [#Fraley_1998]_.
 
 This method is powerful to separate contribution of 2 or 3 phases (especially in the case of a soft metallic matrix with hard ceramic particles) 
@@ -116,7 +110,8 @@ Regarding material design or material discovery, an option is the usage of self-
 References
 ############################################
 
-.. [#Alhamdani_2022] Alhamdani S.G. et al., "Cluster-Based Colormap of Nanoindentation Using Machine Learning" (2022), IEOM Society International.
+.. [#Alhamdani_2022] Alhamdani S.G. et al., "Cluster-Based Colormap of Nanoindentation Using Machine Learning" (2022). <https://doi.org/10.46254/AN12.20220621>`_
+.. [#Alizade_2025] Alizade M. et al., "A Comparative Study of Clustering Methods for Nanoindentation Mapping Data" (2025). <http://dx.doi.org/10.1007/s40192-024-00349-3>_
 .. [#Ashby_2005] Ashby M.F., "Materials Selection in Mechanical Design" (2005), ISBN 978-0-7506-6168-3.
 .. [#Bao_2004] `Bao Y.W. et al., "Investigation of the relationship between elastic modulus and hardness based on depth-sensing indentation measurements" (2004). <https://doi.org/110.1016/j.actamat.2004.08.002>`_
 .. [#Besharatloo_2021] `Besharatloo H. and Wheeler J.M., "Influence of indentation size and spacing on statistical phase analysis via high‑speed nanoindentation mapping of metal alloys" (2021). <https://doi.org/10.1557/s43578-021-00214-5>`_
@@ -133,6 +128,7 @@ References
 .. [#Matlab_KM] `Mathworks - K-Means Models <https://www.mathworks.com/help/stats/kmeans.html>`_
 .. [#Matlab_cluster] `Mathworks - Cluster <https://fr.mathworks.com/help/stats/gmdistribution.cluster.html>`_
 .. [#Matlab_clustering] `Mathworks - Cluster Using Gaussian Mixture Models <https://fr.mathworks.com/help/stats/clustering-using-gaussian-mixture-models.html>`_
+.. [Mercier_2025] `Mercier D. and El Gharoussi Y., "Unsupervised Machine Learning for Nanoindentation Mapping Analysis and Microstructural Correlation" (2025). <http://dx.doi.org/10.13140/RG.2.2.29301.49125>_
 .. [#Oyen_2006] `Oyen M.L., "Nanoindentation hardness of mineralized tissues" (2006). <https://doi.org/10.1016/j.jbiomech.2005.09.011>`_
 .. [#Qian_2019] `Qian J., "Introducing self-organized maps (SOM) as a visualization tool for materials research and education" (2019). <https://doi.org/10.1016/j.rinma.2019.100020>`_
 .. [#Weber_2023] `Weber A., "Application of self-organizing maps to AFM-based viscoelastic characterization of breast cancer cell mechanics" (2023). <https://doi.org/10.1038/s41598-023-30156-3>`_
