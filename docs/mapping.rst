@@ -44,7 +44,8 @@ and a mechanical property value is attributed to the empty pixel, by doing a sim
 Indentation length scales
 ---------------------------
 
-According to Constantinides et al. [#Constantinides_2006]_, the indentation depth :math:`h` should be at most 1/10
+Given the deformed zone associated with indentation hardness impressions [#Samuel_1957]_ and
+according to Constantinides et al. [#Constantinides_2006]_, the indentation depth :math:`h` should be at most 1/10
 of the characteristic size of the microstructure :math:`\overline{D}` (e.g.: particle size in a matrix, grain or void diameter...),
 in order to apply continuum indentation analysis to heterogeneous systems and  to  access  phase  properties.
 This rule refers to the well-known 10% rule of thumb proposed by Bückle [#Buckle_1973]_, which is a rough first estimation. 
@@ -180,14 +181,13 @@ It is possible to plot similar 2D or 3D other maps using different functions of 
 Overlay
 -----------------------
 
-To perform an overlay, the best is to save the mechanical map, using the 'SAVE' button (at the bottom of the GUI).
-An image of the map only is saved (no axis, no colorbar...) into the same folder, where data were loaded from.
-Then, using Powerpoint for example, it is possible to draw a rectangular shape onto the microstructural map
-and to fill this rectangular shape using the saved mechanical map.
-Then, transparency effect has to be applied (60%-70% for example) in order to see both maps.
+Overlaying mechanical and microstructural maps can be useful—for presentation purposes or to better understand the correlation between microstructural features, phases, and mechanical properties.
+To create such an overlay, start by saving the mechanical map using the "SAVE" button located at the bottom of the GUI. This action saves an image of the map (without axes, colorbar, or additional annotations) in the same folder from which the data was originally loaded.
+Next, open your microstructural map in a tool like Microsoft PowerPoint. Insert a rectangular shape over the corresponding region of the microstructural map, and set its fill to the saved mechanical map image, ensuring it matches the correct dimensions.
+Finally, apply a transparency effect (typically 60%–70%) to the overlaid image so that both maps are visible simultaneously.
 
 .. note::
-   It is better if micrographs are obtained before and after indentation experiments, respectively to have a nice overlay (without residual imprints) and to help for overlaying.
+   It is better if micrographs are obtained before and after indentation experiments, respectively to have a nice overlay (without residual imprints) and to help for correlation process.
    
 .. figure:: ./_pictures/overlay.jpeg
    :scale: 60 %
@@ -197,6 +197,7 @@ Then, transparency effect has to be applied (60%-70% for example) in order to se
    
 References
 -------------
+.. [#Samuel_1957] `Samuels L.E. and Mulhearn T.O., "An experimental investigation of the deformed zone associated with indentation hardness impressions" (1957). <https://doi.org/10.1016/0022-5096(57)90056-X>`_
 .. [#Constantinides_2006] `Constantinides G. et al., "Grid indentation analysis of composite microstructure and mechanics: Principles and validation" (2006). <https://doi.org/10.1016/j.msea.2006.05.125>`_
 .. [#Michałek_2019] `Michałek J. et al., "Application of Nanoindentation and 2D and 3D Imaging to Characterise Selected Features of the Internal Microstructure of Spun Concrete" (2019). <https://doi.org/10.3390/ma12071016>`_
 .. [#Němeček_2009] `Němeček J., "Nanoindentation of heterogeneous structural materials", PhD thesis (2009). <http://ksm.fsv.cvut.cz/~nemecek/teaching/dmpo/literatura/habilitation%20thesis_Nemecek_CTU-01-2010.pdf>`_
