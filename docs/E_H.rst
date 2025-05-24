@@ -44,7 +44,8 @@ Cluster analysis, or clustering, is an unsupervised machine learning technique u
 
 K-Means models
 +++++++++++++++++++++++++++
-K-Means clustering is frequently used for the analysis of nanoindentation data [#Koumoulos_2019], [#Konstantopoulos_2020], [#Alhamdani_2022], [#Jentner_2023]. As explained in [#Koumoulos_2019]_, the K-Means algorithm aims to partition n observations into k clusters, where each observation belongs to the cluster with the nearest mean—this mean serving as a prototype of the cluster. The number of clusters k is predefined, and each point is assigned exclusively to one cluster.
+K-Means clustering is frequently used for the analysis of nanoindentation data [#Koumoulos_2019]_, [#Konstantopoulos_2020]_, 
+[#Alhamdani_2022]_, [#Jentner_2023]_. As explained in [#Koumoulos_2019]_, the K-Means algorithm aims to partition n observations into k clusters, where each observation belongs to the cluster with the nearest mean—this mean serving as a prototype of the cluster. The number of clusters k is predefined, and each point is assigned exclusively to one cluster.
 
 Initially, k cluster centroids are randomly initialized. Each data point is then assigned to the cluster whose centroid is closest in terms of Euclidean distance. After all points are assigned, the algorithm recalculates the centroids as the mean of the points in each cluster. This process—assignment followed by centroid update—is repeated iteratively until convergence. A concise description of this method is also available in the |matlab| documentation [#Matlab_KM]_.
 
