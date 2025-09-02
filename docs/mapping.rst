@@ -130,6 +130,8 @@ No need to have bigger interpolation factor creating heavy maps, which will incr
 For example, a map of 25x25 linearly interpolated by a factor of x2, becomes a map of 49x49 pixels.
 After interpolation, it is possible to create a new .xls file (with interpolated dataset), by pressing the 'XLS' button at the bottom of the GUI.
 
+Interpolation approach to improve nanoindentation mapping is discussed in this paper  [#Rossi_2025]_.
+
 .. figure:: ./_pictures/InterpolationStep.png
    :scale: 40 %
    :align: center
@@ -205,3 +207,4 @@ References
 .. [#Buckle_1973] Bückle H., in: J.W. Westbrook, H. Conrad (Eds.), The Science of Hardness Testing and Its Applications, American Society for Metals, Metal Park OH, 1973, pp. 453–459.
 .. [#SudharshanPhani_2019] `Sudharshan Phani P. and Oliver W.C., "A critical assessment of the effect of indentation spacing on the measurement of hardness and modulus using instrumented indentation testing" (2019). <https://doi.org/10.1016/j.matdes.2018.107563>`_
 .. [#Nohava_2021] `Nohava, J. et al., "Indenter wear study and proposal of a simple method for evaluation of indenter blunting" (2021). <https://doi.org/10.1557/s43578-021-00401-4>`_
+.. [#Rossi_2025] 'Rossi E. et al., "Revealing new depths of information with indentation mapping of microstructures" (2025). <https://doi.org/10.1557/s43577-025-00919-6>'_
