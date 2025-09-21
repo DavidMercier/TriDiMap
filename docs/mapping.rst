@@ -88,7 +88,7 @@ And in case of cube-corner indentation:
    
    *Cross-sectional scheme of 2 side-by-side indents, with the definition of geometrical parameters*
 
-More recently, it has been demonstrated numerically that a minimum indent spacing of 10 times the indentation depth
+More recently, it has been demonstrated numerically that a minimum (inter-)indent spacing of 10 times the indentation depth
 was sufficient to obtain insignificant hardness deviation (less than 5% error) for different bulk materials and coatings tested
 with a Berkovich indenter. And this result has been generalized for other indenter geometries (spherical and Vickers tips),
 and it was found that a minimum indent spacing of 1.5 times the indent contact lateral dimension is enough to get accurate results [#SudharshanPhani_2019]_.
@@ -99,6 +99,9 @@ For example, let's have a sample of metallic matrix reinforced with 1 :math:`\te
 and a with a surface sample RMS roughness estimated around 30 :math:`\text{nm}`.
 The best indentation depth should be around 90-100 :math:`\text{nm}`, which respects both rules (for the microstructure and the surface roughness).
 Then, the indentation step for the matrix grid can be set around 2-4 :math:`\text{micron}` with a Berkovich indenter.
+
+Another example from the literature illustrates 2D histograms of indentation property distributions as a function of inter-indentation spacing
+in case-hardened C45 steel (cross-section), highlighting the transition from mapping resolution to phase resolution [#Wheeler_2025]_.
 
 Experimental artefacts
 -----------------------
@@ -208,3 +211,4 @@ References
 .. [#SudharshanPhani_2019] `Sudharshan Phani P. and Oliver W.C., "A critical assessment of the effect of indentation spacing on the measurement of hardness and modulus using instrumented indentation testing" (2019). <https://doi.org/10.1016/j.matdes.2018.107563>`_
 .. [#Nohava_2021] `Nohava, J. et al., "Indenter wear study and proposal of a simple method for evaluation of indenter blunting" (2021). <https://doi.org/10.1557/s43578-021-00401-4>`_
 .. [#Rossi_2025] `Rossi E. et al., "Revealing new depths of information with indentation mapping of microstructures" (2025). <https://doi.org/10.1557/s43577-025-00919-6>`_
+.. [#Wheeler_2025] `Wheeler J. et al., "Multi‑scale mechanical microscopy via displacement‑controlled, high‑speed nanoindentation mapping" (2025). <https://doi.org/10.1557/s43579-025-00817-7>`_
