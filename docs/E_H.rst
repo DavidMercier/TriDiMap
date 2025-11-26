@@ -40,7 +40,7 @@ and a 4 color-coded map corresponding to this plot can be generated (see 2nd fig
 Automated cluster analysis (K-Means, Gaussian Mixture, ...)
 ############################################
 
-Cluster analysis, or clustering, is an unsupervised machine learning technique used to group similar data points based on inherent patterns or features. Common clustering algorithms include K-Means and Gaussian Mixture Models (GMMs), both of which are widely applied to nanoindentation datasets. For instance, a recent comparative study explores the performance of various clustering methods on nanoindentation mapping data [#Alizade_2025]_. These techniques are usually applied to E-H plots. But it is also possible to add a 3rd property (E/H or Kernel average mechanicl mismatch...) to help the clustering analysis [#Mercier_2025]_.
+Cluster analysis, or clustering, is an unsupervised machine learning technique used to group similar data points based on inherent patterns or features. Common clustering algorithms include K-Means and Gaussian Mixture Models (GMMs), both of which are widely applied to nanoindentation datasets. For instance, a recent comparative study explores the performance of various clustering methods on nanoindentation mapping data [#Alizade_2025]_. These techniques are usually applied to E-H plots. But it is also possible to add a 3rd property (E/H or Kernel average mechanical mismatch...) to help the clustering analysis [#Mercier_2025]_.
 
 K-Means models
 +++++++++++++++++++++++++++
