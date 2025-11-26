@@ -3,110 +3,98 @@
 
 .. include:: includes.rst
 
-Another way to visualize the distribution of mechanical property results is to plot for example
-the elastic modulus (E) values vs the hardness (H) values. Such a plot leads sometimes to the observation of 
-families of points and the definition of "sectors" or "bubbles",
-each one corresponding to a single phase (e.g. soft matrix vs hard and stiff particles).
+Another way to visualize the distribution of mechanical property results is to plot, for example, the elastic modulus (E) versus the hardness (H). Such a plot can sometimes reveal families of points and the emergence of “sectors” or “bubbles,” each one corresponding to a single phase (e.g., a soft matrix versus hard and stiff particles).
 
-The correlation between elastic and plastic properties has been extensively studied in the literature
-[#Gent_1958]_, [#Bao_2004]_, [#Oyen_2006]_ and [#Labonte_2017]_.
+The correlation between elastic and plastic properties has been extensively studied in the literature [#Gent_1958], [#Bao_2004], [#Oyen_2006], [#Labonte_2017].
 
 .. note::
-    Elastic modulus is an intrinsic material property and hardness is an engineering property, which can be related to yield strength for some materials.
+The elastic modulus is an intrinsic material property, whereas hardness is an engineering property. For some classes of materials, hardness can be related to the yield strength.
 
-E-H map sectorization
+E–H map sectorization
 ############################################
 
-As a first analysis of such a plot, sectors can be defined by giving an average value of elastic modulus and
-an average of hardness value, separating respectively by an horizontal line
-and a vertical line the different bubbles of points.
-Each sector is defined by a unique color.
+As a first analysis, sectors can be defined by specifying average elastic modulus and hardness values. Horizontal and vertical threshold lines can then be introduced to delimit the different “bubbles” of points. Each sector is represented using a unique color.
 
-Finally, average values of mechanical properties are given for each sectors directly into the graph,
-and a 4 color-coded map corresponding to this plot can be generated (see 2nd figure).
+Finally, average mechanical properties for each sector are displayed directly on the plot, and a four-color mechanical map corresponding to this sectorization can also be produced (see second figure).
 
 .. figure:: ./_pictures/MTS_example1_25x25_H_GUI_12.png
-   :scale: 50 %
-   :align: center
-   
-   *Example of sectorized elastic modulus vs hardness plot*
-   
-.. figure:: ./_pictures/sectorMap.png
-   :scale: 50 %
-   :align: center
-   
-   *Sectorized elastic modulus vs hardness plot with mean values and corresponding mechanical map*
+:scale: 50 %
+:align: center
 
-Automated cluster analysis (K-Means, Gaussian Mixture, ...)
+Example of a sectorized elastic modulus vs hardness plot
+
+.. figure:: ./_pictures/sectorMap.png
+:scale: 50 %
+:align: center
+
+Sectorized elastic modulus vs hardness plot with mean values and the corresponding mechanical map
+
+Automated cluster analysis (K-Means, Gaussian Mixture Models, …)
 ############################################
 
-Cluster analysis, or clustering, is an unsupervised machine learning technique used to group similar data points based on inherent patterns or features. Common clustering algorithms include K-Means and Gaussian Mixture Models (GMMs), both of which are widely applied to nanoindentation datasets. For instance, a recent comparative study explores the performance of various clustering methods on nanoindentation mapping data [#Alizade_2025]_. These techniques are usually applied to E-H plots. But it is also possible to add a 3rd property (E/H or Kernel average mechanicl mismatch...) to help the clustering analysis [#Mercier_2025]_.
+Cluster analysis (or clustering) is an unsupervised machine-learning technique used to group similar data points based on inherent patterns. Common clustering algorithms include K-means and Gaussian Mixture Models (GMMs), both of which are widely applied to nanoindentation datasets. A recent comparative study evaluates the performance of several clustering methods on nanoindentation mapping data [#Alizade_2025]_.
+
+These techniques are typically applied to E–H plots, but additional parameters—such as E/H or the Kernel Average Mechanical Mismatch—can also be included to improve clustering results [#Mercier_2025]_.
 
 K-Means models
 +++++++++++++++++++++++++++
-K-Means clustering is frequently used for the analysis of nanoindentation data [#Koumoulos_2019]_, [#Konstantopoulos_2020]_, 
-[#Alhamdani_2022]_, [#Jentner_2023]_. As explained in [#Koumoulos_2019]_, the K-Means algorithm aims to partition n observations into k clusters, where each observation belongs to the cluster with the nearest mean—this mean serving as a prototype of the cluster. The number of clusters k is predefined, and each point is assigned exclusively to one cluster.
 
-Initially, k cluster centroids are randomly initialized. Each data point is then assigned to the cluster whose centroid is closest in terms of Euclidean distance. After all points are assigned, the algorithm recalculates the centroids as the mean of the points in each cluster. This process—assignment followed by centroid update—is repeated iteratively until convergence. A concise description of this method is also available in the |matlab| documentation [#Matlab_KM]_.
+K-means clustering is commonly used for nanoindentation analysis [#Koumoulos_2019], [#Konstantopoulos_2020], [#Alhamdani_2022], [#Jentner_2023]. As described in [#Koumoulos_2019]_, the algorithm partitions n observations into k clusters, where each observation belongs to the cluster with the nearest mean (the cluster centroid). The number of clusters k must be defined beforehand, and each point is assigned exclusively to one cluster.
 
-A possible |matlab| third party code, which could be used to define clusters with K-Means model is: https://www.mathworks.com/matlabcentral/fileexchange/24616-kmeans-clustering?s_tid=mwa_osa_a
+The algorithm starts by initializing k random centroids. Each data point is then assigned to the nearest centroid (based on Euclidean distance). The centroids are updated as the mean of the assigned points. These assignment–update steps are repeated until convergence. A concise description is provided in the |matlab| documentation [#Matlab_KM]_.
 
-Gaussian mixture models
+A third-party |matlab| implementation of K-means is available at:
+https://www.mathworks.com/matlabcentral/fileexchange/24616-kmeans-clustering?s_tid=mwa_osa_a
+
+Gaussian Mixture Models
 +++++++++++++++++++++++++++
 
-The GMMs model are as well used for nanoindentation data clustering [#Wilson_2018]_ and [#Chen_2021]_.
-This method is well described  in the |matlab| documentation [#Matlab_GMM]_, [#Matlab_cluster]_ and [#Matlab_clustering]_ but also in the literature [#Fraley_1998]_.
+Gaussian Mixture Models (GMMs) are also widely used for nanoindentation data clustering [#Wilson_2018], [#Chen_2021]. This method is described in the |matlab| documentation [#Matlab_GMM], [#Matlab_cluster], [#Matlab_clustering]_ as well as in the literature [#Fraley_1998]_.
 
-This method is powerful to separate contribution of 2 or 3 phases (especially in the case of a soft metallic matrix with hard ceramic particles) 
-in the cloud of experimental points [#Hu_2005]_.
-Average mechanical property values can also be extracted using this method and a 2 or 3 color map can be obtained too.
+GMMs are particularly effective at separating contributions from two or three phases (e.g., a soft metallic matrix containing hard ceramic particles) within a cloud of experimental points [#Hu_2005]_. Average mechanical properties can be extracted for each phase, and a two- or three-color mechanical map can be generated.
 
-The influence of indentation size and spacing on statistical phase analysis has also been studied by fast mapping indentation anc clustering analysis [#Besharatloo_2021]_.
+The influence of indentation size and spacing on statistical phase analysis has also been investigated using fast-mapping indentation combined with clustering analysis [#Besharatloo_2021]_.
 
-The |matlab| third party code used to define clusters with GMs model is: `GMMClustering.m <https://github.com/DavidMercier/TriDiMap/blob/master/third_party_codes/GMMClustering/GMMClustering.m>`_
+The |matlab| code used for GMM clustering is:
+GMMClustering.m <https://github.com/DavidMercier/TriDiMap/blob/master/third_party_codes/GMMClustering/GMMClustering.m>_
 
 .. figure:: ./_pictures/clusterMap.png
-   :scale: 50 %
-   :align: center
-   
-   *Elastic modulus vs hardness plot with clusters of points obtained with GMM*
+:scale: 50 %
+:align: center
+
+Elastic modulus vs hardness plot with clusters obtained using a GMM approach
 
 Determination of the number of clusters
 +++++++++++++++++++++++++++
 
-The optimal number of clusters (k) can be determined using the elbow method.
-This method looks at the total within-cluster sum of square (WSS) as a function of the number of clusters.
-One should choose a number of clusters so that adding another cluster doesn't improve much better the total WSS.
+The optimal number of clusters (k) can be estimated using the elbow method, which examines how the total within-cluster sum of squares (WSS) evolves with increasing k. One should select k such that adding an additional cluster yields only marginal improvement in the WSS.
 
-This method can be defined as follow in 4 steps:
-1) Compute clustering algorithm (e.g., K-Means or GMs algorithms) for different values of k.
-2) For instance, by varying k from 1 to 5 clusters. For each k, calculate the total WSS.
-3) Then, plot the curve of WSS according to the number of clusters k.
-4) Finally, the location of a bend (knee) in the plot is generally considered as an indicator of the appropriate number of clusters.
+This procedure is usually implemented in four steps:
 
-Note that, the elbow method is sometimes ambiguous.
-Alternatives are for example the average silhouette method or the gap statistic method...
+Run the clustering algorithm (e.g., K-means or GMM) for several values of k.
 
-Next steps: Ashby map or self-organized maps
+Evaluate the total WSS for each k (e.g., k = 1–5).
+
+Plot WSS as a function of k.
+
+Identify the “elbow,” where the rate of decrease in WSS sharply changes.
+
+The elbow method may be ambiguous in some cases. Alternatives include the average silhouette method and the gap statistic.
+
+Next steps: Ashby maps or Self-Organized Maps (SOMs)
 ############################################
 
+Following analytical approaches, sectorization, and clustering, nanoindentation outputs (e.g., phase-specific mechanical properties of composites or alloys) can be used for material selection, material design, or material discovery.
 
-The next step after the different analytical, sectorization, clustering...  approaches, could be to use nanoindentation outputs 
-(phase mechanical properties in the case of a composite, an alloy...) for material selection, material design, material discovery....
-
-A common strategy for material selection is the usage of conventional Ashby map [#Ashby_2005]_.
-An example of a typical Ashby map is given afterwards with materials families (envelops around different materials), using the CES Selector 2018 software [#CES_Selector]_.
-At some point, it is possible to add material reference (bulk, homogeneous, monophasic, ...) values on the E-H map,
-in order to compare experimental data with data from the literature.
+A common strategy for material selection is the use of Ashby maps [#Ashby_2005]. A typical example, created with CES Selector 2018 [#CES_Selector], is shown below. Reference material values (bulk, homogeneous, monophasic, …) can also be added to the E–H map to compare experimental results with literature data.
 
 .. figure:: ./_pictures/E-H_Ashby.png
-   :scale: 50 %
-   :align: center
-   
-   *Typical Ashby map of elastic modulus vs Vickers hardness, obtained using CES Selector software*
-   
-Regarding material design or material discovery, an option is the usage of self-organized maps (SOMs) 
-[#Qian_2019]_ in the framework of material informatics. Here an example for Atomic Force Microscopy (AFM) technique [#Weber_2023]_.
+:scale: 50 %
+:align: center
+
+Typical Ashby map of elastic modulus vs Vickers hardness, obtained using CES Selector software
+
+For material design and discovery, Self-Organized Maps (SOMs) [#Qian_2019]_ can be used within a materials-informatics framework. An example of SOM-based analysis for AFM viscoelastic mapping is presented in [#Weber_2023]_.
 	
 References
 ############################################
