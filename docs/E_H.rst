@@ -87,6 +87,33 @@ This method can be defined as follow in 4 steps:
 Note that, the elbow method is sometimes ambiguous.
 Alternatives are for example the average silhouette method or the gap statistic method...
 
+KAMM analysis (Kernel-Averaged Mechanical Mismatch)
+############################################
+
+A recent development in nanoindentation data analysis is the introduction of the Kernel-Averaged Mechanical Mismatch (KAMM) descriptor, which enhances clustering and phase identification in mechanical property maps. [arxiv.org]
+Conventional analyses based solely on elastic modulus (E) and hardness (H) may struggle to distinguish phases when the mechanical contrast is low or when diffuse interphase regions exist. This limitation is particularly critical in multiphase materials such as composites, alloys, or cementitious systems. [arxiv.org]
+The KAMM approach addresses this issue by introducing a neighborhood-aware metric that quantifies the local mechanical heterogeneity. Instead of considering each indentation point independently, KAMM evaluates the mismatch between a data point and its surrounding neighbors in the (E, H) space. This effectively captures spatial correlations and mechanical gradients within the dataset. [arxiv.org]
+By incorporating KAMM as an additional feature, clustering can be performed in an augmented three-dimensional space (E, H, KAMM). This extension significantly improves:
+
+Phase separability
+Detection of interphase regions
+Robustness to experimental noise [arxivlens.com]
+
+This method is particularly advantageous for datasets exhibiting:
+
+Low contrast between phases
+Gradual transitions (graded interfaces)
+Complex or diffuse morphologies
+
+Another key contribution of this framework is the use of realistic synthetic benchmarks with controlled complexity (e.g., curved boundaries, diffuse phases, tunable contrast), enabling more rigorous validation of clustering approaches compared to overly simplistic datasets. [arxiv.org]
+Finally, KAMM-enhanced clustering facilitates downstream applications such as:
+
+Generation of representative volume elements (RVEs)
+Improved extraction of phase-specific mechanical properties
+Integration into ICME (Integrated Computational Materials Engineering) workflows [arxiv.org]
+
+This approach can be combined with standard clustering methods (K-Means, GMM, Agglomerative clustering, etc.), providing a flexible and powerful extension to existing E–H map analysis techniques.
+
 Next steps: Ashby map or self-organized maps
 ############################################
 
@@ -130,6 +157,7 @@ References
 .. [#Matlab_cluster] `Mathworks - Cluster <https://fr.mathworks.com/help/stats/gmdistribution.cluster.html>`_
 .. [#Matlab_clustering] `Mathworks - Cluster Using Gaussian Mixture Models <https://fr.mathworks.com/help/stats/clustering-using-gaussian-mixture-models.html>`_
 .. [#Mercier_2025] `Mercier D. and El Gharoussi Y., "Unsupervised Machine Learning for Nanoindentation Mapping Analysis and Microstructural Correlation" (2025). <http://dx.doi.org/10.13140/RG.2.2.29301.49125>`_
+.. [#Mercier_2026] Mercier D. and El Gharoussi Y., "Enhancing Phase Clustering in Nanomechanical Property Maps of Multiphase Materials Using Kernel-Averaged Mechanical Mismatch" (2026). <https://arxiv.org/abs/2603.02090>_
 .. [#Oyen_2006] `Oyen M.L., "Nanoindentation hardness of mineralized tissues" (2006). <https://doi.org/10.1016/j.jbiomech.2005.09.011>`_
 .. [#Qian_2019] `Qian J., "Introducing self-organized maps (SOM) as a visualization tool for materials research and education" (2019). <https://doi.org/10.1016/j.rinma.2019.100020>`_
 .. [#Weber_2023] `Weber A., "Application of self-organizing maps to AFM-based viscoelastic characterization of breast cancer cell mechanics" (2023). <https://doi.org/10.1038/s41598-023-30156-3>`_
