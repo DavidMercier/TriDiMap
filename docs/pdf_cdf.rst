@@ -3,8 +3,7 @@
 
 .. include:: includes.rst
 
-For statistical nanoindentation (SNI) results [#Tuinukuafe_2022]_ or for statistical analysis of the mechanical property values distribution, it is possible
-to use histograms or to use a cumulative distribution. According to Tuinukuafe et al., SNI may be ineffective for measuring the mechanical properties of individual phases in a microstructure if they are not prolific enough to exhibit a continuous indent response [#Tuinukuafe_2022]_. This conclusion can be directed linked to the question of the indentation length scales (see https://tridimap.readthedocs.io/en/latest/mapping.html#indentation-length-scales).
+For statistical nanoindentation (SNI) results [#Tuinukuafe_2022]_ or statistical analysis of mechanical-property distributions, histograms or cumulative distributions can be used. According to Tuinukuafe et al., SNI may be ineffective for measuring the mechanical properties of individual phases in a microstructure if they are not prolific enough to exhibit a continuous indent response [#Tuinukuafe_2022]_. This conclusion is directly linked to the question of indentation length scales (see https://tridimap.readthedocs.io/en/latest/mapping.html#indentation-length-scales).
 
 Probability density function (PDF)
 ############################################
@@ -15,17 +14,16 @@ Probability density function (PDF)
    
    *Histograms of hardness values*
 
-Using histograms is really interesting for
-the visualization point of view with a common pattern, like the bell–shaped curve.
+Histograms are useful for visualization, particularly when the data follow a familiar pattern such as a bell-shaped curve.
 Such a curve is known as the "normal distribution" or the "Gaussian distribution".
-For an homogeneous material, only 1 peak is expected and for an heterogeneous material,
-a peak per phase can be expected. In this last case, intermediate peaks between phase peaks can be observed
+For a homogeneous material, only one peak is expected; for a heterogeneous material,
+one peak per phase may be expected. In the latter case, intermediate peaks between phase peaks can be observed
 when interfaces are not spatially negligible. The drawback of this plot is the user-dependence
 of the bin size and thus of the distribution shape (i.e. peak intensity).
-Indeed, the shape of the distributions is bin size dependent, while this bin size (e.g. 0.5GPa or 3GPa) is defined arbitrary by the user.
+Indeed, the shape of the distributions depends on bin size, which is set arbitrarily by the user (e.g., 0.5 GPa or 3 GPa).
 This issue is well known in the literature and is a little bit discussed in this presentation [#Mercier_2016]_ and this paper [#Hrbek_2017]_.
 The shape of the distributions is also bin step dependent.
-In other words, if the the histogram starts from an odd or an even value, the distribution is different.
+In other words, the distribution changes depending on whether the histogram starts at an odd or an even value.
 
 .. figure:: ./_pictures/pdf_schemes.png
    :scale: 50 %
@@ -43,19 +41,21 @@ In other words, if the the histogram starts from an odd or an even value, the di
    :scale: 50 %
    :align: center
    
-   *Effect of the bin step on the distribution shape: the histogram start from 0GPa on the left and from 1GPa on the right, using the same bin size of 2GPa.*
+   *Effect of the bin step on the distribution shape: the histogram starts at 0 GPa on the left and at 1 GPa on the right, using the same bin size of 2 GPa.*
 
 The next step is to fit this distribution using a probability density function.
 Such mathematical approach is very well defined in the literature [#Nemecek_2009]_, [#Nemecek_2013]_ and [#Hausild_2016]_.
-It is worth to note that the result obtain after deconvolution (average values and standard deviations for each peak) is dependent of the
-bin size. A solution to avoid user definition of the bin size is to use the Freedman–Diaconis rule of thumb, which gives an estimation of 
-the bin size after calculation the interquartile (IQR) range of the data [#FreedmanDaconis_1981]_.
+Note that the results obtained after deconvolution (average values and standard deviations for each peak) depend on the
+bin size. A way to avoid user selection of the bin size is to use the Freedman–Diaconis rule of thumb, which estimates
+the bin size after calculating the interquartile range (IQR) of the data [#FreedmanDaconis_1981]_.
 To activate this option, check the box for 'Auto Bin Size' on the GUI.
 
-    .. math:: \text{Bin Size} = \frac{2*IQR}{n^{\frac{1}{3}}}
-        :label: binSizeAuto
+   .. math::
+      :label: binSizeAuto
 
-With :math:`n` is the number of observations in the sample.
+      \mathrm{Bin\ Size} = \frac{2*IQR}{n^{\frac{1}{3}}}
+
+Here, :math:`n` is the number of observations in the sample.
 
 The |matlab| function used to calculate the interquartile range of the data is:
 `iqrVal.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/util/iqrVal.m>`_
@@ -108,9 +108,9 @@ which gives different mean values, given peak shapes or peak number modification
 Cumulative density function (CDF)
 ############################################
 
-The cumulative distribution of mechanical property is much better than an histogram plot (no bin size dependency).
+The cumulative distribution of a mechanical property avoids the bin-size dependency of a histogram.
 But, it is much more difficult to decompose and in this toolbox, only Gaussian and Weibull fitting are proposed,
-which is only interesting for an homogeneous material. The Weibull function is from the PopIn toolbox [#popin]_.
+which is mainly useful for a homogeneous material. The Weibull function is from the PopIn toolbox [#popin]_.
 
 The |matlab| function used to plot the cumulative distribution of mechanical property values is:
 `cdfGaussian.m <https://github.com/DavidMercier/TriDiMap/blob/master/matlab_code/util/cdfGaussian.m>`_

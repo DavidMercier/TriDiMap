@@ -6,29 +6,28 @@ Mapping options
 Crop
 ---------------------------
 
-Maps can be cropped to remove some useless part of the map (e.g. bakelite around the specimen, oxidized or contaminated surface...)
-or to avoid some artifact of measurements (e.g. surface effects, roughness or slope on the surface...).
-This option is really useful, especially to clean dataset for further statistical analysis.
+Maps can be cropped to remove unnecessary areas (e.g., bakelite around the specimen or an oxidized or contaminated surface)
+or to avoid measurement artefacts (e.g., surface effects, roughness, or surface slope).
+This option is especially useful for cleaning a dataset before further statistical analysis.
 After cropping, it is possible to create a new .xls file (with cropped dataset), by pressing the 'XLS' button at the bottom of the GUI.
 
 Colormap
 ---------------------------
 
 It is possible to set different colormap for the mapping into the GUI.
-The default 'Jet' colormap from |matlab| [#Matlab]_ is not divergent and obscures real patterns.
-Thus, it is sometimes difficult to distinguish the default line color styles.
-Many authors proposed to use divergent colormaps instead of default |matlab| colormaps [#Eddins]_, [#Moreland]_, [#MyCarta]_.
+The default 'Jet' colormap in |matlab| [#Matlab]_ is not a diverging colormap and can obscure patterns.
+Many authors have recommended using diverging colormaps instead of the default |matlab| colormaps [#Eddins]_, [#Moreland]_, [#MyCarta]_.
 
 The |matlab| function used to generate a divergent colormap is:
 `diverging_map.m <https://github.com/DavidMercier/TriDiMap/blob/master/third_party_codes/colormapFunctions/diverging_map.m>`_
 
-The colormap can be flipped for aesthetic reason.
+The colormap can be flipped for aesthetic reasons.
 
 .. figure:: ./_pictures/div_map.png
    :scale: 40 %
    :align: center
    
-   *Maps with non divergent colormap (on the left) and with divergent colormap (on the right)*
+   *Maps with a non-diverging colormap (left) and a diverging colormap (right)*
 
 Colorbar
 ---------------------------
@@ -52,7 +51,7 @@ can be plotted on an indentation map, in order to help for `the overlay of the m
    :scale: 40 %
    :align: center
    
-   *Maps with markers for indent positionning (on the right)*
+   *Maps with markers for indent positioning (right)*
    
 References
 -------------

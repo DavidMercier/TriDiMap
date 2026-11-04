@@ -17,7 +17,7 @@ File examples from 'MTS/Agilent'
 
 For a 2D map: `MTS_example1_25x25.xls <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/MTS_example1_25x25.xls>`_
 	
-For a 3D map: `MTS_example3_5x5_testSlice.xlsx <https://github.com/DavidMercier/NIMS/blob/master/data_indentation/MTS_0film_Si_CSM-2nm_noSD.txt>`_
+For a 3D map: `MTS_0film_Si_CSM-2nm_noSD.txt <https://github.com/DavidMercier/NIMS/blob/master/data_indentation/MTS_0film_Si_CSM-2nm_noSD.txt>`_
 
 File example from 'Hysitron'
 ####################################################

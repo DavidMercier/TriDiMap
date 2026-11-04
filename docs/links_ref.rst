@@ -6,7 +6,7 @@
 Matlab links
 ##################
 * `Matlab GUI. <http://www.mathworks.com/discovery/matlab-gui.html>`_
-* `Visit the YAML website for more informations. <http://www.yaml.org/>`_
+* `Visit the YAML website for more information. <http://www.yaml.org/>`_
 * `Visit the YAML code for Matlab. <http://code.google.com/p/yamlmatlab/>`_
 
 Other interesting Matlab toolboxes about indentation
@@ -92,11 +92,11 @@ Indentation maps and statistical analysis in the literature
 * `Sheng M. et al., "Influence of formation in-situ stress on mechanical heterogeneity of shale through grid nanoindentation" (2021). <https://doi.org/10.1016/j.petsci.2021.10.006>`_
 * `Moujhuri S. et al., "High-Throughput Nanoindentation Mapping of Additively Manufactured T91 Steel" (2021). <https://doi.org/10.1007/s11837-022-05189-0>`_
 * `Liang T. et al., "Spatial Resolution Limit for Nanoindentation Mapping on Metallic Glasses" (2022). <https://doi.org/10.3390/ma15186319>`_
-* `Shi X. et al., "Determining representative mechanical parameters of clay matrix in mudstones using nanoindentation mapping and machine learning data analysis" (2023). <https://arxiv.org/abs/2305.XXXXX>`_
+* `Shi X. et al., "Determining representative mechanical parameters of clay matrix in mudstones using nanoindentation mapping and machine learning data analysis" (2023). <https://doi.org/10.5194/egusphere-egu23-13696>`_
 * `Dhal A. et al., "Mapping hierarchical and heterogeneous micromechanics of a transformative high entropy alloy by nanoindentation and machine learning augmented clustering" (2023). <https://doi.org/10.1016/j.matdes.2023.111957>`_
 * `Guo Y. et al., "Machine Learning-Enhanced Nanoindentation for Characterizing Micromechanical Properties and Mineral Control Mechanisms of Conglomerate" (2025). <https://doi.org/10.3390/app15179541>`_
 * `Chen X. et al., "Curve Clustering Analysis and Intelligent Recognition of Grid Nanoindentation Data for Cementitious Material" (2024). <https://doi.org/10.1016/j.conbuildmat.2024.135732>`_
-* `Rossi E. et al., "Revealing new depths of information with indentation mapping of microstructures" (2025). <https://doi.org/10.1557/s43577-025-XXXX>`_
+* `Rossi E. et al., "Revealing new depths of information with indentation mapping of microstructures" (2025). <https://doi.org/10.1557/s43577-025-00919-6>`_
 * `Mercier D. and El Gharoussi Y., "Enhancing Phase Clustering in Nanomechanical Property Maps of Multiphase Materials Using Kernel-Averaged Mechanical Mismatch" (2026). <https://arxiv.org/abs/2603.02090>`_
 
 Machine learning / high-throughput indentation

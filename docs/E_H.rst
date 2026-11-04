@@ -3,8 +3,8 @@
 
 .. include:: includes.rst
 
-Another way to visualize the distribution of mechanical property results is to plot for example
-the elastic modulus (E) values vs the hardness (H) values. Such a plot leads sometimes to the observation of 
+Another way to visualize the distribution of mechanical property results is to plot, for example,
+the elastic modulus (E) values against the hardness (H) values. Such a plot can reveal
 families of points and the definition of "sectors" or "bubbles",
 each one corresponding to a single phase (e.g. soft matrix vs hard and stiff particles).
 
@@ -20,9 +20,9 @@ E-H map sectorization
 As a first analysis of such a plot, sectors can be defined by giving an average value of elastic modulus and
 an average of hardness value, separating respectively by an horizontal line
 and a vertical line the different bubbles of points.
-Each sector is defined by a unique color.
+Each sector is shown in a unique color.
 
-Finally, average values of mechanical properties are given for each sectors directly into the graph,
+Finally, average mechanical property values are shown directly on the graph for each sector,
 and a 4 color-coded map corresponding to this plot can be generated (see 2nd figure).
 
 .. figure:: ./_pictures/MTS_example1_25x25_H_GUI_12.png
@@ -40,7 +40,7 @@ and a 4 color-coded map corresponding to this plot can be generated (see 2nd fig
 Automated cluster analysis (K-Means, Gaussian Mixture, ...)
 ############################################
 
-Cluster analysis, or clustering, is an unsupervised machine learning technique used to group similar data points based on inherent patterns or features. Common clustering algorithms include K-Means and Gaussian Mixture Models (GMMs), both of which are widely applied to nanoindentation datasets. For instance, a recent comparative study explores the performance of various clustering methods on nanoindentation mapping data [#Alizade_2025]_. These techniques are usually applied to E-H plots. But it is also possible to add a 3rd property (E/H or Kernel average mechanical mismatch...) to help the clustering analysis [#Mercier_2025]_.
+Cluster analysis, or clustering, is an unsupervised machine-learning technique used to group similar data points based on inherent patterns or features. Common clustering algorithms include K-Means and Gaussian Mixture Models (GMMs), both of which are widely applied to nanoindentation datasets. A recent comparative study explores the performance of clustering methods on nanoindentation mapping data [#Alizade_2025]_. These techniques are usually applied to E-H plots, but an additional property, such as E/H or kernel-averaged mechanical mismatch (KAMM), can also support the clustering analysis [#Mercier_2025]_, [#Mercier_2026]_.
 
 K-Means models
 +++++++++++++++++++++++++++
@@ -54,16 +54,16 @@ A possible |matlab| third party code, which could be used to define clusters wit
 Gaussian mixture models
 +++++++++++++++++++++++++++
 
-The GMMs model are as well used for nanoindentation data clustering [#Wilson_2018]_ and [#Chen_2021]_.
-This method is well described  in the |matlab| documentation [#Matlab_GMM]_, [#Matlab_cluster]_ and [#Matlab_clustering]_ but also in the literature [#Fraley_1998]_.
+GMMs are also used for clustering nanoindentation data [#Wilson_2018]_, [#Chen_2021]_.
+This method is described in the |matlab| documentation [#Matlab_GMM]_, [#Matlab_cluster]_, and [#Matlab_clustering]_, as well as in the literature [#Fraley_1998]_.
 
-This method is powerful to separate contribution of 2 or 3 phases (especially in the case of a soft metallic matrix with hard ceramic particles) 
+This method can distinguish contributions from two or three phases (especially in the case of a soft metallic matrix with hard ceramic particles)
 in the cloud of experimental points [#Hu_2005]_.
 Average mechanical property values can also be extracted using this method and a 2 or 3 color map can be obtained too.
 
-The influence of indentation size and spacing on statistical phase analysis has also been studied by fast mapping indentation anc clustering analysis [#Besharatloo_2021]_.
+The influence of indentation size and spacing on statistical phase analysis has also been studied using high-speed indentation mapping and clustering [#Besharatloo_2021]_.
 
-The |matlab| third party code used to define clusters with GMs model is: `GMMClustering.m <https://github.com/DavidMercier/TriDiMap/blob/master/third_party_codes/GMMClustering/GMMClustering.m>`_
+The |matlab| third-party code used to define clusters with GMMs is: `GMMClustering.m <https://github.com/DavidMercier/TriDiMap/blob/master/third_party_codes/GMMClustering/GMMClustering.m>`_
 
 .. figure:: ./_pictures/clusterMap.png
    :scale: 50 %
@@ -76,41 +76,40 @@ Determination of the number of clusters
 
 The optimal number of clusters (k) can be determined using the elbow method.
 This method looks at the total within-cluster sum of square (WSS) as a function of the number of clusters.
-One should choose a number of clusters so that adding another cluster doesn't improve much better the total WSS.
+Choose a number of clusters such that adding another cluster does not substantially reduce the total WSS.
 
-This method can be defined as follow in 4 steps:
-1) Compute clustering algorithm (e.g., K-Means or GMs algorithms) for different values of k.
-2) For instance, by varying k from 1 to 5 clusters. For each k, calculate the total WSS.
-3) Then, plot the curve of WSS according to the number of clusters k.
-4) Finally, the location of a bend (knee) in the plot is generally considered as an indicator of the appropriate number of clusters.
+The method can be applied in four steps:
 
-Note that, the elbow method is sometimes ambiguous.
-Alternatives are for example the average silhouette method or the gap statistic method...
+1. Run a clustering algorithm (e.g., K-Means or GMM) for different values of k.
+2. For example, vary k from 1 to 5 and calculate the total WSS for each value.
+3. Plot the total WSS against the number of clusters, k.
+4. Choose the bend (or "knee") in the plot as an estimate of the appropriate number of clusters.
+
+Note that the elbow method can be ambiguous. Alternatives include the average silhouette method and the gap statistic method.
 
 KAMM analysis (Kernel-Averaged Mechanical Mismatch)
 ############################################
 
-A recent development in nanoindentation data analysis is the introduction of the Kernel-Averaged Mechanical Mismatch (KAMM) descriptor, which enhances clustering and phase identification in mechanical property maps. [arxiv.org]
-Conventional analyses based solely on elastic modulus (E) and hardness (H) may struggle to distinguish phases when the mechanical contrast is low or when diffuse interphase regions exist. This limitation is particularly critical in multiphase materials such as composites, alloys, or cementitious systems. [arxiv.org]
-The KAMM approach addresses this issue by introducing a neighborhood-aware metric that quantifies the local mechanical heterogeneity. Instead of considering each indentation point independently, KAMM evaluates the mismatch between a data point and its surrounding neighbors in the (E, H) space. This effectively captures spatial correlations and mechanical gradients within the dataset. [arxiv.org]
-By incorporating KAMM as an additional feature, clustering can be performed in an augmented three-dimensional space (E, H, KAMM). This extension significantly improves:
+A recent development in nanoindentation data analysis is the Kernel-Averaged Mechanical Mismatch (KAMM) descriptor, which can support clustering and phase identification in mechanical-property maps [#Mercier_2026]_.
+Analyses based solely on elastic modulus (E) and hardness (H) may struggle to distinguish phases when mechanical contrast is low or diffuse interphase regions are present. This can be a challenge in multiphase materials such as composites, alloys, and cementitious systems [#Mercier_2026]_.
+KAMM introduces a neighborhood-aware metric to quantify local mechanical heterogeneity. Rather than considering each indentation independently, it evaluates the mismatch between a data point and its neighbors in (E, H) space, capturing spatial correlations and mechanical gradients in the dataset [#Mercier_2026]_.
+By incorporating KAMM as an additional feature, clustering can be performed in an augmented three-dimensional space (E, H, KAMM). The study reports improved:
 
-Phase separability
-Detection of interphase regions
-Robustness to experimental noise [arxivlens.com]
+* Phase separability
+* Detection of interphase regions
+* Robustness to experimental noise
 
-This method is particularly advantageous for datasets exhibiting:
+This method may be useful for datasets exhibiting:
 
-Low contrast between phases
-Gradual transitions (graded interfaces)
-Complex or diffuse morphologies
+* Low contrast between phases
+* Gradual transitions (graded interfaces)
+* Complex or diffuse morphologies
 
-Another key contribution of this framework is the use of realistic synthetic benchmarks with controlled complexity (e.g., curved boundaries, diffuse phases, tunable contrast), enabling more rigorous validation of clustering approaches compared to overly simplistic datasets. [arxiv.org]
-Finally, KAMM-enhanced clustering facilitates downstream applications such as:
+The framework also uses synthetic benchmarks with controlled complexity (e.g., curved boundaries, diffuse phases, and tunable contrast) to validate clustering approaches [#Mercier_2026]_. KAMM-enhanced clustering may support downstream applications such as:
 
-Generation of representative volume elements (RVEs)
-Improved extraction of phase-specific mechanical properties
-Integration into ICME (Integrated Computational Materials Engineering) workflows [arxiv.org]
+* Generation of representative volume elements (RVEs)
+* Extraction of phase-specific mechanical properties
+* Integration into ICME (Integrated Computational Materials Engineering) workflows
 
 This approach can be combined with standard clustering methods (K-Means, GMM, Agglomerative clustering, etc.), providing a flexible and powerful extension to existing E–H map analysis techniques.
 
@@ -118,11 +117,11 @@ Next steps: Ashby map or self-organized maps
 ############################################
 
 
-The next step after the different analytical, sectorization, clustering...  approaches, could be to use nanoindentation outputs 
+After analytical, sectorization, or clustering approaches, the next step could be to use nanoindentation outputs
 (phase mechanical properties in the case of a composite, an alloy...) for material selection, material design, material discovery....
 
-A common strategy for material selection is the usage of conventional Ashby map [#Ashby_2005]_.
-An example of a typical Ashby map is given afterwards with materials families (envelops around different materials), using the CES Selector 2018 software [#CES_Selector]_.
+One common strategy for material selection is to use a conventional Ashby map [#Ashby_2005]_.
+The following figure shows a typical Ashby map with material families (envelopes around different materials), created using CES Selector 2018 software [#CES_Selector]_.
 At some point, it is possible to add material reference (bulk, homogeneous, monophasic, ...) values on the E-H map,
 in order to compare experimental data with data from the literature.
 
@@ -132,7 +131,7 @@ in order to compare experimental data with data from the literature.
    
    *Typical Ashby map of elastic modulus vs Vickers hardness, obtained using CES Selector software*
    
-Regarding material design or material discovery, an option is the usage of self-organized maps (SOMs) 
+For material design or discovery, one option is to use self-organizing maps (SOMs)
 [#Qian_2019]_ in the framework of material informatics. Here an example for Atomic Force Microscopy (AFM) technique [#Weber_2023]_.
 	
 References
@@ -157,7 +156,7 @@ References
 .. [#Matlab_cluster] `Mathworks - Cluster <https://fr.mathworks.com/help/stats/gmdistribution.cluster.html>`_
 .. [#Matlab_clustering] `Mathworks - Cluster Using Gaussian Mixture Models <https://fr.mathworks.com/help/stats/clustering-using-gaussian-mixture-models.html>`_
 .. [#Mercier_2025] `Mercier D. and El Gharoussi Y., "Unsupervised Machine Learning for Nanoindentation Mapping Analysis and Microstructural Correlation" (2025). <http://dx.doi.org/10.13140/RG.2.2.29301.49125>`_
-.. [#Mercier_2026] Mercier D. and El Gharoussi Y., "Enhancing Phase Clustering in Nanomechanical Property Maps of Multiphase Materials Using Kernel-Averaged Mechanical Mismatch" (2026). <https://arxiv.org/abs/2603.02090>_
+.. [#Mercier_2026] `Mercier D. and El Gharoussi Y., "Enhancing Phase Clustering in Nanomechanical Property Maps of Multiphase Materials Using Kernel-Averaged Mechanical Mismatch" (2026). <https://arxiv.org/abs/2603.02090>`_
 .. [#Oyen_2006] `Oyen M.L., "Nanoindentation hardness of mineralized tissues" (2006). <https://doi.org/10.1016/j.jbiomech.2005.09.011>`_
 .. [#Qian_2019] `Qian J., "Introducing self-organized maps (SOM) as a visualization tool for materials research and education" (2019). <https://doi.org/10.1016/j.rinma.2019.100020>`_
 .. [#Weber_2023] `Weber A., "Application of self-organizing maps to AFM-based viscoelastic characterization of breast cancer cell mechanics" (2023). <https://doi.org/10.1038/s41598-023-30156-3>`_

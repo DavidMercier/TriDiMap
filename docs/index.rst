@@ -17,8 +17,8 @@ the case of a multiphase, heterogeneous or composite material can be
 achieved using the grid nanoindentation technique [#Constantinides_2006]_,
 [#Němeček_2009]_ and [#Randall_2009]_.
 
-The TriDiMap toolbox has been developed to plot, to map and to analyze
-(nano)indentation dataset.
+The TriDiMap toolbox has been developed to plot, map, and analyze
+(nano)indentation datasets.
 
 With this Matlab toolbox, it is possible:
     * to map (in 2D or 3D), to interpolate and to smooth indentation map;
@@ -111,12 +111,12 @@ Contributors
 
 Acknowledgements
 -----------------
-The author is grateful to `Dr. Jiri Nemecek <http://ksm.fsv.cvut.cz/~nemecek/?page=resume&lang=en>`_ from `Czech Technical University <https://www.cvut.cz/en>`_, Czech Republic (Prague)
-and to Dr. Nicholas Randall from `Alemnis AG <https://alemnis.com/>`_, for discussions and many advices about nanoindentation mapping.
+The author is grateful to `Dr. Jiri Nemecek <http://ksm.fsv.cvut.cz/~nemecek/?page=resume&lang=en>`_ from `Czech Technical University <https://www.cvut.cz/en>`_, Czech Republic (Prague),
+and to Dr. Nicholas Randall from `Alemnis AG <https://alemnis.com/>`_ for discussions and advice about nanoindentation mapping.
 
-The author is grateful to Jean-François Vanhumbeeck and Xavier Vanden Eynde (`CRM Group <www.crmgroup.be>`_, Belgium (Liège)), for fruitful discussion and co-authoring of reference papers.
+The author is grateful to Jean-François Vanhumbeeck and Xavier Vanden Eynde (`CRM Group <www.crmgroup.be>`_, Belgium (Liège)) for fruitful discussions and for co-authoring reference papers.
 
-The author is grateful to Debora Rosseel, Franck Nozahic and Mélanie Gauvin (`OCAS <http://www.ocas.be/>`_, Belgium (Zwijnaarde)), for providing example files and lots of fruitful feedbacks/remarks.
+The author is grateful to Debora Rosseel, Franck Nozahic, and Mélanie Gauvin (`OCAS <http://www.ocas.be/>`_, Belgium (Zwijnaarde)) for providing example files and valuable feedback.
 
 References
 -------------
