@@ -108,7 +108,12 @@ else
         
         % NaN values
         if config.property < 3
-            [dataCleaned, ratioNan] = TriDiMap_cleaningData(data2use);
+            if isfield(gui.data, 'coordinates')
+                dataCleaned = data2use;
+                ratioNan = 100 * sum(isnan(data2use(:))) / numel(data2use);
+            else
+                [dataCleaned, ratioNan] = TriDiMap_cleaningData(data2use);
+            end
             set(gui.handles.value_NaNratio_GUI, 'String', num2str(ratioNan));
             if config.noNan
                 data2use = dataCleaned;

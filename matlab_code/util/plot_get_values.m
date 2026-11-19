@@ -9,6 +9,13 @@ if gui.config.flag_data == 0
     
 else
     [x_value, y_value] = ginput(1);
+    if isfield(gui.data, 'coordinates') && gui.config.property < 3
+        [~, index] = min(sum(bsxfun(@minus, gui.data.coordinates, [x_value, y_value]).^2, 2));
+        set(gui.handles.value_x_values_GUI, 'String', num2str(gui.data.coordinates(index, 1)));
+        set(gui.handles.value_y_values_GUI, 'String', num2str(gui.data.coordinates(index, 2)));
+        set(gui.handles.value_z_values_GUI, 'String', num2str(gui.data.data2plot(index)));
+        return
+    end
     
     set(gui.handles.value_x_values_GUI, 'String', ...
         num2str(abs(x_value)));

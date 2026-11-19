@@ -3,6 +3,11 @@ function [dataCropped, flagCrop] = TriDiMap_cropping(data)
 %% Function to crop the map
 gui = guidata(gcf);
 config = gui.config;
+if isfield(gui.data, 'coordinates')
+    dataCropped = data;
+    flagCrop = 0;
+    return
+end
 handles = gui.handles;
 flagCrop = 1;
 

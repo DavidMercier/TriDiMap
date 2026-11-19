@@ -25,9 +25,17 @@ if ~init
         data_path = config.data.data_path;
     end
     
-    [data.filename_data, data.pathname_data, filterindex_data] = ...
-        uigetfile('*.xls;*.xlsx', ...
-        char(title_importdata_Window), data_path);
+    if ~isempty(varargin)
+        [data.pathname_data, fileName, fileExtension] = fileparts(varargin{1});
+        data.filename_data = [fileName, fileExtension];
+    else
+        fileFilter = '*.xls;*.xlsx';
+        if get(h.pm_set_file, 'Value') == 5
+            fileFilter = '*.xls;*.xlsx;*.csv';
+        end
+        [data.filename_data, data.pathname_data, filterindex_data] = ...
+            uigetfile(fileFilter, char(title_importdata_Window), data_path);
+    end
     
     if data_path ~= 0
         g.config.data.data_path = data_path;
@@ -74,6 +82,47 @@ config.data.data_pathNew = data.pathname_data;
 set(g.handles.opendata_str_GUI, 'String', data.pathname_data);
 
 %% Loading data
+if config.flag_data && dataType == 5
+    if ~strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
+        config.flag_data = 0;
+        config.flagValid = 0;
+        errordlg('Return to the mapping window before importing irregular XY data.', 'Irregular XY');
+        return
+    end
+    try
+        measured = TriDiMap_readIrregularData(data2import);
+    catch exception
+        config.flag_data = 0;
+        config.flagValid = 0;
+        errordlg(exception.message, 'Invalid irregular XY data');
+        return
+    end
+    measured.filename_data = data.filename_data;
+    measured.pathname_data = data.pathname_data;
+    measured.mappingDataType = dataType;
+    data = measured;
+    count = size(data.coordinates, 1);
+    config.N_XStep = count;
+    config.N_YStep = 1;
+    config.flagValid = 1;
+    config.flagZplot = 0;
+    config.flag_ClusterGauss = 0;
+    config.minVal = NaN;
+    config.maxVal = NaN;
+    set(h.value_MinVal_GUI, 'String', num2str(nanmin(data.expValues.H)));
+    set(h.value_MaxVal_GUI, 'String', num2str(nanmax(data.expValues.H)));
+    set([h.value_MinXCrop_GUI, h.value_MinYCrop_GUI, h.value_MaxYCrop_GUI], 'String', '1');
+    set(h.value_MaxXCrop_GUI, 'String', num2str(count));
+    set(h.unitLength_GUI, 'Value', 2);
+    set(h.unitProp_GUI, 'Value', 2);
+    set(h.property_GUI, 'Value', 2);
+    set(h.pm_pixData_GUI, 'Value', 1);
+    g.data = data;
+    g.config = config;
+    guidata(h.MainWindow, g);
+    TriDiMap_runPlot;
+    return
+end
 if config.flag_data
     if strcmp (ext, '.xls') == 1 || strcmp (ext, '.xlsx') == 1
         

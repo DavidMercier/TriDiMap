@@ -2,6 +2,29 @@
 function TriDiMap_saveExcel
 %% Function to plot match as a function of all threshold
 g = guidata(gcf);
+if isfield(g.data, 'coordinates')
+    modulusHeader = 'Modulus (GPa)';
+    if isfield(g.data, 'originalProperties') || isfield(g.data, 'modulusIsReduced')
+        modulusHeader = 'Reduced modulus (GPa)';
+    end
+    [~, name] = fileparts(g.data.filename_data);
+    output = fullfile(g.data.pathname_data, [name, '_XY.csv']);
+    [file, message] = fopen(output, 'w');
+    if file < 0
+        error('TriDiMap:XYExportFailed', 'Unable to open %s: %s', output, message);
+    end
+    cleanup = onCleanup(@() fclose(file));
+    fprintf(file, 'X (um),Y (um),%s,Hardness (GPa)\n', modulusHeader);
+    fprintf(file, '%.17g,%.17g,%.17g,%.17g\n', ...
+        [g.data.coordinates, g.data.expValues.YM, g.data.expValues.H]');
+    [message, errorNumber] = ferror(file);
+    if errorNumber ~= 0
+        error('TriDiMap:XYExportFailed', 'Unable to write %s: %s', output, message);
+    end
+    clear cleanup
+    fprintf('Measured XY coordinates and current properties exported to %s\n', output);
+    return
+end
 if g.config.data_path
     sz1 = size(g.data.data2plot,1);
     sz2 = size(g.data.data2plot,2);

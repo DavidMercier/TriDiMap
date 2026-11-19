@@ -70,6 +70,38 @@ unit row; retain that information when reimporting, because imported columns
 are treated as ordinary modulus values. Depth slices and cross-sectional maps
 use separate data and are not recalculated by this option.
 
+Irregular XY coordinates
+-----------------------
+
+Select **Irregular XY** in the instrument/file-format selector, then **Select
+file**. CSV and Excel files are supported. The first worksheet (or CSV) must
+contain these four headers followed by one numeric row per indent:
+
+``X (um), Y (um), Modulus (GPa), Hardness (GPa)``
+
+Coordinates are in micrometres and properties in GPa. Negative coordinates are
+allowed; coordinate pairs must be finite and unique. Missing property values
+may be NaN, but each property must contain at least one finite measurement.
+``Reduced modulus (GPa)`` is also accepted instead of ``Modulus (GPa)`` and
+retains the reduced-modulus label.
+Try the synthetic example ``data_indentation/irregular_example.csv``.
+
+Property maps show colored points at the recorded XY positions, without
+reshaping, serpentine flipping, filling missing measurements, or interpolating
+across voids. E-H plots, distributions and contact-model recalculation use the
+original measurements, not resampled grid cells. Contact-model input must still
+contain one measurement row per indent in acquisition order.
+
+Grid-only operations (pixel interpolation/smoothing, index cropping, spatial
+phase maps, error maps, 3D slices and image binarization) are disabled in this
+mode. Grid dimensions and spacing are not used; units are locked to the input
+format. **Get property value** reports the nearest measured position and its
+displayed value. The **XLS** button exports an ``_XY.csv`` file preserving the
+coordinates and current original/recalculated properties in GPa, not display
+normalization or thresholding; this file can be reimported with Irregular XY.
+To return to a regular map, select its original file format, set its grid
+dimensions if necessary, and import the file normally.
+
 Crop
 ---------------------------
 

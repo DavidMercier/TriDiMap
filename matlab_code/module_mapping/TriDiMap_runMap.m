@@ -24,7 +24,15 @@ if config.flag_data
     end
     
     %% Interpolating, smoothing and binarizing steps of dataset
-    if config.noNan
+    if isfield(gui.data, 'coordinates')
+        gui.data.expValuesInterp = data2use;
+        gui.data.expValuesSmoothed = data2use;
+        gui.data.expValuesInterpSmoothed = data2use;
+        gui.data.xData_interp = gui.data.coordinates(:, 1);
+        gui.data.yData_interp = gui.data.coordinates(:, 2);
+        gui.data.xData_markers = gui.data.coordinates(:, 1);
+        gui.data.yData_markers = gui.data.coordinates(:, 2);
+    elseif config.noNan
         [gui.data.expValuesInterp, gui.data.expValuesSmoothed, ...
             gui.data.expValuesInterpSmoothed] = ...
             TriDiMap_interpolation_smoothing(...
@@ -39,7 +47,9 @@ if config.flag_data
     guidata(gcf, gui);
     
     %% Grid meshing
-    TriDiMap_meshingGrid(data2use);
+    if ~isfield(gui.data, 'coordinates')
+        TriDiMap_meshingGrid(data2use);
+    end
     gui = guidata(gcf);
 end
 
@@ -49,7 +59,7 @@ if config.flag_data
     
     if ~config.normalizationStep
         if config.property == 1
-            if isfield(gui.data, 'originalProperties')
+            if isfield(gui.data, 'originalProperties') || isfield(gui.data, 'modulusIsReduced')
                 if ~config.FrenchLeg
                     config.legend = strcat({'Reduced indentation modulus ('},config.strUnit_Property, ')');
                 else
@@ -116,7 +126,7 @@ if config.flag_data
         end
     end
     if config.normalizationStep && config.property == 1 && ...
-            isfield(gui.data, 'originalProperties')
+            (isfield(gui.data, 'originalProperties') || isfield(gui.data, 'modulusIsReduced'))
         config.legend = strrep(config.legend, 'elastic modulus', 'reduced indentation modulus');
         config.legend = strrep(config.legend, 'Module d''\''elasticit\''e', ...
             'Module d''\''indentation r\''eduit');

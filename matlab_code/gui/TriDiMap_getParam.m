@@ -178,7 +178,9 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         set(h.cb_smoothMap_GUI, 'Visible', 'off');
         set(h.pm_smoothMap_GUI, 'Visible', 'off');
         gui.config.binarizedGrid = 0;
-        disp('Interpolation and smoothing not active, because NaN values not removed/corrected !');
+        if ~isfield(gui.data, 'coordinates')
+            disp('Interpolation and smoothing not active, because NaN values not removed/corrected !');
+        end
     else
         set(h.cb_interpMap_GUI, 'Visible', 'on');
         set(h.pm_interpMap_GUI, 'Visible', 'on');
@@ -302,6 +304,37 @@ else
     gui.config.legendMatch = {'Match', 'No match'};
 end
 
+if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
+    gridControls = [h.value_numXindents_GUI, h.value_numYindents_GUI, ...
+        h.value_deltaXindents_GUI, h.value_deltaYindents_GUI, ...
+        h.value_MinXCrop_GUI, h.value_MaxXCrop_GUI, h.value_MinYCrop_GUI, h.value_MaxYCrop_GUI, ...
+        h.pm_pixData_GUI, h.cb_pixNaN_GUI, h.cb_interpMap_GUI, h.pm_interpMap_GUI, ...
+        h.cb_smoothMap_GUI, h.pm_smoothMap_GUI, h.cb_errorMap_GUI, ...
+        h.cb_plotSectMap_GUI, h.pb_diffEHmapCluster_GUI, h.cb_MinMax_plot_GUI, ...
+        h.ThreeDplot_GUI, h.binarization_GUI, h.unitLength_GUI];
+    if isfield(gui.data, 'coordinates')
+        set(gridControls, 'Enable', 'off');
+        set([h.cb_pixNaN_GUI, h.cb_interpMap_GUI, h.cb_smoothMap_GUI, ...
+            h.cb_errorMap_GUI, h.cb_plotSectMap_GUI, h.cb_MinMax_plot_GUI], 'Value', 0);
+        set(h.pm_pixData_GUI, 'Value', 1);
+        set(h.unitProp_GUI, 'Enable', 'off');
+        gui.config.rawData = 1;
+        gui.config.noNan = 0;
+        gui.config.interpBool = 0;
+        gui.config.smoothBool = 0;
+        gui.config.MinMax = 0;
+        gui.config.plotSectMap = 0;
+        if get(h.pm_set_file, 'Value') ~= 5
+            set([h.value_numXindents_GUI, h.value_numYindents_GUI, ...
+                h.value_deltaXindents_GUI, h.value_deltaYindents_GUI], 'Enable', 'on');
+        end
+    else
+        set(gridControls, 'Enable', 'on');
+        if ~isfield(gui.data, 'originalProperties')
+            set(h.unitProp_GUI, 'Enable', 'on');
+        end
+    end
+end
 guidata(gcf, gui);
 
 end

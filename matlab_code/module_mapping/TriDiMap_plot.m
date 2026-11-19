@@ -2,6 +2,22 @@
 function TriDiMap_plot
 %% Function to plot a 3D map of material properties in function of X/Y coordinates
 gui = guidata(gcf);
+if isfield(gui.data, 'coordinates')
+    values = gui.data.data2plot;
+    colors = values;
+    if gui.config.logZ
+        if any(values(isfinite(values)) <= 0)
+            errordlg('Log colors require strictly positive measured values.', 'Irregular XY map');
+            return
+        end
+        colors = log(values);
+    end
+    cla;
+    scatter(gui.data.coordinates(:, 1), gui.data.coordinates(:, 2), 55, colors, 'filled', ...
+        'Tag', 'TriDiMapIrregularPoints');
+    TriDiMap_plot_options(gui.data.coordinates(:, 1), gui.data.coordinates(:, 2), values, 1);
+    return
+end
 
 rawData = gui.config.rawData;
 if rawData < 8

@@ -173,7 +173,7 @@ if flagPlot
             cmap_Flip = colormap([cMap, '(',num2str(intervalScaleBar),')']);
         end
     end
-    if ~gui.config.noNan
+    if ~gui.config.noNan && ~isfield(gui.data, 'coordinates')
         cMapNaN = [1 1 1 ; cmap_Flip];
     else
         cMapNaN = cmap_Flip;
