@@ -103,8 +103,7 @@ neighbours plus the centre. Order 2 has up to eight plus the centre;
 it does **not** include the first shell. Boundaries and missing measurements
 reduce the denominator. An isolated valid centre has zero mismatch.
 
-The implementation follows the explicit definitions in
-``KAMM/ArticleClusteringKAMM/supplementary_clustering.py``:
+The implemented descriptors use the following definitions:
 
 * **KAMM** = mean over ``D_i`` of ``abs(E_i*H_i - E_j*H_j)`` (GPa squared).
 * **KAEM** = mean ``abs(E_i - E_j)`` (GPa).
