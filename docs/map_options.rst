@@ -122,16 +122,22 @@ The |matlab| function used to generate a divergent colormap is:
 
 The colormap can be flipped for aesthetic reasons.
 
-For publication, enable **Plot options > Grayscale plots**. This converts the
+For publication, select **Grayscale (all plots)** in the **Colormap** list.
+The shared list is at the top of the lower left-hand options panel. It follows
+the selected view and stays available for maps (including KAMM), E-H plots and PDFs.
+This converts the
 displayed colormap, E-H sector/cluster points and envelopes, and PDF
 (probability density) bars, fitted components and annotations to grayscale.
 It also applies to the pixelized phase map selected with **Plot map with
 sectors**. The different phase colors become different gray levels; phase
 assignments, thresholds, measurements and fitted results are unchanged.
 
-The option is off by default. Toggling it only changes the current rendering,
+Unlike the scalar ``gray`` palette, this also converts explicitly colored
+curves, bars and phase symbols. It replaces the former toolbar/menu option.
+
+The option is off by default. Selecting it only changes the current rendering,
 without rerunning clustering or PDF fitting. It remains enabled for subsequent
-plots and saved plots; disable it to restore the original colors.
+plots and saved plots; choose another colormap to restore the original colors.
 
 .. figure:: ./_pictures/div_map.png
    :scale: 40 %

@@ -80,6 +80,7 @@ Contents
    tomography
    pdf_cdf
    E_H
+   kamm
    image_correlation
    examples
    links_ref

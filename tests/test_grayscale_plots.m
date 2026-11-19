@@ -4,6 +4,7 @@ originalPath = path;
 restorePath = onCleanup(@() path(originalPath));
 addpath(fullfile(root, 'matlab_code', 'module_mapping'));
 addpath(fullfile(root, 'matlab_code', 'gui'));
+addpath(fullfile(root, 'matlab_code', 'util'));
 fig = figure('Visible', 'off');
 cleanup = onCleanup(@() close(fig));
 ax = axes('Parent', fig);
@@ -68,5 +69,20 @@ assert(isequal(get(ax, 'Colormap'), privateGray));
 TriDiMap_applyGrayscale(ax, false);
 assert(isequal(get(ax, 'Colormap'), privateColors));
 assert(isequal(get(fig, 'Colormap'), colors));
+choices = listColormap;
+popup = uicontrol('Parent', fig, 'Style', 'popupmenu', 'String', choices, ...
+    'Value', find(strcmp(choices, 'Grayscale (all plots)')));
+state = rng;
+TriDiMap_toggleGrayscale(popup, []);
+after = guidata(fig);
+assert(after.config.grayscalePlots);
+palette = get(ax, 'Colormap');
+assert(isequal(palette(:, 1), palette(:, 2), palette(:, 3)));
+set(popup, 'Value', 1);
+TriDiMap_toggleGrayscale(popup, []);
+after = guidata(fig);
+assert(~after.config.grayscalePlots && strcmp(after.config.colorMap, 'jet'));
+assert(isequal(after.data, gui.data) && isequal(after.resultsPDF, gui.resultsPDF));
+assert(isequal(get(ax, 'Colormap'), privateColors) && isequal(rng, state));
 disp('Grayscale rendering and restoration tests passed.');
 end

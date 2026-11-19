@@ -63,6 +63,18 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
     intervalScaleBar = gui.config.intervalScaleBar;
     contourPlot = gui.config.contourPlot;
     logZ = gui.config.logZ;
+    if gui.config.property == 10 && logZ
+        if any(data2plot(:) <= 0)
+            warning('TriDiMap:MLLogNonpositive', 'Nonpositive descriptor values are hidden in logarithmic display.');
+        end
+        data2plot(data2plot <= 0) = NaN;
+        if ~any(isfinite(data2plot(:)))
+            error('TriDiMap:MLInput', 'This descriptor has no positive values for log display; uncheck Log.');
+        end
+        if rawData > 1
+            logZ = false;
+        end
+    end
     
     %% 1 map (with or without markers)
     if gui.config.cminOld < 0
@@ -96,6 +108,9 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
             %hFig = pcolor(xData_interp, xData_interp, (data2plot'));
         end
         set(gca,'YDir','normal');
+        if gui.config.property == 10
+            set(hFig, 'AlphaData', isfinite(data2plot'));
+        end
         % Following line to not plot NaN but doesn't work...
         %set(hFig,'AlphaData',~isnan(data2plot'));
         flagPlot = 1;
@@ -151,9 +166,13 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         end
         flagPlot = 1;
     elseif rawData == 3 && flagSize
-        try hFig = surfc(gui.data.xData, gui.data.yData, data2plot');
-        catch err
-            errordlg('Wrong inputs');
+        if gui.config.property == 10
+            hFig = surfc(xData_interp, yData_interp, data2plot');
+        else
+            try hFig = surfc(gui.data.xData, gui.data.yData, data2plot');
+            catch err
+                errordlg('Wrong inputs');
+            end
         end
         
         if gui.config.shadingData == 1
@@ -168,7 +187,7 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         hFig = waterfall(xData_interp, yData_interp, data2plot');
         flagPlot = 1;
     elseif rawData == 5 && flagSize
-        if gui.config.licenceStat_Flag
+        if gui.config.licenceStat_Flag || gui.config.property == 10
             hFig = contour3(xData_interp, yData_interp, data2plot', ...
                 intervalScaleBar);
             flagPlot = 1;
@@ -190,6 +209,11 @@ if strcmp(get(gui.handles.binarization_GUI, 'String'), 'BINARIZATION')
         YdataVal = get(hFig,'YData');
         axis tight;
         for ii = 1:length(XdataVal)
+            if gui.config.property == 10
+                set(hFig(ii), 'XData', (XdataVal{ii}-1)*gui.config.XStep/gui.config.interpFactVal + ...
+                    (gui.config.MinXCrop-1)*gui.config.XStep);
+                continue
+            end
             XdataVal{ii} = ...
                 XdataVal{ii}+(min(xData_interp(1,:))-1)*ones(size(XdataVal{ii}));
             if gui.config.interpFactVal == 1

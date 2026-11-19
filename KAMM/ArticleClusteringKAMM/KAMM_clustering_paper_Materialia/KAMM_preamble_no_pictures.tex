@@ -1,0 +1,41 @@
+\documentclass[final,3p,times]{elsarticle}
+
+% ----------------------------------------------------------
+% Packages
+% ----------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+
+% ----------------------------------------------------------
+% Pictures disabled
+% Every \includegraphics command in the manuscript is ignored.
+% Figure captions, labels, numbering, and references are preserved.
+% ----------------------------------------------------------
+\renewcommand{\includegraphics}[2][]{}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{subfig}
+\usepackage{geometry}
+\usepackage{multirow}
+\usepackage{xcolor}
+\newcommand{\rev}[1]{\colorbox{yellow}{\parbox{\dimexpr\linewidth-2\fboxsep}{#1}}}
+
+\usepackage[unicode]{hyperref}
+
+\usepackage[draft]{changes}
+\definechangesauthor[name=DM,color=red]{DM}
+
+\makeatletter
+\pdfstringdefDisableCommands{%
+  \def\cnotenum{}%
+  \def\@corref#1{}%
+  \def\corref#1{}%
+  \def\cortext#1#2{}%
+}
+\makeatother
+
+% \usepackage{cite}
+
+\journal{(Insert Journal Name)}

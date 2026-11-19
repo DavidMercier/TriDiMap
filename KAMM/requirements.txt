@@ -1,0 +1,14 @@
+streamlit
+streamlit_plotly_events
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+openpyxl
+xlrd
+jsonschema
+requests
+kneed
+vtk
+# Optional: install the vendor-provided Granta MI Scripting Toolkit wheel for MI export.

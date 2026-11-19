@@ -15,12 +15,22 @@ dataset.
 With this Matlab toolbox, it is possible:
     * to map (in 2D or 3D), to interpolate and to smooth indentation map;
     * to plot elastic modulus vs hardness values;
+    * to cluster phases with standardized mechanical/KAMM features and display spatial phase maps;
     * to plot and to fit probability density functions;
     * to plot and to fit cumulative density functions;
     * to extract statistical values (mean, min, max with standard deviations) of mechanical properties and fractions for each phase;
     * to correct mechanical map from image correlation with microstructural map;
     * to correlate/compare mechanical map with microstructural map;
     * to plot 4D mechanical property map.
+
+License-free Python example
+--------------------------
+
+The `KAMM clustering notebook <python/kamm_clustering.ipynb>`_ demonstrates
+2D modulus/hardness maps -> neighbourhood mismatch -> K-means/GMM clustering,
+without MATLAB, Streamlit or Granta. Install ``python/requirements.txt`` and
+open the notebook with Jupyter. See `the KAMM workflow guide <docs/kamm.rst>`_
+for input conventions, MATLAB GUI controls and limitations.
 
 Matlab version
 ------------------

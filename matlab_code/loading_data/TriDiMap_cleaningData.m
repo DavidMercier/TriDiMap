@@ -1,14 +1,38 @@
 %% Copyright 2014 MERCIER David
-function [dataCleaned, ratioNan] = TriDiMap_cleaningData(data)
+function [dataCleaned, ratioNan] = TriDiMap_cleaningData(data, descriptor)
 %% Function to replace NaN values to avoid blank pixels
 
-data(data == 0) = NaN;
-% No physical meaning if hardness or elastic modulus values
-% are higher than 1000GPa or are negative
-data(data > 1000) = NaN;
-data(data < 0) = NaN;
+if nargin < 2
+    descriptor = false;
+end
+if descriptor
+    data(~isfinite(data)) = NaN;
+else
+    data(data == 0) = NaN;
+    % No physical meaning if hardness or elastic modulus values
+    % are higher than 1000GPa or are negative
+    data(data > 1000) = NaN;
+    data(data < 0) = NaN;
+end
 [row, col] = find(isnan(data));
 ratioNan = round(100*(100*length(row)/(size(data,1)*size(data,2))))/100;
+
+if descriptor
+    for ii = 1:numel(row)
+        neighbours = data(max(1, row(ii)-1):min(size(data, 1), row(ii)+1), ...
+            max(1, col(ii)-1):min(size(data, 2), col(ii)+1));
+        neighbours = neighbours(isfinite(neighbours));
+        if ~isempty(neighbours)
+            data(row(ii), col(ii)) = mean(neighbours);
+        end
+    end
+    dataCleaned = data;
+    if any(isnan(data(:)))
+        warning('TriDiMap:KAMMUnfilled', ...
+            '%d descriptor pixels have no finite neighbours and remain missing.', sum(isnan(data(:))));
+    end
+    return
+end
 
 for ii = 1:length(row)
     if row(ii) > 1 && col(ii) > 1 && ...

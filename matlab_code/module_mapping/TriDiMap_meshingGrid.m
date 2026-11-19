@@ -72,6 +72,16 @@ else
         meshgrid(gui.data.xData, gui.data.yData);
 end
 
+if config.property == 10
+    xOffset = (config.MinXCrop-1)*x_step;
+    yOffset = (config.MinYCrop-1)*y_step;
+    gui.data.xData = gui.data.xData + xOffset;
+    gui.data.yData = gui.data.yData + yOffset;
+    gui.data.xData_interp = gui.data.xData_interp + xOffset;
+    gui.data.yData_interp = gui.data.yData_interp + yOffset;
+    gui.data.xData_markers = gui.data.xData_markers + xOffset;
+    gui.data.yData_markers = gui.data.yData_markers + yOffset;
+end
 guidata(gcf, gui);
 
 end

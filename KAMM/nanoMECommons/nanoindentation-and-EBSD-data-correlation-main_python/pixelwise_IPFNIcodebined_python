@@ -1,0 +1,1469 @@
+#Based on Gioergios code
+
+################################################################################################################
+# Load libraries and path
+################################################################################################################
+
+# Load libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from PIL import Image
+from sklearn.cluster import DBSCAN, KMeans
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+from sklearn.preprocessing import scale
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.cluster import KMeans
+from sklearn.neighbors import NearestNeighbors
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import silhouette_score
+from sklearn.metrics import calinski_harabasz_score
+from sklearn.metrics import davies_bouldin_score
+import os
+import time
+import warnings
+warnings.filterwarnings("ignore")
+
+# Parallel computing
+import multiprocessing as mp
+num_cores = mp.cpu_count()
+print(f"Number of available cores: {num_cores}")
+
+# Path
+mypath = r"C:\Users\dmercier\OneDrive - ANSYS, Inc\pythonRepo\nanoMECommons\nanoindentation-and-EBSD-data-correlation-main_python"
+os.chdir(mypath)
+
+################################################################################################################
+# Functions to be used
+################################################################################################################
+# fix plot theme for ggplot to ensure uniformity
+def plot_theme():
+    import matplotlib.pyplot as plt
+    plt.rcParams['figure.figsize'] = (12, 8)
+    plt.rcParams['font.size'] = 16
+    plt.rcParams['axes.titlesize'] = 16
+    plt.rcParams['axes.labelsize'] = 16
+    plt.rcParams['xtick.labelsize'] = 16
+    plt.rcParams['ytick.labelsize'] = 16
+    plt.rcParams['legend.fontsize'] = 16
+    plt.rcParams['lines.linewidth'] = 2
+    plt.rcParams['lines.markersize'] = 10
+
+# do distance based correlation for allocating colorshades to specific colors
+# Function to compare RGB values with specific colors - more generic colors (maybe pale colors will be used)
+# I play with it - choose colors for kColours as centers
+def get_color_category(R, G, B):
+    # Define standard RGB values for each color category
+    colors_data = {
+        'color': ['green', 'blue', 'red', 'yellow', 'pink', 'cyan', 'white', 'black'],
+        'R': [0.4666667, 0.3529412, 0.6705882, 0.7921569, 0.8470588, 0.4901961, 1, 0],
+        'G': [0.8313725, 0.3490196, 0.2784314, 0.8196078, 0.4313725, 0.8313725, 1, 0],
+        'B': [0.4392157, 0.7843137, 0.2470588, 0.4000000, 0.6352941, 0.8156863, 1, 0]
+    }
+
+    # Function to find the closest color category for each row
+    def find_closest_color(r, g, b):
+        abs_diff = np.abs(np.array([colors_data['R'], colors_data['G'], colors_data['B']]) - np.array([r, g, b])).sum(axis=0)
+        closest_color = colors_data['color'][np.argmin(abs_diff)]
+        return closest_color
+
+    # Apply the function to each row of R, G, and B
+    color_categories = [find_closest_color(r, g, b) for r, g, b in zip(R, G, B)]
+    return color_categories
+
+# for data imputation with knn method
+def impute_knn(train_data, test_data, k=8):
+    # Separate predictors and response variables in the training set
+    X_train = train_data[['x', 'y']]
+    y_train = train_data[['R', 'G', 'B']]
+
+    # Separate predictors in the test set
+    X_test = test_data[['x', 'y']]
+
+    # Use k-NN model to predict R, G, and B values for the test set
+    imputed_data = test_data[['x', 'y']].copy()
+    neigh = NearestNeighbors(n_neighbors=k)
+    neigh.fit(X_train)
+    _, indices = neigh.kneighbors(X_test)
+
+    for col in ['R', 'G', 'B']:
+        imputed_data[col] = y_train.iloc[indices].mean(axis=1)[col]
+
+    return imputed_data
+
+################################################################################################################
+# Start: IPF map - read image to extract knowledge (anisotropy, grain locations, grains coordinates)
+################################################################################################################
+
+################################################################################################################ 
+# *************** Data Preparation - Phase #1 ***************** #
+################################################################################################################
+# Read IPF image
+img = np.array(Image.open("IPF.jpg"))
+img_dim = img.shape
+
+# Assign RGB channels to data frame
+img_wide = pd.DataFrame({
+    'x': np.repeat(np.arange(img_dim[1]), img_dim[0]),
+    'y': np.tile(np.arange(img_dim[0], 0, -1), img_dim[1]),
+    'R': img[:, :, 0].flatten(),
+    'G': img[:, :, 1].flatten(),
+    'B': img[:, :, 2].flatten()
+})
+
+# Rescale coordinates
+img_wide['x'] = (img_wide['x'] - 1) * 59.5 / img_wide['x'].max()
+img_wide['y'] = (img_wide['y'] - 1) * 45.0 / img_wide['y'].max()
+
+img_IPF = img_wide
+
+# Round digits
+img_wide['x'] = np.round(img_wide['x'], 1)
+img_wide['y'] = np.round(img_wide['y'], 1)
+
+img_wide['color'] = img_wide.apply(lambda row: f'rgb({row["R"]}, {row["G"]}, {row["B"]})', axis=1)
+
+print(img_wide.head())
+
+# Load the data
+img_wide = pd.DataFrame({'R': img_wide['R'], 'G': img_wide['G'], 'B': img_wide['B'], 'x': img_wide['x'], 'y': img_wide['y']})
+
+################################################################################################################ 
+# *************** IPF map clustering to obtain each grain's coordinates ***************** #
+################################################################################################################
+# Cluster the data
+np.random.seed(1000)
+kClusters = 10
+kmeans = KMeans(n_clusters=kClusters, random_state=0).fit(img_wide[['R', 'G', 'B']])
+img_wide['kColours'] = [f'#{int(r*255):02X}{int(g*255):02X}{int(b*255):02X}' for r, g, b in zip((kmeans.cluster_centers_[kmeans.labels_][:,0] - kmeans.cluster_centers_[kmeans.labels_][:,0].min()) / (kmeans.cluster_centers_[kmeans.labels_][:,0].max() - kmeans.cluster_centers_[kmeans.labels_][:,0].min()), (kmeans.cluster_centers_[kmeans.labels_][:,1] - kmeans.cluster_centers_[kmeans.labels_][:,1].min()) / (kmeans.cluster_centers_[kmeans.labels_][:,1].max() - kmeans.cluster_centers_[kmeans.labels_][:,1].min()), (kmeans.cluster_centers_[kmeans.labels_][:,2] - kmeans.cluster_centers_[kmeans.labels_][:,2].min()) / (kmeans.cluster_centers_[kmeans.labels_][:,2].max() - kmeans.cluster_centers_[kmeans.labels_][:,2].min()))]
+
+# Plot the clustered data
+sns.scatterplot(x='x', y='y', data=img_wide, hue='kColours')
+plt.title(f'k-Means Clustering of {kClusters} Colours')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Convert kColours to RGB values
+img_wide['red'] = img_wide['kColours'].str[1:3].apply(lambda x: int(x, 16)/255)
+img_wide['green'] = img_wide['kColours'].str[3:5].apply(lambda x: int(x, 16)/255)
+img_wide['blue'] = img_wide['kColours'].str[5:7].apply(lambda x: int(x, 16)/255)
+
+# Check if colors are unique
+col_df = img_wide['kColours'].unique()
+
+# Create a plot for each data frame in the merged_list
+plot_list = [plt.figure() for _ in range(len(col_df))]
+for i, col_val in enumerate(col_df):
+    df = img_wide[img_wide['kColours'] == col_val]
+    plt.figure(plot_list[i].number)
+    plt.scatter(df['x'], df['y'], c=df['kColours'])
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title(f'Cluster {i+1}')
+    plt.show()
+
+# Use list comprehension to create a plot for each data frame in the merged_list
+plot_list = [df.plot(kind='scatter', x='x', y='y', c=df['kColours'], colormap='viridis') for df in merged_list]
+
+
+################################################################################################################
+################      ISOLATE ALL GRAINS      #########
+################################################################################################################
+# Create an empty list to store the processed dataframes
+processed_dataframes = []
+
+# Loop through each dataframe in the plot_list and perform the operations
+for i, ax in enumerate(plot_list):
+    # Get the current dataframe from the list
+    data = pd.DataFrame(merged_list[i])
+    processed_dataframes.append(data)
+
+    # Scaling
+    scaled = scale(data.iloc[:, :2])
+    
+    # k-means++ clustering implementation
+    
+    # Choose an appropriate value of K (number of clusters)
+    k_value = 80
+    
+    # Use K-means++ initialization and run the algorithm in parallel with multiple starts (e.g., 100 starts)
+    kmeans_model = KMeans(n_clusters=k_value, n_init=100, algorithm='lloyd', verbose=0, max_iter=300).fit(scaled)
+    
+    # Get the cluster labels
+    cluster_labels = kmeans_model.labels_
+    
+    data = data.copy()
+    data['PDA'] = cluster_labels + 80 * i + 1
+    
+    # Assuming you have the 'data' dataframe with columns 'R', 'G', 'B', and 'colors'
+    # Perform the get_plane_annotation function and Apply the annotation and create a new column 'plane'
+    data['plane'] = data.apply(lambda row: get_color_category(row['R'], row['G'], row['B']), axis=1)
+    
+    # Filter out rows where the value appears less than 25 times
+    value_counts = data['PDA'].value_counts()
+    threshold = 5  # 25 lead to exclusion of ~ 80% of data
+    data = data[data['PDA'].isin(value_counts[value_counts >= threshold].index)]
+    
+    # Save the processed dataframe in the list
+    processed_dataframes.append(data)
+
+# Combine the processed dataframes into a single dataframe
+final_dataframe = pd.concat(processed_dataframes)
+
+# Replace plane values based on color
+color_to_plane = {
+    'red': '(001)',
+    'blue': '(111)',
+    'green': '(101)',
+    'cyan': '(101)U(111)',
+    'yellow': '(001)U(101)',
+    'pink': '(001)U(111)',
+    'white': 'White',
+    'black': 'Black'
+}
+final_dataframe['plane'] = final_dataframe['plane'].map(color_to_plane).fillna('NA')
+
+# Display the first few rows of the dataframe
+print(final_dataframe.head())
+
+# Count the number of rows where plane is "", "NA", "White", and "Black"
+print(final_dataframe[final_dataframe['plane'] == ""].shape[0])
+print(final_dataframe[final_dataframe['plane'] == "NA"].shape[0])
+print(final_dataframe[final_dataframe['plane'] == "White"].shape[0])
+print(final_dataframe[final_dataframe['plane'] == "Black"].shape[0])
+
+# Display the structure of the dataframe
+print(final_dataframe.info())
+
+# Check statistics
+print(final_dataframe[final_dataframe['plane'] == "(001)U(111)"].shape[0])
+print(final_dataframe[final_dataframe['plane'] == "(001)"].shape[0])
+print(final_dataframe[final_dataframe['plane'] == "(111)"].shape[0])
+print(final_dataframe[final_dataframe['plane'] == "(001)U(101)"].shape[0])
+print(final_dataframe[final_dataframe['plane'] == "(101)"].shape[0])
+print(final_dataframe[final_dataframe['plane'] == "(101)U(111)"].shape[0])
+
+# Save the dataframe to a CSV file
+final_dataframe.to_csv('IPF_grains_n_planes_repeat.csv', index=False)
+
+################################################################################################################
+# test how it looks like a grain
+################################################################################################################
+# Filter the dataframe
+test = final_dataframe[final_dataframe['PDA'] == 755]
+
+# Create a scatter plot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=test, x='x', y='y', hue='kColours')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# To count the number of unique grains, you can use the nunique function
+# Assuming 'grain' is the column that identifies each grain
+num_grains = test['grain'].nunique()
+print(f'Number of unique grains: {num_grains}')
+
+# To get the dimensions of each grain, you can group by the grain column and calculate the max and min of x and y
+grain_dimensions = test.groupby('grain').agg({'x': ['min', 'max'], 'y': ['min', 'max']})
+grain_dimensions['length'] = grain_dimensions[('x', 'max')] - grain_dimensions[('x', 'min')]
+grain_dimensions['width'] = grain_dimensions[('y', 'max')] - grain_dimensions[('y', 'min')]
+print(grain_dimensions)
+
+################################################################################################################
+# test how it looks like a unique anisotropic plane
+################################################################################################################
+# Filter the dataframe
+planes = ["(001)", "(101)", "(111)", "(101)U(111)", "(001)U(101)", "(001)U(111)"]
+test2 = final_dataframe[final_dataframe['plane'].isin(planes)]
+
+# Display the first few rows of the dataframe
+print(test2.head())
+
+# Create a scatter plot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=test2, x='x', y='y', hue='kColours', s=15)
+plt.title('EBSD pattern')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Display the unique colors
+print(test2['kColours'].unique())
+
+################################################################################################################
+# Apply necessary corrections to IPF classification
+################################################################################################################
+# Create a dictionary mapping colors to planes
+color_to_plane = {
+    "#C48B54": "(001)",
+    "#D6A670": "(001)",
+    "#808DD8": "(111)",
+    "#74A9DA": "(111)",
+    "#6CCEA8": "(101)",
+    "#A4CFB1": "(101)",
+    "#D56F68": "(001)",
+    "#D08480": "(001)"
+}
+
+# Replace the 'plane' values based on their color
+final_dataframe['plane'] = final_dataframe['kColours'].map(color_to_plane).fillna(final_dataframe['plane'])
+################################################################################################################
+# Correlate to EBSD phase map
+################################################################################################################
+# Then we should read also the EBSD dataset and add the labels for that and the labels of the planes by x,y
+
+################################################################################################################ 
+# *************** Data Preparation - Phase #1 ***************** #
+################################################################################################################
+# Read EBSD phase annotated image
+img2 = Image.open("EBSD_phase.jpg")
+imgDm2 = np.array(img2).shape
+
+# Assign RGB channels to data frame
+img_wide2 = pd.DataFrame({
+    'x': np.repeat(np.arange(1, imgDm2[1] + 1), imgDm2[0]),
+    'y': np.tile(np.arange(imgDm2[0], 0, -1), imgDm2[1]),
+    'R': np.array(img2)[:, :, 0].flatten(),
+    'G': np.array(img2)[:, :, 1].flatten(),
+    'B': np.array(img2)[:, :, 2].flatten()
+})
+
+# Do the rescaling
+# Coordinates fix: EBSD phase map (+8.7 to 59.5) x (+8.0 to 45.0) um & round digits to facilitate merging
+img_wide2['x'] = img_wide2['x'] - 1
+img_wide2['y'] = img_wide2['y'] - 1
+
+img_wide2['x'] = img_wide2['x'] * (59.5 - 8.7) / img_wide2['x'].max()
+img_wide2['y'] = img_wide2['y'] * (45.0 - 8.0) / img_wide2['y'].max()
+
+img_wide2['x'] = img_wide2['x'] + 8.7
+img_wide2['y'] = img_wide2['y'] + 8.0
+
+img_EBSD_phase = img_wide2.copy()
+
+# Round digits
+img_wide2['x'] = img_wide2['x'].round(1)
+img_wide2['y'] = img_wide2['y'].round(1)
+
+# Add color column
+img_wide2['color'] = ['#%02x%02x%02x' % (r, g, b) for r, g, b in zip(img_wide2['R'], img_wide2['G'], img_wide2['B'])]
+
+# Display the first few rows of the dataframe
+print(img_wide2.head())
+
+# Display the unique colors
+print(img_wide2['color'].unique())
+
+################################################################################################################ 
+# *************** EBSD phase map: annotate phase names based on colors ***************** #
+################################################################################################################
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set random seed
+np.random.seed(1000)
+
+# Perform k-means clustering
+kClusters = 3
+kMeans = KMeans(n_clusters=kClusters).fit(img_wide2[['R', 'G', 'B']])
+kColours = ['#%02x%02x%02x' % (int(r), int(g), int(b)) for r, g, b in kMeans.cluster_centers_[kMeans.labels_]]
+img_wide2['kColours'] = kColours
+
+# Display the unique colors
+print(img_wide2['kColours'].unique())
+
+# Create a scatter plot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=img_wide2, x='x', y='y', hue='kColours', s=15)
+plt.title(f'k-Means Clustering of {kClusters} Colours')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Assign phases based on color
+color_to_phase = {
+    "#251FCC": "Bainite",
+    "#1CC0F5": "Ferrite",
+    "#B60D4A": "Martensite"
+}
+img_wide2['phase'] = img_wide2['kColours'].map(color_to_phase).fillna('NA')
+
+# Display the unique phases
+print(img_wide2['phase'].unique())
+
+################################################################################################################ 
+# *************** Establish a consensus mechanism to revise the phase map ***************** #
+################################################################################################################
+# Merge datasets of IPF and phase map
+merged_dataset = pd.merge(final_dataframe, img_wide2, on=['x', 'y'])
+
+# Display the first few rows of the merged dataset
+print(merged_dataset.head())
+
+# Keep only distinct values
+merged_dataset = merged_dataset.drop_duplicates(subset=['x', 'y'])
+
+d = pd.DataFrame()
+
+for i in range(1, merged_dataset['PDA'].max() + 1):
+    print(i)
+    a = merged_dataset[merged_dataset['PDA'] == i]
+    if len(a) < 4:
+        continue
+    n_M = sum(a['phase'] == 'Martensite')
+    n_B = sum(a['phase'] == 'Bainite')
+    n_F = sum(a['phase'] == 'Ferrite')
+
+    if n_M > n_B and n_M > n_F:
+        a['phase'] = 'Martensite'
+        a['kColours.y'] = "#B60D4A"
+    elif n_B > n_M and n_B > n_F:
+        a['phase'] = 'Bainite'
+        a['kColours.y'] = "#251FCC"
+    else:
+        a['phase'] = 'Ferrite'
+        a['kColours.y'] = "#1CC0F5"
+
+    d = pd.concat([d, a])
+
+# Display the first few rows of the dataframe
+print(d.head())
+
+d = d.iloc[1:]
+
+# Create a scatter plot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=d, x='x', y='y', hue='kColours.y', s=15)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+EBSD_grain_phase_map = d
+
+################################################################################################################
+# *** Data imputation *** kcolours.y to rgb & enhancement of datapoints with imputation & annotation with phases
+################################################################################################################
+
+################################################################################################################
+# try to convert kColours to RGB values
+################################################################################################################
+from sklearn.impute import KNNImputer
+
+# Convert color to RGB
+EBSD_grain_phase_map['RGB'] = EBSD_grain_phase_map['kColours.y'].apply(lambda x: [int(x[i:i+2], 16) for i in (1, 3, 5)])
+EBSD_grain_phase_map[['R', 'G', 'B']] = pd.DataFrame(EBSD_grain_phase_map['RGB'].tolist(), index=EBSD_grain_phase_map.index) / 255
+
+# Select necessary columns
+EBSD_grain_phase_map = EBSD_grain_phase_map[['x', 'y', 'R', 'G', 'B']]
+
+# Create a grid of x and y coordinates with 0.1 intervals
+grid_x = np.arange(EBSD_grain_phase_map['x'].min(), EBSD_grain_phase_map['x'].max(), 0.1)
+grid_y = np.arange(EBSD_grain_phase_map['y'].min(), EBSD_grain_phase_map['y'].max(), 0.1)
+
+# Create a data frame to store the imputed values
+imputed_data_un = pd.DataFrame(np.array(np.meshgrid(grid_x, grid_y)).T.reshape(-1,2), columns=['x', 'y'])
+
+# Perform KNN imputation
+imputer = KNNImputer(n_neighbors=8)
+imputed_data = imputer.fit_transform(pd.concat([EBSD_grain_phase_map, imputed_data_un]))
+
+# Combine the imputed_data with the original df dataframe
+img_wide4 = pd.DataFrame(imputed_data, columns=['x', 'y', 'R', 'G', 'B'])
+
+# Convert RGB to color
+img_wide4['color'] = ['#%02x%02x%02x' % (int(r*255), int(g*255), int(b*255)) for r, g, b in zip(img_wide4['R'], img_wide4['G'], img_wide4['B'])]
+
+# Display the unique colors
+print(img_wide4['color'].unique())
+
+# Create a scatter plot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=img_wide4, x='x', y='y', hue='color', s=15)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+################################################################################################################ 
+# Annotate based on Color Distance # 
+################################################################################################################
+# Define a function to get color category
+def get_color_category(r, g, b):
+    if r > g and r > b:
+        return 'red'
+    elif g > r and g > b:
+        return 'green'
+    elif b > r and b > g:
+        return 'blue'
+    else:
+        return 'black'
+
+# Convert RGB to numeric
+img_wide4[['R', 'G', 'B']] = img_wide4[['R', 'G', 'B']].apply(pd.to_numeric)
+
+# Get color category
+img_wide4['kColours'] = img_wide4.apply(lambda row: get_color_category(row['R'], row['G'], row['B']), axis=1)
+
+# Display the unique colors
+print(img_wide4['kColours'].unique())
+
+# Count the number of each color
+print((img_wide4['kColours'] == 'black').sum())
+print((img_wide4['kColours'] == 'green').sum())
+print((img_wide4['kColours'] == 'yellow').sum())
+
+# Filter the colors
+imgRGB2 = img_wide4[img_wide4['kColours'].isin(['blue', 'cyan', 'red'])]
+
+# Create a scatter plot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=imgRGB2, x='x', y='y', hue='kColours', s=15)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Assign phase based on color
+imgRGB2['phase'] = imgRGB2['kColours'].map({'red': 'Martensite', 'cyan': 'Ferrite', 'blue': 'Bainite'})
+
+# Display the first few rows of the dataframe
+print(imgRGB2.head())
+
+################################################################################################################
+# Correlate to grain boundaries (Edge detection is an easy alternative)
+################################################################################################################
+
+################################################################################################################ 
+# *************** Data Preparation - Phase #1 ***************** #
+################################################################################################################
+from matplotlib.image import imread
+
+# Read EBSD phase annotated image
+img3 = imread("GBs.jpg")
+
+# Get the dimensions of the image
+imgDm3 = img3.shape
+
+# Assign RGB channels to data frame
+img_wide3 = pd.DataFrame({
+  'x': np.repeat(np.arange(1, imgDm3[1]+1), imgDm3[0]),
+  'y': np.repeat(np.arange(imgDm3[0], 0, -1), imgDm3[1]),
+  'R': img3[:,:,0].flatten(),
+  'G': img3[:,:,1].flatten(),
+  'B': img3[:,:,2].flatten()
+})
+
+# Do the rescaling
+img_wide3['x'] = (img_wide3['x'] - 1) * 59.5 / img_wide3['x'].max()
+img_wide3['y'] = (img_wide3['y'] - 1) * 45.0 / img_wide3['y'].max()
+
+img_GB = img_wide3.copy()
+
+# Round digits
+img_wide3['x'] = img_wide3['x'].round(1)
+img_wide3['y'] = img_wide3['y'].round(1)
+
+# Convert RGB to color
+img_wide3['color'] = ['#%02x%02x%02x' % (int(r*255), int(g*255), int(b*255)) for r, g, b in zip(img_wide3['R'], img_wide3['G'], img_wide3['B'])]
+
+# Display the first few rows of the dataframe
+print(img_wide3.head())
+
+# Display the unique colors
+print(img_wide3['color'].unique())
+
+################################################################################################################ 
+# *************** EBSD phase map: annotate GBs coordinates  ***************** #
+################################################################################################################
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import pandas as pd
+from matplotlib.colors import rgb2hex
+
+# Set seed for reproducibility
+np.random.seed(1000)
+
+# Perform k-means clustering
+kmeans = KMeans(n_clusters=2, random_state=0).fit(img_wide3[['R', 'G', 'B']])
+
+# Convert cluster centers to RGB colors
+kColours = [rgb2hex(center) for center in kmeans.cluster_centers_]
+
+# Add the resulting colors to the dataframe
+img_wide3['kColours'] = [kColours[label] for label in kmeans.labels_]
+
+# Plot the data points colored by their cluster assignment
+plt.scatter(img_wide3['x'], img_wide3['y'], c=img_wide3['kColours'])
+plt.title('k-Means Clustering of 2 Colours')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Assign a phase based on the color
+img_wide3['phase'] = img_wide3['kColours'].map({'#0f0f0f': 'Matrix', '#c0c0c0': 'GBs'}).fillna('NA')
+
+# Merge the image data with another dataset
+merged_dataset2 = pd.merge(merged_dataset, img_wide3, on=['x', 'y'])
+
+# Keep only the distinct rows
+merged_dataset2 = merged_dataset2.drop_duplicates(subset=['x', 'y'])
+
+# Update the 'phase.x' and 'kColours.y' columns based on the 'phase.y' column
+merged_dataset2['phase.x'] = np.where(merged_dataset2['phase.y'] == 'GBs', 'GBs', merged_dataset2['phase.x'])
+merged_dataset2['kColours.y'] = np.where(merged_dataset2['phase.y'] == 'GBs', 'black', merged_dataset2['kColours.y'])
+
+# Plot the data points colored by the updated 'kColours.y' column
+plt.scatter(merged_dataset2['x'], merged_dataset2['y'], c=merged_dataset2['kColours.y'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Find the rows in merged_dataset that are not in the image data
+rest = merged_dataset[~merged_dataset[['x', 'y']].apply(tuple,1).isin(img_wide3[['x', 'y']].apply(tuple,1))]
+
+# Rename the 'phase' column in the remaining rows to 'phase.x'
+rest = rest.rename(columns={'phase': 'phase.x'})
+
+# Bind these rows to the merged dataset
+new_merged = pd.concat([merged_dataset2[['x', 'y', 'phase.x', 'kColours.y']], rest[['x', 'y', 'phase.x', 'kColours.y']]])
+
+# Plot the data points one more time, colored by the 'kColours.y' column
+plt.scatter(new_merged['x'], new_merged['y'], c=new_merged['kColours.y'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Write the resulting dataset to a CSV file
+new_merged.to_csv('grains_planes_phases_boundaries_rerun_Oct23.csv', index=False)
+
+################################################################################################################
+# Nanoindentation (NI) data turn - start processing
+################################################################################################################
+
+################################################################################################################ 
+# *************** Data Preparation - Phase #1 ***************** #
+################################################################################################################
+import pandas as pd
+import numpy as np
+
+# Read the text file
+df = pd.read_csv("Data_2023-07-20,18h29m05s.txt", sep="\t")
+
+# Drop unnecessary rows
+df = df.drop([0, 2])
+
+# Set the column names
+df.columns = df.iloc[0]
+df = df[1:]
+
+# Convert columns to numeric
+df = df.apply(pd.to_numeric, errors='coerce')
+
+# Drop rows with NA values
+df = df.dropna()
+
+# Filter rows based on Hardness
+df = df[df['Hardness'] > 0]
+
+# Create new columns
+df['Depth..nm.'] = df['HMax'] * 1000
+df['Load..mN.'] = df['Force A'] / 1000
+df['E.GPa'] = df['Reduced Mod.'] / 1000
+df['H.GPa'] = df['Hardness'] / 1000
+df['hc.nm'] = df['Contact Depth'] * 1000
+df['Ac.nm2'] = df['Area'] * 1000000
+
+# Adjust X and Y positions
+df['Pos X'] = df['Pos X'] - df['Pos X'].min()
+df['Pos Y'] = df['Pos Y'] - df['Pos Y'].min()
+
+# Create new X and Y columns
+df['X'] = df['Pos X']
+df['Y'] = df['Pos Y']
+
+# Select necessary columns
+df = df[["Index", "Phase", "Stiffness", "Depth..nm.", "Load..mN.", "E.GPa", "H.GPa", "hc.nm", "Ac.nm2", "X", "Y"]]
+
+# Filter rows based on X
+df = df[df['X'] < 100]
+
+# Adjust X and Y positions again
+df['X'] = -df['X'] + df['X'].max()
+df['Y'] = -df['Y'] + df['Y'].max()
+
+# Filter rows based on several conditions
+df = df[(df['Depth..nm.'] >= 12) & (df['Depth..nm.'] <= 35)]
+df = df[(df['H.GPa'] >= 0) & (df['H.GPa'] <= 20)]
+df = df[(df['E.GPa'] >= 0) & (df['E.GPa'] <= 400)]
+df = df[(df['Load..mN.'] >= 0) & (df['Load..mN.'] <= 20)]
+df = df[(df['X'] >= 0) & (df['X'] <= 100)]
+df = df[(df['Y'] >= 0) & (df['Y'] <= 100)]
+
+# Print summary statistics
+print(df.describe())
+
+################################################################################################################ 
+# *************** Plot 2D ***************** # *** CHOOSE REFERENCE DEPTH ***
+################################################################################################################
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+
+# Select depth - here: 30 nm
+df2 = df[(df['Depth..nm.'] >= 29.0) & (df['Depth..nm.'] <= 31.0)]
+
+# Distinct values extraction!
+df2 = df2.drop_duplicates(subset='Index', keep='first')
+
+# Create the scatter plot for Hardness
+plt.figure(figsize=(10, 8))
+plt.scatter(df2['X'], df2['Y'], c=df2['H.GPa'], cmap=mcolors.LinearSegmentedColormap.from_list("", ["blue", "cyan", "green", "yellow", "red", "brown"]), vmin=0, vmax=12)
+plt.colorbar(label='H.GPa')
+plt.xlabel('x (um)')
+plt.ylabel('y (um)')
+plt.title('Hardness')
+plt.show()
+
+# Create the scatter plot for Modulus
+plt.figure(figsize=(10, 8))
+plt.scatter(df2['X'], df2['Y'], c=df2['E.GPa'], cmap=mcolors.LinearSegmentedColormap.from_list("", ["blue", "cyan", "green", "yellow", "red", "brown"]), vmin=120, vmax=280)
+plt.colorbar(label='E.GPa')
+plt.xlabel('x (um)')
+plt.ylabel('y (um)')
+plt.title('Modulus')
+plt.show()
+
+############################################################################################ ###########################
+### GMM clustering - PDF - EXPECTATION MAXIMIZATION OPTIMIZATION ALGORITHM ### DO THIS WITH MULTIPLE PARAMETERS 
+########################################################################################################################
+from sklearn.preprocessing import StandardScaler
+from sklearn.mixture import GaussianMixture
+
+# Filter data
+data = df2[(df2['Load..mN.'] >= 0.01) & (df2['Load..mN.'] <= 0.45)]
+
+# Scale data
+scaled = StandardScaler().fit_transform(data[["E.GPa","H.GPa","Load..mN."]])
+
+# Gaussian Mixture Model
+gmm = GaussianMixture(n_components=3).fit(scaled)
+
+# Get the cluster labels
+cluster_labels = gmm.predict(scaled)
+unique_labels = set(cluster_labels)
+
+# Print unique labels
+print(unique_labels)
+
+# Print GMM parameters
+print('Weights:', gmm.weights_)
+print('Means:', gmm.means_)
+print('Covariances:', gmm.covariances_)
+
+################################################################################################################ 
+# *************** INSERT THE PHASE LABELS IN DF & PLOT2D ***************** #
+################################################################################################################
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+
+# Assign cluster labels
+data = data.assign(PDA = cluster_labels)
+
+# Assign labels based on PDA
+conditions = [
+    (data['PDA'] == 3),
+    (data['PDA'] == 1),
+    (data['PDA'] == 2),
+    (data['PDA'] != 1) & (data['PDA'] != 2) & (data['PDA'] != 3)
+]
+choices = ['Martensite', 'Bainite', 'Ferrite', 'To be classified']
+data['labels'] = np.select(conditions, choices, default='To be classified')
+
+# Revise PDA based on labels
+conditions = [
+    (data['labels'] == 'Martensite'),
+    (data['labels'] == 'Bainite'),
+    (data['labels'] == 'Ferrite'),
+    (data['labels'] == 'To be classified')
+]
+choices = [3, 2, 1, 0]
+data['PDA'] = np.select(conditions, choices, default=0)
+
+# Convert PDA to numeric
+data['PDA'] = pd.to_numeric(data['PDA'])
+
+# Print min and max of X and Y
+print(data['X'].min(), data['X'].max(), data['Y'].min(), data['Y'].max())
+
+# Print unique PDA
+print(data['PDA'].unique())
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(data['X'], data['Y'], c=data['PDA'], cmap=mcolors.LinearSegmentedColormap.from_list("", ["green", "yellow", "red"]), vmin=1, vmax=3)
+plt.colorbar(ticks=[1, 2, 3])
+plt.xlabel('x (um)')
+plt.ylabel('y (um)')
+plt.title('Phase map')
+plt.show()
+
+# Save data to csv
+data.to_csv('NI_phases_at30nm_newrun_Oct23.csv', index=False)
+
+################################################################################################################
+# Combine with NI data - without imputation (a lot of data will be missing)
+################################################################################################################
+import matplotlib.pyplot as plt
+
+# Correct the NI coordinates
+data['X'] = data['X'] - 1.199
+data['Y'] = data['Y'] - 0.399
+
+# Round the coordinates
+data['x'] = round(data['X'], 1)
+data['y'] = round(data['Y'], 1)
+
+# Merge datasets
+merged_NI = pd.merge(new_merged, data, on=['x', 'y'])
+
+# Keep only distinct values
+merged_NI = merged_NI.drop_duplicates(subset=['x', 'y'])
+
+# Assign labels
+conditions = [
+    (merged_NI['phase.x'] == 'GBs'),
+    (merged_NI['phase.x'] != 'GBs')
+]
+choices = ['GBs', merged_NI['labels']]
+merged_NI['labels'] = np.select(conditions, choices)
+
+# Assign PDA.y
+conditions = [
+    (merged_NI['labels'] == 'GBs'),
+    (merged_NI['labels'] != 'GBs')
+]
+choices = [0, merged_NI['PDA.y']]
+merged_NI['PDA.y'] = np.select(conditions, choices)
+
+# Assign color
+conditions = [
+    (merged_NI['PDA.y'] == 0),
+    (merged_NI['PDA.y'] == 1),
+    (merged_NI['PDA.y'] == 2),
+    (merged_NI['PDA.y'] == 3)
+]
+choices = ['black', 'green', 'yellow', 'red']
+merged_NI['color'] = np.select(conditions, choices, default='N/A')
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(merged_NI['x'], merged_NI['y'], c=merged_NI['color'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Revised phase map with GBs')
+plt.show()
+
+################################################################################################################
+# Revise NI phase map per grain consensus 
+################################################################################################################
+import matplotlib.pyplot as plt
+
+# Initialize empty DataFrame
+d = pd.DataFrame()
+
+# Loop over unique PDA.x values
+for i in merged_NI['PDA.x'].unique():
+    print(i)
+    a = merged_NI[merged_NI['PDA.x'] == i]
+    if len(a) < 4:
+        continue
+    n_M = sum(a['labels'] == 'Martensite')
+    n_B = sum(a['labels'] == 'Bainite')
+    n_F = sum(a['labels'] == 'Ferrite')
+    
+    if n_M > n_B and n_M > n_F:
+        a['phase'] = 'Martensite'
+        a['kColours.y'] = 'red'
+    elif n_B > n_M and n_B > n_F:
+        a['phase'] = 'Bainite'
+        a['kColours.y'] = 'yellow'
+    else:
+        a['phase'] = 'Ferrite'
+        a['kColours.y'] = 'green'
+    
+    d = pd.concat([d, a])
+
+# Remove the first row
+d = d.iloc[1:]
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(d['x'], d['y'], c=d['kColours.y'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Revised phase map')
+plt.show()
+
+################################################################################################################ 
+# ******** Nanoindentation Image of phase map - read and preparation *********** --- http://mfviz.com/r-image-art/
+################################################################################################################
+from PIL import Image
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the image
+img = Image.open("NI.jpeg")
+imgDm = np.array(img).shape
+
+# Assign RGB channels to data frame
+img_wide = pd.DataFrame({
+    'x': np.repeat(np.arange(1, imgDm[1] + 1), imgDm[0]),
+    'y': np.tile(np.arange(imgDm[0], 0, -1), imgDm[1]),
+    'R': np.array(img)[:, :, 0].flatten(),
+    'G': np.array(img)[:, :, 1].flatten(),
+    'B': np.array(img)[:, :, 2].flatten()
+})
+
+# Coordinates fix: NI 59.60 x 69.60 um & round digits to facilitate merging
+img_wide['x'] = (img_wide['x'] - 1) * 59.60 / img_wide['x'].max()
+img_wide['y'] = (img_wide['y'] - 1) * 69.60 / img_wide['y'].max()
+
+# Bring NI within EBSD ROI
+img_wide['x'] = img_wide['x'] - 1.199
+img_wide['y'] = img_wide['y'] - 0.399
+
+# Round digits
+img_wide['x'] = img_wide['x'].round(1)
+img_wide['y'] = img_wide['y'].round(1)
+
+# Data imputation
+# This part is omitted because Python doesn't have a direct equivalent for the impute_knn function in R.
+# You might want to use a library like scikit-learn to perform KNN imputation.
+
+# Combine the imputed_data with the original df dataframe
+# This part is also omitted because it depends on the previous step.
+
+# Convert RGB to hex color
+img_wide['color'] = '#' + img_wide[['R', 'G', 'B']].apply(lambda row: ''.join([f'{i:02x}' for i in row]), axis=1)
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(img_wide['x'], img_wide['y'], c=img_wide['color'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+################################################################################################################ 
+# *************** CLUSTERING ***************** #
+################################################################################################################
+from sklearn.cluster import KMeans
+
+# Set random seed
+np.random.seed(1000)
+
+# Perform k-means clustering
+kClusters = 3
+kMeans = KMeans(n_clusters=kClusters).fit(img_wide[['R', 'G', 'B']])
+
+# Assign cluster colors
+kColours = ['#' + ''.join([f'{i:02x}' for i in color]) for color in kMeans.cluster_centers_.astype(int)]
+img_wide['kColours'] = [kColours[i] for i in kMeans.labels_]
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(img_wide['x'], img_wide['y'], c=img_wide['kColours'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title(f'k-Means Clustering of {kClusters} Colours')
+plt.show()
+
+# Assign phase based on color
+color_to_phase = {
+    '#C12B03': 'Martensite',
+    '#22F407': 'Ferrite',
+    '#E1FC17': 'Bainite'
+}
+img_wide['phase'] = img_wide['kColours'].map(lambda x: color_to_phase.get(x, 'N/A'))
+
+print(img_wide.head())
+
+################################################################################################################
+# Revise NI phase map - Part1: Annotate phase by grain - v1.8
+################################################################################################################
+import pandas as pd
+from scipy.spatial import ConvexHull, distance_matrix
+
+# Merge datasets
+merged_NI2 = pd.merge(final_dataframe, img_wide, on=['x', 'y'])
+
+# Keep only distinct values
+merged_NI2 = merged_NI2.drop_duplicates(subset=['x', 'y'])
+
+d = pd.DataFrame()
+
+for i in range(1, merged_NI2['PDA'].max() + 1):
+    print(i)
+    a = merged_NI2[merged_NI2['PDA'] == i]
+    if len(a) < 4:
+        continue
+    n_M = sum(a['phase'] == 'Martensite')
+    n_B = sum(a['phase'] == 'Bainite')
+    n_F = sum(a['phase'] == 'Ferrite')
+
+    if n_M > n_B and n_M > n_F:
+        a['phase'] = 'Martensite'
+        a['kColours'] = "red"
+    elif n_B > n_M and n_B > n_F:
+        a['phase'] = 'Bainite'
+        a['kColours'] = "yellow"
+    else:
+        a['phase'] = 'Ferrite'
+        a['kColours'] = "green"
+
+    # Calculate Convex Hull
+    hull = ConvexHull(a[['x', 'y']])
+    convex_hull = a.iloc[hull.vertices]
+
+    # Calculate Diameter
+    diameter = np.sqrt(distance_matrix(convex_hull, convex_hull).max())
+    a['diameter'] = diameter
+    a['length'] = a['x'].max() - a['x'].min()
+    a['width'] = a['y'].max() - a['y'].min()
+
+    d = pd.concat([d, a])
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(d['x'], d['y'], c=d['kColours'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# NI grain corrected dataset
+NI_grain_corrected = d
+
+################################################################################################################
+# Correlate to grain boundaries
+################################################################################################################
+from sklearn.impute import KNNImputer
+
+# Data imputation
+df = img_wide3.copy()
+train_data = df.copy()
+
+# Create a grid of x and y coordinates with 0.1 intervals
+grid_x = np.arange(df['x'].min(), df['x'].max(), 0.1)
+grid_y = np.arange(df['y'].min(), df['y'].max(), 0.1)
+
+# Create a data frame to store the imputed values
+imputed_data_un = pd.DataFrame(np.array(np.meshgrid(grid_x, grid_y)).T.reshape(-1,2), columns=['x', 'y'])
+test_data = imputed_data_un.copy()
+
+# Perform KNN imputation
+imputer = KNNImputer(n_neighbors=8)  # You can adjust this value as needed
+imputed_data = pd.DataFrame(imputer.fit_transform(train_data), columns=train_data.columns)
+
+# Combine the imputed_data with the original df dataframe
+img_wide3 = pd.concat([df, imputed_data])
+
+# Produce the color code for plotting
+img_wide3['color'] = ['#' + ''.join([f'{i:02x}' for i in color]) for color in img_wide3[['R', 'G', 'B']].values.astype(int)]
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(img_wide3['x'], img_wide3['y'], c=img_wide3['color'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+################################################################################################################ 
+# *************** EBSD phase map: annotate GBs coordinates  ***************** #
+################################################################################################################
+from sklearn.cluster import KMeans
+
+# Set seed for reproducibility
+np.random.seed(1000)
+
+# Perform K-means clustering
+kClusters = 2
+kMeans = KMeans(n_clusters=kClusters).fit(img_wide3[['R', 'G', 'B']])
+
+# Create color labels from cluster centers
+kColours = ['#' + ''.join([f'{int(i):02x}' for i in center]) for center in kMeans.cluster_centers_]
+img_wide3['kColours'] = [kColours[label] for label in kMeans.labels_]
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(img_wide3['x'], img_wide3['y'], c=img_wide3['kColours'])
+plt.title(f'k-Means Clustering of {kClusters} Colours')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Assign phase based on color
+img_wide3['phase'] = np.where(img_wide3['kColours'] == '#0f0f0f', 'Matrix', 
+                              np.where(img_wide3['kColours'] == '#c0c0c0', 'GBs', 'NA'))
+
+################################################################################################################
+# Revise NI phase map - Part2
+################################################################################################################
+# Merge datasets of grain map with NI map
+merged_NI3 = pd.merge(d[['x', 'y', 'col11', 'col12', 'col18', 'col19', 'col20', 'col21', 'col22']], img_wide3[['x', 'y', 'col8']], on=['x', 'y'])
+
+# Keep only distinct values
+merged_NI3 = merged_NI3.drop_duplicates(subset=['x', 'y'])
+
+# Assign phase and color based on color
+merged_NI3['phase'] = np.where(merged_NI3['kColours.y'] == '#c0c0c0', 'GBs', merged_NI3['phase'])
+merged_NI3['kColours'] = np.where(merged_NI3['phase'] == 'GBs', 'black', merged_NI3['kColours.x'])
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(merged_NI3['x'], merged_NI3['y'], c=merged_NI3['kColours'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+################################################################################################################
+# Revise NI phase map - Part3: Consensus between NI and EBSD phase annotation
+################################################################################################################
+# Merge datasets of grain map with NI map
+new_merged3 = pd.merge(imgRGB2[['x', 'y', 'col8']], merged_NI3.iloc[:, :9], on=['x', 'y'])
+
+# Keep only distinct values
+new_merged3 = new_merged3.drop_duplicates(subset=['x', 'y'])
+
+################################################################################################################
+# Consensus 
+################################################################################################################
+# Print unique values
+print(new_merged3['phase.x'].unique())
+print(new_merged3['phase.y'].unique())
+print(new_merged3['kColours'].unique())
+
+# Assign phase and color based on phase and color
+new_merged3['phase.y'] = np.where(new_merged3['phase.x'] == 'Martensite', 'Martensite',
+                                  np.where(new_merged3['phase.x'] == 'Bainite', 'Bainite',
+                                           np.where(new_merged3['phase.x'] == 'Ferrite', 'Ferrite', new_merged3['phase.y'])))
+new_merged3['phase.y'] = np.where(new_merged3['kColours'] == 'black', 'GBs', new_merged3['phase.y'])
+new_merged3['kColours'] = np.where(new_merged3['phase.y'] == 'Martensite', 'red',
+                                   np.where(new_merged3['phase.y'] == 'Bainite', 'yellow',
+                                            np.where(new_merged3['phase.y'] == 'Ferrite', 'green',
+                                                     np.where(new_merged3['phase.y'] == 'GBs', 'black', 'white'))))
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(new_merged3['x'], new_merged3['y'], c=new_merged3['kColours'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Merge datasets
+new_merged4 = pd.merge(imgRGB2[['x', 'y', 'col7', 'col8']], merged_NI3[['x', 'y', 'col7', 'col8', 'col9', 'col11']], on=['x', 'y'])
+
+# Keep only distinct values
+new_merged4 = new_merged4.drop_duplicates(subset=['x', 'y'])
+
+# Assign color and phase based on color
+new_merged4['kColours.x'] = np.where(new_merged4['kColours.y'] == 'black', 'black', new_merged4['kColours.x'])
+new_merged4['phase'] = np.where(new_merged4['kColours.y'] == 'black', 'GBs', new_merged4['phase'])
+new_merged4['kColours.y'] = np.where(new_merged4['phase'] == 'Martensite', 'red',
+                                     np.where(new_merged4['phase'] == 'Bainite', 'yellow',
+                                              np.where(new_merged4['phase'] == 'Ferrite', 'green',
+                                                       np.where(new_merged4['phase'] == 'GBs', 'black', 'white'))))
+
+# Create the scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(new_merged4['x'], new_merged4['y'], c=new_merged4['kColours.y'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+################################################################################################################ 
+# ************ Statistics - Plot the datasets containing the required information (for validation) *********** #
+################################################################################################################
+# Nanoindentation data - the information about grain dimensions is not known in this dataset
+print(data.head()) # NI map with cluster annotation
+data['phase'] = data['labels']
+data['diameter'] = data['length'] = data['width'] = 0
+data['kColours'] = np.where(data['phase'] == 'Martensite', 'red',
+                            np.where(data['phase'] == 'Bainite', 'yellow',
+                                     np.where(data['phase'] == 'Ferrite', 'green', 'white')))
+
+# Create the scatter plot
+plt.scatter(data['x'], data['y'], c=data['kColours'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Nanoindentation data with correction of phases - one grain = one phase
+print(data.head()) # NI map with cluster annotation
+print(NI_grain_corrected.head()) # NI image with grain consensus annotation
+NI_concensus = pd.merge(data[['x', 'y', 'col14', 'col15']], NI_grain_corrected[['x', 'y', 'col12', 'col18', 'col19', 'col20', 'col21', 'col22']], on=['x', 'y'])
+print(NI_concensus.head())
+
+# Create the scatter plot
+plt.scatter(NI_concensus['x'], NI_concensus['y'], c=NI_concensus['kColours'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Nanoindentation data with correction of phases and annotation of grain boundaries
+print(merged_NI3.head()) # NI image with GBs annotation
+NI_GBs_annot = pd.merge(data[['x', 'y', 'col14', 'col15']], merged_NI3[['x', 'y', 'col4', 'col5', 'col7', 'col8', 'col9', 'col11']], on=['x', 'y'])
+NI_GBs_annot['plane'] = np.where(NI_GBs_annot['phase'] == 'GBs', 'no plane', NI_GBs_annot['plane']) # GBs have no plane
+print(NI_GBs_annot.head()) # NI data with GBs annotation
+
+# Create the scatter plot
+plt.scatter(NI_GBs_annot['x'], NI_GBs_annot['y'], c=NI_GBs_annot['kColours'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Nanoindentation data with correction of phases and annotation of grain boundaries and annotation of phases by EBSD
+print(new_merged4.head()) # NI map with EBSD phases annotation and GBs
+NI_EBSD_gr2ph_annot = pd.merge(data[['x', 'y', 'col14', 'col15']], new_merged4[['x', 'y', 'col4', 'col5', 'col6', 'col7', 'col8']], on=['x', 'y'])
+NI_EBSD_gr2ph_annot = pd.merge(NI_EBSD_gr2ph_annot, NI_GBs_annot[['x', 'y', 'col5']], on=['x', 'y'])
+NI_EBSD_gr2ph_annot['kColours'] = NI_EBSD_gr2ph_annot['kColours.y']
+NI_EBSD_gr2ph_annot['plane'] = np.where(NI_EBSD_gr2ph_annot['phase'] == 'GBs', 'no plane', NI_EBSD_gr2ph_annot['plane']) # GBs have no plane
+print(NI_EBSD_gr2ph_annot.head()) # NI data with EBSD phases annotation and GBs
+
+# Create the scatter plot
+plt.scatter(NI_EBSD_gr2ph_annot['x'], NI_EBSD_gr2ph_annot['y'], c=NI_EBSD_gr2ph_annot['kColours'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+################################################################################################################
+# Statistics - Group the data by unique values in the 'PDA' column and calculate the mean and standard deviation
+################################################################################################################
+# Assuming data, NI_concensus, NI_GBs_annot, NI_EBSD_gr2ph_annot are pandas dataframes
+
+# Replace stat_df with each dataframe and calculate the statistics
+for df in [data, NI_concensus, NI_GBs_annot, NI_EBSD_gr2ph_annot]:
+    stat_df = df.copy()
+    print(stat_df.head())
+
+    # Group by phase and calculate mean and standard deviation
+    result_phase = stat_df.groupby('phase').agg({
+        'E.GPa': ['mean', 'std'],
+        'H.GPa': ['mean', 'std'],
+        'diameter': ['mean', 'std'],
+        'length': ['mean', 'std'],
+        'width': ['mean', 'std']
+    })
+    print(result_phase)
+
+    # Group by plane and calculate mean and standard deviation
+    result_plane = stat_df.groupby('plane').agg({
+        'E.GPa': ['mean', 'std'],
+        'H.GPa': ['mean', 'std'],
+        'diameter': ['mean', 'std'],
+        'length': ['mean', 'std'],
+        'width': ['mean', 'std']
+    })
+    print(result_plane)
+
+    # Group by phase and plane together and calculate mean and standard deviation
+    result_phase_plane = stat_df.groupby(['phase', 'plane']).agg({
+        'E.GPa': ['mean', 'std'],
+        'H.GPa': ['mean', 'std'],
+        'diameter': ['mean', 'std'],
+        'length': ['mean', 'std'],
+        'width': ['mean', 'std']
+    })
+    print(result_phase_plane)
+
+    # Print the first few rows of the result
+    print(result_phase_plane.head())
+
+################################################################################################################
+# Final plots
+################################################################################################################
+# Assuming result and stat_df are pandas dataframes
+
+# Filter columns and scale
+result_filtered = result_phase_plane.iloc[:, 0:8]
+result_filtered['Mean_E'] = result_filtered['Mean_E'] / 100
+result_filtered['Mean_H'] = result_filtered['Mean_H'] / 10
+result_filtered['SD_E'] = result_filtered['SD_E'] / 100
+result_filtered['SD_H'] = result_filtered['SD_H'] / 10
+
+# Create interaction column
+result_filtered['phase_plane'] = result_filtered['phase'] + result_filtered['plane']
+
+# Plot
+plt.figure(figsize=(10, 6))
+sns.barplot(x='phase_plane', y='Mean_E', data=result_filtered, color='cyan')
+sns.barplot(x='phase_plane', y='Mean_H', data=result_filtered, color='pink')
+sns.scatterplot(x='phase_plane', y='Mean_diameter', data=result_filtered, color='green', s=60)
+plt.xticks(rotation=45)
+plt.show()
+
+# Filter columns of interest + make this plots per phase
+stat_filtered = stat_df.iloc[:, [2,3,4,5,9,10]]
+stat_filtered = stat_filtered[stat_filtered['phase'] != 'GBs']
+
+# Create interaction column
+stat_filtered['phase_plane'] = stat_filtered['phase'] + stat_filtered['plane']
+
+# Create a plot of H.GPa vs diameter for each phase
+sns.scatterplot(x='diameter', y='H.GPa', hue='phase_plane', data=stat_filtered)
+plt.title('H.GPa vs Diameter')
+plt.show()
+
+# Create a plot of E.GPa vs diameter for each phase
+sns.scatterplot(x='diameter', y='E.GPa', hue='phase_plane', data=stat_filtered)
+plt.title('E.GPa vs Diameter')
+plt.show()
+
+# Define a color palette for planes
+plane_colors = {"no plane": "black", "(101)": "green", "(001)U(101)": "yellow", "(001)U(111)": "pink",
+                "(001)": "red", "(111)": "blue", "(101)U(111)": "cyan"}
+
+# Create a plot of H.GPa vs diameter for each phase, color based on "plane"
+sns.scatterplot(x='diameter', y='H.GPa', hue='plane', data=stat_filtered, palette=plane_colors)
+plt.show()
+
+# Create a plot of E.GPa vs diameter for each phase, color based on "plane"
+sns.scatterplot(x='diameter', y='E.GPa', hue='plane', data=stat_filtered, palette=plane_colors)
+plt.show()
+
+################################################################################################################ 
+# *************** APPENDIX ***************** #
+################################################################################################################
+
+################################################################################################################ 
+# *************** Optional: plot NI maps correlated with EBSD or GBs without data imputation ***************** #
+################################################################################################################
+# Assuming EBSD_grain_phase_map, img_NI, and new_merged are pandas dataframes
+
+# Create color column
+merged_NI['color'] = merged_NI.apply(lambda row: '#%02x%02x%02x' % (row.R, row.G, row.B), axis=1)
+
+# Round digits
+merged_NI['x'] = merged_NI['x'].round(1)
+merged_NI['y'] = merged_NI['y'].round(1)
+
+# Merge datasets
+merged_NI3_orig = pd.merge(EBSD_grain_phase_map, merged_NI, on=['x', 'y'])
+
+# Keep only distinct values
+merged_NI3_orig = merged_NI3_orig.drop_duplicates(subset=['x', 'y'])
+
+# Plot
+plt.scatter('x', 'y', data=merged_NI3_orig, color=merged_NI3_orig['color'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+# Merge NI map with GBs
+merged_NI3_orig2 = pd.merge(new_merged, merged_NI3_orig, on=['x', 'y'])
+
+# Keep only distinct values
+merged_NI3_orig2 = merged_NI3_orig2.drop_duplicates(subset=['x', 'y'])
+
+# Update color based on phase.x
+merged_NI3_orig2['color'] = merged_NI3_orig2.apply(lambda row: 'black' if row['phase.x'] == 'GBs' else row['color'], axis=1)
+
+# Plot
+plt.scatter('x', 'y', data=merged_NI3_orig2, color=merged_NI3_orig2['color'])
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+############################################################################################ 
+##### PDF - EXPECTATION MAXIMIZATION OPTIMIZATION ALGORITHM ###### DO THIS WITH LOAD - NTUA
+############################################################################################
+# Assuming df2 is a pandas dataframe
+data = df2
+
+# Print summary statistics
+print(data.describe())
+
+# Filter rows
+data = data[(data['Load..mN.'] >= 0.01) & (data['Load..mN.'] <= 0.45)]
+
+# Calculate mean and standard deviation
+h = data['Depth..nm.'].mean()
+sdh = data['Depth..nm.'].std()
+
+# Create a new dataframe and sort it
+P = pd.DataFrame(data['Load..mN.'])
+P = P.sort_values(by='Load..mN.')
+
+################################################################################################################ 
+# *************** CLUSTERING - INITIAL GUESS OF PDA values ***************** #
+################################################################################################################
+from sklearn.mixture import GaussianMixture
+
+# Assuming P is a pandas DataFrame
+gmm = GaussianMixture(n_components=3, random_state=0).fit(P)
+
+# Get the cluster labels
+cluster_labels = gmm.predict(P)
+unique_labels = pd.unique(cluster_labels)
+
+# Print unique labels
+print(unique_labels)
+
+# Print GMM parameters
+print('weights: ', gmm.weights_)
+print('means: ', gmm.means_)
+print('covariances: ', gmm.covariances_)
+
+################################################################################################################ 
+# *************** INSERT THE PHASE LABELS IN DF & PLOT2D ***************** #
+################################################################################################################
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Assuming data is a pandas DataFrame and cluster_labels is a list
+data = data.sort_values(by='Load..mN.')
+data['PDA'] = 0
+print(data.head())
+
+data['PDA'] = cluster_labels
+
+print(data[data['PDA'] == 1].describe())
+print(data[data['PDA'] == 2].describe())
+print(data[data['PDA'] == 3].describe())
+print(data[data['PDA'] == 4].describe())
+
+# Assign labels based on PDA
+data['labels'] = data['PDA'].map({4: 'Martensite', 3: 'Bainite', 1: 'Ferrite', 2: 'Austenite'}).fillna('To be classified')
+
+# Revise the numeric sequence for creating nice plots with color indications
+data['PDA'] = data['labels'].map({'Martensite': 3, 'Bainite': 2, 'Ferrite': 1}).fillna('To be classified')
+data['PDA'] = pd.to_numeric(data['PDA'], errors='coerce')
+
+print(data['X'].min(), data['X'].max(), data['Y'].min(), data['Y'].max())
+
+print(data['PDA'].unique())
+
+# Plot 2D phase map
+plt.figure(figsize=(10, 8))
+sns.scatterplot(x='X', y='Y', hue='PDA', data=data, palette=['green', 'yellow', 'red'])
+plt.xlabel('x (um)')
+plt.ylabel('y (um)')
+plt.show()
+
+# Plot load map
+plt.figure(figsize=(10, 8))
+sns.scatterplot(x='X', y='Y', hue='Load..mN.', data=data, palette=['black', 'blue', 'cyan', 'green', 'yellow', 'red', 'brown'])
+plt.xlabel('x (um)')
+plt.ylabel('y (um)')
+plt.show()

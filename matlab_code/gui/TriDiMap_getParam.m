@@ -15,19 +15,71 @@ gui.config.MaxXCrop = str2num(get(h.value_MaxXCrop_GUI, 'String'));
 gui.config.MinYCrop = str2num(get(h.value_MinYCrop_GUI, 'String'));
 gui.config.MaxYCrop = str2num(get(h.value_MaxYCrop_GUI, 'String'));
 
-gui.config.colorMap = char(get_value_popupmenu(h.colormap_GUI, listColormap));
+selectedColormap = char(get_value_popupmenu(h.colormap_GUI, listColormap));
+gui.config.grayscalePlots = strcmp(selectedColormap, 'Grayscale (all plots)');
+if ~gui.config.grayscalePlots
+    gui.config.colorMap = selectedColormap;
+end
 gui.config.flipColor = get(h.cb_flipColormap_GUI, 'Value');
 
 if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
+    set([h.cb_log_plot_GUI, h.cb_MinMax_plot_GUI], 'Enable', 'on');
     gui.config.property = get(h.property_GUI, 'Value');
+    styles = listPlot;
+    if gui.config.property == 10
+        styles = styles(1:7);
+        if get(h.pm_pixData_GUI, 'Value') > numel(styles)
+            set(h.pm_pixData_GUI, 'Value', 1);
+        end
+    end
+    set(h.pm_pixData_GUI, 'String', styles);
+    if gui.config.property == 10
+        set(h.pm_surfShading_GUI, 'String', listSurf);
+        if get(h.pm_pixData_GUI, 'Value') == 7 && get(h.pm_surfShading_GUI, 'Value') > 2
+            set(h.pm_surfShading_GUI, 'Value', 1);
+        end
+    end
+    set(get(h.bg2_property_GUI_1_2, 'Children'), 'Enable', 'on');
+    set([h.pm_pixData_GUI, h.cb_pixNaN_GUI], 'TooltipString', '');
+    set([h.pm_mlMetric_GUI, h.pm_mlOrder_GUI], 'Visible', 'off');
+    if gui.config.property == 10
+        set(h.pm_mlMetric_GUI, 'Parent', h.bg_property_GUI_1_2, ...
+            'Position', [0.02 0.68 0.48 0.10]);
+        set(h.pm_mlOrder_GUI, 'Parent', h.bg_property_GUI_1_2, ...
+            'Position', [0.52 0.68 0.46 0.10]);
+    else
+        set(h.pm_mlMetric_GUI, 'Parent', h.bg_property_GUI_3, ...
+            'Position', [0.02 0.43 0.80 0.12]);
+        set(h.pm_mlOrder_GUI, 'Parent', h.bg2_property_GUI_3, ...
+            'Position', [0.02 0.38 0.94 0.12]);
+    end
+    mapFields = {'pm_pixData_GUI', 'pm_surfShading_GUI', 'cb_meshOption_GUI', ...
+        'cb_pixNaN_GUI', 'title_NaNratio_GUI', 'value_NaNratio_GUI', 'unit_NaNratio_GUI', ...
+        'cb_interpMap_GUI', 'pm_interpMap_GUI', 'cb_smoothMap_GUI', 'pm_smoothMap_GUI', ...
+        'cb_errorMap_GUI', 'pm_contourPlotMap_GUI', 'cb_textContourPlotMap_GUI'};
+    kammY = [0.55, 0.55, 0.55, 0.43, 0.44, 0.44, 0.44, ...
+        0.32, 0.32, 0.21, 0.21, 0.11, 0.01, 0.01];
+    for ii = 1:numel(mapFields)
+        control = h.(mapFields{ii});
+        if ~isappdata(control, 'TriDiMapMapPosition')
+            setappdata(control, 'TriDiMapMapPosition', get(control, 'Position'));
+        end
+        position = getappdata(control, 'TriDiMapMapPosition');
+        if gui.config.property == 10
+            position(2) = kammY(ii);
+            position(4) = min(position(4), 0.10);
+        end
+        set(control, 'Position', position);
+    end
     
     if gui.config.property == 3
+        set(h.pm_sectPlot_GUI, 'Visible', 'on');
         gui.config.HVal_ThresLines = ...
             str2num(get(h.value_Hth_ValEH_GUI, 'String'));
         gui.config.EVal_ThresLines = ...
             str2num(get(h.value_Eth_ValEH_GUI, 'String'));
         gui.config.plotClusters = get(h.pm_sectPlot_GUI, 'Value');
-        if gui.config.plotClusters == 1 || gui.config.plotClusters == 3
+        if gui.config.plotClusters == 1 || gui.config.plotClusters >= 3
             set(h.pm_pixData_GUI, 'Value', 3);
             set(h.title_Hth_ValEH_GUI, 'Visible', 'off');
             set(h.value_Hth_ValEH_GUI, 'Visible', 'off');
@@ -81,7 +133,35 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         else
             set(h.cb_plotSectMap_GUI, 'Enable', 'on');
         end
-    elseif gui.config.property  > 3
+        mlControls = [h.pm_mlFeatures_GUI, h.pm_mlMethod_GUI, h.pm_mlOrder_GUI, ...
+            h.pm_mlView_GUI, h.pb_mlExport_GUI, h.pm_mlMetric_GUI];
+        set(mlControls, 'Visible', 'off');
+        set(h.pm_phaseDensity_GUI, 'Visible', 'on');
+        if gui.config.plotClusters == 4
+            set(mlControls, 'Visible', 'on');
+            set(h.pm_phaseDensity_GUI, 'Visible', 'off');
+            set(h.pb_diffEHmapCluster_GUI, 'Visible', 'off');
+            set([h.title_K_GMM_GUI, h.value_K_GMM_GUI], 'Visible', 'on');
+            set(h.pb_mlExport_GUI, 'Enable', 'off');
+            gui.config.mlFeatures = get(h.pm_mlFeatures_GUI, 'Value');
+            gui.config.mlMethod = get(h.pm_mlMethod_GUI, 'Value');
+            gui.config.mlOrder = get(h.pm_mlOrder_GUI, 'Value');
+            gui.config.mlView = get(h.pm_mlView_GUI, 'Value');
+            gui.config.mlMetric = get(h.pm_mlMetric_GUI, 'Value');
+            gui.config.mlK = str2double(get(h.value_K_GMM_GUI, 'String'));
+            gui.config.phaseDensity = gui.config.mlView == 4;
+        end
+    elseif gui.config.property == 10
+        set([get(h.bg_property_GUI_3, 'Children'); get(h.bg2_property_GUI_3, 'Children')], ...
+            'Visible', 'off');
+        set([h.pm_mlMetric_GUI, h.pm_mlOrder_GUI], 'Visible', 'on');
+        set(h.pb_mlExport_GUI, 'Enable', 'off');
+        gui.config.mlOrder = get(h.pm_mlOrder_GUI, 'Value');
+        gui.config.mlMetric = get(h.pm_mlMetric_GUI, 'Value');
+        gui.config.plotSectMap = 0;
+        gui.config.phaseDensity = false;
+        set(h.cb_plotSectMap_GUI, 'Value', 0);
+    elseif gui.config.property > 3
         gui.config.binSize = str2num(get(h.value_BinSizeHist_GUI, 'String'));
         gui.config.autobinSize  = get(h.cb_autoBinSizeHist_GUI, 'Value');
         gui.config.MinHistVal = str2num(get(h.value_MinValHist_GUI, 'String'));
@@ -349,6 +429,22 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     end
     if gui.config.property == 3 && gui.config.phaseDensity
         set(h.cb_plotSectMap_GUI, 'Enable', 'off');
+    end
+    if gui.config.property == 3 && gui.config.plotClusters == 4 && gui.config.mlView == 2
+        set([h.cb_log_plot_GUI, h.cb_MinMax_plot_GUI], 'Enable', 'off');
+    end
+    if gui.config.property == 10
+        set(h.pm_autoColorbar_GUI, 'String', {'Auto colorbar'; 'Manual'});
+        if get(h.pm_autoColorbar_GUI, 'Value') > 2
+            set(h.pm_autoColorbar_GUI, 'Value', 1);
+            gui.config.scaleAxis = 1;
+        end
+        set([h.ThreeDplot_GUI, h.binarization_GUI], 'Enable', 'off');
+        set([h.saveXLS_GUI, h.pb_get_values_GUI], 'Enable', 'off', ...
+            'TooltipString', 'KAMM arrays are available in gui.kamm.maps. Select an E/H map for spreadsheet export or point picking.');
+    else
+        set(h.pm_autoColorbar_GUI, 'String', {'Auto colorbar'; 'Manual'; 'Colorbar from PDF fit'});
+        set([h.saveXLS_GUI, h.pb_get_values_GUI], 'Enable', 'on', 'TooltipString', '');
     end
 end
 guidata(gcf, gui);

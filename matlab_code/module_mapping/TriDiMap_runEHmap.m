@@ -205,8 +205,23 @@ elseif gui.config.plotClusters == 3
         guidata(gcf, gui);
         TriDiMap_plot;
     end
+elseif gui.config.plotClusters == 4
+    if ~config.flag_data
+        errordlg('Load a mechanical property map first.', 'ML-assisted clustering');
+    else
+        try
+            gui = TriDiMap_runML(gui, data2use_E, data2use_H);
+        catch exception
+            if any(strcmp(exception.identifier, {'TriDiMap:MLInput', 'TriDiMap:MLToolbox', ...
+                    'TriDiMap:KAMMRequiresGrid', 'TriDiMap:NoPhaseDensity'}))
+                errordlg(exception.message, 'ML-assisted clustering');
+            else
+                rethrow(exception);
+            end
+        end
+    end
 end
-if ~gui.config.plotSectMap
+if ~gui.config.plotSectMap && gui.config.plotClusters ~= 4
     if ~config.FrenchLeg
         hXLabel = xlabel(strcat({'Hardness ('},gui.config.strUnit_Property, ')'));
         hYLabel = ylabel(strcat({'Elastic modulus ('},gui.config.strUnit_Property, ')'));
@@ -218,7 +233,8 @@ if ~gui.config.plotSectMap
         'Color', [0,0,0], 'FontSize', gui.config.FontSizeVal, ...
         'Interpreter', 'Latex');
 end
-if isfield(gui.config, 'phaseDensity') && gui.config.phaseDensity && ~gui.config.plotSectMap
+if isfield(gui.config, 'phaseDensity') && gui.config.phaseDensity && ...
+        ~gui.config.plotSectMap && gui.config.plotClusters ~= 4
     if gui.config.plotClusters == 3
         densityLabels = gui.data.dataH_SectorLabVec;
         densityColors = colorList;

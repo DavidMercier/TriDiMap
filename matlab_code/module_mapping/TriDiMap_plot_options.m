@@ -7,6 +7,9 @@ gui = guidata(gcf);
 FontSizeVal = gui.config.FontSizeVal;
 rawData = gui.config.rawData;
 logZ = gui.config.logZ;
+if gui.config.property == 10 && rawData > 1
+    logZ = false;
+end
 if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
     cminVal = gui.config.cmin;
     cmaxVal = gui.config.cmax;
@@ -91,15 +94,28 @@ if flagPlot
             length(yData_interp) > 5*length(xData_interp)
         axis normal;
     end
-    if rawData == 1 || gui.config.plotClusters > 1
+    if rawData == 1 || (gui.config.property ~= 10 && gui.config.plotClusters > 1)
         view(2); % or view(0,90);
     else
         view(3);
     end
     %zlim([0 2]);
     zlim auto;
-    daspect([1 1 gui.config.zAxisRatioVal]);
+    if gui.config.property == 10 && rawData > 1
+        ratio = gui.config.zAxisRatioVal;
+        if ~isscalar(ratio) || ~isfinite(ratio) || ratio <= 0
+            error('TriDiMap:MLInput', 'Z axis ratio must be a finite positive number.');
+        end
+        spans = [diff(xlim), diff(ylim)];
+        daspect auto;
+        pbaspect([spans, max(spans)/ratio]);
+    else
+        daspect([1 1 gui.config.zAxisRatioVal]);
+    end
     set(gca, 'zsc', 'linear');
+    if gui.config.property == 10 && gui.config.logZ && rawData > 1
+        set(gca, 'ZScale', 'log', 'ColorScale', 'log');
+    end
     hold on;
     
     if strcmp(gui.config.strUnit_Length, 'µm')
@@ -173,7 +189,7 @@ if flagPlot
             cmap_Flip = colormap([cMap, '(',num2str(intervalScaleBar),')']);
         end
     end
-    if ~gui.config.noNan && ~isfield(gui.data, 'coordinates')
+    if ~gui.config.noNan && ~isfield(gui.data, 'coordinates') && gui.config.property ~= 10
         cMapNaN = [1 1 1 ; cmap_Flip];
     else
         cMapNaN = cmap_Flip;
@@ -185,11 +201,17 @@ if flagPlot
     end
     if ~get(gui.handles.cb_plotSectMap_GUI, 'Value')
         if gui.config.scaleAxis == 2
-            if cminVal == round(min(data2plot(:)))
+            if gui.config.property == 10 && ...
+                    (~isscalar(cminVal) || ~isscalar(cmaxVal) || ...
+                    ~isfinite(cminVal) || ~isfinite(cmaxVal) || cminVal >= cmaxVal || ...
+                    (gui.config.logZ && cminVal <= 0))
+                error('TriDiMap:MLInput', 'Enter finite increasing color limits (strictly positive for Log).');
+            end
+            if gui.config.property ~= 10 && cminVal == round(min(data2plot(:)))
                 cminVal = gui.config.cminOld;
                 set(gui.handles.value_colorMin_GUI, 'String', num2str(cminVal));
             end
-            if cmaxVal == round(max(data2plot(:)))
+            if gui.config.property ~= 10 && cmaxVal == round(max(data2plot(:)))
                 cmaxVal = gui.config.cmaxOld;
                 set(gui.handles.value_colorMax_GUI, 'String', num2str(cmaxVal));
             end

@@ -1,0 +1,4 @@
+# Ignore all files under the results folder
+results/
+__pycache__
+.ipynb_checkpoints/

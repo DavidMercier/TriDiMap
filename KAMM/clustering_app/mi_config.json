@@ -1,0 +1,8 @@
+{
+    "server": "http://localhost/mi_servicelayer",
+    "username": "",
+    "password": "",
+    "database": "MI_BiCrystalProject",
+    "default_table": "Material Properties from Clustering Pipeline",
+    "default_folder": "Clustering Results"
+}

@@ -134,7 +134,7 @@ least three non-collinear finite pairs; undersized or singular phases are
 omitted with a warning rather than assigned an artificial width. Their
 fractions are not redistributed to other phases. If no density can be
 estimated, an error dialog is shown. Measurements and phase labels are not
-modified. **SAVE** and **Plot options > Grayscale plots** also apply to this view.
+modified. **SAVE** and **Colormap > Grayscale (all plots)** also apply to this view.
 
 Determination of the number of clusters
 +++++++++++++++++++++++++++
@@ -154,6 +154,10 @@ Note that the elbow method can be ambiguous. Alternatives include the average si
 
 KAMM analysis (Kernel-Averaged Mechanical Mismatch)
 ############################################
+
+An implemented **ML-assisted clustering** option is now available in the
+E-H GUI. See :doc:`kamm` for the controls, exact neighbourhood formulas,
+limitations and the independent license-free Python notebook.
 
 A recent development in nanoindentation data analysis is the Kernel-Averaged Mechanical Mismatch (KAMM) descriptor, which can support clustering and phase identification in mechanical-property maps [#Mercier_2026]_.
 Analyses based solely on elastic modulus (E) and hardness (H) may struggle to distinguish phases when mechanical contrast is low or diffuse interphase regions are present. This can be a challenge in multiphase materials such as composites, alloys, and cementitious systems [#Mercier_2026]_.

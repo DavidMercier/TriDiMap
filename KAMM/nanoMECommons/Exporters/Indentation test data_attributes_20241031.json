@@ -1,0 +1,402 @@
+{
+    "General information": [
+        {
+            "Name": "Test Date",
+            "Type": "DTTM",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Operator",
+            "Type": "STXT",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Partner",
+            "Type": "DISC",
+            "Unit": "",
+            "IsMeta": false
+        },
+        []
+    ],
+    "Specimen information": [
+        {
+            "Name": "Grade name",
+            "Type": "STXT",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Specimen code",
+            "Type": "STXT",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Material Family",
+            "Type": "DISC",
+            "Unit": "",
+            "IsMeta": false
+        },
+        []
+    ],
+    "Test settings": [
+        {
+            "Name": "Test equipment ID",
+            "Type": "STXT",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Type of Indentation Test Measurement",
+            "Type": "DISC",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Temperature Test",
+            "Type": "POIN",
+            "Unit": "K",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Indentation Controle Mode",
+            "Type": "DISC",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [
+            {
+                "MetaName": "max load set point (for Displacement controlled)",
+                "MetaType": "POIN",
+                "MetaUnit": "N",
+                "IsMeta": "True"
+            },
+            {
+                "MetaName": "max displacement set point (for Load controlled)",
+                "MetaType": "POIN",
+                "MetaUnit": "\u00b5m",
+                "IsMeta": "True"
+            }
+        ],
+        {
+            "Name": "Indenter type",
+            "Type": "DISC",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Indenter name",
+            "Type": "STXT",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [
+            {
+                "MetaName": "Nominal Indenter tip radius",
+                "MetaType": "POIN",
+                "MetaUnit": "nm",
+                "IsMeta": "True"
+            },
+            {
+                "MetaName": "Indenter tip defect",
+                "MetaType": "POIN",
+                "MetaUnit": "nm",
+                "IsMeta": "True"
+            }
+        ],
+        {
+            "Name": "Is strain rate constant?",
+            "Type": "LOGI",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Constant strain rate",
+            "Type": "POIN",
+            "Unit": "/s",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Variable strain rate",
+            "Type": "TABL",
+            "Unit": "",
+            "IsMeta": false,
+            "ColumnHeaders": [
+                {
+                    "Name": [
+                        "Strain rate",
+                        "Linking Value (None)"
+                    ],
+                    "Unit": null
+                }
+            ]
+        },
+        [],
+        {
+            "Name": "X coordinate of 1st indentation test (absolute values)",
+            "Type": "POIN",
+            "Unit": "mm",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Y coordinate  of 1st indentation test (absolute values)",
+            "Type": "POIN",
+            "Unit": "mm",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Grid indentation pattern",
+            "Type": "DISC",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Number of points (X axis)",
+            "Type": "INPT",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Number of points (Y axis)",
+            "Type": "INPT",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Space between points (X axis)",
+            "Type": "POIN",
+            "Unit": "\u00b5m",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Space between points (Y axis)",
+            "Type": "POIN",
+            "Unit": "\u00b5m",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Loading range",
+            "Type": "RNGE",
+            "Unit": "N",
+            "IsMeta": false
+        },
+        []
+    ],
+    "Calibration Results": [
+        {
+            "Name": "Reference sample",
+            "Type": "DISC",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [
+            {
+                "MetaName": "Other",
+                "MetaType": "STXT",
+                "MetaUnit": "",
+                "IsMeta": "True"
+            }
+        ],
+        {
+            "Name": "Calculated aera function parameters",
+            "Type": "POIN",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Updated Calculated aera function parameters",
+            "Type": "POIN",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Indenter tip radius",
+            "Type": "POIN",
+            "Unit": "nm",
+            "IsMeta": false
+        },
+        []
+    ],
+    "Test Results": [
+        {
+            "Name": "Link to raw results",
+            "Type": "HLNK",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [
+            {
+                "MetaName": "Public or private?",
+                "MetaType": "DISC",
+                "MetaUnit": "",
+                "IsMeta": "True"
+            }
+        ],
+        {
+            "Name": "Raw results",
+            "Type": "FILE",
+            "Unit": "",
+            "IsMeta": false
+        },
+        [],
+        {
+            "Name": "Load",
+            "Type": "FUNC",
+            "Unit": "mN",
+            "IsMeta": false,
+            "ColumnHeaders": [
+                {
+                    "Name": [
+                        "Y min (Load [mN])",
+                        "Y max (Load [mN])",
+                        "Vertical displacement [nm]",
+                        "X coordinate [\u00b5m]",
+                        "Y coordinate [\u00b5m]",
+                        "Test number []",
+                        "Estimated point?"
+                    ]
+                }
+            ]
+        },
+        [],
+        {
+            "Name": "Mechanical properties matrix",
+            "Type": "TABL",
+            "Unit": "",
+            "IsMeta": false,
+            "ColumnHeaders": [
+                {
+                    "Name": [
+                        "X position",
+                        "Y position",
+                        "Z position",
+                        "Young's modulus value",
+                        "Hardness value",
+                        "Creep",
+                        "H over E",
+                        "Linking Value (None)"
+                    ],
+                    "Unit": [
+                        "\u00b5m",
+                        "\u00b5m",
+                        "\u00b5m",
+                        "GPa",
+                        "GPa",
+                        "nm",
+                        "",
+                        null
+                    ]
+                }
+            ]
+        },
+        [
+            {
+                "MetaName": "Young's modulus",
+                "MetaType": "FUNC",
+                "MetaUnit": "GPa",
+                "IsMeta": "True",
+                "ColumnHeaders": [
+                    {
+                        "Name": [
+                            "Y min (Young's modulus [GPa])",
+                            "Y max (Young's modulus [GPa])",
+                            "X coordinate [\u00b5m]",
+                            "Y coordinate [\u00b5m]",
+                            "Vertical displacement [nm]",
+                            "Test number []",
+                            "Estimated point?"
+                        ]
+                    }
+                ]
+            },
+            {
+                "MetaName": "Hardness",
+                "MetaType": "FUNC",
+                "MetaUnit": "MPa",
+                "IsMeta": "True",
+                "ColumnHeaders": [
+                    {
+                        "Name": [
+                            "Y min (Hardness [MPa])",
+                            "Y max (Hardness [MPa])",
+                            "X coordinate [\u00b5m]",
+                            "Y coordinate [\u00b5m]",
+                            "Vertical displacement [nm]",
+                            "Test number []",
+                            "Estimated point?"
+                        ]
+                    }
+                ]
+            },
+            {
+                "MetaName": "Creep",
+                "MetaType": "FUNC",
+                "MetaUnit": "nm",
+                "IsMeta": "True",
+                "ColumnHeaders": [
+                    {
+                        "Name": [
+                            "Y min (Creep [nm])",
+                            "Y max (Creep [nm])",
+                            "X coordinate [\u00b5m]",
+                            "Y coordinate [\u00b5m]",
+                            "Vertical displacement [nm]",
+                            "Test number []",
+                            "Estimated point?"
+                        ]
+                    }
+                ]
+            },
+            {
+                "MetaName": "H over E",
+                "MetaType": "FUNC",
+                "MetaUnit": "",
+                "IsMeta": "True",
+                "ColumnHeaders": [
+                    {
+                        "Name": [
+                            "Y min (H over E [])",
+                            "Y max (H over E [])",
+                            "X coordinate [\u00b5m]",
+                            "Y coordinate [\u00b5m]",
+                            "Test number []",
+                            "Vertical displacement [nm]",
+                            "Estimated point?"
+                        ]
+                    }
+                ]
+            }
+        ]
+    ],
+    "Additional notes": [
+        {
+            "Name": "Additional notes",
+            "Type": "LTXT",
+            "Unit": "",
+            "IsMeta": false
+        },
+        []
+    ],
+    "Associated data": []
+}

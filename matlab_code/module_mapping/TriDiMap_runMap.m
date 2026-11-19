@@ -5,7 +5,16 @@
 if config.flag_data
     %% Normalization of dataset
     if config.normalizationStep && ~config.translationStep
-        if config.normalizationStepVal == 1
+        if config.property == 10
+            finite = data2use(isfinite(data2use));
+            scales = [min(finite), mean(finite), max(finite)];
+            scale = scales(config.normalizationStepVal);
+            if isempty(scale) || ~isfinite(scale) || scale == 0
+                error('TriDiMap:MLInput', 'The selected descriptor normalization scale is zero or nonfinite. Choose another scale or disable normalization.');
+            end
+            config.legend = ['Normalized ', config.legend];
+            data2use = data2use/scale;
+        elseif config.normalizationStepVal == 1
             data2use = data2use/(min(min(data2use)));
         elseif config.normalizationStepVal == 2
             data2use = data2use/(nanmean(nanmean(data2use)));
@@ -18,8 +27,10 @@ if config.flag_data
     %% Translation step
     if config.translationStep && ~config.normalizationStep
         data2use = data2use + config.translationStepVal;
-        data2use((data2use)<0) = 0;
-        disp('Negative values for the property are replaced by 0.');
+        if config.property ~= 10
+            data2use((data2use)<0) = 0;
+            disp('Negative values for the property are replaced by 0.');
+        end
         disp('Normalization not possible because translation is active.');
     end
     

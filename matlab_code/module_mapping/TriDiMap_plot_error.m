@@ -64,7 +64,11 @@ if ~gui.config.FrenchLeg
 else
     yTxt = 'Carte erreur (';
 end
-ylabel(gui.handle.hcb1, strcat(yTxt, gui.config.strUnit_Property,')'), ...
+unit = gui.config.strUnit_Property;
+if gui.config.property == 10
+    unit = gui.config.kammUnit;
+end
+ylabel(gui.handle.hcb1, strcat(yTxt, unit,')'), ...
     'Interpreter', 'Latex', ...
     'FontSize', gui.config.FontSizeVal);
 

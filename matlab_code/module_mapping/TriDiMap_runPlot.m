@@ -19,7 +19,7 @@ end
 TriDiMap_getParam;
 gui = guidata(gcf);
 config = gui.config;
-if isfield(gui.data, 'originalProperties') && config.rawData == 8
+if isfield(gui.data, 'originalProperties') && config.rawData == 8 && config.property < 3
     plotFigure = gcf;
     errordlg('Depth slices use separate data and cannot use the recalculated map values.', 'Contact model');
     set(0, 'CurrentFigure', plotFigure);
@@ -31,7 +31,51 @@ end
 strUnit_Property = ...
     get_value_popupmenu(gui.handles.unitProp_GUI, listUnitProperty);
 guidata(gcf, gui);
-if config.rawData == 8 && gui.config.property  < 3% Code for 3D slices
+if config.property == 10
+    if ~config.flag_data
+        errordlg('Load a mechanical property map first.', 'KAMM map');
+    else
+        try
+            if config.flagZplot || isfield(gui.data, 'coordinates')
+                error('TriDiMap:KAMMRequiresGrid', 'KAMM requires a 2D raster map; switch back from depth mapping.');
+            end
+            if ~strcmp(char(config.strUnit_Property), 'GPa')
+                error('TriDiMap:MLInput', 'KAMM expects measured modulus and hardness in GPa.');
+            end
+            E = TriDiMap_cropping(gui.data.expValues_mat.YM);
+            H = TriDiMap_cropping(gui.data.expValues_mat.H);
+            gui = TriDiMap_cacheKamm(gui, E, H);
+            names = {'KAMM', 'KAEM', 'KAPM', 'KAMM_RATIO', 'KAMM_NORMPROD'};
+            data2use = gui.kamm.maps.(names{config.mlMetric});
+            values = data2use(isfinite(data2use));
+            if isempty(values)
+                error('TriDiMap:MLInput', 'This descriptor has no finite values to display.');
+            end
+            set(gui.handles.value_MinVal_GUI, 'String', num2str(min(values)));
+            set(gui.handles.value_MaxVal_GUI, 'String', num2str(max(values)));
+            set(gui.handles.value_MeanVal_GUI, 'String', num2str(mean(values)));
+            set(gui.handles.value_StdVal_GUI, 'String', num2str(std(values)));
+            units = {'GPa$^2$', 'GPa', 'GPa', 'dimensionless', 'dimensionless'};
+            config.kammUnit = units{config.mlMetric};
+            config.legend = sprintf('%s (order %d; %s)', ...
+                strrep(names{config.mlMetric}, '_', '\_'), config.mlOrder, config.kammUnit);
+            [cleaned, ratioNan] = TriDiMap_cleaningData(data2use, true);
+            set(gui.handles.value_NaNratio_GUI, 'String', num2str(ratioNan));
+            if config.noNan
+                data2use = cleaned;
+            end
+            gui.config = config;
+            guidata(gcf, gui);
+            TriDiMap_runMap;
+        catch exception
+            if any(strcmp(exception.identifier, {'TriDiMap:MLInput', 'TriDiMap:KAMMRequiresGrid'}))
+                errordlg(exception.message, 'KAMM map');
+            else
+                rethrow(exception);
+            end
+        end
+    end
+elseif config.rawData == 8 && gui.config.property < 3% Code for 3D slices
     TriDiMap_sliceCalc(gui);
     gui = guidata(gcf);
 else

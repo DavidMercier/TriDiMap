@@ -1,0 +1,3 @@
+# nanoindentation-and-EBSD-data-correlation
+This is a code with a modular structure which can be used to analyse image data from materials characterisation methods. In the particular case the data of nanoindentation and EBSD are correlated by each coordinate for the region of interest.  Structural information is mined directly from diffraction images/maps, while the nanoindentation data are used in raw form to combine the dataset into one containing both crystallographic and mechanical data. The final output is information about grain locations, grain boundaries, crystallographic phases, anisotropic planes, and mechanical properties by each. 
+Full datasets of .txt and images used are shared for reproducibility.
