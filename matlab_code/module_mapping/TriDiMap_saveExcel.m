@@ -46,6 +46,9 @@ if g.config.data_path
         
         col_header_1 = {'Test','Avg Modulus','Avg Hardness'};
         col_header_2 = {' ','GPa','GPa'};
+        if isfield(g.data, 'originalProperties')
+            col_header_2{2} = 'GPa (reduced indentation modulus)';
+        end
         row_header(1:3,1) = {'Mean','Std. Dev.','% COV'};
         
         % Generate .xls file

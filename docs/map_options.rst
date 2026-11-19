@@ -3,6 +3,51 @@ Mapping options
 
 .. include:: includes.rst
 
+Recalculate maps using a contact model
+-------------------------------------
+
+After loading a 2D indentation map, select **Contact model > Recalculate maps...**
+and choose sink-in (Oliver and Pharr) or pile-up (Loubet) for the entire map.
+The choice is made by the user; the toolbox does not infer rheology from the
+existing modulus and hardness values. Use measurements from the same load/depth
+point for each indent, corrected for frame compliance.
+
+Select an Excel file whose first sheet contains exactly these three headers in
+the first row, followed by one numeric row per indent, in the acquisition order
+of the loaded map:
+
+=================  =========  =====================
+Depth (nm)         Load (mN)  Stiffness (mN/nm)
+=================  =========  =====================
+100                1          0.05
+=================  =========  =====================
+
+The row count and ordering must match the loaded map; no positions are matched
+automatically. The same grid ordering as the original import is applied.
+All measurements and resulting contact depths and areas must be finite and
+positive; an invalid spreadsheet or calculation is rejected.
+
+Enter the calibrated area coefficients for the indenter, in order C0 to C8,
+separated by commas. With contact depth in nm the area in nm² is
+``C0*hc^2 + C1*hc + C2*hc^(1/2) + ... + C8*hc^(1/128)``.
+The default ``24.56`` describes an ideal Berkovich tip, not a measured
+calibration. The other defaults are epsilon = 0.75, alpha = 1.2, tip defect
+= 0 nm, and beta = 1.034; use values appropriate to the experiment.
+Oliver and Pharr use ``hc = h - epsilon*P/S``; Loubet uses
+``hc = alpha*(h - P/S + tip defect)``. Hardness is ``P/A`` and the
+**reduced indentation modulus** is ``sqrt(pi/A)*S/(2*beta)``. The latter is
+not the sample Young's modulus: it has not been corrected for indenter
+compliance or sample Poisson's ratio. See the `contact models and modulus
+equations <https://nims.readthedocs.io/en/latest/models.html>`_.
+
+The recalculated values are displayed in GPa and used by the mapping and
+statistical views until **Contact model > Restore imported values** is selected
+or another map is loaded. The property-unit selector is locked while these
+values are active. An exported spreadsheet records the reduced modulus in its
+unit row; retain that information when reimporting, because imported columns
+are treated as ordinary modulus values. Depth slices and cross-sectional maps
+use separate data and are not recalculated by this option.
+
 Crop
 ---------------------------
 

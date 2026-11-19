@@ -2,6 +2,10 @@
 function TriDiMap_runZplot
 %% Function to run the 3D plot (surface and cross-sectional maps)
 gui = guidata(gcf);
+if isfield(gui.data, 'originalProperties')
+    errordlg('Restore imported values before creating a cross-sectional map.', 'Contact model');
+    return
+end
 prompt = {'Enter number of files to load for cross-sectional mapping'};
 dlg_title = 'Input';
 num_lines = 1;

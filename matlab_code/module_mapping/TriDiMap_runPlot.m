@@ -18,6 +18,15 @@ end
 TriDiMap_getParam;
 gui = guidata(gcf);
 config = gui.config;
+if isfield(gui.data, 'originalProperties') && config.rawData == 8
+    plotFigure = gcf;
+    errordlg('Depth slices use separate data and cannot use the recalculated map values.', 'Contact model');
+    set(0, 'CurrentFigure', plotFigure);
+    set(gui.handles.pm_pixData_GUI, 'Value', 1);
+    TriDiMap_getParam;
+    gui = guidata(gcf);
+    config = gui.config;
+end
 strUnit_Property = ...
     get_value_popupmenu(gui.handles.unitProp_GUI, listUnitProperty);
 guidata(gcf, gui);

@@ -49,7 +49,13 @@ if config.flag_data
     
     if ~config.normalizationStep
         if config.property == 1
-            if ~config.FrenchLeg
+            if isfield(gui.data, 'originalProperties')
+                if ~config.FrenchLeg
+                    config.legend = strcat({'Reduced indentation modulus ('},config.strUnit_Property, ')');
+                else
+                    config.legend = strcat({'Module d''\''indentation r\''eduit ('},config.strUnit_Property, ')');
+                end
+            elseif ~config.FrenchLeg
                 config.legend = strcat({'Elastic modulus ('},config.strUnit_Property, ')');
             else
                 config.legend = strcat({'Module d''\''elasticit\''e ('},config.strUnit_Property, ')');
@@ -108,6 +114,12 @@ if config.flag_data
                 end
             end
         end
+    end
+    if config.normalizationStep && config.property == 1 && ...
+            isfield(gui.data, 'originalProperties')
+        config.legend = strrep(config.legend, 'elastic modulus', 'reduced indentation modulus');
+        config.legend = strrep(config.legend, 'Module d''\''elasticit\''e', ...
+            'Module d''\''indentation r\''eduit');
     end
     gui.config = config;
     guidata(gcf, gui);

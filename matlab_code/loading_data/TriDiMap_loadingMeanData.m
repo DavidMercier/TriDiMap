@@ -38,6 +38,7 @@ else
 end
 
 dataType = get(h.pm_set_file, 'Value');
+data.mappingDataType = dataType;
 
 %% Handle canceled file selection
 if data.filename_data == 0
@@ -374,6 +375,7 @@ if config.flag_data
     g.data = data;
     g.config = config;
     g.handles = h;
+    set(h.unitProp_GUI, 'Enable', 'on');
     guidata(gcf, g);
     if config.flagValid
         if strcmp(get(g.handles.binarization_GUI, 'String'), 'BINARIZATION')
