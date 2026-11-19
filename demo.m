@@ -50,7 +50,7 @@ end
 
 %% Set Toolbox version and help paths
 gui.config.name_toolbox = 'TriDiMap';
-gui.config.version_toolbox = '3.0';
+gui.config.version_toolbox = '4.0';
 % gui.config.url_help = 'http://tridimap.readthedocs.org/en/latest/';
 % gui.config.pdf_help = 'https://media.readthedocs.org/pdf/tridimap/latest/tridimap.pdf';
 gui.config.data.data_path = fullfile('./','data_indentation');

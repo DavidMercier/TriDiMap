@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
     name='TriDiMap_doc-build',
-    version='3.0',
+    version='4.0',
     author='David Mercier',
     author_email='david9684@gmail.com',
     url='https://tridimap.readthedocs.io',
