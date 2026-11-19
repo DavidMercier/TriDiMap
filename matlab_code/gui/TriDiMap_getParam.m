@@ -73,6 +73,14 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
             gui.config.plotSectMap = get(h.cb_plotSectMap_GUI, 'Value');
             set(h.pb_diffEHmapCluster_GUI, 'Visible', 'off');
         end
+        gui.config.phaseDensity = isfield(h, 'pm_phaseDensity_GUI') && ...
+            get(h.pm_phaseDensity_GUI, 'Value') == 2;
+        if gui.config.phaseDensity
+            set(h.cb_plotSectMap_GUI, 'Value', 0, 'Enable', 'off');
+            gui.config.plotSectMap = 0;
+        else
+            set(h.cb_plotSectMap_GUI, 'Enable', 'on');
+        end
     elseif gui.config.property  > 3
         gui.config.binSize = str2num(get(h.value_BinSizeHist_GUI, 'String'));
         gui.config.autobinSize  = get(h.cb_autoBinSizeHist_GUI, 'Value');
@@ -315,14 +323,19 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     if isfield(gui.data, 'coordinates')
         set(gridControls, 'Enable', 'off');
         set([h.cb_pixNaN_GUI, h.cb_interpMap_GUI, h.cb_smoothMap_GUI, ...
-            h.cb_errorMap_GUI, h.cb_plotSectMap_GUI, h.cb_MinMax_plot_GUI], 'Value', 0);
+            h.cb_errorMap_GUI, h.cb_plotSectMap_GUI], 'Value', 0);
         set(h.pm_pixData_GUI, 'Value', 1);
         set(h.unitProp_GUI, 'Enable', 'off');
         gui.config.rawData = 1;
         gui.config.noNan = 0;
         gui.config.interpBool = 0;
         gui.config.smoothBool = 0;
-        gui.config.MinMax = 0;
+        if gui.config.property == 3 && gui.config.phaseDensity
+            set(h.cb_MinMax_plot_GUI, 'Enable', 'on');
+        else
+            set(h.cb_MinMax_plot_GUI, 'Value', 0);
+            gui.config.MinMax = 0;
+        end
         gui.config.plotSectMap = 0;
         if get(h.pm_set_file, 'Value') ~= 5
             set([h.value_numXindents_GUI, h.value_numYindents_GUI, ...
@@ -333,6 +346,9 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
         if ~isfield(gui.data, 'originalProperties')
             set(h.unitProp_GUI, 'Enable', 'on');
         end
+    end
+    if gui.config.property == 3 && gui.config.phaseDensity
+        set(h.cb_plotSectMap_GUI, 'Enable', 'off');
     end
 end
 guidata(gcf, gui);

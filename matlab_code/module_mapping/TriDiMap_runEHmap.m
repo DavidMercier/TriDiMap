@@ -170,6 +170,9 @@ elseif gui.config.plotClusters == 3
         end
         cla;
         envelopeType = get(gui.handles.pm_clusterEnvelope_GUI, 'Value');
+        if isfield(gui.config, 'phaseDensity') && gui.config.phaseDensity
+            envelopeType = 1;
+        end
         hPlot = gobjects(gui.config.K_GMM, 1);
         legendInfo = cell(gui.config.K_GMM, 1);
         for k = 1:gui.config.K_GMM
@@ -214,4 +217,25 @@ if ~gui.config.plotSectMap
     set([hXLabel, hYLabel], ...
         'Color', [0,0,0], 'FontSize', gui.config.FontSizeVal, ...
         'Interpreter', 'Latex');
+end
+if isfield(gui.config, 'phaseDensity') && gui.config.phaseDensity && ~gui.config.plotSectMap
+    if gui.config.plotClusters == 3
+        densityLabels = gui.data.dataH_SectorLabVec;
+        densityColors = colorList;
+    elseif gui.config.plotClusters == 2
+        densityLabels = gui.data.dataH_Sector(:);
+        densityColors = [0 0 0; 1 0 0; 0 1 0; 0 0 1];
+    else
+        densityLabels = ones(numel(data2use_H), 1);
+        densityColors = [0 0 0];
+    end
+    try
+        TriDiMap_plotPhaseDensity([data2use_H(:), data2use_E(:)], densityLabels, densityColors, gui);
+    catch exception
+        if strcmp(exception.identifier, 'TriDiMap:NoPhaseDensity')
+            errordlg(exception.message, 'Joint phase PDF');
+        else
+            rethrow(exception);
+        end
+    end
 end

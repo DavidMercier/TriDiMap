@@ -4,6 +4,7 @@ function TriDiMap_runPlot(gifFlag, varargin)
 if nargin < 1
     gifFlag = 0;
 end
+TriDiMap_applyGrayscale(gca, false);
 reset(gca);
 gui = guidata(gcf);
 axes(gui.handles.AxisPlot_GUI);
@@ -169,6 +170,8 @@ else
 end
 hold off;
 
+TriDiMap_applyGrayscale(gca, ...
+    isfield(gui.config, 'grayscalePlots') && gui.config.grayscalePlots);
 guidata(gcf, gui);
 if gui.config.saveFlag
     TriDiMap_updateUnit_and_GUI;

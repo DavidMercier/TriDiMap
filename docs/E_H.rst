@@ -87,6 +87,55 @@ it is not a confidence region. Duplicate points do not change the outline.
 Two-point and collinear clusters are represented by a line segment; a singleton
 remains its plotted point. Nonfinite coordinates are excluded with a warning.
 
+Joint probability density of each phase
+++++++++++++++++++++++++++++++++++++++++++
+
+Select **E vs H**, choose **Plot sectors** or **Gaussian Mixture Model**, then
+choose **Joint phase PDFs (3D)** in the lower E-H options panel. The default
+**E-H points** view retains the scatter plot and cluster-envelope options.
+With **No clusters**, the density view treats the measurements as one phase.
+The spatial **Plot map with sectors** option is disabled while viewing densities.
+
+Each translucent surface is a correlated bivariate Gaussian fitted to the
+finite original hardness/modulus pairs assigned to that phase. Its mean and
+maximum-likelihood covariance are estimated from those pairs, rather than from
+rounded legends or resampled map pixels. For GMM clusters these are estimates
+from the hard assignments, not the soft-assignment EM component parameters.
+Changing this view reuses the current cluster labels without rerunning GMM.
+
+The plotted contribution is ``w_k * N([H,E]; mean_k, covariance_k)``, where
+``w_k`` is the phase's fraction of assigned finite pairs. Its integral is
+``w_k``, not one; summing all phase contributions gives the mixture density.
+This is the standard multivariate-normal density described by MATLAB's
+`mvnpdf <https://www.mathworks.com/help/stats/mvnpdf.html>`_, evaluated with
+base MATLAB linear algebra; no FieldTrip installation is required.
+
+Density has reciprocal squared property
+units (for example GPa^-2). Each surface spans four marginal standard
+deviations either side of its mean, and the base ellipses are one-, two- and
+three-standard-deviation isodensity contours. Gaussian tails may extend below
+zero; the estimate is not a truncated distribution.
+
+The plot controls also apply to this view:
+
+* **Log** uses logarithmic H and E axes, matching the E-H scatter view.
+  Nonpositive mesh coordinates are hidden only for display; the Gaussian fit,
+  phase fractions and density values are unchanged and are not renormalized.
+  A phase with no positive H-E mesh is omitted from the logarithmic display
+  with a warning. The density (vertical) axis remains linear.
+* **Grid** toggles grid lines on all three axes.
+* **Ticks** toggles minor ticks on all three axes.
+* **Min/Max** marks and labels the lowest and highest displayed density of each
+  phase, including for irregular-XY imports. The minimum refers to the displayed
+  finite mesh, not a global minimum of the unbounded Gaussian.
+
+Nonfinite or unassigned pairs are excluded with a warning. A phase needs at
+least three non-collinear finite pairs; undersized or singular phases are
+omitted with a warning rather than assigned an artificial width. Their
+fractions are not redistributed to other phases. If no density can be
+estimated, an error dialog is shown. Measurements and phase labels are not
+modified. **SAVE** and **Plot options > Grayscale plots** also apply to this view.
+
 Determination of the number of clusters
 +++++++++++++++++++++++++++
 
