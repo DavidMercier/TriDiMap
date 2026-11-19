@@ -71,6 +71,22 @@ The |matlab| third-party code used to define clusters with GMMs is: `GMMClusteri
    
    *Elastic modulus vs hardness plot with clusters of points obtained with GMM*
 
+Cluster envelopes
++++++++++++++++++++++++++++
+
+In the E-H plot, choose **Gaussian Mixture Model** and use the envelope selector
+below the phase count. **Convex hull / legend** outlines each cluster using
+MATLAB's ``convhull``, in the same color as its points. **Ellipse fit / legend**
+retains the previous ellipse-fitting display; **No envelopes / legend** hides
+both the envelopes and the phase legend (the default).
+The legend reports the mean hardness and elastic modulus of each cluster.
+Changing the envelope type does not rerun clustering or change cluster labels.
+
+A convex hull encloses every finite point in the cluster, including outliers;
+it is not a confidence region. Duplicate points do not change the outline.
+Two-point and collinear clusters are represented by a line segment; a singleton
+remains its plotted point. Nonfinite coordinates are excluded with a warning.
+
 Determination of the number of clusters
 +++++++++++++++++++++++++++
 

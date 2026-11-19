@@ -40,7 +40,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
             set(h.cb_plotSectMap_GUI, 'Visible', 'off');
             set(h.title_K_GMM_GUI, 'Visible', 'off');
             set(h.value_K_GMM_GUI, 'Visible', 'off');
-            set(h.cb_plotEllipse_GUI, 'Visible', 'off');
+            set(h.pm_clusterEnvelope_GUI, 'Visible', 'off');
             gui.config.plotThresLines = 0;
             gui.config.plotSectMap = 0;
             if gui.config.plotClusters == 3
@@ -53,7 +53,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
                 set(h.value_K_GMM_GUI, 'Visible', 'on');
                 set(h.cb_plotSectMap_GUI, 'Visible', 'on');
                 gui.config.plotSectMap = get(h.cb_plotSectMap_GUI, 'Value');
-                set(h.cb_plotEllipse_GUI, 'Visible', 'on');
+                set(h.pm_clusterEnvelope_GUI, 'Visible', 'on');
                 set(h.pb_diffEHmapCluster_GUI, 'Visible', 'on');
             end
         elseif gui.config.plotClusters == 2
@@ -68,7 +68,7 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
             set(h.cb_plotSectMap_GUI, 'Visible', 'on');
             set(h.title_K_GMM_GUI, 'Visible', 'off');
             set(h.value_K_GMM_GUI, 'Visible', 'off');
-            set(h.cb_plotEllipse_GUI, 'Visible', 'off');
+            set(h.pm_clusterEnvelope_GUI, 'Visible', 'off');
             gui.config.plotThresLines = get(h.cb_thresPlot_GUI, 'Value');
             gui.config.plotSectMap = get(h.cb_plotSectMap_GUI, 'Value');
             set(h.pb_diffEHmapCluster_GUI, 'Visible', 'off');

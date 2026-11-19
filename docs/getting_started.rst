@@ -23,6 +23,13 @@ GUI stands for graphical user interface.
 .. code-block:: matlab
 
    path_management.m
+
+The demo loads its bundled example from the toolbox's ``data_indentation``
+folder, independently of the current working directory. Paths are constructed
+for the host operating system, including MATLAB Online. Current MATLAB releases
+use ``readcell`` for mean-result sheets; older releases retain ``xlsread``.
+If an Excel file cannot be read, the importer displays the file path and reader
+error and stops the import instead of attempting to plot missing data.
    
 * The following window opens:
 

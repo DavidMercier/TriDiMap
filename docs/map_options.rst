@@ -12,9 +12,27 @@ The choice is made by the user; the toolbox does not infer rheology from the
 existing modulus and hardness values. Use measurements from the same load/depth
 point for each indent, corrected for frame compliance.
 
-Select an Excel file whose first sheet contains exactly these three headers in
-the first row, followed by one numeric row per indent, in the acquisition order
-of the loaded map:
+For MTS workbooks such as the bundled 25x25 example, select the original workbook.
+The first sheet must contain ``Test`` IDs and matching ``Avg Modulus [a-b nm]``
+and ``Avg Hardness [a-b nm]`` columns. The importer reads the corresponding
+``Test ...`` curve sheets in Results order, including zero-padded and tagged
+test names. It uses loading data up to the first maximum depth, within the
+summary's averaging interval (75-85 nm for the bundled example). Curve columns
+must be ``Displacement Into Surface`` (nm), ``Load On Sample`` (mN), and
+``Harmonic Contact Stiffness`` (N/m). Stiffness is converted to mN/nm.
+Properties are recalculated at each selected point and then averaged per indent;
+the model is not applied to averaged depth/load/stiffness inputs.
+Indents already excluded by invalid modulus/hardness entries in Results retain
+NaN values, with a warning reporting their count. Other invalid curve data
+stops recalculation without changing the map.
+
+The initial read of hundreds of test sheets can take several minutes; a
+cancellable progress window is shown. Measurements are cached for subsequent
+model changes while the same map and unchanged workbook remain loaded.
+
+Alternatively, select an Excel file whose first sheet contains exactly these
+three headers in the first row, followed by one numeric row per indent, in the
+acquisition order of the loaded map:
 
 =================  =========  =====================
 Depth (nm)         Load (mN)  Stiffness (mN/nm)
@@ -26,6 +44,10 @@ The row count and ordering must match the loaded map; no positions are matched
 automatically. The same grid ordering as the original import is applied.
 All measurements and resulting contact depths and areas must be finite and
 positive; an invalid spreadsheet or calculation is rejected.
+An input containing only modulus/hardness, without the per-test measurements,
+is not sufficient for this step.
+On current MATLAB releases, recalculation uses ``readcell`` rather than the
+legacy ``xlsread`` reader, including in MATLAB Online.
 
 Enter the calibrated area coefficients for the indenter, in order C0 to C8,
 separated by commas. With contact depth in nm the area in nm² is

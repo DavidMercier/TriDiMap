@@ -31,24 +31,32 @@ coefficientStrings = strsplit(answers{5}, ',', 'CollapseDelimiters', false);
 coefficients = cellfun(@str2double, coefficientStrings);
 
 [filename, pathname] = uigetfile({'*.xls;*.xlsx', 'Excel spreadsheets (*.xls, *.xlsx)'}, ...
-    'Select per-indent measurements');
+    'Select per-indent measurements or MTS workbook');
 if isequal(filename, 0)
     return
 end
 try
-    [~, ~, raw] = xlsread(fullfile(pathname, filename));
-    headers = {'Depth (nm)', 'Load (mN)', 'Stiffness (mN/nm)'};
+    measurementFile = fullfile(pathname, filename);
     count = numel(gui.data.expValues_mat.H);
-    if size(raw, 1) ~= count + 1 || size(raw, 2) ~= 3 || ...
-            ~isequal(raw(1, :), headers) || ...
-            ~all(cellfun(@(x) isnumeric(x) && isscalar(x), reshape(raw(2:end, :), [], 1)))
-        error('TriDiMap:InvalidSpreadsheet', ...
-            'Expected the three documented headers and exactly one numeric row per indent, in acquisition order.');
+    fileInfo = dir(measurementFile);
+    if isempty(fileInfo)
+        error('TriDiMap:MissingFile', 'Measurement file not found: %s', measurementFile);
     end
-    measurements = cell2mat(raw(2:end, :));
+    signature = {measurementFile, fileInfo.bytes, fileInfo.datenum, count};
+    if isfield(gui.data, 'contactMeasurements') && ...
+            isequal(gui.data.contactMeasurements.signature, signature)
+        measurements = gui.data.contactMeasurements.values;
+        indentIndex = gui.data.contactMeasurements.indentIndex;
+    else
+        [measurements, indentIndex] = TriDiMap_readContactMeasurements(measurementFile, count);
+        gui.data.contactMeasurements = struct('signature', {signature}, ...
+            'values', measurements, 'indentIndex', indentIndex);
+    end
     [modulus, hardness] = TriDiMap_contactModel(measurements(:, 1), ...
         measurements(:, 2), measurements(:, 3), model, epsilon, alpha, ...
         tipDefect, beta, coefficients);
+    modulus = accumarray(indentIndex, modulus, [count, 1], @mean, NaN);
+    hardness = accumarray(indentIndex, hardness, [count, 1], @mean, NaN);
 catch exception
     errordlg(exception.message, 'Contact model recalculation');
     return

@@ -169,23 +169,33 @@ elseif gui.config.plotClusters == 3
             gui.data.dataE = fliplr(gui.data.dataE);
         end
         cla;
+        envelopeType = get(gui.handles.pm_clusterEnvelope_GUI, 'Value');
+        hPlot = gobjects(gui.config.K_GMM, 1);
+        legendInfo = cell(gui.config.K_GMM, 1);
         for k = 1:gui.config.K_GMM
-            hPlot(k) = plot(gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==k,1),...
-                gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==k,2),...
+            clusterPoints = gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==k, :);
+            hPlot(k) = plot(clusterPoints(:, 1), clusterPoints(:, 2),...
                 '+', 'color', colorList(k,:), 'Linewidth', LWval);
             hold on;
-            if get(gui.handles.cb_plotEllipse_GUI, 'Value')
-                fit_ellipse(gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==k,1),...
-                    gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==k,2), ...
-                    gca, k);
+            if envelopeType == 2
+                boundary = TriDiMap_clusterHull(clusterPoints);
+                plot(boundary(:, 1), boundary(:, 2), '-', 'Color', colorList(k,:), ...
+                    'LineWidth', LWval, ...
+                    'Tag', 'TriDiMapClusterEnvelope');
+            elseif envelopeType == 3
+                fit_ellipse(clusterPoints(:, 1), clusterPoints(:, 2), gca, k);
+            end
+            if envelopeType > 1
                 hold on;
-                legCellInfo = strcat('H = ',num2str(gui.data.dataH(k)), gui.config.strUnit_Property, ...
-                    ' / E = ',num2str(gui.data.dataE(k)), gui.config.strUnit_Property);
-                legendInfo{k} = legCellInfo{:};
+                legendInfo{k} = sprintf('H = %g %s / E = %g %s', ...
+                    round(10*mean(clusterPoints(:, 1)))/10, char(gui.config.strUnit_Property), ...
+                    round(10*mean(clusterPoints(:, 2)))/10, char(gui.config.strUnit_Property));
             end
         end
-        if get(gui.handles.cb_plotEllipse_GUI, 'Value')
+        if envelopeType > 1
             legend(hPlot(:),legendInfo);
+        else
+            legend off;
         end
     else
         cla;
