@@ -13,15 +13,15 @@ The TriDiMap toolbox has been developed to plot, to map and to analyze (nano)ind
 dataset.
 
 With this Matlab toolbox, it is possible:
-    * to map (in 2D or 3D), to interpolate and to smooth indentation map;
-    * to plot elastic modulus vs hardness values;
-    * to cluster phases with standardized mechanical/KAMM features and display spatial phase maps;
-    * to plot and to fit probability density functions;
-    * to plot and to fit cumulative density functions;
-    * to extract statistical values (mean, min, max with standard deviations) of mechanical properties and fractions for each phase;
-    * to correct mechanical map from image correlation with microstructural map;
-    * to correlate/compare mechanical map with microstructural map;
-    * to plot 4D mechanical property map.
+    * to create 2D/3D mechanical-property maps from regular grids and point maps from irregular XY measurements, with interpolation, smoothing and cropping for grid maps;
+    * to recalculate hardness and reduced indentation modulus from load, depth and stiffness data using Oliver-Pharr or Loubet contact models;
+    * to plot elastic modulus vs hardness values, define sectors and perform phase clustering;
+    * to cluster phases using K-means or GMM with mechanical and optional KAMM features, and display phase and KAMM maps;
+    * to visualize joint 3D probability densities of phases in elastic-modulus/hardness space;
+    * to plot and fit probability density functions and cumulative density functions;
+    * to extract per-phase mechanical-property statistics (mean, extrema and standard deviations) and phase fractions;
+    * to correlate mechanical and microstructural maps for image-correlation-based targeted indentation (ICBTI) analysis;
+    * to plot 4D mechanical-property maps from indentation depth slices.
 
 License-free Python example
 --------------------------
@@ -53,8 +53,13 @@ Reference papers
 
 Keywords
 ---------
-|matlab| toolbox; nanoindentation; mapping; grid; 2D; 3D; mechanical properties;
-probability density function; deconvolution; multimodal Gaussian fit; cumulative density function; image correlation.
+|matlab| toolbox; nanoindentation; indentation mapping; mechanical properties;
+regular grid; irregular XY; 2D mapping; 3D mapping; 4D mapping; interpolation;
+smoothing; contact mechanics; Oliver-Pharr; Loubet; elastic modulus; hardness;
+E-H plot; phase clustering; K-means; Gaussian mixture model; KAMM;
+phase map; joint probability density; probability density function;
+cumulative density function; multimodal Gaussian fit; deconvolution;
+image correlation; ICBTI; microstructure correlation.
 
 Contributors
 -------------
