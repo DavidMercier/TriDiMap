@@ -127,21 +127,15 @@ elseif gui.config.plotClusters == 3
             data2use_HVec(~any(~isnan(data2use_HVec), 2),:)=0;
             data2use_EVec(~any(~isnan(data2use_EVec), 2),:)=0;
             K = gui.config.K_GMM;
+            if K > 3
+                warning('TriDiMap:GMMMoreThanThreePhases', ...
+                    ['GMM with %d phases is supported, but more than three phases ', ...
+                    'can be difficult to interpret; verify that this phase count is justified by the data.'], K);
+            end
             [labels, model, data] = GMMClustering(K, ...
                 [data2use_HVec, data2use_EVec]);
-            % Reverse labelling (1 for low values and 2 for high values)
-            if K == 2
-                labels = labels + 1; %label = 1 becomes 2 --> Hard phase
-                labels(labels==3) = 1; % label = 2 becomes 1 --> Soft phase
-            elseif K ==3
-                labels(labels==1) = 4;
-                labels = labels - 1;
-                labels(labels==2) = 0;
-                labels(labels==1) = 2;
-                labels(labels==0) = 1;
-            end
             %gui.data.dataE_SectorVec = data(labels,2);
-            gui.data.dataH_Sector = reshape(data(labels,1),size(data2use_H,1),size(data2use_H,2));
+            gui.data.dataH_Sector = reshape(labels,size(data2use_H,1),size(data2use_H,2));
             gui.data.dataE_Sector = reshape(data(labels,2),size(data2use_E,1),size(data2use_E,2));
             gui.data.dataHminInd = [];gui.data.dataHmaxInd = [];
             gui.data.dataHminInd = find(data(labels,1)==min(data(labels,1)));
@@ -163,7 +157,8 @@ elseif gui.config.plotClusters == 3
             gui.data.dataH_SectorVec = data;
             gui.config.flag_ClusterGauss = 1;
         end
-        colorList = [0 0 1; 1 0 0; 0 1 0]; %b r g
+        colorList = lines(max(gui.config.K_GMM, 3));
+        colorList(1:3, :) = [0 0 1; 1 0 0; 0 1 0]; % b r g
         if mean(gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==1,1)) > mean(gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==2,1))
             gui.data.dataH = fliplr(gui.data.dataH);
             gui.data.dataE = fliplr(gui.data.dataE);

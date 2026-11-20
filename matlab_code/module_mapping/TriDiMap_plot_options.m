@@ -45,7 +45,12 @@ else
             cminVal = 0;
             cmaxVal = gui.config.K_GMM;
             intervalScaleBar = gui.config.K_GMM;
-            
+        elseif gui.config.K_GMM > 3
+            cMap = lines(gui.config.K_GMM);
+            cMap(1:3, :) = [0 0 1; 1 0 0; 0 1 0]; % b r g
+            cminVal = 0;
+            cmaxVal = gui.config.K_GMM;
+            intervalScaleBar = gui.config.K_GMM;
         end
     end
 end

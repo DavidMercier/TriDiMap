@@ -4,6 +4,7 @@ originalPath = path;
 restorePath = onCleanup(@() path(originalPath));
 addpath(fullfile(root, 'matlab_code', 'module_mapping'));
 addpath(fullfile(root, 'third_party_codes'));
+addpath(fullfile(root, 'third_party_codes', 'GMMClustering'));
 
 points = [0, 0; 2, 0; 2, 1; 0, 1; 1, 0.5; 2, 0];
 boundary = TriDiMap_clusterHull(points);
@@ -63,5 +64,23 @@ assert(numel(findall(ax, 'Type', 'line')) == 3);
 assert(isempty(findall(fig, 'Type', 'legend')));
 assert(isequal(gui.data.dataH_SectorLabVec, originalLabels));
 assert(isequal(gui.data.dataH_SectorVec, originalPoints));
+
+gui.config.K_GMM = 4;
+gui.config.flag_ClusterGauss = 0;
+data2use_H = [];
+data2use_E = [];
+for ii = 1:4
+    clusterPoints = bsxfun(@plus, cluster, [2 + 3*(ii-1), 20 + 20*(ii-1)]);
+    data2use_H = [data2use_H; clusterPoints(:, 1)];
+    data2use_E = [data2use_E; clusterPoints(:, 2)];
+end
+lastwarn('');
+TriDiMap_runEHmap;
+[~, warningID] = lastwarn;
+assert(strcmp(warningID, 'TriDiMap:GMMMoreThanThreePhases'));
+clusterPlots = findobj(ax, 'Type', 'line');
+assert(numel(clusterPlots) == 4);
+plotColors = cell2mat(arrayfun(@(h) get(h, 'Color'), clusterPlots, 'UniformOutput', false));
+assert(size(unique(plotColors, 'rows'), 1) == 4);
 disp('Cluster envelope tests passed.');
 end

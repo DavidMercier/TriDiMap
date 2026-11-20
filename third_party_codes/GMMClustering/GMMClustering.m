@@ -1,115 +1,194 @@
-% University of Malta
-% CSA3220 - Machine Learning, Expert Systems, & Fuzzy Logic
-% Dr. George Azzopardi
-% December, 2015
-
-% Clustering with Gaussian Mixture Models
-% Input parameter K is the number of Gaussian functions used
 function [labels, model, data] = GMMClustering(K, x, varargin)
-
-% Default value of K is 2
-if nargin == 1
-    x = getData;
-end
-
 if nargin == 0
-    x = getData;
     K = 2;
+    x = getData;
+elseif nargin == 1
+    x = getData;
 end
 
-N = size(x,1);
-nfeatures = size(x,2);
-
-%Step 1 - initialize means with KMeans
-[labels,mu] = kmeans(x,K);
-
-% Compute weights and covariance matrices using MLE
-for k = 1:K
-    weight(k) = sum(labels == k)/N;
-    Sigma{k} = cov(x(labels==k,:));
+if ~isnumeric(K) || ~isscalar(K) || ~isfinite(K) || K < 2 || K ~= fix(K)
+    error('TriDiMap:GMMInput', 'The number of phases must be an integer greater than or equal to 2.');
+end
+if ~isnumeric(x) || ~isreal(x) || ndims(x) ~= 2 || isempty(x) || ...
+        any(~isfinite(x(:))) || size(x, 1) < K || size(x, 2) ~= 2
+    error('TriDiMap:GMMInput', 'GMM input must contain at least K finite two-dimensional observations.');
 end
 
-convergence = 0;
-t = 1;
+data = double(x);
+if size(unique(data, 'rows'), 1) < K
+    error('TriDiMap:GMMInput', 'GMM input must contain at least K distinct observations.');
+end
 
-%figure;
-while t==1 || ~convergence %convergence criteria
-    
-    % Step 2: Expectation - Compute posteriors of each cluster
-    for n = 1:N
-        for k = 1:K
-           posterior(n,k) = weight(k) * mmvn_pdf(x(n,:),mu(k,:),Sigma{k});
+center = mean(data, 1);
+scale = std(data, 1, 1);
+scale(scale == 0) = 1;
+features = bsxfun(@rdivide, bsxfun(@minus, data, center), scale);
+
+previousState = rng;
+restoreRng = onCleanup(@() rng(previousState));
+rng(0, 'twister');
+
+bestLogLikelihood = -Inf;
+bestLabels = [];
+for start = 1:5
+    initialLabels = initializeKMeans(features, K);
+    [candidateLabels, means, covariances, weights, logLikelihood] = ...
+        fitMixture(features, initialLabels, K);
+    if logLikelihood > bestLogLikelihood
+        bestLogLikelihood = logLikelihood;
+        bestLabels = candidateLabels;
+        bestMeans = means;
+        bestCovariances = covariances;
+        bestWeights = weights;
+    end
+end
+
+if isempty(bestLabels)
+    error('TriDiMap:GMMFit', 'Unable to fit a finite Gaussian mixture to the data.');
+end
+
+means = bsxfun(@plus, bsxfun(@times, bestMeans, scale), center);
+[~, order] = sortrows(means, [1, 2]);
+phaseMap = zeros(K, 1);
+phaseMap(order) = 1:K;
+labels = phaseMap(bestLabels);
+
+model.means = means(order, :);
+model.covariances = cell(K, 1);
+for ii = 1:K
+    covariance = bestCovariances{order(ii)};
+    model.covariances{ii} = covariance .* (scale(:) * scale(:)');
+end
+model.weights = bestWeights(order);
+model.logLikelihood = bestLogLikelihood - size(data, 1) * sum(log(scale));
+
+clear restoreRng;
+end
+
+function labels = initializeKMeans(features, K)
+N = size(features, 1);
+bestCost = Inf;
+labels = zeros(N, 1);
+
+for start = 1:5
+    centers = features(randperm(N, K), :);
+    previousLabels = zeros(N, 1);
+    for iteration = 1:100
+        distances = pointDistances(features, centers);
+        [nearestDistance, updatedLabels] = min(distances, [], 2);
+
+        emptyClusters = setdiff((1:K)', unique(updatedLabels));
+        for ii = 1:numel(emptyClusters)
+            [~, farthest] = max(nearestDistance);
+            updatedLabels(farthest) = emptyClusters(ii);
+            nearestDistance(farthest) = -Inf;
         end
-        posterior(n,:) = posterior(n,:)./sum(posterior(n,:));
-    end
-        
-    visualize(x,mu,Sigma,posterior);
-    
-    % Step 3: Maximization; i.e. update model parameters (means, covariances
-    % matrices and weights
-    for k = 1:K
-        % Update means        
-        sp(k) = sum(posterior(:,k));
-        mu(k,:) = sum(bsxfun(@times,posterior(:,k),x))/sp(k);
-        
-        % Update covariance matrices
-        Sigma{k} = zeros(nfeatures,nfeatures);
-        for n = 1:N
-            Sigma{k} = Sigma{k} + posterior(n,k)*(x(n,:)-mu(k,:))'*(x(n,:)-mu(k,:));
+
+        updatedCenters = zeros(K, size(features, 2));
+        for ii = 1:K
+            updatedCenters(ii, :) = mean(features(updatedLabels == ii, :), 1);
         end
-        Sigma{k} = Sigma{k}./sp(k);                              
-    end
-    %Update the weights
-    weight = sp./sum(sp);
-          
-    % Step 4: Evaluation - compute log likelihood
-    llh(t) = 0;
-    for i = 1:n
-        innerterm = 0;
-        for k = 1:K
-            innerterm = innerterm + (weight(k) * mmvn_pdf(x(i,:),mu(k,:),Sigma{k}));
+        if isequal(updatedLabels, previousLabels)
+            centers = updatedCenters;
+            break
         end
-        llh(t) = llh(t) + log(innerterm);
+        previousLabels = updatedLabels;
+        centers = updatedCenters;
     end
-    llh(t) = llh(t) / n;
-    
-    if t > 1
-        convergence = (llh(t) - llh(t-1)) < 0.000001;
+
+    distances = pointDistances(features, centers);
+    linearIndices = sub2ind(size(distances), (1:N)', updatedLabels);
+    cost = sum(distances(linearIndices));
+    if cost < bestCost
+        bestCost = cost;
+        labels = updatedLabels;
     end
-    t = t + 1;            
+end
 end
 
-visualize(x,mu,Sigma,posterior);
-
-model.means = mu;
-model.covariances = Sigma;
-model.weights = weight;
-data = x;
-[~,labels] = max(posterior,[],2);
-    
-% % Show the clustered data
-% colorList = jet(K);
-% %figure;hold on;
-% for k = 1:K
-%     plot(data(labels==k,1),data(labels==k,2),'k+','color',colorList(k,:));
-% end
-
-% Create 3 Gaussian distributions
-function Data = getData
-A1 = mvnrnd([-1,0.3],[.5 .4;.4 .6],1000);
-A2 = mvnrnd([-3,0.3],[.5 .4;.4 .6],1000);
-A3 = mvnrnd([-2,0.5],[.5 -.4;-.4 .6],1000);
-Data = [A1;A2;A3];
-
-% Visualize the determined distributions
-function visualize(data,mu,Sigma,posterior)
-cla;
-[~,labels] = max(posterior,[],2);
-
-%gscatter(data(:,1),data(:,2),labels);
-hold on;
-for k = 1:size(posterior,2)
-    F = @(x,y) mmvn_pdf([x y],mu(k,:),Sigma{k});
-    fcontour(F);%,[min(data(:,1)),max(data(:,1))],[min(data(:,2)),max(data(:,2))]);
+function distances = pointDistances(features, centers)
+N = size(features, 1);
+K = size(centers, 1);
+distances = zeros(N, K);
+for ii = 1:K
+    distances(:, ii) = sum(bsxfun(@minus, features, centers(ii, :)).^2, 2);
 end
-%drawnow;
+end
+
+function [labels, means, covariances, weights, logLikelihood] = fitMixture(features, labels, K)
+N = size(features, 1);
+D = size(features, 2);
+regularization = 1e-6;
+means = zeros(K, D);
+covariances = cell(K, 1);
+counts = zeros(K, 1);
+for ii = 1:K
+    selected = features(labels == ii, :);
+    counts(ii) = size(selected, 1);
+    means(ii, :) = mean(selected, 1);
+    residuals = bsxfun(@minus, selected, means(ii, :));
+    covariances{ii} = (residuals' * residuals) / counts(ii) + regularization * eye(D);
+end
+weights = counts / N;
+
+previousLogLikelihood = -Inf;
+logLikelihood = -Inf;
+for iteration = 1:300
+    logProbabilities = zeros(N, K);
+    for ii = 1:K
+        logProbabilities(:, ii) = log(weights(ii)) + ...
+            logGaussianPDF(features, means(ii, :), covariances{ii});
+    end
+
+    rowMaximum = max(logProbabilities, [], 2);
+    shifted = bsxfun(@minus, logProbabilities, rowMaximum);
+    probability = exp(shifted);
+    rowSum = sum(probability, 2);
+    if any(~isfinite(rowMaximum)) || any(rowSum == 0) || any(~isfinite(rowSum))
+        logLikelihood = -Inf;
+        return
+    end
+    logLikelihood = sum(rowMaximum + log(rowSum));
+    responsibilities = bsxfun(@rdivide, probability, rowSum);
+
+    if iteration > 1 && abs(logLikelihood - previousLogLikelihood) <= ...
+            1e-8 * (1 + abs(previousLogLikelihood))
+        break
+    end
+    previousLogLikelihood = logLikelihood;
+
+    counts = sum(responsibilities, 1);
+    if any(counts <= eps * N)
+        logLikelihood = -Inf;
+        return
+    end
+    weights = counts / N;
+    means = bsxfun(@rdivide, responsibilities' * features, counts');
+    for ii = 1:K
+        residuals = bsxfun(@minus, features, means(ii, :));
+        covariances{ii} = bsxfun(@times, residuals, responsibilities(:, ii))' * ...
+            residuals / counts(ii) + regularization * eye(D);
+        covariances{ii} = (covariances{ii} + covariances{ii}') / 2;
+    end
+end
+
+[~, labels] = max(responsibilities, [], 2);
+end
+
+function logDensity = logGaussianPDF(features, meanValue, covariance)
+[upper, errorFlag] = chol(covariance);
+if errorFlag ~= 0
+    logDensity = -Inf(size(features, 1), 1);
+    return
+end
+residuals = bsxfun(@minus, features, meanValue) / upper;
+logDensity = -0.5 * (size(features, 2) * log(2*pi) + ...
+    2 * sum(log(diag(upper))) + sum(residuals.^2, 2));
+end
+
+function data = getData
+A1 = mvnrnd([-1, 0.3], [.5, .4; .4, .6], 1000);
+A2 = mvnrnd([-3, 0.3], [.5, .4; .4, .6], 1000);
+A3 = mvnrnd([-2, 0.5], [.5, -.4; -.4, .6], 1000);
+data = [A1; A2; A3];
+end

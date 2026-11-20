@@ -78,6 +78,41 @@ gui.config.mlView = 4;
 gui = TriDiMap_runML(gui, E, H);
 assert(numel(findall(ax, 'Tag', 'TriDiMapPhaseDensity')) == 2);
 assert(isequaln(gui.ml.result, before));
+gui.config.mlView = 5;
+gui.config.mlMetric = 1;
+gui = TriDiMap_runML(gui, E, H);
+scatterHandles = findall(ax, 'Tag', 'TriDiMapML3DCluster');
+assert(numel(scatterHandles) == 2);
+plotted = 0;
+for ii = 1:numel(scatterHandles)
+    plotted = plotted + numel(get(scatterHandles(ii), 'ZData'));
+end
+assert(plotted == sum(before.labels(:) > 0 & isfinite(before.maps.KAMM(:))));
+assert(strcmp(get(get(ax, 'ZLabel'), 'String'), 'KAMM (GPa^2)'));
+camera = get(ax, 'View');
+assert(camera(2) ~= 90);
+assert(isequaln(gui.ml.result, before));
+gui.config.mlMetric = 2;
+gui = TriDiMap_runML(gui, E, H);
+scatterHandles = findall(ax, 'Tag', 'TriDiMapML3DCluster');
+plotted = [];
+for ii = 1:numel(scatterHandles)
+    values = get(scatterHandles(ii), 'ZData');
+    plotted = [plotted; values(:)];
+end
+expected = before.maps.KAEM(:);
+valid = before.labels(:) > 0 & isfinite(expected);
+assert(isequal(sort(plotted), sort(expected(valid))));
+assert(strcmp(get(get(ax, 'ZLabel'), 'String'), 'KAEM (GPa)'));
+assert(strcmp(get(get(ax, 'Title'), 'String'), 'ML-assisted H-E-KAEM (3D)'));
+assert(isequaln(gui.ml.result, before));
+gui.config.mlMetric = 1;
+gui = TriDiMap_runML(gui, E, H);
+gui.config.logZ = true;
+gui = TriDiMap_runML(gui, E, H);
+assert(strcmp(get(ax, 'XScale'), 'log') && strcmp(get(ax, 'YScale'), 'log') && ...
+    strcmp(get(ax, 'ZScale'), 'log'));
+gui.config.logZ = false;
 guidata(fig, gui);
 file = [tempname, '.csv'];
 deleteExport = onCleanup(@() delete(file));
@@ -112,6 +147,13 @@ x = get(points, 'XData');
 y = get(points, 'YData');
 assert(isequal(x(:), gui.data.coordinates(:, 1)) && isequal(y(:), gui.data.coordinates(:, 2)));
 assert(isempty(fieldnames(gui.ml.result.maps)) && gui.ml.result.labels(10) == 0);
+gui.config.mlView = 5;
+try
+    TriDiMap_runML(gui, E(:), H(:));
+    error('TriDiMap:MissingError', 'Expected rejection of 3D KAMM plots on irregular XY.');
+catch exception
+    assert(strcmp(exception.identifier, 'TriDiMap:KAMMRequiresGrid'));
+end
 try
     TriDiMap_mlCluster(E(:), H(:), 2, 1, 1, 2, false);
     error('TriDiMap:MissingError', 'Expected rejection of raster descriptors on irregular XY.');

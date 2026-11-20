@@ -59,11 +59,20 @@ This method is described in the |matlab| documentation [#Matlab_GMM]_, [#Matlab_
 
 This method can distinguish contributions from two or three phases (especially in the case of a soft metallic matrix with hard ceramic particles)
 in the cloud of experimental points [#Hu_2005]_.
-Average mechanical property values can also be extracted using this method and a 2 or 3 color map can be obtained too.
+Average mechanical property values can also be extracted using this method,
+and each phase can be shown with a separate color on the map.
 
 The influence of indentation size and spacing on statistical phase analysis has also been studied using high-speed indentation mapping and clustering [#Besharatloo_2021]_.
 
 The |matlab| third-party code used to define clusters with GMMs is: `GMMClustering.m <https://github.com/DavidMercier/TriDiMap/blob/master/third_party_codes/GMMClustering/GMMClustering.m>`_
+
+The GUI's **Gaussian Mixture Model** option supports two or more phases. It
+uses a deterministic multi-start initialization and regularized EM fitting in
+base MATLAB; phase labels are ordered by increasing mean hardness. Counts
+above three are supported with additional plot colors, but produce a MATLAB
+warning to encourage checking that the chosen phase count is justified by
+the data. This legacy option is distinct from the **ML-assisted clustering**
+GMM, which requires the Statistics and Machine Learning Toolbox.
 
 .. figure:: ./_pictures/clusterMap.png
    :scale: 50 %

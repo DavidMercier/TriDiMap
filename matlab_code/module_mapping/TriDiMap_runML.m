@@ -7,9 +7,9 @@ if ~strcmp(char(c.strUnit_Property), 'GPa')
     error('TriDiMap:MLInput', 'ML descriptors expect modulus and hardness in GPa; check data and property units.');
 end
 raster = ~isfield(gui.data, 'coordinates');
-if ~raster && (descriptorOnly || ismember(c.mlFeatures, [2, 4]) || c.mlView == 3)
+if ~raster && (descriptorOnly || ismember(c.mlFeatures, [2, 4]) || ismember(c.mlView, [3, 5]))
     error('TriDiMap:KAMMRequiresGrid', ...
-        'KAMM requires a raster map. Random XY positions are not grid neighbours. Choose H,E or mechanical ratios.');
+        'KAMM requires a raster map. Random XY positions are not grid neighbours. Use H,E-only features and a non-KAMM view.');
 end
 if descriptorOnly
     c.mlView = 3;
@@ -69,6 +69,72 @@ elseif c.mlView == 1
             text(H(index), E(index), sprintf('H=%.3g, E=%.3g', H(index), E(index)), ...
                 'Tag', 'TriDiMapMLExtremum');
         end
+    end
+    hold off;
+elseif c.mlView == 5
+    labels = result.labels(:);
+    hardness = H(:);
+    modulus = E(:);
+    metrics = {'KAMM', 'KAEM', 'KAPM', 'KAMM_RATIO', 'KAMM_NORMPROD'};
+    units = {'GPa^2', 'GPa', 'GPa', 'dimensionless', 'dimensionless'};
+    metric = metrics{c.mlMetric};
+    descriptorMap = result.maps.(metric);
+    descriptor = descriptorMap(:);
+    unit = units{c.mlMetric};
+    selected = labels > 0 & isfinite(hardness) & isfinite(modulus) & isfinite(descriptor);
+    if c.logZ
+        nonpositive = selected & (hardness <= 0 | modulus <= 0 | descriptor <= 0);
+        if any(nonpositive)
+            warning('TriDiMap:MLLogNonpositive', ...
+                '%s points with nonpositive values are hidden on logarithmic axes.', metric);
+        end
+        selected = selected & hardness > 0 & modulus > 0 & descriptor > 0;
+    end
+    if ~any(selected)
+        error('TriDiMap:MLInput', ...
+            'There are no assigned finite H-E-%s points to display.', metric);
+    end
+    oldLegends = findall(ancestor(gca, 'figure'), 'Tag', 'legend');
+    if ~isempty(oldLegends)
+        delete(oldLegends);
+    end
+    colorbar off;
+    cla;
+    hold on;
+    handles = cell(c.mlK, 1);
+    descriptions = cell(c.mlK, 1);
+    for ii = 1:c.mlK
+        phase = selected & labels == ii;
+        handles{ii} = scatter3(hardness(phase), modulus(phase), descriptor(phase), ...
+            24, colors(ii, :), 'filled', 'Tag', 'TriDiMapML3DCluster');
+        descriptions{ii} = sprintf('Phase %d (n=%d)', ii, sum(phase));
+    end
+    legend([handles{:}], descriptions, 'Location', 'northeastoutside');
+    scale = 'linear';
+    if c.logZ
+        scale = 'log';
+    end
+    set(gca, 'XScale', scale, 'YScale', scale, 'ZScale', scale);
+    xlabel('Hardness (GPa)');
+    ylabel('Elastic / indentation modulus (GPa)');
+    zlabel([metric, ' (', unit, ')'], 'Interpreter', 'none');
+    title(['ML-assisted H-E-', metric, ' (3D)'], 'Interpreter', 'none');
+    view(3);
+    if c.MinMax
+        points = find(selected);
+        [~, low] = min(hardness(points));
+        [~, high] = max(hardness(points));
+        for index = points([low, high])'
+            text(hardness(index), modulus(index), descriptor(index), ...
+                sprintf('H=%.3g, E=%.3g, %s=%.3g', ...
+                hardness(index), modulus(index), metric, descriptor(index)), ...
+                'Tag', 'TriDiMapMLExtremum');
+        end
+    end
+    if c.grid
+        grid on;
+    else
+        grid off;
     end
     hold off;
 else
@@ -138,6 +204,9 @@ if c.mlView ~= 4
     states = {'off', 'on'};
     set(gca, 'FontSize', c.FontSizeVal, 'XMinorTick', states{1+logical(c.minorTicks)}, ...
         'YMinorTick', states{1+logical(c.minorTicks)});
+    if c.mlView == 5
+        set(gca, 'ZMinorTick', states{1+logical(c.minorTicks)});
+    end
 end
 if ~descriptorOnly
     set(gui.handles.pb_mlExport_GUI, 'Enable', 'on');

@@ -18,6 +18,7 @@ With this Matlab toolbox, it is possible:
     * to plot elastic modulus vs hardness values, define sectors and perform phase clustering;
     * to cluster phases using K-means or GMM with mechanical and optional KAMM features, and display phase and KAMM maps;
     * to visualize joint 3D probability densities of phases in elastic-modulus/hardness space;
+    * to plot hardness/modulus phase clusters against a selectable KAMM-family descriptor in 3D;
     * to plot and fit probability density functions and cumulative density functions;
     * to extract per-phase mechanical-property statistics (mean, extrema and standard deviations) and phase fractions;
     * to correlate mechanical and microstructural maps for image-correlation-based targeted indentation (ICBTI) analysis;

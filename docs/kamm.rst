@@ -60,9 +60,12 @@ For ML-assisted phase clustering:
 
 4. Choose **K-means (base MATLAB)** or **GMM (Statistics Toolbox)** and
    **KAMM order: 1** or **2**.
-5. Switch between **E-H clusters**, **Phase map**, **KAMM map** and
-   **Joint phase PDFs (3D)**. The upper descriptor selector controls which
-   of the five descriptors is displayed in the KAMM map.
+5. Switch between **E-H clusters**, **Phase map**, **KAMM map**,
+   **Joint phase PDFs (3D)** and **E-H vs descriptor (3D)**. The descriptor
+   selector controls the Z-axis in the 3D scatter as well as the image in
+   KAMM map. Choose KAMM, KAEM, KAPM, KAMM_RATIO or KAMM_NORMPROD. The 3D
+   scatter uses hardness (X), modulus (Y) and the selected descriptor (Z),
+   with assigned phases shown in separate colors. It requires a regular raster map.
 6. Use **Export ML CSV** for positions, H, E, phase IDs and descriptors.
 
 K-means uses bounded, deterministic multi-start Lloyd iterations and needs
@@ -89,10 +92,12 @@ available in ``gui.ml`` through ``guidata``.
 **SAVE**, **Colormap > Grayscale (all plots)**, grid and minor ticks apply to
 the new views.
 Log uses H/E axes for scatter/densities and log10 descriptor colors for
-KAMM maps (nonpositive values are hidden with a warning). Min/Max annotates
-H extrema on the scatter, displayed descriptor extrema on a KAMM map, or
-displayed density extrema on the joint PDFs. Log and Min/Max are disabled
-for categorical phase maps.
+KAMM maps (nonpositive values are hidden with a warning). In the 3D scatter,
+Log sets all three axes to logarithmic scale; points with nonpositive H, E,
+or descriptor values are hidden with a warning. Min/Max annotates H extrema
+on the scatters, displayed descriptor extrema on a KAMM map, or displayed
+density extrema on the joint PDFs. Log and Min/Max are disabled for
+categorical phase maps.
 
 Neighbourhood definition and formulas
 -------------------------------------
