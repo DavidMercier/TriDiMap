@@ -1,4 +1,4 @@
-﻿TriDiMap
+TriDiMap
 =========
 This Matlab toolbox has been developed to plot and to analyze mechanical properties maps from (nano)indentation results .
 
@@ -72,7 +72,7 @@ The author is grateful to Debora Rosseel, Franck Nozahic and Mélanie Gauvin (`O
 
 Screenshots
 -------------
-.. figure:: doc/_pictures/MTS_example1_25x25_H_GUI.gif
+.. figure:: docs/_pictures/MTS_example1_25x25_H_GUI.gif
    :scale: 50 %
    :align: center
    
