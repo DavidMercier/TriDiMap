@@ -60,7 +60,7 @@ if g.config.data_path
     guidata(gcf, g);
     
     %% Plots
-    figure;
+    TriDiMap_binFigure(g.handles.MainWindow);
     h1 = plot(Hmat(g.results.diffH==0), Emat(g.results.diffH==0), 'r+');
     hold on;
     h2 = plot(Hmat(g.results.diffH==1), Emat(g.results.diffH==1), 'bo');
@@ -81,7 +81,7 @@ if g.config.data_path
     ylim([0 1.2*yMax]);
     set(gca, 'Fontsize', FontSizeVal);
     
-    figure;
+    TriDiMap_binFigure(g.handles.MainWindow);
     h4 = plot(Hmat(g.results.diffE==0), Emat(g.results.diffE==0), 'r+');
     hold on;
     h5 = plot(Hmat(g.results.diffE==1), Emat(g.results.diffE==1), 'bo');
@@ -102,7 +102,7 @@ if g.config.data_path
     ylim([0 1.2*yMax]);
     set(gca, 'Fontsize', FontSizeVal);
     
-    figure;
+    TriDiMap_binFigure(g.handles.MainWindow);
     h_all = plot(Hmat(g.results.diffH==0 & g.results.diffE==0), ...
         Emat(g.results.diffH==0 & g.results.diffE==0), 'x', ...
         'MarkerEdgeColor', [0.5 0.5 0.5]);
@@ -128,7 +128,7 @@ if g.config.data_path
     ylim([0 1.2*yMax]);
     set(gca, 'Fontsize', FontSizeVal);
     
-    figure;
+    TriDiMap_binFigure(g.handles.MainWindow);
     h_all = plot(Hmat(g.results.diffH==0 & g.results.diffE==0), ...
         Emat(g.results.diffH==0 & g.results.diffE==0), 'x', ...
         'MarkerEdgeColor', [0.5 0.5 0.5]);

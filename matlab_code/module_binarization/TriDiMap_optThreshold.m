@@ -4,6 +4,20 @@ function TriDiMap_optThreshold
 
 g = guidata(gcf);
 
+if isfield(g.config, 'binPhaseCount') && g.config.binPhaseCount > 2
+    if isscalar(g.config.criterionBinMap_E)
+        g.config.criterionBinMap_E_binary = g.config.criterionBinMap_E;
+    end
+    if isscalar(g.config.criterionBinMap_H)
+        g.config.criterionBinMap_H_binary = g.config.criterionBinMap_H;
+    end
+    set(g.handles.value_criterionE_GUI, 'String', '');
+    set(g.handles.value_criterionH_GUI, 'String', '');
+    guidata(gcf, g);
+    TriDiMap_runBin;
+    return
+end
+
 for iProp = 1:2
     if iProp == 1
         data2use = g.data.expValues_mat.YM;

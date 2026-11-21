@@ -41,6 +41,14 @@ The |matlab| function used to generate 3D or 4D maps is: `slice.m <https://fr.ma
 .. note::
     To generate a 4D map, you must load the raw *.xls files the first time. The imported data is saved as a *.mat file in the same folder, so next time you can load only this *.mat file to reduce loading time.
 
+For spreadsheets with sheets named ``Test 001``, ``Test 002``, and so on,
+curves are imported in test-number order, matching the results table rather
+than the worksheet order. Numbered tests must be consecutive and match the
+map's grid dimensions. A test missing the selected end segment keeps its grid
+position as a missing value and generates a warning; the subsequent map
+cleaning step may fill missing pixels. Re-import the workbook to regenerate
+an older cached MAT file if its curves are in worksheet order.
+
 Example of a .mat file: `MTS_example1_25x25.xls_3DSlice.mat <https://github.com/DavidMercier/TriDiMap/blob/master/data_indentation/MTS_example1_25x25.xls_3DSlice.mat>`_
 
 Other 3D view

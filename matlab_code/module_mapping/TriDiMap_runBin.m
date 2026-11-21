@@ -14,6 +14,41 @@ end
 gui = guidata(gcf);
 config = gui.config;
 
+if isfield(config, 'binPhaseCount') && config.binPhaseCount > 2
+    TriDiMap_runMultiphaseBin;
+    return
+end
+if ~isscalar(config.criterionBinMap_E)
+    if isfield(config, 'criterionBinMap_E_binary')
+        config.criterionBinMap_E = config.criterionBinMap_E_binary;
+        set(gui.handles.value_criterionE_GUI, 'String', ...
+            num2str(config.criterionBinMap_E));
+    else
+        errordlg('Enter one threshold for elastic modulus when K = 2.');
+        return
+    end
+end
+if ~isscalar(config.criterionBinMap_H)
+    if isfield(config, 'criterionBinMap_H_binary')
+        config.criterionBinMap_H = config.criterionBinMap_H_binary;
+        set(gui.handles.value_criterionH_GUI, 'String', ...
+            num2str(config.criterionBinMap_H));
+    else
+        errordlg('Enter one threshold for hardness when K = 2.');
+        return
+    end
+end
+if ~plotMatch
+    config.criterionBinMap_E_binary = config.criterionBinMap_E;
+    config.criterionBinMap_H_binary = config.criterionBinMap_H;
+end
+gui.config = config;
+guidata(gcf, gui);
+set(gui.handles.title_ratioLow_E_GUI, 'String', 'E - Soft phase');
+set(gui.handles.title_ratioHigh_E_GUI, 'String', 'E - Hard/stiff phase');
+set(gui.handles.title_ratioLow_H_GUI, 'String', 'H - Soft phase');
+set(gui.handles.title_ratioHigh_H_GUI, 'String', 'H - Hard/stiff phase');
+
 %% Data
 if config.flag_data
     for iProp = 1:2

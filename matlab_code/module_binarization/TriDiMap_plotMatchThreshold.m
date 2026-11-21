@@ -3,6 +3,10 @@ function TriDiMap_plotMatchThreshold
 %% Function to plot match as a function of all threshold
 
 g = guidata(gcf);
+if isfield(g.config, 'binPhaseCount') && g.config.binPhaseCount > 2
+    errordlg('Threshold sweeps are currently available only for two-phase binarization.');
+    return
+end
 
 % For elastic modulus and hardness
 numThres = str2num(get(g.handles.value_numThres_GUI, 'String'));
@@ -22,7 +26,7 @@ for ii = 1:length(crit_E)
     matchPercent_H(ii) = TriDiMap_diff_plotting(2,1);
 end
 
-hNewFig_E = figure;
+hNewFig_E = TriDiMap_binFigure(g.handles.MainWindow);
 plot(crit_E, matchPercent_E, 'r+', 'Linewidth', 3);
 ylim([0 100])
 hXLabel = xlabel(['Elastic modulus threshold (', char(g.config.strUnit_Property),')']);
@@ -33,7 +37,7 @@ set([hXLabel, hYLabel, hTitle], ...
     'Interpreter', 'Latex');
 grid on;
 
-hNewFig_H = figure;
+hNewFig_H = TriDiMap_binFigure(g.handles.MainWindow);
 plot(crit_H, matchPercent_H, 'r+', 'Linewidth', 3);
 ylim([0 100]);
 hXLabel = xlabel(['Hardness threshold (', char(g.config.strUnit_Property),')']);
@@ -50,6 +54,7 @@ matchPercent_EH = zeros(length(crit_E), length(crit_H));
 h = waitbar(0,'Please wait...');
 for ii = 1:length(crit_E)
     for jj = 1:length(crit_H)
+        set(0, 'CurrentFigure', g.handles.MainWindow);
         g.config.criterionBinMap_E = crit_E(ii);
         g.config.criterionBinMap_H = crit_H(jj);
         guidata(gcf, g);
@@ -60,7 +65,7 @@ for ii = 1:length(crit_E)
 end
 close(h);
 
-hNewFig_EH = figure;
+hNewFig_EH = TriDiMap_binFigure(g.handles.MainWindow);
 %imagesc(crit_E, crit_H, matchPercent_EH);
 surf(meshgrid(crit_E,1:numThres+1)', meshgrid(crit_H,1:numThres+1), ...
     matchPercent_EH);

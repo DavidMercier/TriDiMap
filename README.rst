@@ -22,6 +22,7 @@ With this Matlab toolbox, it is possible:
     * to plot and fit probability density functions and cumulative density functions;
     * to extract per-phase mechanical-property statistics (mean, extrema and standard deviations) and phase fractions;
     * to correlate mechanical and microstructural maps for image-correlation-based targeted indentation (ICBTI) analysis;
+    * to segment SEM grayscale maps into three or four phases and compare them with E/H maps using phase fractions and per-phase agreement metrics;
     * to plot 4D mechanical-property maps from indentation depth slices.
 
 License-free Python example
@@ -60,7 +61,9 @@ smoothing; contact mechanics; Oliver-Pharr; Loubet; elastic modulus; hardness;
 E-H plot; phase clustering; K-means; Gaussian mixture model; KAMM;
 phase map; joint probability density; probability density function;
 cumulative density function; multimodal Gaussian fit; deconvolution;
-image correlation; ICBTI; microstructure correlation.
+image correlation; ICBTI; microstructure correlation; multiphase binarization;
+SEM image segmentation; grayscale thresholding; multilevel Otsu; phase agreement;
+confusion matrix; intersection-over-union.
 
 Contributors
 -------------

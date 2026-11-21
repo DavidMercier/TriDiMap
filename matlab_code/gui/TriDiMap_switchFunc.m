@@ -5,6 +5,11 @@ function TriDiMap_switchFunc
 gui = guidata(gcf);
 strButton = get(gui.handles.binarization_GUI, 'String');
 
+if strcmp(strButton, 'MAPPING')
+    TriDiMap_closeBinFigures(gui.handles.MainWindow);
+    set(0, 'CurrentFigure', gui.handles.MainWindow);
+end
+
 clf;
 
 if strcmp(strButton, 'BINARIZATION')

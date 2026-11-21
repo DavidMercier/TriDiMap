@@ -12,7 +12,7 @@ if g.config.data_path
     diffEH(diffEH==-2) = -1;
     
     % New plot
-    figure;
+    TriDiMap_binFigure(g.handles.MainWindow);
     hAxis = imagesc(flipud(diffEH), ...
         'XData',g.data.xData_interp,'YData',g.data.yData_interp);
     

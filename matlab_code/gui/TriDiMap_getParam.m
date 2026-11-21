@@ -387,6 +387,11 @@ else
     gui.config.noNan = 1;
     gui.config.criterionBinMap_E = str2num(get(h.value_criterionE_GUI, 'string'));
     gui.config.criterionBinMap_H = str2num(get(h.value_criterionH_GUI, 'string'));
+    if isfield(h, 'pm_binPhaseCount_GUI')
+        gui.config.binPhaseCount = get(h.pm_binPhaseCount_GUI, 'Value') + 1;
+    else
+        gui.config.binPhaseCount = 2;
+    end
     gui.config.legendBinMap = 0;
     gui.config.legendStr = {'Ni', 'SiC'}; % {'Softest phase', 'Hardest phase'}
     gui.config.legendMatch = {'Match', 'No match'};

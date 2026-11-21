@@ -3,13 +3,21 @@ function TriDiMap_sliceCalc(gui)
 %% Function for slices calculations
 
 config = gui.config;
+fig = gcf;
 
 if config.SliceFlagData == 0
     TriDiMap_loadingAllTests;
+    set(0, 'CurrentFigure', fig);
 end
-gui = guidata(gcf);
+gui = guidata(fig);
 
 if gui.config.SliceFlagData
+    if numel(gui.slice_data) ~= config.N_XStep * config.N_YStep
+        errordlg(sprintf('Slice data contains %d tests, but the grid requires %d (%d x %d).', ...
+            numel(gui.slice_data), config.N_XStep * config.N_YStep, ...
+            config.N_XStep, config.N_YStep), 'Invalid slice grid');
+        return
+    end
     max_h = zeros(length(gui.slice_data),1);
     for ii = 1:length(gui.slice_data)
         %gui.slice_data(ii).data_h(isinf(gui.slice_data(ii).data_h)) = NaN;
