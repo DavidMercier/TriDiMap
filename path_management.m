@@ -28,6 +28,9 @@ else
 end
    
 path_cell_filtered = cellstr_filter(path_cell, {[psep, '.git']});
+% mmvn_toolkit is unused and its table.m shadows MATLAB's table class,
+% which breaks plotting and writecell/writetable
+path_cell_filtered = cellstr_filter(path_cell_filtered, {[psep, 'mmvn_toolkit']});
 %path_cell_filtered = cellstr_filter(path_cell, {[psep, '.']}); % all dot dirs?
 %path_cell_filtered = path_cell; % no filter
 

@@ -79,7 +79,10 @@ For K=2, enter one cutoff per property; for K=3 or 4, the E and H fields show
 K-1 ascending cutoffs; edit them as needed. The comparison panels show
 E-vs-SEM agreement, H-vs-SEM agreement, and E/H phase-label agreement. The
 Command Window reports the E-vs-SEM confusion matrix and per-phase recall and
-intersection-over-union (IoU). If a property map cannot approach the SEM
+intersection-over-union (IoU), followed by a table with the SEM, E and H
+fractions and the mean ± standard deviation of E and H for every phase
+(including intermediate phases). In the GUI, the fraction and mean fields show
+phase 1 (lowest) and phase K (highest). If a property map cannot approach the SEM
 fractions within five percentage points, TriDiMap issues a warning rather
 than implying an exact phase match.
 
@@ -87,6 +90,20 @@ Otsu segmentation uses grayscale intensity, not chemical identity. Similar
 contrast between phases, topography, charging, or artifacts can produce
 ambiguous labels; visually verify the SEM segmentation and adjust thresholds
 before interpreting the match.
+
+A synthetic 3-phase example (matrix with two particle types) is provided:
+
+- ``data_indentation/Synthetic_3phases_25x25.xlsx``: E and H values in the
+  *other* file format (``AvgModulus`` and ``AvgHardness`` columns);
+- ``data_indentation/Synthetic_3phases_25x25.csv``: X, Y, E, H and true phase
+  of each indent;
+- `data_image/Synthetic_3phases_25x25 <https://github.com/DavidMercier/TriDiMap/tree/master/data_image/Synthetic_3phases_25x25>`_:
+  SEM-like raw image (``SEM_raw_250x250.png``), the image pixelated to the
+  indentation grid (``SEM_pixelated_25x25.png``) and the generator script
+  ``make_synthetic_3phases.m``.
+
+In the **BINARIZATION** GUI, select the *other* file type with 25 x 25 indents,
+load the spreadsheet and ``SEM_pixelated_25x25.png``, then set **K** to 3.
    
 Image Correlation Based Targeted Indentation (ICBTI)
 ######################################################

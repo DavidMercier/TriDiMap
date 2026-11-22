@@ -48,6 +48,12 @@ set(gui.handles.title_ratioLow_E_GUI, 'String', 'E - Soft phase');
 set(gui.handles.title_ratioHigh_E_GUI, 'String', 'E - Hard/stiff phase');
 set(gui.handles.title_ratioLow_H_GUI, 'String', 'H - Soft phase');
 set(gui.handles.title_ratioHigh_H_GUI, 'String', 'H - Hard/stiff phase');
+set(gui.handles.title_ratioLow_I_GUI, 'String', 'I - Soft phase');
+set(gui.handles.title_ratioHigh_I_GUI, 'String', 'I - Hard/stiff phase');
+set(gui.handles.title_valMeanLow_E_GUI, 'String', 'Mean E - Soft');
+set(gui.handles.title_valMeanHigh_E_GUI, 'String', 'Mean E - Hard');
+set(gui.handles.title_valMeanLow_H_GUI, 'String', 'Mean H - Soft');
+set(gui.handles.title_valMeanHigh_H_GUI, 'String', 'Mean H - Hard');
 
 %% Data
 if config.flag_data

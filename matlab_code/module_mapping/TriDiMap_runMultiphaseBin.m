@@ -99,6 +99,18 @@ set(gui.handles.title_ratioLow_E_GUI, 'String', 'E - Phase 1');
 set(gui.handles.title_ratioHigh_E_GUI, 'String', sprintf('E - Phase %d', phaseCount));
 set(gui.handles.title_ratioLow_H_GUI, 'String', 'H - Phase 1');
 set(gui.handles.title_ratioHigh_H_GUI, 'String', sprintf('H - Phase %d', phaseCount));
+set(gui.handles.title_ratioLow_I_GUI, 'String', 'SEM - Phase 1');
+set(gui.handles.title_ratioHigh_I_GUI, 'String', sprintf('SEM - Phase %d', phaseCount));
+[eMean, eStd] = phaseStats(modulus, eLabels);
+[hMean, hStd] = phaseStats(hardness, hLabels);
+set(gui.handles.title_valMeanLow_E_GUI, 'String', 'Mean E - Ph. 1');
+set(gui.handles.title_valMeanHigh_E_GUI, 'String', sprintf('Mean E - Ph. %d', phaseCount));
+set(gui.handles.title_valMeanLow_H_GUI, 'String', 'Mean H - Ph. 1');
+set(gui.handles.title_valMeanHigh_H_GUI, 'String', sprintf('Mean H - Ph. %d', phaseCount));
+set(gui.handles.value_valMeanLow_E_GUI, 'String', meanStd(eMean(1), eStd(1)));
+set(gui.handles.value_valMeanHigh_E_GUI, 'String', meanStd(eMean(end), eStd(end)));
+set(gui.handles.value_valMeanLow_H_GUI, 'String', meanStd(hMean(1), hStd(1)));
+set(gui.handles.value_valMeanHigh_H_GUI, 'String', meanStd(hMean(end), hStd(end)));
 set(gui.handles.value_diffValE_GUI, 'String', percent(eMetrics.accuracy));
 set(gui.handles.value_diffValH_GUI, 'String', percent(hMetrics.accuracy));
 set(gui.handles.value_diffValEH_GUI, 'String', percent(ehMetrics.accuracy));
@@ -113,6 +125,14 @@ disp('E vs SEM confusion matrix (rows=SEM phase, columns=E phase):');
 disp(eConfusion);
 disp('E-phase recall and IoU:');
 disp([eMetrics.recall, eMetrics.iou]);
+fprintf('%-6s %8s %8s %8s %18s %18s\n', 'Phase', 'SEM %', 'E %', 'H %', ...
+    'E (GPa)', 'H (GPa)');
+for row = 1:phaseCount
+    fprintf('%-6d %8.1f %8.1f %8.1f %18s %18s\n', row, ...
+        100*semFractions(row), 100*eMapFractions(row), ...
+        100*hMapFractions(row), meanStd(eMean(row), eStd(row)), ...
+        meanStd(hMean(row), hStd(row)));
+end
 
 axesToPlot = [gui.handles.AxisPlot_GUI_1, gui.handles.AxisPlot_GUI_2, ...
     gui.handles.AxisPlot_GUI_3, gui.handles.AxisPlot_GUI_4, ...
@@ -147,13 +167,29 @@ for plotIndex = plots
         case 6
             labels = ehMismatch + 1;
             names = {'E/H agree', 'E/H disagree'};
-            titleText = sprintf('E vs H phase agreement (%.1f\\%%)', 100*ehMetrics.accuracy);
+            titleText = sprintf('E vs H agreement (%.1f\\%%)', 100*ehMetrics.accuracy);
     end
     TriDiMap_plotPhaseLabels(axesToPlot(plotIndex), labels, names, gui, titleText);
 end
 
     function value = percent(fraction)
         value = num2str(round(fraction*1000)/10);
+    end
+
+    function [means, stds] = phaseStats(values, labels)
+        means = NaN(phaseCount, 1);
+        stds = NaN(phaseCount, 1);
+        for phaseIndex = 1:phaseCount
+            phaseValues = values(labels == phaseIndex & isfinite(values));
+            if ~isempty(phaseValues)
+                means(phaseIndex) = mean(phaseValues);
+                stds(phaseIndex) = std(phaseValues);
+            end
+        end
+    end
+
+    function value = meanStd(meanValue, stdValue)
+        value = sprintf('%.1f%s%.1f', meanValue, char(177), stdValue);
     end
 
     function names = phaseNames(prefix, count)
