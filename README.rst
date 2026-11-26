@@ -26,14 +26,27 @@ With this Matlab toolbox, it is possible:
     * to segment SEM grayscale maps into three or four phases and compare them with E/H maps using phase fractions and per-phase agreement metrics;
     * to plot 4D mechanical-property maps from indentation depth slices.
 
-License-free Python example
---------------------------
+License-free Python examples
+----------------------------
 
 The `KAMM clustering notebook <python/kamm_clustering.ipynb>`_ demonstrates
 2D modulus/hardness maps -> neighbourhood mismatch -> K-means/GMM clustering,
 without MATLAB, Streamlit or Granta. Install ``python/requirements.txt`` and
 open the notebook with Jupyter. See `the KAMM workflow guide <docs/kamm.rst>`_
 for input conventions, MATLAB GUI controls and limitations.
+
+The `PDF deconvolution notebook <python/pdf_deconvolution.ipynb>`_ loads
+Excel or CSV E/H measurements, keeps raw maps separate from interpolation
+and smoothing, and plots empirical and Gaussian-mixture PDF/CDF curves.
+It assigns candidate phases and plots raw/processed phase maps using
+the same fitted mixture, with raw per-phase statistics and optional CSV
+exports. Its default MTS flower dataset contains a steel matrix and
+carbide inclusion; the two-component hardness fit labels candidate
+steel/carbide populations. Legacy ``.xls`` summaries are read directly
+with xlrd. The 25-by-25 serpentine grid follows the MATLAB convention,
+but spacing and scan orientation must be confirmed because the summary
+has no XY metadata. See the
+`statistical analysis guide <docs/pdf_cdf.rst>`_ for conventions and limitations.
 
 Matlab version
 ------------------

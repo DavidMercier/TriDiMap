@@ -3,6 +3,61 @@
 
 .. include:: includes.rst
 
+Python notebook workflow
+#######################
+
+The `PDF deconvolution notebook <https://github.com/DavidMercier/TriDiMap/blob/master/python/pdf_deconvolution.ipynb>`_
+provides a standalone, license-free workflow for loading E/H measurements,
+interpolation, normalized Gaussian smoothing, empirical PDF/CDF plots,
+Gaussian-mixture deconvolution and posterior-based phase maps.
+Install ``python/requirements.txt`` and run the notebook from the repository
+root or its ``python`` folder.
+
+The default loads ``data_indentation/MTS_example1_25x25_flower.xls``,
+identified by the dataset owner as a steel matrix containing a carbide
+flower. It reads only the ``Results`` summary using xlrd, not the hundreds
+of individual test sheets. The ``Modulus At Max Load`` and
+``Hardness At Max Load`` columns use GPa. Exactly 625 numbered measurements
+are loaded; the named Mean, Std. Dev. and % COV rows are excluded.
+
+The configured 25-by-25, X-fast serpentine raster follows the MATLAB MTS
+import convention. The summary does not provide XY coordinates or grid
+spacing: verify scan orientation and set physical step sizes before
+interpreting a spatial map. Unit grid spacing is a display assumption,
+not a recovered measurement. Header-free E/H CSV rasters, Other-style
+Excel files and a synthetic example remain available. ``.xlsx`` input
+uses openpyxl; no external conversion of the default ``.xls`` is needed.
+
+Raw maps remain unchanged. Processing preserves the coordinate span and
+normalizes available-neighbour contributions rather than treating missing
+values as zeros. Missing-cell footprints remain masked unless filling is
+explicitly enabled. The default statistical sample is raw valid paired
+measurements; processed pixels are correlated estimates, not independent
+indents.
+
+Choose H or E for a scalar Gaussian-mixture fit and set the component
+count explicitly. BIC/AIC provide diagnostics without silently changing
+that count. Phase maps evaluate that same model's posteriors without
+refitting, number components by increasing selected-property mean, and
+use phase 0 for invalid or low-confidence positions. Hard-assigned raw
+fractions and per-phase E/H sample statistics are distinct from fitted
+mixture weights. PDF and CDF curves use separate y-axes and share
+component parameters, with a single outside phase legend.
+
+This EM-based deconvolution is not the MATLAB randomized partition fit.
+Gaussian tails can extend below zero, scalar distributions cannot resolve
+all overlapping phases, and statistical components require independent
+microstructural validation. Optional exports retain every coordinate,
+missing value and unassigned label; existing exports are not overwritten.
+
+For the default two-component H fit, the lower-hardness population is
+labelled a steel matrix candidate and the higher-hardness population a
+carbide flower candidate. These names use the supplied material context,
+not chemical identification inferred from E/H alone. Mixed or ambiguous
+indents can be left unassigned by increasing ``MIN_POSTERIOR``.
+Other inputs, E fits and other component counts retain generic names.
+Additional fitted components do not automatically imply extra materials.
+
 For statistical nanoindentation (SNI) results [#Tuinukuafe_2022]_ or statistical analysis of mechanical-property distributions, histograms or cumulative distributions can be used. According to Tuinukuafe et al., SNI may be ineffective for measuring the mechanical properties of individual phases in a microstructure if they are not prolific enough to exhibit a continuous indent response [#Tuinukuafe_2022]_. This conclusion is directly linked to the question of indentation length scales (see https://tridimap.readthedocs.io/en/latest/mapping.html#indentation-length-scales).
 
 Probability density function (PDF)

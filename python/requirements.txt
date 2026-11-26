@@ -5,3 +5,5 @@ matplotlib>=3.8
 jupyterlab>=4
 ipykernel>=6
 nbclient>=0.10
+openpyxl>=3.1
+xlrd>=2.0
