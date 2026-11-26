@@ -53,6 +53,10 @@ if get(gui.handles.cb_GaussianFit_GUI, 'Value') || ...
     %     plot(x,f,'-r', 'LineWidth', LWval)
     
     OPTIONS = algoMinimization;
+    if gui.config.licenceOpt_Flag
+        fittingState = guidata(gcf);
+        gui.config.numerics = fittingState.config.numerics;
+    end
 end
 
 %% Plot of Gaussian CDF fit
@@ -80,7 +84,7 @@ if get(gui.handles.cb_WeibullFit_GUI, 'Value')
     h_Wfit = plot(xdataCDF, gui.resultsCDF.Weibull.ydata_cdf_Fit, '--k', ...
         'LineWidth', LWval);
     [H, pValue, KSstatistic] = kstest_2s_2d([xdataCDF', ydataCDF'], ...
-        [xdataCDF',gui.resultsCDF.Gaussian.ydata_cdf_Fit'])
+        [xdataCDF',gui.resultsCDF.Weibull.ydata_cdf_Fit'])
     if gui.config.property == 4
         gui.resultsCDF.EWeibull.xdataCDF = xdataCDF;
         gui.resultsCDF.EWeibull.ydataCDF = ydataCDF;
@@ -93,38 +97,42 @@ hold on
 
 %% Plot of all cdf components based on pdf fitting results
 if get(gui.handles.cb_CdfFromPdf_GUI, 'Value')
-    if isfield(gui, 'resultsPDF')
-        if gui.config.property == 6 && isfield(gui.resultsPDF, 'E')
-            resultsPDF = gui.resultsPDF.E;
-        elseif gui.config.property == 7 && isfield(gui.resultsPDF, 'H')
-            resultsPDF = gui.resultsPDF.H;
-        else
-            resultsPDF.position= [0,0,0];
-            resultsPDF.pdfData.minmeanVec = 0;
-            resultsPDF.pdfData.minstddev = 0;
-            resultsPDF.pdfData.minf = 0;
-            disp('Run first deconvolution process of the probability density function');
-        end
+    if isfield(gui, 'resultsPDF') && ismember(gui.config.property, [6, 8]) && ...
+            isfield(gui.resultsPDF, 'E')
+        resultsPDF = gui.resultsPDF.E;
+    elseif isfield(gui, 'resultsPDF') && ismember(gui.config.property, [7, 9]) && ...
+            isfield(gui.resultsPDF, 'H')
+        resultsPDF = gui.resultsPDF.H;
+    else
+        AllCDF = 0;
+        plotFigure = gcf;
+        errordlg('Run PDF deconvolution for the selected property before displaying its fitted CDF.', 'CDF from PDF fit');
+        set(0, 'CurrentFigure', plotFigure);
+    end
+    if AllCDF
         minVal = resultsPDF.position(1);
         maxVal = resultsPDF.position(2);
         maxXPos = resultsPDF.position(3);
         maxYPos = 0.9; %gui.results.position(4);
+        resultsPDF.pdfData.YdataFit = zeros(numel(data2useVect), numel(resultsPDF.pdfData.minmeanVec));
         for ii = 1:length(resultsPDF.pdfData.minmeanVec)
             if gui.config.licenceStat_Flag
-                resultsPDF.pdfData.YdataFit(:,ii) = cdf('Normal',data2useVect,...
+                phaseCDF = cdf('Normal',data2useVect,...
                     resultsPDF.pdfData.minmeanVec(ii), resultsPDF.pdfData.minstddev(ii));
             else
-                resultsPDF.pdfData.YdataFit(:,ii) = cdfGaussian(data2useVect,...
+                phaseCDF = cdfGaussian(data2useVect,...
                     resultsPDF.pdfData.minmeanVec(ii), resultsPDF.pdfData.minstddev(ii));
             end
+            resultsPDF.pdfData.YdataFit(:,ii) = phaseCDF(:);
             hp(ii) = plot(sort(data2useVect), sort(resultsPDF.pdfData.YdataFit(:,ii)).*...
-                resultsPDF.pdfData.minf(ii));
+                resultsPDF.pdfData.minf(ii), 'Tag', 'TriDiMapCDFPhase', 'UserData', ii);
             hold on;
             t = sprintf('Phase %i\n%8.3f\n%8.3f\n%8.3f\n', ii, ...
                 resultsPDF.pdfData.minmeanVec(ii), ...
                 resultsPDF.pdfData.minstddev(ii), ...
                 resultsPDF.pdfData.minf(ii));
-            ht(ii) = text(0.025*(maxXPos)*ii*3+minVal,maxYPos,char(t));hold on;
+            ht(ii) = text(0.025*(maxXPos)*ii*3+minVal,maxYPos,char(t), ...
+                'VerticalAlignment', 'top', 'Tag', 'TriDiMapCDFPhaseSummary');hold on;
             switch ii
                 case 1
                     set(hp(ii), 'Color', 'b', 'LineWidth', LWval);
@@ -146,11 +154,9 @@ if get(gui.handles.cb_CdfFromPdf_GUI, 'Value')
                     set(ht(ii), 'Color', 'c');
             end
         end
-        hp_All = plot(sort(data2useVect), sum(sort(resultsPDF.pdfData.YdataFit.*...
-            resultsPDF.pdfData.minf),2));
+        hp_All = plot(sort(data2useVect), sum(sort(bsxfun(@times, ...
+            resultsPDF.pdfData.YdataFit, resultsPDF.pdfData.minf)),2));
         set(hp_All, 'Color', 'k', 'LineStyle', '--', 'LineWidth', LWval);
-    else
-        errordlg('Run first deconvolution process of the probability density function');
     end
 end
 
@@ -170,17 +176,9 @@ elseif config.property == 7 || config.property == 9
     end
 end
 if ~config.FrenchLeg
-    if config.property < 8
-        ylabel('Cumulative density function');
-    else
-        ylabel('Frequency density and Cumulative density function');
-    end
+    ylabel('Cumulative density function');
 else
-    if config.property < 8
-        ylabel('Fonction de distribution cumulative');
-    else
-        ylabel('Densité de probabilité et Fonction de distribution cumulative');
-    end
+    ylabel('Fonction de distribution cumulative');
 end
 
 %% Title and Legend for basic fitting

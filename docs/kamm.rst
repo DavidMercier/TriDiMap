@@ -51,6 +51,11 @@ For ML-assisted phase clustering:
 
 1. Load a regular indentation map with hardness and modulus in **GPa**.
 2. Select **E vs H**, then **ML-assisted clustering**.
+   **E-H data: raw measurements** is the default. Select
+   **E-H data: processed maps** to apply the retained map cleaning,
+   interpolation and smoothing settings to both E and H before clustering.
+   This does not modify the measured arrays. Processed counts/fractions
+   describe map pixels rather than independent indents; see :doc:`E_H`.
 3. Enter the **Phase number** and choose the lower-panel settings:
 
    * **Features: H,E**: the mechanical-property baseline;
@@ -58,7 +63,8 @@ For ML-assisted phase clustering:
    * **Features: H/E, H^3/E^2**: mechanical ratios;
    * **Features: all (9)**: H, E, both ratios and all five KAMM descriptors.
 
-4. Choose **K-means (base MATLAB)** or **GMM (Statistics Toolbox)** and
+4. Choose **K-means (base MATLAB)**, **GMM (Statistics Toolbox)** or
+   **ISOMAP + K-means (base MATLAB)** and
    **KAMM order: 1** or **2**.
 5. Switch between **E-H clusters**, **Phase map**, **KAMM map**,
    **Joint phase PDFs (3D)** and **E-H vs descriptor (3D)**. The descriptor
@@ -67,6 +73,9 @@ For ML-assisted phase clustering:
    scatter uses hardness (X), modulus (Y) and the selected descriptor (Z),
    with assigned phases shown in separate colors. It requires a regular raster map.
 6. Use **Export ML CSV** for positions, H, E, phase IDs and descriptors.
+   In **E-H clusters** or **ISOMAP embedding**, use the upper-panel envelope
+   selector for convex hulls or fitted ellipses in the phase colors.
+   Changing envelopes reuses the cached fit; the phase legend remains visible.
 
 K-means uses bounded, deterministic multi-start Lloyd iterations and needs
 no Statistics Toolbox. The new ML GMM uses regularized ``fitgmdist`` and
@@ -79,11 +88,15 @@ features have scale one. Invalid/nonpositive measurements retain NaN
 descriptors. They and nonfinite selected feature vectors are excluded from
 clustering, not mean-imputed. All excluded positions remain in maps/exports
 as phase **0** (unassigned).
-No interpolation or smoothing is performed for clustering. Labels are
-ordered by increasing mean measured hardness, not physical phase identity.
+Raw-mode clustering performs no interpolation or smoothing. Opt-in
+processed-mode clustering uses the processed E/H maps and recomputes KAMM
+on that refined raster; filled/interpolated positions may therefore be
+assigned phases. Labels are ordered by increasing mean selected hardness,
+not physical phase identity.
 
-Fits are cached by input maps, feature selection, method, order and phase
-count. Changing a view, displayed descriptor, grid, ticks, grayscale or
+Fits are cached by input maps, feature selection, method, order, phase
+count, input source and, for ISOMAP, neighbour count. Changing a view,
+envelope, displayed descriptor, grid, ticks, grayscale or
 other display controls does not refit. Changing measurements, crop,
 thresholds or analysis settings invalidates the cache. Measurements and
 legacy GMM labels are not overwritten. The cached result and model are
@@ -98,6 +111,88 @@ or descriptor values are hidden with a warning. Min/Max annotates H extrema
 on the scatters, displayed descriptor extrema on a KAMM map, or displayed
 density extrema on the joint PDFs. Log and Min/Max are disabled for
 categorical phase maps.
+
+ISOMAP-assisted phase clustering
+--------------------------------
+
+In **E vs H > ML-assisted clustering**, select
+**ISOMAP + K-means (base MATLAB)** in the method selector. Choose
+**ISOMAP neighbours: 5**, **10** (default), **20** or **50** in the
+lower E-H options panel. Keep the usual feature selection, phase count
+and KAMM shell order. Select **ISOMAP embedding** in the view selector
+to inspect the two-dimensional embedding colored by assigned phase.
+E-H plots, phase maps, descriptor plots and joint PDFs remain available.
+Log is disabled for the embedding, whose coordinates can be negative.
+
+The procedure is:
+
+1. Exclude invalid/nonpositive E-H pairs and nonfinite selected features.
+2. Standardize the selected features using the existing z-score scaling.
+3. Build a Euclidean k-nearest-neighbour graph in standardized feature space,
+   symmetrized by retaining an edge if either point selects the other.
+4. Compute shortest-path (geodesic) distances and use classical metric
+   multidimensional scaling to obtain two embedding coordinates.
+5. Apply the existing K-means algorithm to the embedding, then order phase
+   labels by increasing mean measured hardness.
+
+This implements the ISOMAP dimensionality-reduction approach of
+Tenenbaum, de Silva and Langford (2000),
+`DOI: 10.1126/science.290.5500.2319 <https://doi.org/10.1126/science.290.5500.2319>`_.
+ISOMAP itself is not a phase classifier. This opt-in workflow is **not**
+a reproduction of the full
+spatially enriched hierarchical identification and heterogeneous-indent
+rejection procedure described by Bernachy-Barbe (2019),
+`DOI: 10.1617/s11527-019-1397-y <https://doi.org/10.1617/s11527-019-1397-y>`_.
+XY coordinates are not embedded; KAMM adds neighbourhood information only
+when selected on a regular raster.
+
+Neighbour count must be smaller than the number of valid measurements.
+A disconnected graph is rejected explicitly: increase neighbours or review
+the features and data. ISOMAP adds no artificial inter-component edges,
+additional interpolation or automatic removal of potentially heterogeneous
+measurements after selecting the raw or processed input maps.
+Large neighbour counts can erase the manifold's local geometry; compare
+several counts and the direct H/E baseline. The number of phases remains
+user-specified, and statistical clusters still require independent
+microstructural validation.
+
+Both implementations limit dense ISOMAP to **2000 valid measurements**.
+The geodesic and embedding matrices require quadratic memory, and MATLAB's
+shortest-path/eigenvalue calculations have cubic worst-case cost. Use an
+explicit smaller map or crop for larger datasets; no hidden subsampling
+changes the phase fractions.
+
+The MATLAB cached result stores standardized features in
+``gui.ml.result.features``, the valid-row embedding in
+``gui.ml.result.embedding`` and geodesic/eigenvalue metadata in
+``gui.ml.result.isomapModel``. **Export ML CSV** appends ``ISOMAP1`` and
+``ISOMAP2`` after the existing columns, with NaN at excluded positions.
+Existing K-means/GMM exports retain their column layout.
+
+Python uses the same opt-in method with scikit-learn ISOMAP::
+
+    from tridimap_ml import cluster_map
+
+    result = cluster_map(
+        modulus, hardness, feature_set="kamm", method="isomap",
+        n_clusters=3, n_neighbors=10,
+    )
+    phase_map = result.labels
+    embedding = result.embedding
+
+As with the notebook, load same-shaped E/H rasters in GPa and import from
+the repository's ``python`` directory. ``result.features`` remains the
+standardized pre-embedding matrix; ``result.model`` is the K-means model
+fitted on ``result.embedding``. ``result.embedding_model`` exposes the
+fitted ISOMAP model and its reconstruction diagnostics. Embedding rows
+correspond to ``result.valid.ravel()`` in row-major order. Invalid map
+positions retain phase 0. The default methods do not compute an embedding.
+
+Run ``test_isomap`` from the MATLAB tests folder with MATLAB available.
+The existing Python test command below also covers ISOMAP geodesics,
+deterministic clustering, holes, duplicates and disconnected graphs.
+MATLAB and Python embeddings/partitions can differ with neighbour-distance
+ties, eigenvector orientation and their different K-means initializers.
 
 Neighbourhood definition and formulas
 -------------------------------------

@@ -79,6 +79,7 @@ gui.config.flag_ClusterGauss = 0;
 gui.config.plotClusters = 0;
 gui.data = struct();
 gui.config.K_GMM = 2;
+gui.config.numerics = TriDiMap_cdfNumerics(gui.config.numerics);
 
 %% GUI generation
 TriDiMap_GUI(gui);

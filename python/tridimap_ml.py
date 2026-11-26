@@ -7,8 +7,11 @@ import warnings
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
+from scipy.sparse.csgraph import connected_components
 from sklearn.cluster import KMeans
+from sklearn.manifold import Isomap
 from sklearn.mixture import GaussianMixture
+from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import StandardScaler
 
 DESCRIPTORS = ("KAMM", "KAEM", "KAPM", "KAMM_RATIO", "KAMM_NORMPROD")
@@ -93,6 +96,8 @@ class ClusteringResult:
     valid: NDArray[np.bool_]
     scaler: StandardScaler
     model: KMeans | GaussianMixture
+    embedding: NDArray[np.float64] | None = None
+    embedding_model: Isomap | None = None
 
 
 def cluster_map(
@@ -104,14 +109,17 @@ def cluster_map(
     method: str = "kmeans",
     order: int = 1,
     random_state: int = 0,
+    n_neighbors: int = 10,
 ) -> ClusteringResult:
     """Fit z-score features; return map-shaped, hardness-ordered labels 1..K.
 
     Zero denotes an invalid/unassigned position, never a material phase.
     Nonfinite selected feature vectors are excluded, not mean-imputed.
-    K-means/GMM clusterings are statistical candidates, not phase identities.
+    method="isomap" fits K-means on a two-dimensional ISOMAP embedding.
+    n_neighbors applies only to ISOMAP, which requires a connected graph.
+    Clusterings are statistical candidates, not physical phase identities.
     """
-    if feature_set not in FEATURE_SETS or method not in ("kmeans", "gmm"):
+    if feature_set not in FEATURE_SETS or method not in ("kmeans", "gmm", "isomap"):
         raise ValueError("Unknown feature_set or method.")
     if isinstance(n_clusters, (bool, np.bool_)) or not isinstance(n_clusters, (int, np.integer)) or n_clusters < 2:
         raise ValueError("n_clusters must be an integer >= 2.")
@@ -134,15 +142,35 @@ def cluster_map(
     features = scaler.fit_transform(matrix[valid.ravel()])
     if len(np.unique(features, axis=0)) < n_clusters:
         raise ValueError("Fewer distinct feature vectors than requested clusters.")
+    embedding = None
+    embedding_model = None
+    clustering_features = features
+    if method == "isomap":
+        if (
+            isinstance(n_neighbors, (bool, np.bool_))
+            or not isinstance(n_neighbors, (int, np.integer))
+            or not 1 <= n_neighbors < len(features)
+        ):
+            raise ValueError("ISOMAP n_neighbors must be an integer >= 1 and smaller than the valid sample count.")
+        if len(features) > 2000:
+            raise ValueError("Dense ISOMAP is limited to 2000 valid samples; analyze a smaller map or crop.")
+        graph = NearestNeighbors(n_neighbors=n_neighbors).fit(features).kneighbors_graph(mode="distance")
+        if connected_components(graph, directed=False, return_labels=False) != 1:
+            raise ValueError("ISOMAP neighbour graph is disconnected; increase n_neighbors or revise the selected features.")
+        embedding_model = Isomap(n_neighbors=n_neighbors, n_components=2, eigen_solver="dense")
+        embedding = embedding_model.fit_transform(features)
+        clustering_features = embedding
+        if len(np.unique(embedding, axis=0)) < n_clusters:
+            raise ValueError("Fewer distinct ISOMAP coordinates than requested clusters.")
     model: KMeans | GaussianMixture
-    if method == "kmeans":
+    if method in ("kmeans", "isomap"):
         model = KMeans(n_clusters=n_clusters, random_state=random_state, n_init=10)
     else:
         model = GaussianMixture(
             n_components=n_clusters, random_state=random_state, n_init=3,
             reg_covar=1e-6, max_iter=300,
         )
-    predicted = model.fit_predict(features)
+    predicted = model.fit_predict(clustering_features)
     if len(np.unique(predicted)) != n_clusters:
         raise ValueError("The model produced an empty hard-assignment phase; reduce n_clusters.")
     phase_order = sorted(
@@ -154,4 +182,6 @@ def cluster_map(
     remap[phase_order] = np.arange(1, n_clusters + 1)
     labels = np.zeros(e.shape, dtype=np.int64)
     labels[valid] = remap[predicted]
-    return ClusteringResult(labels, descriptors, names, features, valid, scaler, model)
+    return ClusteringResult(
+        labels, descriptors, names, features, valid, scaler, model, embedding, embedding_model
+    )

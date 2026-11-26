@@ -18,13 +18,29 @@ if descriptorOnly
 else
     key = struct('E', E, 'H', H, 'features', c.mlFeatures, 'method', c.mlMethod, ...
         'order', c.mlOrder, 'K', c.mlK, 'raster', raster);
+    preparedEH = isfield(gui, 'eh') && isequaln(gui.eh.E, E) && isequaln(gui.eh.H, H);
+    if preparedEH
+        key.inputSource = gui.eh.source;
+    end
+    neighbours = 10;
+    if c.mlMethod == 3
+        if isfield(c, 'mlNeighbours')
+            neighbours = c.mlNeighbours;
+        end
+        key.neighbours = neighbours;
+    end
     if ~isfield(gui, 'ml') || ~isequaln(gui.ml.key, key)
-        result = TriDiMap_mlCluster(E, H, c.mlFeatures, c.mlMethod, c.mlOrder, c.mlK, raster);
+        result = TriDiMap_mlCluster(E, H, c.mlFeatures, c.mlMethod, c.mlOrder, c.mlK, raster, neighbours);
         gui.ml = struct('key', key, 'result', result);
     end
     result = gui.ml.result;
+    if c.mlView == 6 && isempty(result.embedding)
+        error('TriDiMap:IsomapInput', 'Choose ISOMAP + K-means to display the ISOMAP embedding.');
+    end
 end
-if raster
+if ~descriptorOnly && preparedEH
+    coordinates = gui.eh.coordinates;
+elseif raster
     [x, y] = ndgrid((c.MinXCrop-1+(0:size(H, 1)-1))*c.XStep, ...
         (c.MinYCrop-1+(0:size(H, 2)-1))*c.YStep);
     coordinates = [x(:), y(:)];
@@ -41,32 +57,54 @@ if c.mlView ~= 3
 end
 if c.mlView == 4
     TriDiMap_plotPhaseDensity([H(:), E(:)], result.labels(:), colors, gui);
-elseif c.mlView == 1
+elseif c.mlView == 1 || c.mlView == 6
+    plotX = H;
+    plotY = E;
+    if c.mlView == 6
+        plotX = NaN(size(H));
+        plotY = NaN(size(E));
+        plotX(result.valid) = result.embedding(:, 1);
+        plotY(result.valid) = result.embedding(:, 2);
+    end
     cla;
     colorbar off;
     hold on;
     handles = gobjects(c.mlK, 1);
     descriptions = cell(c.mlK, 1);
+    envelopeType = 1;
+    if isfield(c, 'mlEnvelope')
+        envelopeType = c.mlEnvelope;
+    end
     for ii = 1:c.mlK
         selected = result.labels == ii;
-        handles(ii) = plot(H(selected), E(selected), '.', 'Color', colors(ii, :));
+        handles(ii) = plot(plotX(selected), plotY(selected), '.', 'Color', colors(ii, :));
+        phaseX = plotX(selected);
+        phaseY = plotY(selected);
+        TriDiMap_drawClusterEnvelope([phaseX(:), phaseY(:)], ...
+            envelopeType, colors(ii, :), 1.5);
         descriptions{ii} = sprintf('Phase %d (n=%d)', ii, sum(selected(:)));
     end
     legend(handles, descriptions, 'Location', 'northeastoutside');
     scale = 'linear';
-    if c.logZ
+    if c.logZ && c.mlView == 1
         scale = 'log';
     end
     set(gca, 'XScale', scale, 'YScale', scale);
-    xlabel('Hardness (GPa)');
-    ylabel('Elastic / indentation modulus (GPa)');
-    title('ML-assisted phase clustering');
+    if c.mlView == 6
+        xlabel('ISOMAP coordinate 1');
+        ylabel('ISOMAP coordinate 2');
+        title('ISOMAP embedding with K-means phases');
+    else
+        xlabel('Hardness (GPa)');
+        ylabel('Elastic / indentation modulus (GPa)');
+        title('ML-assisted phase clustering');
+    end
     if c.MinMax
         selected = find(result.valid);
         [~, low] = min(H(selected));
         [~, high] = max(H(selected));
         for index = selected([low, high])'
-            text(H(index), E(index), sprintf('H=%.3g, E=%.3g', H(index), E(index)), ...
+            text(plotX(index), plotY(index), sprintf('H=%.3g, E=%.3g', H(index), E(index)), ...
                 'Tag', 'TriDiMapMLExtremum');
         end
     end

@@ -27,12 +27,41 @@ if config.flag_data
     SumProp_pdf = sum(Prop_pdf);
     SumTot = SumProp_pdf .* binsize;
     %if  gui.config.licenceStat_Flag
-    if ~get(gui.handles.cb_plotErrorPDF_GUI, 'Value')
-        if ~get(gui.handles.cb_deconvolutionHist_GUI, 'Value')
+    plotError = get(gui.handles.cb_plotErrorPDF_GUI, 'Value');
+    missingErrorFit = false;
+    if plotError
+        pdfProperty = 'E';
+        if ismember(config.property, [5, 9])
+            pdfProperty = 'H';
+        end
+        hasErrorFit = isfield(gui, 'resultsPDF') && ...
+            isfield(gui.resultsPDF, pdfProperty) && ...
+            isfield(gui.resultsPDF.(pdfProperty), 'GaussianFit') && ...
+            isfield(gui.resultsPDF.(pdfProperty), 'hist_xy') && ...
+            isfield(gui.resultsPDF.(pdfProperty), 'hist_val');
+        if hasErrorFit
+            errorFitResults = gui.resultsPDF.(pdfProperty);
+            hasErrorFit = numel(errorFitResults.GaussianFit) == numel(Prop_pdf) && ...
+                all(isfinite(errorFitResults.GaussianFit(:))) && ...
+                isequal(errorFitResults.hist_xy, [CatBin' Prop_pdf']) && ...
+                isequal(errorFitResults.hist_val(:), data2useVect(:));
+        end
+        if ~hasErrorFit
+            missingErrorFit = true;
+            plotError = false;
+            set(gui.handles.cb_plotErrorPDF_GUI, 'Value', 0);
+            plotFigure = gcf;
+            errordlg('Run PDF deconvolution for the selected property and current data/histogram settings before plotting its error.', ...
+                'PDF fit error');
+            set(0, 'CurrentFigure', plotFigure);
+        end
+    end
+    if ~plotError
+        if ~get(gui.handles.cb_deconvolutionHist_GUI, 'Value') || missingErrorFit
             bar(CatBin,Prop_pdf,'FaceColor',[0.5 0.5 0.5],'EdgeColor','none', ...
                 'LineWidth', LWval);
             set(gcf, 'renderer', 'opengl');
-            xlim([0 maxbin]); ylim([0 1]);
+            xlim([0 maxbin]); ylim(TriDiMap_pdfYLimits(Prop_pdf));
             if config.property == 4
                 if ~config.FrenchLeg
                     xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
@@ -73,43 +102,47 @@ if config.flag_data
             gui.config.flag_fit = 1;
             [resultsPDF.transitionVal, resultsPDF.yTransitionVal]...
                 = findIntersection(resultsPDF.pdfData);
-            if config.property == 4
+            if ismember(config.property, [4, 8])
                 gui.resultsPDF.E = resultsPDF;
-            elseif config.property == 5
+            elseif ismember(config.property, [5, 9])
                 gui.resultsPDF.H = resultsPDF;
             end
             %save('Blabla.txt', 'variableName', '-ASCII','-append'); % No struct variable in the variable name...
         end
         hold on;
     else
-        if gui.config.flag_fit
-            gui.results.errorFit = ...
-                (Prop_pdf' - gui.results.GaussianFit')./Prop_pdf';
-            gui.results.errorFit(gui.results.errorFit==-Inf) = 0;
-            gui.results.errorFit(gui.results.errorFit==+Inf) = 0;
-            plot(gui.results.errorFit, '+r','LineWidth',2);
-            xlim([0 maxbin]);
-            ylim([-max(abs(gui.results.errorFit)) ...
-                max(abs(gui.results.errorFit))]);
-            if config.property == 4
-                if ~config.FrenchLeg
-                    xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
-                else
-                    xlabel(strcat('Module d''\''elasticit\''e (',strUnit_Property, ')'));
-                end
-            elseif config.property == 5
-                if ~config.FrenchLeg
-                    xlabel(strcat('Hardness (',strUnit_Property, ')'));
-                else
-                    xlabel(strcat({'Duret\''e ('},config.strUnit_Property, ')'));
-                end
-            end
-            ylabel('Error (%)');
-        else
-            set(gui.handles.cb_plotErrorPDF_GUI,'Value',0);
-            TriDiMap_runPlot;
-            errordlg('First run deconvolution process!');
+        occupiedBins = Prop_pdf(:) > 0;
+        errorFit = NaN(numel(Prop_pdf), 1);
+        fittedPDF = errorFitResults.GaussianFit(:);
+        measuredPDF = Prop_pdf(:);
+        errorFit(occupiedBins) = ...
+            (measuredPDF(occupiedBins) - fittedPDF(occupiedBins))./measuredPDF(occupiedBins);
+        if any(~occupiedBins)
+            warning('TriDiMap:EmptyPDFErrorBins', ...
+                'Relative PDF error is undefined for empty histogram bins; those bins are omitted.');
         end
+        gui.resultsPDF.(pdfProperty).errorFit = errorFit;
+        plot(CatBin, errorFit, '+r','LineWidth',2);
+        xlim([0 maxbin]);
+        maxError = max(abs(errorFit(occupiedBins)));
+        if isempty(maxError) || maxError == 0
+            maxError = 1;
+        end
+        ylim([-maxError maxError]);
+        if config.property == 4
+            if ~config.FrenchLeg
+                xlabel(strcat('Elastic modulus (',strUnit_Property, ')'));
+            else
+                xlabel(strcat('Module d''\''elasticit\''e (',strUnit_Property, ')'));
+            end
+        elseif config.property == 5
+            if ~config.FrenchLeg
+                xlabel(strcat('Hardness (',strUnit_Property, ')'));
+            else
+                xlabel(strcat({'Duret\''e ('},config.strUnit_Property, ')'));
+            end
+        end
+        ylabel('Error (%)');
     end
     %             else
     %                 set(gui.handles.cb_deconvolutionHist_GUI,'Value',0);

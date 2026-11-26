@@ -5,7 +5,12 @@ if nargin < 1
     gifFlag = 0;
 end
 TriDiMap_applyGrayscale(gca, false);
-reset(gca);
+if isprop(gca, 'YAxis') && numel(get(gca, 'YAxis')) > 1
+    legend(gca, 'off');
+    cla(gca, 'reset');
+else
+    reset(gca);
+end
 gui = guidata(gcf);
 axes(gui.handles.AxisPlot_GUI);
 LWval = 1.5; %LineWidth
@@ -171,8 +176,16 @@ else
                 config.flag_data = 0;
             end
         else
-            [data2use_E, config.flagCrop] = TriDiMap_cropping(data2use_E);
-            [data2use_H, config.flagCrop] = TriDiMap_cropping(data2use_H);
+            try
+                [gui, data2use_E, data2use_H, config.flagCrop] = ...
+                    TriDiMap_prepareEH(gui, data2use_E, data2use_H);
+            catch exception
+                if strcmp(exception.identifier, 'TriDiMap:EHInput')
+                    errordlg(exception.message, 'E-H input data');
+                    return
+                end
+                rethrow(exception);
+            end
             if length(data2use_E) == 1 && length(data2use_H) == 1
                 config.flag_data = 0;
             end
@@ -188,9 +201,7 @@ else
     elseif config.property == 6 || config.property == 7
         TriDiMap_runCdf;
     elseif config.property == 8 || config.property == 9
-        TriDiMap_runPdf;
-        hold on;
-        TriDiMap_runCdf;
+        TriDiMap_runPdfCdf;
     end
     if config.flag_data
         if config.property < 3

@@ -17,6 +17,7 @@ With this Matlab toolbox, it is possible:
     * to recalculate hardness and reduced indentation modulus from load, depth and stiffness data using Oliver-Pharr or Loubet contact models;
     * to plot elastic modulus vs hardness values, define sectors and perform phase clustering;
     * to cluster phases using K-means or GMM with mechanical and optional KAMM features, and display phase and KAMM maps;
+    * to embed standardized mechanical/KAMM features with ISOMAP before K-means clustering, and inspect or export the embedding;
     * to visualize joint 3D probability densities of phases in elastic-modulus/hardness space;
     * to plot hardness/modulus phase clusters against a selectable KAMM-family descriptor in 3D;
     * to plot and fit probability density functions and cumulative density functions;
@@ -58,7 +59,7 @@ Keywords
 |matlab| toolbox; nanoindentation; indentation mapping; mechanical properties;
 regular grid; irregular XY; 2D mapping; 3D mapping; 4D mapping; interpolation;
 smoothing; contact mechanics; Oliver-Pharr; Loubet; elastic modulus; hardness;
-E-H plot; phase clustering; K-means; Gaussian mixture model; KAMM;
+E-H plot; phase clustering; K-means; Gaussian mixture model; ISOMAP; KAMM;
 phase map; joint probability density; probability density function;
 cumulative density function; multimodal Gaussian fit; deconvolution;
 image correlation; ICBTI; microstructure correlation; multiphase binarization;

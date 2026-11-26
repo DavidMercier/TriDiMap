@@ -20,10 +20,28 @@ For a homogeneous material, only one peak is expected; for a heterogeneous mater
 one peak per phase may be expected. In the latter case, intermediate peaks between phase peaks can be observed
 when interfaces are not spatially negligible. The drawback of this plot is the user-dependence
 of the bin size and thus of the distribution shape (i.e. peak intensity).
+
 Indeed, the shape of the distributions depends on bin size, which is set arbitrarily by the user (e.g., 0.5 GPa or 3 GPa).
 This issue is well known in the literature and is a little bit discussed in this presentation [#Mercier_2016]_ and this paper [#Hrbek_2017]_.
 The shape of the distributions is also bin step dependent.
 In other words, the distribution changes depending on whether the histogram starts at an odd or an even value.
+
+For **E_PDF** and **H_PDF**, the frequency-density axis starts at zero and
+automatically ends 10% above the largest displayed histogram value.
+With deconvolution enabled, the limit also includes the displayed phase
+curves and overall fitted PDF, so narrow peaks are not clipped above one.
+Limits follow each improved displayed fit, not rejected fitting candidates.
+This only changes the vertical display range, not histogram normalization
+or fitted values. If the selected histogram range contains no positive
+values, the plot uses an empty 0-to-1 range and warns to check the range
+and bin size. CDF and relative-error axis scaling are unchanged.
+
+**Plot error** uses the overall deconvolved PDF cached for the selected
+E/H property. If the fit is missing or the data, histogram range or bin
+size have changed, the option is cleared and a message requests a new
+deconvolution; the measured histogram remains visible. Errors are plotted
+at the histogram's property coordinates. Empty bins have undefined
+relative error and are omitted with a warning.
 
 .. figure:: ./_pictures/pdf_schemes.png
    :scale: 50 %
@@ -107,6 +125,49 @@ which gives different mean values, given peak shapes or peak number modification
    
 Cumulative density function (CDF)
 ############################################
+
+Gaussian and Weibull CDF fitting initializes its numerical configuration
+when the launcher starts. With Optimization Toolbox, the defaults are
+``TolFun_value=1e-6``, ``TolX_value=1e-6`` and ``MaxIter_value=400``.
+The Gaussian mean is unbounded by default; the Weibull shape has bounds
+``eps`` to ``Inf``. The existing scale/standard-deviation bounds remain
+zero to the maximum fitted property value.
+
+These settings are stored in ``gui.config.numerics``. Already-open or
+restored sessions with missing settings initialize them when fitting starts,
+with an explicit warning; existing custom values are preserved.
+Without Optimization Toolbox, the existing base-MATLAB ``fminsearch``
+path is unchanged. Weibull fitting can be selected without first fitting
+a Gaussian.
+
+Combined PDF+CDF views
++++++++++++++++++++++
+
+In **E_PDF+CDF** and **H_PDF+CDF**, the **left y-axis** remains the PDF
+frequency-density axis, including its data-adaptive limits. The **right
+y-axis** displays the experimental CDF and any selected CDF fits on a
+linear probability scale from **0 to 1**. Both sides share the property
+x-axis and histogram range, without rescaling either dataset.
+
+Enable **CDF fit from PDF fit** to use the cached PDF deconvolution for
+the same property. A new deconvolution performed directly in a combined
+view also populates that property's PDF cache. Missing fits produce an
+explicit message rather than a placeholder curve. Switching back to a
+standalone PDF, CDF or map view removes the secondary axis. Figure saving
+and grayscale use the same axes object for both sides.
+
+Combined views use a single legend outside the plot on the right.
+Each phase is listed once with its mean, standard deviation (SD) and
+fraction (f), rather than drawing overlapping PDF and CDF phase summaries
+inside the axes. Phase colors still identify the corresponding PDF/CDF
+curves. Experimental distributions, overall fits and any selected
+Gaussian/Weibull CDF curves remain identified. Standalone PDF/CDF
+annotations are unchanged.
+
+Separate y-axes use MATLAB's ``yyaxis`` and require **R2016a or newer**.
+The availability check accepts ordinary MATLAB files, MEX files and
+protected P-code implementations, as well as built-in functions.
+Older releases can use the separate PDF and CDF views instead.
 
 The cumulative distribution of a mechanical property avoids the bin-size dependency of a histogram.
 But, it is much more difficult to decompose and in this toolbox, only Gaussian and Weibull fitting are proposed,

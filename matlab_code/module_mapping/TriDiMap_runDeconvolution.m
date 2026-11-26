@@ -17,6 +17,7 @@ iter = 0;
 
 minVal = min(exphist(:,1));
 maxVal = max(propVal);
+maxYPos = 1.2*max(exphist(:,2));
 N = length(propVal);
 
 while((norma2 > limit) && (iter <= maxIter)) && ...
@@ -107,11 +108,12 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
     iter = iter+1;
     
     maxXPos = 1.2*round(max(exphist(:,1))*1000)/1000;
-    maxYPos = 1.2*round(max(exphist(:,2))*1000)/1000;
     %t0 = sprintf('Iter. %i\nPrec. %f', iter - 1, norma2);
     drawnow;
     
     if(norma2 < minnorma)
+        densityLimits = TriDiMap_pdfYLimits([exphist(:, 2); p2(:); p_all2(:)]);
+        maxYPos = 0.95*densityLimits(2);
         minnorma = norma2;
         %minLim = Lim;
         minmeanVec = meanVec;
@@ -133,7 +135,7 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
             t = sprintf('Phase %i\n%8.3f\n%8.3f\n%8.3f\n', jj, minmeanVec(jj), minstddev(jj), minf(jj));
             switch jj
                 case 1
-                    ht1 = text(0.05*(maxXPos)+minVal,maxYPos,char(t));hold on;
+                    ht1 = text(0.05*(maxXPos)+minVal,maxYPos,char(t), 'VerticalAlignment', 'top', 'Tag', 'TriDiMapPDFPhaseSummary');hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 1
                             if ~(sum(p2(:,jj+1))==0)
@@ -152,9 +154,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    h2 = plot(exphist(:,1),p2(:,jj),'b','LineWidth',2);
+                    h2 = plot(exphist(:,1),p2(:,jj),'b','LineWidth',2, 'Tag', 'TriDiMapPDFPhase', 'UserData', jj);
                 case 2
-                    ht2 = text(0.15*(maxXPos)+minVal,maxYPos,char(t));hold on;
+                    ht2 = text(0.15*(maxXPos)+minVal,maxYPos,char(t), 'VerticalAlignment', 'top', 'Tag', 'TriDiMapPDFPhaseSummary');hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 2
                             if ~(sum(p2(:,jj+1))==0)
@@ -173,9 +175,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    h3 = plot(exphist(:,1),p2(:,jj),'r','LineWidth',2);
+                    h3 = plot(exphist(:,1),p2(:,jj),'r','LineWidth',2, 'Tag', 'TriDiMapPDFPhase', 'UserData', jj);
                 case 3
-                    ht3 = text(0.25*(maxXPos)+minVal,maxYPos,char(t));hold on;
+                    ht3 = text(0.25*(maxXPos)+minVal,maxYPos,char(t), 'VerticalAlignment', 'top', 'Tag', 'TriDiMapPDFPhaseSummary');hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 3
                             if ~(sum(p2(:,jj+1))==0)
@@ -194,9 +196,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    h4 = plot(exphist(:,1),p2(:,jj),'g','LineWidth',2);
+                    h4 = plot(exphist(:,1),p2(:,jj),'g','LineWidth',2, 'Tag', 'TriDiMapPDFPhase', 'UserData', jj);
                 case 4
-                    ht4 = text(0.35*(maxXPos)+minVal,maxYPos,char(t));hold on;
+                    ht4 = text(0.35*(maxXPos)+minVal,maxYPos,char(t), 'VerticalAlignment', 'top', 'Tag', 'TriDiMapPDFPhaseSummary');hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 4
                             if ~(sum(p2(:,jj+1))==0)
@@ -215,9 +217,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    h5 = plot(exphist(:,1),p2(:,jj),'y','LineWidth',2);
+                    h5 = plot(exphist(:,1),p2(:,jj),'y','LineWidth',2, 'Tag', 'TriDiMapPDFPhase', 'UserData', jj);
                 case 5
-                    ht5 = text(0.45*(maxXPos)+minVal,maxYPos,char(t));hold on;
+                    ht5 = text(0.45*(maxXPos)+minVal,maxYPos,char(t), 'VerticalAlignment', 'top', 'Tag', 'TriDiMapPDFPhaseSummary');hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 5
                             if ~(sum(p2(:,jj+1))==0)
@@ -236,9 +238,9 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    h6 = plot(exphist(:,1),p2(:,jj),'m','LineWidth',2);
+                    h6 = plot(exphist(:,1),p2(:,jj),'m','LineWidth',2, 'Tag', 'TriDiMapPDFPhase', 'UserData', jj);
                 case 6
-                    ht6 = text(0.55*(maxXPos)+minVal,maxYPos,char(t));hold on;
+                    ht6 = text(0.55*(maxXPos)+minVal,maxYPos,char(t), 'VerticalAlignment', 'top', 'Tag', 'TriDiMapPDFPhaseSummary');hold on;
                     if get(gui.handles.cb_colorHist_GUI, 'Value')
                         if M > 6
                             if ~(sum(p2(:,jj+1))==0)
@@ -257,7 +259,7 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
                         end
                     end
                     hold on;
-                    h7 = plot(exphist(:,1),p2(:,jj),'c','LineWidth',2);
+                    h7 = plot(exphist(:,1),p2(:,jj),'c','LineWidth',2, 'Tag', 'TriDiMapPDFPhase', 'UserData', jj);
                 otherwise
             end
             hold on;
@@ -290,7 +292,7 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
             if M > 5
                 set(ht6, 'Color', 'k'); end
         end
-        h8 = plot(exphist(:,1),p_all2,'k:','LineWidth',2);
+        h8 = plot(exphist(:,1),p_all2,'k:','LineWidth',2, 'Tag', 'TriDiMapOverallPDF');
         hold on;
         switch M
             case 1
@@ -338,9 +340,8 @@ while((norma2 > limit) && (iter <= maxIter)) && ...
             xlabel(strcat('Hardness (',strUnit_Property, ')'));
         end
         ylabel('Frequency density');
+        ylim(densityLimits);
     end
-    ylim([0 1.2*maxYPos]);
-    ylim([0 1.2]);
 end
 if get(gui.handles.cb_deconvolutionHist_GUI, 'Value')
     %msgbox('Deconvolution completed');

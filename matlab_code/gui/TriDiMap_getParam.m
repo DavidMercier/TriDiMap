@@ -41,7 +41,9 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     end
     set(get(h.bg2_property_GUI_1_2, 'Children'), 'Enable', 'on');
     set([h.pm_pixData_GUI, h.cb_pixNaN_GUI], 'TooltipString', '');
-    set([h.pm_mlMetric_GUI, h.pm_mlOrder_GUI], 'Visible', 'off');
+    set([h.pm_mlMetric_GUI, h.pm_mlOrder_GUI, h.pm_mlNeighbours_GUI, h.pm_ehSource_GUI], 'Visible', 'off');
+    set(h.pm_clusterEnvelope_GUI, 'Position', [0.02 0.45 0.80 0.10], ...
+        'String', {'No envelopes / legend', 'Convex hull / legend', 'Ellipse fit / legend'});
     if gui.config.property == 10
         set(h.pm_mlMetric_GUI, 'Parent', h.bg_property_GUI_1_2, ...
             'Position', [0.02 0.68 0.48 0.10]);
@@ -74,13 +76,18 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     
     if gui.config.property == 3
         set(h.pm_sectPlot_GUI, 'Visible', 'on');
+        set(h.pm_ehSource_GUI, 'Visible', 'on', 'Enable', 'on');
+        gui.config.ehSource = get(h.pm_ehSource_GUI, 'Value');
+        if isfield(gui.data, 'coordinates')
+            set(h.pm_ehSource_GUI, 'Value', 1, 'Enable', 'off');
+            gui.config.ehSource = 1;
+        end
         gui.config.HVal_ThresLines = ...
             str2num(get(h.value_Hth_ValEH_GUI, 'String'));
         gui.config.EVal_ThresLines = ...
             str2num(get(h.value_Eth_ValEH_GUI, 'String'));
         gui.config.plotClusters = get(h.pm_sectPlot_GUI, 'Value');
         if gui.config.plotClusters == 1 || gui.config.plotClusters >= 3
-            set(h.pm_pixData_GUI, 'Value', 3);
             set(h.title_Hth_ValEH_GUI, 'Visible', 'off');
             set(h.value_Hth_ValEH_GUI, 'Visible', 'off');
             set(h.unit_Hth_ValEH_GUI, 'Visible', 'off');
@@ -145,8 +152,20 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
             set(h.pb_mlExport_GUI, 'Enable', 'off');
             gui.config.mlFeatures = get(h.pm_mlFeatures_GUI, 'Value');
             gui.config.mlMethod = get(h.pm_mlMethod_GUI, 'Value');
+            neighbourChoices = [5, 10, 20, 50];
+            gui.config.mlNeighbours = neighbourChoices(get(h.pm_mlNeighbours_GUI, 'Value'));
+            if gui.config.mlMethod == 3
+                set(h.pm_mlNeighbours_GUI, 'Visible', 'on');
+            end
             gui.config.mlOrder = get(h.pm_mlOrder_GUI, 'Value');
             gui.config.mlView = get(h.pm_mlView_GUI, 'Value');
+            gui.config.mlEnvelope = get(h.pm_clusterEnvelope_GUI, 'Value');
+            if ismember(gui.config.mlView, [1, 6])
+                set(h.pm_clusterEnvelope_GUI, 'Visible', 'on', ...
+                    'Position', [0.02 0.10 0.94 0.10], ...
+                    'String', {'No envelopes / phase legend', ...
+                    'Convex hull / phase legend', 'Ellipse fit / phase legend'});
+            end
             gui.config.mlMetric = get(h.pm_mlMetric_GUI, 'Value');
             gui.config.mlK = str2double(get(h.value_K_GMM_GUI, 'String'));
             gui.config.phaseDensity = gui.config.mlView == 4;
@@ -437,6 +456,9 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     end
     if gui.config.property == 3 && gui.config.plotClusters == 4 && gui.config.mlView == 2
         set([h.cb_log_plot_GUI, h.cb_MinMax_plot_GUI], 'Enable', 'off');
+    end
+    if gui.config.property == 3 && gui.config.plotClusters == 4 && gui.config.mlView == 6
+        set(h.cb_log_plot_GUI, 'Enable', 'off');
     end
     if gui.config.property == 10
         set(h.pm_autoColorbar_GUI, 'String', {'Auto colorbar'; 'Manual'});

@@ -118,45 +118,45 @@ if gui.config.plotClusters < 3
         TriDiMap_plot;
     end
 elseif gui.config.plotClusters == 3
-    if ~gui.config.plotSectMap
-        if ~gui.config.flag_ClusterGauss
-            data2use_HVec = reshape(data2use_H, size(data2use_H,1) * ...
-                size(data2use_H,2), 1);
-            data2use_EVec = reshape(data2use_E, size(data2use_E,1) * ...
-                size(data2use_E,2), 1);
-            data2use_HVec(~any(~isnan(data2use_HVec), 2),:)=0;
-            data2use_EVec(~any(~isnan(data2use_EVec), 2),:)=0;
-            K = gui.config.K_GMM;
-            if K > 3
-                warning('TriDiMap:GMMMoreThanThreePhases', ...
-                    ['GMM with %d phases is supported, but more than three phases ', ...
-                    'can be difficult to interpret; verify that this phase count is justified by the data.'], K);
-            end
-            [labels, model, data] = GMMClustering(K, ...
-                [data2use_HVec, data2use_EVec]);
-            %gui.data.dataE_SectorVec = data(labels,2);
-            gui.data.dataH_Sector = reshape(labels,size(data2use_H,1),size(data2use_H,2));
-            gui.data.dataE_Sector = reshape(data(labels,2),size(data2use_E,1),size(data2use_E,2));
-            gui.data.dataHminInd = [];gui.data.dataHmaxInd = [];
-            gui.data.dataHminInd = find(data(labels,1)==min(data(labels,1)));
-            gui.data.dataHmaxInd = find(data(labels,1)==max(data(labels,1)));
-            gui.data.dataH(1) = (round(10*min(data(labels,1))))/10;
-            gui.data.dataE(1) = (round(10*data(labels(gui.data.dataHminInd(1)),2)))/10;
-            gui.data.dataH(2) = (round(10*max(data(labels,1))))/10;
-            gui.data.dataE(2) = (round(10*data(labels(gui.data.dataHmaxInd(1)),2)))/10;
-            gui.data.dataH_SectorLabVec = labels;
-            gui.data.dataH_SectorLabMat = reshape(labels,size(data2use_H,1),size(data2use_H,2));
+    if ~gui.config.flag_ClusterGauss
+        data2use_HVec = reshape(data2use_H, size(data2use_H,1) * ...
+            size(data2use_H,2), 1);
+        data2use_EVec = reshape(data2use_E, size(data2use_E,1) * ...
+            size(data2use_E,2), 1);
+        data2use_HVec(~any(~isnan(data2use_HVec), 2),:)=0;
+        data2use_EVec(~any(~isnan(data2use_EVec), 2),:)=0;
+        K = gui.config.K_GMM;
+        if K > 3
+            warning('TriDiMap:GMMMoreThanThreePhases', ...
+                ['GMM with %d phases is supported, but more than three phases ', ...
+                'can be difficult to interpret; verify that this phase count is justified by the data.'], K);
+        end
+        [labels, model, data] = GMMClustering(K, ...
+            [data2use_HVec, data2use_EVec]);
+        %gui.data.dataE_SectorVec = data(labels,2);
+        gui.data.dataH_Sector = reshape(labels,size(data2use_H,1),size(data2use_H,2));
+        gui.data.dataE_Sector = reshape(data(labels,2),size(data2use_E,1),size(data2use_E,2));
+        gui.data.dataHminInd = [];gui.data.dataHmaxInd = [];
+        gui.data.dataHminInd = find(data(labels,1)==min(data(labels,1)));
+        gui.data.dataHmaxInd = find(data(labels,1)==max(data(labels,1)));
+        gui.data.dataH(1) = (round(10*min(data(labels,1))))/10;
+        gui.data.dataE(1) = (round(10*data(labels(gui.data.dataHminInd(1)),2)))/10;
+        gui.data.dataH(2) = (round(10*max(data(labels,1))))/10;
+        gui.data.dataE(2) = (round(10*data(labels(gui.data.dataHmaxInd(1)),2)))/10;
+        gui.data.dataH_SectorLabVec = labels;
+        gui.data.dataH_SectorLabMat = reshape(labels,size(data2use_H,1),size(data2use_H,2));
+        if ~isfield(gui, 'eh') || strcmp(gui.eh.source, 'raw')
             for evenIndex = 2:2:size(data2use_H,2)
                 gui.data.dataH_Sector(:,evenIndex) = ...
                     flipud(gui.data.dataH_Sector(:,evenIndex));
-                %                     gui.data.dataE_Sector(:,evenIndex) = ...
-                %                         flipud(gui.data.dataE_Sector(:,evenIndex));
                 gui.data.dataH_SectorLabMat(:,evenIndex) = ...
                     flipud(gui.data.dataH_SectorLabMat(:,evenIndex));
             end
-            gui.data.dataH_SectorVec = data;
-            gui.config.flag_ClusterGauss = 1;
         end
+        gui.data.dataH_SectorVec = data;
+        gui.config.flag_ClusterGauss = 1;
+    end
+    if ~gui.config.plotSectMap
         colorList = lines(max(gui.config.K_GMM, 3));
         colorList(1:3, :) = [0 0 1; 1 0 0; 0 1 0]; % b r g
         if mean(gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==1,1)) > mean(gui.data.dataH_SectorVec(gui.data.dataH_SectorLabVec==2,1))
@@ -175,14 +175,7 @@ elseif gui.config.plotClusters == 3
             hPlot(k) = plot(clusterPoints(:, 1), clusterPoints(:, 2),...
                 '+', 'color', colorList(k,:), 'Linewidth', LWval);
             hold on;
-            if envelopeType == 2
-                boundary = TriDiMap_clusterHull(clusterPoints);
-                plot(boundary(:, 1), boundary(:, 2), '-', 'Color', colorList(k,:), ...
-                    'LineWidth', LWval, ...
-                    'Tag', 'TriDiMapClusterEnvelope');
-            elseif envelopeType == 3
-                fit_ellipse(clusterPoints(:, 1), clusterPoints(:, 2), gca, k);
-            end
+            TriDiMap_drawClusterEnvelope(clusterPoints, envelopeType, colorList(k,:), LWval);
             if envelopeType > 1
                 hold on;
                 legendInfo{k} = sprintf('H = %g %s / E = %g %s', ...
@@ -208,7 +201,8 @@ elseif gui.config.plotClusters == 4
             gui = TriDiMap_runML(gui, data2use_E, data2use_H);
         catch exception
             if any(strcmp(exception.identifier, {'TriDiMap:MLInput', 'TriDiMap:MLToolbox', ...
-                    'TriDiMap:KAMMRequiresGrid', 'TriDiMap:NoPhaseDensity'}))
+                    'TriDiMap:KAMMRequiresGrid', 'TriDiMap:NoPhaseDensity', ...
+                    'TriDiMap:IsomapInput', 'TriDiMap:IsomapDisconnected'}))
                 errordlg(exception.message, 'ML-assisted clustering');
             else
                 rethrow(exception);

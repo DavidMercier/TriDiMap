@@ -14,6 +14,33 @@ The correlation between elastic and plastic properties has been extensively stud
 .. note::
     Elastic modulus is an intrinsic material property and hardness is an engineering property, which can be related to yield strength for some materials.
 
+Raw or processed E-H data
+########################
+
+The **E-H data** selector beside the clustering selector offers
+**raw measurements** (default) and **processed maps**. Changing to
+**E vs H** no longer forces a different map-rendering style. Existing
+Remove NaN, interpolation and smoothing checkbox values and factors are
+retained when switching between map and E-H views.
+
+Raw analysis uses the thresholded, cropped measured E/H pairs, without
+filling, interpolation or smoothing. Processed analysis applies the current
+**Remove NaN pixels** setting separately to both E and H, crops both maps,
+then applies the same interpolation and smoothing pipeline used for map
+display. Configure those settings in an E or H map before switching to E-H.
+Interpolation/smoothing still require Remove NaN, as in the map workflow.
+Normalization, translation and the smoothing error map are display options
+and are not substituted for mechanical E/H values in GPa.
+
+The selected dataset is used consistently for the E-H scatter, sectors,
+GMM/ML fitting, phase maps and joint PDFs. Processing is opt-in and never
+overwrites the measured arrays. Processed-mode counts and phase fractions
+describe map pixels, including filled/interpolated values, rather than
+additional independently measured indents. A warning makes that distinction
+explicit. Interpolated spatial maps and ML CSV exports use the refined grid
+spacing and retain the physical extent and crop offset; processed export
+headers identify the data source. Irregular XY data supports raw input only.
+
 E-H map sectorization
 ############################################
 
@@ -80,6 +107,18 @@ GMM, which requires the Statistics and Machine Learning Toolbox.
    
    *Elastic modulus vs hardness plot with clusters of points obtained with GMM*
 
+ISOMAP-assisted clustering
++++++++++++++++++++++++++
+
+The **ML-assisted clustering** option also offers
+**ISOMAP + K-means (base MATLAB)**. It embeds standardized mechanical
+and optional KAMM features using neighbourhood geodesic distances, then
+clusters the two-dimensional embedding. The neighbour count is selectable;
+**ISOMAP embedding**, E-H and spatial phase-map views share the fitted
+labels. See :doc:`kamm` for usage, Python support and limitations.
+This is an opt-in ISOMAP workflow, not the complete spatial/hierarchical
+procedure described by Bernachy-Barbe (2019), discussed in :doc:`kamm`.
+
 Cluster envelopes
 +++++++++++++++++++++++++++
 
@@ -91,10 +130,23 @@ both the envelopes and the phase legend (the default).
 The legend reports the mean hardness and elastic modulus of each cluster.
 Changing the envelope type does not rerun clustering or change cluster labels.
 
+For **ML-assisted clustering**, the same selector appears in the upper
+E-H options panel for **E-H clusters** and **ISOMAP embedding** views.
+Choose **Convex hull / phase legend** or **Ellipse fit / phase legend**.
+The default **No envelopes / phase legend** preserves the ML phase legend.
+Envelopes use the assigned points in the displayed coordinates and match
+each phase's color, including when there are more than three phases.
+They are display-only: changing them does not refit K-means, GMM or ISOMAP.
+The selector is hidden for spatial maps and 3D views.
+
 A convex hull encloses every finite point in the cluster, including outliers;
 it is not a confidence region. Duplicate points do not change the outline.
 Two-point and collinear clusters are represented by a line segment; a singleton
 remains its plotted point. Nonfinite coordinates are excluded with a warning.
+Ellipse fits need at least five distinct, nondegenerate points; an
+unidentifiable fit is omitted with an explicit warning, leaving its points
+and phase assignments unchanged. Ellipses are the existing geometric fit,
+not a statistical confidence region.
 
 Joint probability density of each phase
 ++++++++++++++++++++++++++++++++++++++++++
@@ -106,7 +158,8 @@ With **No clusters**, the density view treats the measurements as one phase.
 The spatial **Plot map with sectors** option is disabled while viewing densities.
 
 Each translucent surface is a correlated bivariate Gaussian fitted to the
-finite original hardness/modulus pairs assigned to that phase. Its mean and
+finite selected hardness/modulus pairs assigned to that phase (raw by default,
+or processed when explicitly selected). Its mean and
 maximum-likelihood covariance are estimated from those pairs, rather than from
 rounded legends or resampled map pixels. For GMM clusters these are estimates
 from the hard assignments, not the soft-assignment EM component parameters.

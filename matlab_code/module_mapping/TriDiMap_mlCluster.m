@@ -1,9 +1,12 @@
-function result = TriDiMap_mlCluster(E, H, featureMode, method, order, K, gridAvailable)
+function result = TriDiMap_mlCluster(E, H, featureMode, method, order, K, gridAvailable, neighbours)
 if nargin < 7
     gridAvailable = true;
 end
+if nargin < 8
+    neighbours = 10;
+end
 if ~isscalar(featureMode) || ~ismember(featureMode, 1:4) || ...
-        ~isscalar(method) || ~ismember(method, 1:2) || ...
+        ~isscalar(method) || ~ismember(method, 1:3) || ...
         ~isscalar(K) || ~isfinite(K) || K < 2 || K ~= fix(K)
     error('TriDiMap:MLInput', 'Choose a feature mode, method and integer phase count >= 2.');
 end
@@ -56,8 +59,18 @@ features = bsxfun(@rdivide, bsxfun(@minus, matrix, center), scale);
 if size(unique(features, 'rows'), 1) < K
     error('TriDiMap:MLInput', 'There are fewer distinct feature vectors than requested phases.');
 end
-if method == 1
-    [labels, model] = lloyd(features, K);
+embedding = [];
+isomapModel = [];
+clusteringFeatures = features;
+if method == 3
+    [embedding, isomapModel] = TriDiMap_isomap(features, neighbours);
+    clusteringFeatures = embedding;
+    if size(unique(embedding, 'rows'), 1) < K
+        error('TriDiMap:MLInput', 'There are fewer distinct ISOMAP coordinates than requested phases.');
+    end
+end
+if method == 1 || method == 3
+    [labels, model] = lloyd(clusteringFeatures, K);
 else
     if exist('fitgmdist', 'file') ~= 2 || ~license('test', 'Statistics_Toolbox')
         error('TriDiMap:MLToolbox', ...
@@ -89,7 +102,8 @@ assigned = zeros(size(H));
 assigned(valid) = remap(labels);
 result = struct('labels', assigned, 'maps', maps, 'featureNames', {names}, ...
     'center', center, 'scale', scale, 'features', features, 'valid', reshape(valid, size(H)), ...
-    'phaseMeans', means(orderLabels, :), 'model', model);
+    'phaseMeans', means(orderLabels, :), 'model', model, ...
+    'embedding', embedding, 'isomapModel', isomapModel);
 end
 
 function [bestLabels, bestCenters] = lloyd(features, K)

@@ -1,4 +1,4 @@
-function ellipse_t = fit_ellipse( x,y,axis_handle,k)
+function ellipse_t = fit_ellipse( x,y,axis_handle,k,color)
 %
 % fit_ellipse - finds the best fit to an ellipse for the given set of points.
 %
@@ -7,6 +7,7 @@ function ellipse_t = fit_ellipse( x,y,axis_handle,k)
 % Input:    x,y         - a set of points in 2 column vectors. AT LEAST 5 points are needed !
 %           axis_handle - optional. a handle to an axis, at which the estimated ellipse 
 %                         will be drawn along with it's axes
+%           color       - optional RGB color, overriding the legacy phase palette
 %
 % Output:   ellipse_t - structure that defines the best fit to an ellipse
 %                       a           - sub axis (radius) of the X axis of the non-tilt ellipse
@@ -251,6 +252,10 @@ if (nargin>2) & ~isempty( axis_handle ) & (test>0)
     set( axis_handle,'NextPlot','add' );
     %plot( new_ver_line(1,:),new_ver_line(2,:),'color', colorList(k,:) );
     %plot( new_horz_line(1,:),new_horz_line(2,:),'color', colorList(k,:) );
-    plot(rotated_ellipse(1,:),rotated_ellipse(2,:),'color', colorList(k,:),'Linewidth',2);
+    if nargin < 5
+        color = colorList(k,:);
+    end
+    plot(rotated_ellipse(1,:),rotated_ellipse(2,:),'color', color,'Linewidth',2, ...
+        'Tag', 'TriDiMapClusterEllipse');
     set( axis_handle,'NextPlot',hold_state );
 end

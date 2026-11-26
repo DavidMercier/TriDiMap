@@ -1,0 +1,93 @@
+function test_eh_processing
+root = fileparts(fileparts(mfilename('fullpath')));
+previous = path;
+cleanup = onCleanup(@() path(previous));
+addpath(fullfile(root, 'matlab_code', 'module_mapping'));
+addpath(fullfile(root, 'matlab_code', 'loading_data'));
+addpath(fullfile(root, 'matlab_code', 'gui'));
+addpath(fullfile(root, 'matlab_code', 'util'));
+addpath(fullfile(root, 'third_party_codes'));
+addpath(fullfile(root, 'third_party_codes', 'nansuite'));
+fig = figure('Visible', 'off');
+closeFigure = onCleanup(@() close(fig));
+gui.handles = struct('MainWindow', fig, 'AxisPlot_GUI', axes('Parent', fig));
+gui.data = struct;
+gui.config = struct('version_toolbox', 'test', 'property', 1, ...
+    'data', struct('data_path', root), 'XStep_default', 2, 'YStep_default', 3, ...
+    'XStep', 2, 'YStep', 3, 'cminOld', 0, 'cmaxOld', 100, ...
+    'MatlabRelease', '(R2024a)', 'K_GMM', 2, 'N_XStep', 4, 'N_YStep', 5);
+guidata(fig, gui);
+gui.handles = TriDiMap_setGUI(1);
+guidata(fig, gui);
+h = gui.handles;
+set(h.pm_pixData_GUI, 'Value', 2);
+set(h.cb_pixNaN_GUI, 'Value', 1);
+set(h.cb_interpMap_GUI, 'Value', 1);
+set(h.pm_interpMap_GUI, 'Value', 1);
+set(h.cb_smoothMap_GUI, 'Value', 1);
+set(h.pm_smoothMap_GUI, 'Value', 1);
+set(h.value_MinXCrop_GUI, 'String', '2');
+set(h.value_MaxXCrop_GUI, 'String', '4');
+set(h.value_MinYCrop_GUI, 'String', '2');
+set(h.value_MaxYCrop_GUI, 'String', '5');
+TriDiMap_getParam;
+set(h.property_GUI, 'Value', 3);
+set(h.pm_sectPlot_GUI, 'Value', 4);
+set(h.pm_mlFeatures_GUI, 'Value', 1);
+TriDiMap_updateUnit_and_GUI;
+TriDiMap_getParam;
+gui = guidata(fig);
+assert(get(h.pm_pixData_GUI, 'Value') == 2);
+assert(gui.config.interpBool && gui.config.smoothBool && gui.config.noNan);
+assert(get(h.pm_interpMap_GUI, 'Value') == 1 && get(h.pm_smoothMap_GUI, 'Value') == 1);
+assert(strcmp(get(h.pm_clusterEnvelope_GUI, 'Visible'), 'on'));
+H = reshape(1:20, 4, 5)/10 + 1;
+E = 20*H + repmat((1:4)', 1, 5);
+H(3, 3) = NaN;
+gui.data.expValues_mat = struct('H', H, 'YM', E);
+guidata(fig, gui);
+[raw, rawE, rawH] = TriDiMap_prepareEH(gui, E, H);
+assert(isequaln(rawE, E(2:4, 2:5)) && isequaln(rawH, H(2:4, 2:5)));
+set(h.pm_ehSource_GUI, 'Value', 2);
+TriDiMap_getParam;
+gui = guidata(fig);
+[processed, processedE, processedH] = TriDiMap_prepareEH(gui, E, H);
+cleanE = TriDiMap_cleaningData(E);
+cleanH = TriDiMap_cleaningData(H);
+[~, ~, expectedE] = TriDiMap_interpolation_smoothing(cleanE(2:4, 2:5), 1, 1, 1, 1);
+[~, ~, expectedH] = TriDiMap_interpolation_smoothing(cleanH(2:4, 2:5), 1, 1, 1, 1);
+assert(isequaln(processedE, expectedE) && isequaln(processedH, expectedH));
+assert(isequal(size(processedH), [5, 7]));
+assert(isequal(processed.eh.coordinates(1, :), [2, 3]));
+assert(isequal(processed.eh.coordinates(end, :), [6, 12]));
+assert(isequaln(processed.data.expValues_mat, gui.data.expValues_mat));
+assert(isnan(H(3, 3)) && isnan(processed.data.expValues_mat.H(3, 3)));
+processed.config.strUnit_Property = {'GPa'};
+processed.config.strUnit_Length = {'um'};
+processed = TriDiMap_runML(processed, processedE, processedH);
+assert(isequal(processed.ml.coordinates, processed.eh.coordinates));
+assert(strcmp(processed.ml.key.inputSource, 'processed'));
+file = [tempname, '.csv'];
+deleteExport = onCleanup(@() delete(file));
+guidata(fig, processed);
+TriDiMap_exportML(file);
+exported = dlmread(file, ',', 1, 0);
+assert(isequaln(exported(:, 1:4), [processed.eh.coordinates, processedH(:), processedE(:)]));
+assert(~isempty(strfind(fileread(file), 'processed pixels')));
+set(h.pm_ehSource_GUI, 'Value', 1);
+TriDiMap_getParam;
+gui = guidata(fig);
+[restored, restoredE, restoredH] = TriDiMap_prepareEH(gui, E, H);
+assert(isequaln(restoredE, rawE) && isequaln(restoredH, rawH));
+assert(gui.config.interpBool && gui.config.smoothBool);
+assert(get(h.pm_pixData_GUI, 'Value') == 2 && restored.config.flag_ClusterGauss == 0);
+gui.data.coordinates = [0, 0; 2, 1; 3, 7];
+gui.config.ehSource = 2;
+try
+    TriDiMap_prepareEH(gui, [10; 20; 30], [1; 2; 3]);
+    error('TriDiMap:MissingError', 'Expected rejection of processed irregular XY.');
+catch exception
+    assert(strcmp(exception.identifier, 'TriDiMap:EHInput'));
+end
+disp('E-H settings retention, raw/processed maps, original data and export coordinates passed.');
+end
