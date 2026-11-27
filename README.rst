@@ -1,6 +1,6 @@
 TriDiMap
 =========
-This Matlab toolbox has been developed to plot and to analyze mechanical properties maps from (nano)indentation results .
+This Matlab toolbox has been developed to plot and to analyze mechanical properties maps from nanomechanical results .
 
 To get started with the TriDiMap toolbox, clone the repository, then run Matlab, and cd into the folder containing this README file.
 
@@ -9,8 +9,7 @@ You can start the launcher by typing "demo" at the Matlab command prompt.
 Features
 --------
 
-The TriDiMap toolbox has been developed to plot, to map and to analyze (nano)indentation
-dataset.
+The TriDiMap toolbox has been developed to plot, to map and to analyze (nano)indentation datasets.
 
 With this Matlab toolbox, it is possible:
     * to create 2D/3D mechanical-property maps from regular grids and point maps from irregular XY measurements, with interpolation, smoothing and cropping for grid maps;
