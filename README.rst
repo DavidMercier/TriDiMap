@@ -1,6 +1,8 @@
 TriDiMap
 =========
-This Matlab toolbox has been developed to plot and to analyze mechanical properties maps from nanomechanical results .
+TriDiMap is a MATLAB toolbox for plotting and analyzing mechanical-property
+maps from nanoindentation results. It also includes optional, license-free
+Python workflows for KAMM-assisted clustering and PDF-based phase analysis.
 
 To get started with the TriDiMap toolbox, clone the repository, then run Matlab, and cd into the folder containing this README file.
 
@@ -23,33 +25,50 @@ With this Matlab toolbox, it is possible:
     * to extract per-phase mechanical-property statistics (mean, extrema and standard deviations) and phase fractions;
     * to correlate mechanical and microstructural maps for image-correlation-based targeted indentation (ICBTI) analysis;
     * to segment SEM grayscale maps into three or four phases and compare them with E/H maps using phase fractions and per-phase agreement metrics;
-    * to plot 4D mechanical-property maps from indentation depth slices.
+    * to plot 4D mechanical-property maps from indentation depth slices;
+    * to run optional Python workflows for KAMM-assisted clustering and statistical PDF-based phase analysis without a MATLAB license.
 
-License-free Python examples
-----------------------------
+Optional Python workflows
+-------------------------
 
-The `KAMM clustering notebook <python/kamm_clustering.ipynb>`_ demonstrates
-2D modulus/hardness maps -> neighbourhood mismatch -> K-means/GMM clustering,
-without MATLAB, Streamlit or Granta. Install ``python/requirements.txt`` and
-open the notebook with Jupyter. See `the KAMM workflow guide <docs/kamm.rst>`_
-for input conventions, MATLAB GUI controls and limitations.
+Python 3.10 or newer is recommended. Install the dependencies from the
+repository root::
 
-The `PDF deconvolution notebook <python/pdf_deconvolution.ipynb>`_ loads
-Excel or CSV E/H measurements, keeps raw maps separate from interpolation
-and smoothing, and plots empirical and Gaussian-mixture PDF/CDF curves.
-It assigns candidate phases and plots raw/processed phase maps using
-the same fitted mixture, with raw per-phase statistics and optional CSV
-exports. Its default MTS flower dataset contains a steel matrix and
-carbide inclusion; the two-component hardness fit labels candidate
-steel/carbide populations. Legacy ``.xls`` summaries are read directly
-with xlrd. The 25-by-25 serpentine grid follows the MATLAB convention,
-but spacing and scan orientation must be confirmed because the summary
-has no XY metadata. See the
-`statistical analysis guide <docs/pdf_cdf.rst>`_ for conventions and limitations.
+    python -m pip install -r python/requirements.txt
 
-Matlab version
-------------------
-Developed with Matlab R2014a.
+The Python tools are independent of the MATLAB GUI:
+
+* **KAMM-assisted clustering:** ``python/tridimap_ml.py`` provides a reusable
+  implementation of raster KAMM descriptors and phase clustering with
+  K-means, Gaussian mixture models or ISOMAP + K-means. The
+  `KAMM clustering notebook <python/kamm_clustering.ipynb>`_ demonstrates
+  the workflow on reproducible synthetic modulus/hardness maps. See
+  `the KAMM workflow guide <docs/kamm.rst>`_ for usage, input conventions
+  and limitations.
+* **PDF deconvolution and phase maps:** the
+  `PDF deconvolution notebook <python/pdf_deconvolution.ipynb>`_ loads Excel
+  or CSV E/H measurements, keeps raw maps separate from interpolation and
+  smoothing, and plots empirical and Gaussian-mixture PDF/CDF curves. It
+  maps candidate phases using the fitted mixture, reports raw per-phase
+  statistics and offers optional CSV exports. The default MTS dataset
+  contains a steel matrix and carbide inclusion; its two-component hardness
+  fit labels candidate steel/carbide populations. Legacy ``.xls`` summaries
+  are read directly with xlrd. The 25-by-25 serpentine grid follows the
+  MATLAB convention, but spacing and scan orientation must be confirmed
+  because the summary has no XY metadata. See the
+  `statistical analysis guide <docs/pdf_cdf.rst>`_ for conventions and
+  limitations.
+
+MATLAB version and project history
+----------------------------------
+* Current toolbox version: 4.0
+* First tagged release: v1.0 (2016-12-04)
+* Original development release: MATLAB R2014a
+* Last updated: 2026-11-27
+
+Some optional features require a newer MATLAB release; for example, combined
+PDF+CDF plots require R2016a or newer. See the relevant documentation for
+feature-specific requirements.
 
 Author
 ----------
@@ -76,7 +95,8 @@ phase map; joint probability density; probability density function;
 cumulative density function; multimodal Gaussian fit; deconvolution;
 image correlation; ICBTI; microstructure correlation; multiphase binarization;
 SEM image segmentation; grayscale thresholding; multilevel Otsu; phase agreement;
-confusion matrix; intersection-over-union.
+confusion matrix; intersection-over-union; Python; KAMM clustering; ISOMAP;
+Gaussian mixture; PDF; CDF; Jupyter.
 
 Contributors
 -------------
