@@ -114,8 +114,11 @@ Select **E vs H > ML-assisted clustering**, enter the **Phase number**,
 and choose **SOM + K-means (base MATLAB)**. The existing **E-H clusters**
 and **Phase map** views display the assignments; **SOM clusters** and
 **SOM U-matrix** display the feature-space map. SOM clusters are candidates
-for mechanical-property domains, not confirmed physical phases. See
-:doc:`kamm` for the available features, controls and limitations.
+for mechanical-property domains, not confirmed physical phases. SOMs are
+used to visualize high-dimensional materials data [#Qian_2019]_ and have
+also been applied to spatially resolved nanomechanical characterization
+[#Weber_2023]_. See :doc:`kamm` for the available features, controls and
+limitations.
 
 ISOMAP-assisted clustering
 +++++++++++++++++++++++++
@@ -254,49 +257,24 @@ The framework also uses synthetic benchmarks with controlled complexity (e.g., c
 
 This approach can be combined with standard clustering methods (K-Means, GMM, Agglomerative clustering, etc.), providing a flexible and powerful extension to existing E–H map analysis techniques.
 
-Next steps: Ashby map or self-organized maps
+Materials selection
 ############################################
 
 
-After analytical, sectorization, or clustering approaches, the next step could be to use nanoindentation outputs
-(phase mechanical properties in the case of a composite, an alloy...) for material selection, material design, material discovery....
+Once candidate phases have been identified, their measured properties can
+inform material selection and design. One common approach is to compare
+properties on an Ashby map [#Ashby_2005]_. The following figure shows an
+example created using CES Selector 2018 [#CES_Selector]_. This comparison is
+external to TriDiMap; the GUI does not generate Ashby maps.
 
-One common strategy for material selection is to use a conventional Ashby map [#Ashby_2005]_.
-The following figure shows a typical Ashby map with material families (envelopes around different materials), created using CES Selector 2018 software [#CES_Selector]_.
-At some point, it is possible to add material reference (bulk, homogeneous, monophasic, ...) values on the E-H map,
-in order to compare experimental data with data from the literature.
+Reference values for bulk or single-phase materials can also be compared
+with measured values in E-H space.
 
 .. figure:: ./_pictures/E-H_Ashby.png
    :scale: 50 %
    :align: center
    
    *Typical Ashby map of elastic modulus vs Vickers hardness, obtained using CES Selector software*
-   
-For materials research and discovery, self-organizing maps (SOMs) offer an
-unsupervised way to visualize high-dimensional property data [#Qian_2019]_.
-They map standardized feature vectors onto a two-dimensional grid while
-approximately preserving neighbourhood relationships. This makes similar
-measurements easier to inspect together, but a SOM is not by itself a phase
-classifier.
-
-For nanoindentation, each indent can be represented by hardness, elastic
-modulus and selected derived features (for example, KAMM). The trained map's
-best-matching units place observations on the grid; the U-matrix can help
-reveal possible boundaries between groups. Clustering map units supports
-exploration of candidate mechanical-property domains. The results should be
-compared with the corresponding spatial phase map and, where possible, independent
-microstructural or chemical characterization before interpreting groups as
-physical phases. Keep indentation coordinates as metadata for mapping results
-back to the sample; include position in the feature vector only when spatial
-proximity is intentionally part of the clustering. Stiffness features,
-component maps and overlays of independently known labels are possible future
-extensions, not part of the current SOM GUI.
-
-SOMs have also been applied to AFM-based viscoelastic characterization
-[#Weber_2023]_, supporting their relevance to spatially resolved
-nanomechanical data. TriDiMap offers an opt-in **SOM + K-means** workflow
-under **E vs H > ML-assisted clustering**, with SOM cluster and U-matrix
-views. See :doc:`kamm` for the implemented features and limitations.
 	
 References
 ############################################

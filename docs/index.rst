@@ -23,6 +23,7 @@ The TriDiMap toolbox has been developed to plot, map, and analyze
 With this Matlab toolbox, it is possible:
     * to map (in 2D or 3D), to interpolate and to smooth indentation map;
     * to plot elastic modulus vs hardness values;
+    * to cluster mechanical/KAMM features with K-means, GMM, ISOMAP or SOM, and inspect phase maps, SOM maps and embeddings;
     * to plot and to fit probability density functions;
     * to plot and to fit cumulative density functions;
     * to extract statistical values (mean, min, max with standard deviations) of mechanical properties and fractions for each phase;
