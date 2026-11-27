@@ -107,6 +107,16 @@ GMM, which requires the Statistics and Machine Learning Toolbox.
    
    *Elastic modulus vs hardness plot with clusters of points obtained with GMM*
 
+SOM-assisted clustering
++++++++++++++++++++++++
+
+Select **E vs H > ML-assisted clustering**, enter the **Phase number**,
+and choose **SOM + K-means (base MATLAB)**. The existing **E-H clusters**
+and **Phase map** views display the assignments; **SOM clusters** and
+**SOM U-matrix** display the feature-space map. SOM clusters are candidates
+for mechanical-property domains, not confirmed physical phases. See
+:doc:`kamm` for the available features, controls and limitations.
+
 ISOMAP-assisted clustering
 +++++++++++++++++++++++++
 
@@ -136,7 +146,7 @@ Choose **Convex hull / phase legend** or **Ellipse fit / phase legend**.
 The default **No envelopes / phase legend** preserves the ML phase legend.
 Envelopes use the assigned points in the displayed coordinates and match
 each phase's color, including when there are more than three phases.
-They are display-only: changing them does not refit K-means, GMM or ISOMAP.
+They are display-only: changing them does not refit K-means, GMM, ISOMAP or SOM.
 The selector is hidden for spatial maps and 3D views.
 
 A convex hull encloses every finite point in the cluster, including outliers;
@@ -262,8 +272,31 @@ in order to compare experimental data with data from the literature.
    
    *Typical Ashby map of elastic modulus vs Vickers hardness, obtained using CES Selector software*
    
-For material design or discovery, one option is to use self-organizing maps (SOMs)
-[#Qian_2019]_ in the framework of material informatics. Here an example for Atomic Force Microscopy (AFM) technique [#Weber_2023]_.
+For materials research and discovery, self-organizing maps (SOMs) offer an
+unsupervised way to visualize high-dimensional property data [#Qian_2019]_.
+They map standardized feature vectors onto a two-dimensional grid while
+approximately preserving neighbourhood relationships. This makes similar
+measurements easier to inspect together, but a SOM is not by itself a phase
+classifier.
+
+For nanoindentation, each indent can be represented by hardness, elastic
+modulus and selected derived features (for example, KAMM). The trained map's
+best-matching units place observations on the grid; the U-matrix can help
+reveal possible boundaries between groups. Clustering map units supports
+exploration of candidate mechanical-property domains. The results should be
+compared with the corresponding spatial phase map and, where possible, independent
+microstructural or chemical characterization before interpreting groups as
+physical phases. Keep indentation coordinates as metadata for mapping results
+back to the sample; include position in the feature vector only when spatial
+proximity is intentionally part of the clustering. Stiffness features,
+component maps and overlays of independently known labels are possible future
+extensions, not part of the current SOM GUI.
+
+SOMs have also been applied to AFM-based viscoelastic characterization
+[#Weber_2023]_, supporting their relevance to spatially resolved
+nanomechanical data. TriDiMap offers an opt-in **SOM + K-means** workflow
+under **E vs H > ML-assisted clustering**, with SOM cluster and U-matrix
+views. See :doc:`kamm` for the implemented features and limitations.
 	
 References
 ############################################

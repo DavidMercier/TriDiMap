@@ -460,6 +460,9 @@ if strcmp(get(h.binarization_GUI, 'String'), 'BINARIZATION')
     if gui.config.property == 3 && gui.config.plotClusters == 4 && gui.config.mlView == 6
         set(h.cb_log_plot_GUI, 'Enable', 'off');
     end
+    if gui.config.property == 3 && gui.config.plotClusters == 4 && ismember(gui.config.mlView, [7, 8])
+        set([h.cb_log_plot_GUI, h.cb_MinMax_plot_GUI], 'Enable', 'off');
+    end
     if gui.config.property == 10
         set(h.pm_autoColorbar_GUI, 'String', {'Auto colorbar'; 'Manual'});
         if get(h.pm_autoColorbar_GUI, 'Value') > 2

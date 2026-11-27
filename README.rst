@@ -1,8 +1,8 @@
 TriDiMap
 =========
 TriDiMap is a MATLAB toolbox for plotting and analyzing mechanical-property
-maps from nanoindentation results. It also includes optional, license-free
-Python workflows for KAMM-assisted clustering and PDF-based phase analysis.
+maps from nanoindentation results, with standalone, license-free Python
+analysis features for KAMM-assisted clustering and PDF-based phase analysis.
 
 To get started with the TriDiMap toolbox, clone the repository, then run Matlab, and cd into the folder containing this README file.
 
@@ -19,6 +19,7 @@ With this Matlab toolbox, it is possible:
     * to plot elastic modulus vs hardness values, define sectors and perform phase clustering;
     * to cluster phases using K-means or GMM with mechanical and optional KAMM features, and display phase and KAMM maps;
     * to embed standardized mechanical/KAMM features with ISOMAP before K-means clustering, and inspect or export the embedding;
+    * to explore standardized mechanical/KAMM features with a self-organizing map, its U-matrix and K-means phase clusters;
     * to visualize joint 3D probability densities of phases in elastic-modulus/hardness space;
     * to plot hardness/modulus phase clusters against a selectable KAMM-family descriptor in 3D;
     * to plot and fit probability density functions and cumulative density functions;
@@ -26,11 +27,12 @@ With this Matlab toolbox, it is possible:
     * to correlate mechanical and microstructural maps for image-correlation-based targeted indentation (ICBTI) analysis;
     * to segment SEM grayscale maps into three or four phases and compare them with E/H maps using phase fractions and per-phase agreement metrics;
     * to plot 4D mechanical-property maps from indentation depth slices;
-    * to run optional Python workflows for KAMM-assisted clustering and statistical PDF-based phase analysis without a MATLAB license.
+    * to analyze data with standalone Python features for KAMM-assisted clustering and statistical PDF-based phase analysis, without a MATLAB license.
 
-Optional Python workflows
--------------------------
+Python analysis features (optional; no MATLAB license required)
+---------------------------------------------------------------
 
+The Python tools complement the MATLAB GUI and can also be used independently.
 Python 3.10 or newer is recommended. Install the dependencies from the
 repository root::
 
@@ -61,9 +63,10 @@ The Python tools are independent of the MATLAB GUI:
 
 MATLAB version and project history
 ----------------------------------
-* Current toolbox version: 4.0
+* Current toolbox version: v4.0 (tagged 2026-11-19)
+* Project started: 2015-12-18
+* MATLAB version at initial development: R2014a
 * First tagged release: v1.0 (2016-12-04)
-* Original development release: MATLAB R2014a
 * Last updated: 2026-11-27
 
 Some optional features require a newer MATLAB release; for example, combined

@@ -6,7 +6,7 @@ if nargin < 8
     neighbours = 10;
 end
 if ~isscalar(featureMode) || ~ismember(featureMode, 1:4) || ...
-        ~isscalar(method) || ~ismember(method, 1:3) || ...
+        ~isscalar(method) || ~ismember(method, 1:4) || ...
         ~isscalar(K) || ~isfinite(K) || K < 2 || K ~= fix(K)
     error('TriDiMap:MLInput', 'Choose a feature mode, method and integer phase count >= 2.');
 end
@@ -61,6 +61,7 @@ if size(unique(features, 'rows'), 1) < K
 end
 embedding = [];
 isomapModel = [];
+somModel = [];
 clusteringFeatures = features;
 if method == 3
     [embedding, isomapModel] = TriDiMap_isomap(features, neighbours);
@@ -68,9 +69,19 @@ if method == 3
     if size(unique(embedding, 'rows'), 1) < K
         error('TriDiMap:MLInput', 'There are fewer distinct ISOMAP coordinates than requested phases.');
     end
+elseif method == 4
+    somModel = TriDiMap_som(features, K);
+    [clusteringFeatures, ~, somAssignments] = unique(somModel.weights(somModel.bmu, :), 'rows');
+    if size(clusteringFeatures, 1) < K
+        error('TriDiMap:SOMInput', ...
+            'The SOM has fewer distinct occupied nodes than requested phases; reduce the phase count.');
+    end
 end
-if method == 1 || method == 3
+if ismember(method, [1, 3, 4])
     [labels, model] = lloyd(clusteringFeatures, K);
+    if method == 4
+        labels = labels(somAssignments);
+    end
 else
     if exist('fitgmdist', 'file') ~= 2 || ~license('test', 'Statistics_Toolbox')
         error('TriDiMap:MLToolbox', ...
@@ -100,10 +111,15 @@ remap = zeros(K, 1);
 remap(orderLabels) = 1:K;
 assigned = zeros(size(H));
 assigned(valid) = remap(labels);
+if method == 4
+    nodeLabels = zeros(size(somModel.weights, 1), 1);
+    nodeLabels(somModel.bmu) = remap(labels);
+    somModel.nodeLabels = reshape(nodeLabels, size(somModel.counts));
+end
 result = struct('labels', assigned, 'maps', maps, 'featureNames', {names}, ...
     'center', center, 'scale', scale, 'features', features, 'valid', reshape(valid, size(H)), ...
     'phaseMeans', means(orderLabels, :), 'model', model, ...
-    'embedding', embedding, 'isomapModel', isomapModel);
+    'embedding', embedding, 'isomapModel', isomapModel, 'somModel', somModel);
 end
 
 function [bestLabels, bestCenters] = lloyd(features, K)

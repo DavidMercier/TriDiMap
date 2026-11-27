@@ -37,6 +37,13 @@ if ~isempty(gui.ml.result.embedding)
     values = [values, embedding];
     header = [header, ',ISOMAP1,ISOMAP2'];
 end
+if isfield(gui.ml.result, 'somModel') && ~isempty(gui.ml.result.somModel)
+    somCoordinates = NaN(numel(gui.ml.result.labels), 2);
+    somCoordinates(gui.ml.result.valid(:), :) = ...
+        gui.ml.result.somModel.positions(gui.ml.result.somModel.bmu, :);
+    values = [values, somCoordinates];
+    header = [header, ',SOM_column,SOM_row'];
+end
 fprintf(fid, '%s\n', header);
 fprintf(fid, [repmat('%.17g,', 1, size(values, 2)-1), '%.17g\n'], values');
 end

@@ -202,7 +202,7 @@ elseif gui.config.plotClusters == 4
         catch exception
             if any(strcmp(exception.identifier, {'TriDiMap:MLInput', 'TriDiMap:MLToolbox', ...
                     'TriDiMap:KAMMRequiresGrid', 'TriDiMap:NoPhaseDensity', ...
-                    'TriDiMap:IsomapInput', 'TriDiMap:IsomapDisconnected'}))
+                    'TriDiMap:IsomapInput', 'TriDiMap:IsomapDisconnected', 'TriDiMap:SOMInput'}))
                 errordlg(exception.message, 'ML-assisted clustering');
             else
                 rethrow(exception);

@@ -63,11 +63,12 @@ For ML-assisted phase clustering:
    * **Features: H/E, H^3/E^2**: mechanical ratios;
    * **Features: all (9)**: H, E, both ratios and all five KAMM descriptors.
 
-4. Choose **K-means (base MATLAB)**, **GMM (Statistics Toolbox)** or
-   **ISOMAP + K-means (base MATLAB)** and
+4. Choose **K-means (base MATLAB)**, **GMM (Statistics Toolbox)**,
+   **ISOMAP + K-means (base MATLAB)** or **SOM + K-means (base MATLAB)** and
    **KAMM order: 1** or **2**.
 5. Switch between **E-H clusters**, **Phase map**, **KAMM map**,
-   **Joint phase PDFs (3D)** and **E-H vs descriptor (3D)**. The descriptor
+   **Joint phase PDFs (3D)** and **E-H vs descriptor (3D)**. With SOM,
+   **SOM clusters** and **SOM U-matrix** are also available. The descriptor
    selector controls the Z-axis in the 3D scatter as well as the image in
    KAMM map. Choose KAMM, KAEM, KAPM, KAMM_RATIO or KAMM_NORMPROD. The 3D
    scatter uses hardness (X), modulus (Y) and the selected descriptor (Z),
@@ -78,9 +79,9 @@ For ML-assisted phase clustering:
    Changing envelopes reuses the cached fit; the phase legend remains visible.
 
 K-means uses bounded, deterministic multi-start Lloyd iterations and needs
-no Statistics Toolbox. The new ML GMM uses regularized ``fitgmdist`` and
-requires Statistics and Machine Learning Toolbox; an unavailable toolbox
-produces an explicit message, not a different algorithm. The legacy
+no Statistics Toolbox. SOM also uses base MATLAB. The new ML GMM uses
+regularized ``fitgmdist`` and requires Statistics and Machine Learning Toolbox;
+an unavailable toolbox produces an explicit message, not a different algorithm. The legacy
 **Gaussian Mixture Model** option is unchanged.
 
 Features use population-standard-deviation z-score scaling; constant
@@ -111,6 +112,38 @@ or descriptor values are hidden with a warning. Min/Max annotates H extrema
 on the scatters, displayed descriptor extrema on a KAMM map, or displayed
 density extrema on the joint PDFs. Log and Min/Max are disabled for
 categorical phase maps.
+
+SOM-assisted phase clustering
+-----------------------------
+
+Choose **SOM + K-means (base MATLAB)** and a phase count in **E vs H >
+ML-assisted clustering**. The **SOM clusters** view shows occupied map nodes
+colored by their assigned cluster; empty nodes are transparent. The **SOM
+U-matrix** shows the mean distance to each node's adjacent codebook vectors
+in standardized feature space, where larger values can suggest boundaries.
+The usual E-H clusters and spatial phase-map views show the same assignments.
+CSV export adds SOM column and row for each valid measurement; excluded
+measurements retain phase 0 and have missing SOM coordinates.
+
+The deterministic batch SOM uses a square grid of up to 10 by 10 nodes,
+initialized from ordered samples along the first principal direction. It
+trains for 80 iterations with a shrinking Gaussian neighbourhood. Each
+measurement is assigned to its closest node in standardized feature space.
+K-means then clusters the distinct occupied node prototypes, with equal
+weight per distinct prototype rather than per measurement, and each
+measurement inherits its node's cluster. The phase count must be between
+2 and 100 and no greater than the number of distinct occupied prototypes;
+otherwise fitting is rejected. The result is cached with the other ML
+settings. Coordinates are used to map assignments back to the sample, not
+as SOM features; KAMM contributes local spatial information if selected.
+
+The SOM grid is a feature-space representation, not the sample's spatial map.
+Its dimensions, initialization and feature selection affect the result;
+compare with other methods and independently characterized microstructure.
+Neither SOM nor K-means alone establishes physical phase identity.
+The GUI does not currently provide component maps, known-label overlays or
+stiffness as a SOM input feature. Run ``test_som`` from the MATLAB tests
+folder to check clustering, views, caching and export.
 
 ISOMAP-assisted phase clustering
 --------------------------------

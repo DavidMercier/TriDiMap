@@ -34,8 +34,11 @@ else
         gui.ml = struct('key', key, 'result', result);
     end
     result = gui.ml.result;
-    if c.mlView == 6 && isempty(result.embedding)
+    if c.mlView == 6 && c.mlMethod ~= 3
         error('TriDiMap:IsomapInput', 'Choose ISOMAP + K-means to display the ISOMAP embedding.');
+    end
+    if ismember(c.mlView, [7, 8]) && c.mlMethod ~= 4
+        error('TriDiMap:SOMInput', 'Choose SOM + K-means to display SOM views.');
     end
 end
 if ~descriptorOnly && preparedEH
@@ -55,7 +58,37 @@ end
 if c.mlView ~= 3
     colors = lines(c.mlK);
 end
-if c.mlView == 4
+if ismember(c.mlView, [7, 8])
+    cla;
+    legend off;
+    if c.mlView == 7
+        values = double(result.somModel.nodeLabels);
+        values(values == 0) = NaN;
+        image = imagesc(values);
+        set(image, 'AlphaData', double(isfinite(values)), 'Tag', 'TriDiMapSOMMap');
+        colormap(gca, colors);
+        caxis([0.5, c.mlK+0.5]);
+        bar = colorbar;
+        if isprop(bar, 'Ticks')
+            set(bar, 'Ticks', 1:c.mlK);
+        else
+            set(bar, 'YTick', 1:c.mlK);
+        end
+        ylabel(bar, 'Phase');
+        title('SOM clusters (occupied nodes)');
+    else
+        imagesc(result.somModel.uMatrix);
+        colormap(gca, parula(256));
+        caxis auto;
+        bar = colorbar;
+        ylabel(bar, 'Mean neighbour distance');
+        title('SOM U-matrix');
+    end
+    set(gca, 'YDir', 'normal', 'XScale', 'linear', 'YScale', 'linear');
+    axis equal tight;
+    xlabel('SOM column');
+    ylabel('SOM row');
+elseif c.mlView == 4
     TriDiMap_plotPhaseDensity([H(:), E(:)], result.labels(:), colors, gui);
 elseif c.mlView == 1 || c.mlView == 6
     plotX = H;
@@ -68,6 +101,9 @@ elseif c.mlView == 1 || c.mlView == 6
     end
     cla;
     colorbar off;
+    axis normal;
+    axis auto;
+    view(2);
     hold on;
     handles = gobjects(c.mlK, 1);
     descriptions = cell(c.mlK, 1);
@@ -138,6 +174,8 @@ elseif c.mlView == 5
     end
     colorbar off;
     cla;
+    axis normal;
+    axis auto;
     hold on;
     handles = cell(c.mlK, 1);
     descriptions = cell(c.mlK, 1);
@@ -209,7 +247,7 @@ else
     legend off;
     if raster
         image = imagesc(unique(coordinates(:, 1)), unique(coordinates(:, 2)), values');
-        set(image, 'AlphaData', isfinite(values'), 'Tag', 'TriDiMapMLMap');
+        set(image, 'AlphaData', double(isfinite(values')), 'Tag', 'TriDiMapMLMap');
         set(gca, 'YDir', 'normal');
     else
         scatter(coordinates(:, 1), coordinates(:, 2), 55, values(:), ...
@@ -223,7 +261,11 @@ else
     ylabel(bar, colorLabel, 'Interpreter', 'none');
     if c.mlView == 2
         caxis([0.5, c.mlK+0.5]);
-        set(bar, 'Ticks', 1:c.mlK);
+        if isprop(bar, 'Ticks')
+            set(bar, 'Ticks', 1:c.mlK);
+        else
+            set(bar, 'YTick', 1:c.mlK);
+        end
     elseif c.MinMax
         valid = find(isfinite(values));
         [~, low] = min(values(valid));
